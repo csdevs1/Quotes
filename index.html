@@ -1,0 +1,75 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quotes | Bienvenidos</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/g/isotope@2.0.0(jquery.isotope.min.js)"></script>
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- End of Bootstrap -->
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="app.css"?
+    </head>
+    <body>
+       <h1>Bootstrap Photo Gallery</h1>
+        
+        <div class="row">
+            <nav>
+                <ul class="menu" id="filters">
+                    <li><a  href="#One" class="filter" rel="*" name="isotope-filter">One</a></li>
+                    <li><a  href="#Two" class="filter" rel=".geek" name="isotope-filter">Two</a></li>
+                    <li><a  href="#Three" class="filter" rel=".nature" name="isotope-filter">Nature</a></li>
+                    <li><a  href="#Four" class="filter" rel=".entertainment" name="isotope-filter">Four</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="isotope-wrapper">
+            <div class="container">
+                <div class="row masonry-container isotope-box">
+                    <div class="col-xs-6 col-md-4 item quote geek">
+                        <div class="pad">
+                            <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
+                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
+                            <p><a href="">Like</a></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-4 item quote nature">
+                        <div class="pad">
+                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
+                            <p><a href="">Like</a></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-4 item quote nature">
+                        <div class="pad">
+                            <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
+                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- Albert Einstein</span></blockquote>
+                            <p><a href="">Like</a></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-4 item quote geek">
+                        <div class="pad">
+                            <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
+                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
+                            <p><a href="">Like</a></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-4 item quote entertainment">
+                        <div class="pad">
+                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
+                            <p><a href="">Like</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="app.js"></script>
+    </body>
+</html>
