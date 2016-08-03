@@ -1,51 +1,140 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
 @import 'https://fonts.googleapis.com/css?family=Raleway|Reem+Kufi';
+@import url(http://fonts.googleapis.com/css?family=Glegoo);
 
 body {
     font-size:16px;
 }
-
-.row {
-    margin-right: 0;
+a {
+    text-decoration: none;
+}
+/*banner*/
+.banner {
+    position: relative;
+    top: 0;
+    padding-bottom: 10%;
+    background: #000;
+}
+.container nav .nav li a {
+    color: #fff;
+    transition: transform 0.1s;
+}.nav.navbar-nav li a:hover {
+    background: none !important;
+    color: #eee;
+    transform: scale(1.1);
+    transition: transform 0.1s;
+}
+.container nav .nav li a span {
+    font-size: 1.4rem;
 }
 
-.row nav ul li {
-    transition: all 0.5s;
-    display: inline-block;
-    
+.container {
+    margin-bottom: 5%;
 }
-
-h1 {
+.banner h1 {
     font-family: 'Open Sans Condensed', sans-serif;
     text-align: center;
     font-size: 2.5em;
     font-weight: 400;
     transition: all 0.5s;
+    color: #fff;
 }
+/* end of banner */
+.row {
+    margin-right: 0;
+}
+
+.row nav {
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.row nav ul li {
+    transition: all 0.5s;
+    display: inline-block;
+    
+}
+.row nav ul li:not(:last-child) {
+    margin-right: 10px;    
+}
+.row nav ul li a {
+    color: #000;
+    font-size: 1.7rem;
+}.row nav ul li a:hover{color: #999; text-decoration: none;}
 
 .quote .pad {
     border: 1px solid #eee;
-    padding: 10px;
+    padding: 2%;
+    padding-bottom: 15%;
     transition: all 0.5s;
 }
 
 .quote blockquote {
     margin-top: 5px;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Glegoo', serif;
     font-size: 1.5rem;
     position: relative;
     border-left: 2px solid #ccc;
     transition: all 0.5s;
 }
+.quote blockquote:before {
+    position: absolute;
+    left: 0;
+    top:0px;
+    content:"\201C";
+    font-size: 3em;
+    color: #000;
+}
 
 .quote blockquote span {
+    font-family: 'Raleway', sans-serif;
     font-weight: 700;
     display: block;
     text-align: right;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-top: 10px;
     text-transform: uppercase;
 }
+/* Upvote system */
+.quote p {
+    text-align: right;
+}
+.quote a,.quote a:hover {
+    cursor: pointer;
+    text-decoration: none;
+}
+.quote p span:not(.heart){
+    padding-right: 5px;
+    font-family: 'Raleway', sans-serif;
+    color:#777;
+    font-size: 2rem;
+}
+.heart {
+  display:inline-block;
+  -webkit-transform:scale(1.4);
+  transform:scale(1.4);
+  -webkit-animation: shadow 1.2s 1 cubic-bezier(.25, 0.5, .5, 1.25);
+  -moz-animation: shadow 1.2s 1 cubic-bezier(.25, 0.5, .5, 1.25);
+  animation: shadow 1.2s 1 cubic-bezier(.25, 0.5, .5, 1.25);
+}
+
+.liked, .liked:hover {
+    color: #ff5555;
+}
+
+@keyframes shadow {
+    0% {
+      text-shadow: 0px 0px 0px #ff3333;
+    }
+    50% {
+      text-shadow: 0px 0px 10px #ff0000, 0px 0px 5px #000;
+    }
+    100% {
+      text-shadow: 0px 0px 0px #ff3333;
+    }
+}
+
+/* End of Upvote system*/
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {

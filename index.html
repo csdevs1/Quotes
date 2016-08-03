@@ -17,14 +17,31 @@
         <link rel="stylesheet" href="app.css"?
     </head>
     <body>
-       <h1>Bootstrap Photo Gallery</h1>
+        <section class="banner">
+            <header class="container">
+                <nav>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#One">One</a></li>
+                        <li><a href="#Two">Two</a></li>
+                        <li><a href="#Three">Three</a></li>
+                        <li><a href="#Four">Four</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a href="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                    </ul>
+                </nav>
+            </header>
+            </div>
+            <h1>Bootstrap Photo Gallery</h1>
+        </section>
         
         <div class="row">
             <nav>
                 <ul class="menu" id="filters">
                     <li><a  href="#One" class="filter" rel="*" name="isotope-filter">One</a></li>
                     <li><a  href="#Two" class="filter" rel=".geek" name="isotope-filter">Two</a></li>
-                    <li><a  href="#Three" class="filter" rel=".nature" name="isotope-filter">Nature</a></li>
+                    <li><a  href="#Three" class="filter" rel=".nature" name="isotope-filter">Three</a></li>
                     <li><a  href="#Four" class="filter" rel=".entertainment" name="isotope-filter">Four</a></li>
                 </ul>
             </nav>
@@ -33,42 +50,78 @@
         <div class="isotope-wrapper">
             <div class="container">
                 <div class="row masonry-container isotope-box">
-                    <div class="col-xs-6 col-md-4 item quote geek">
+                    <div class="col-xs-12 col-sm-6 col-md-4 item quote geek">
                         <div class="pad">
                             <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
                             <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                            <p><a href="">Like</a></p>
+                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
+                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                         </div>
                     </div>
-                    <div class="col-xs-6 col-md-4 item quote nature">
+                    <div class="col-xs-12 col-sm-6 col-md-4 item quote nature">
                         <div class="pad">
                             <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                            <p><a href="">Like</a></p>
+                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
+                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                         </div>
                     </div>
-                    <div class="col-xs-6 col-md-4 item quote nature">
+                    <div class="col-xs-12 col-sm-6 col-md-4 item quote nature">
                         <div class="pad">
                             <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
                             <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- Albert Einstein</span></blockquote>
-                            <p><a href="">Like</a></p>
+                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
+                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                         </div>
                     </div>
-                    <div class="col-xs-6 col-md-4 item quote geek">
+                    <div class="col-xs-12 col-sm-6 col-md-4 item quote geek">
                         <div class="pad">
                             <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
                             <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                            <p><a href="">Like</a></p>
+                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
+                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                         </div>
                     </div>
-                    <div class="col-xs-6 col-md-4 item quote entertainment">
+                    <div class="col-xs-12 col-sm-6 col-md-4 item quote entertainment">
                         <div class="pad">
                             <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                            <p><a href="">Like</a></p>
+                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
+                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <div class="container">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-573fcd941c5a9279"></script>
+
         
         <script src="app.js"></script>
     </body>

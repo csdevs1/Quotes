@@ -13,3 +13,14 @@ $(document).ready(function(){
         itemSelector: '.item'
     });
 });
+
+/* Remove this function when coding the real upvoting system*/
+var val=true;
+var count = 0;
+function myFunction(el) {
+    val ? count++:count--;
+    val ? el.innerHTML = "Liked <span class='heart'>	&#9829;</span>":el.innerHTML = "Like";
+    val ? el.setAttribute('class', 'liked'):el.setAttribute('class', 'like');
+    el.previousElementSibling.innerHTML = count;
+    val=!val;
+}
