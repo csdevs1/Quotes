@@ -8,59 +8,110 @@ body {
 a {
     text-decoration: none;
 }
+
+.background {
+    background: #000;
+    background-position:top ;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 /*banner*/
 .banner {
     position: relative;
     top: 0;
     padding-bottom: 10%;
-    background: #000;
-}
-.container nav .nav li a {
-    color: #fff;
-    transition: transform 0.1s;
-}.nav.navbar-nav li a:hover {
-    background: none !important;
-    color: #eee;
-    transform: scale(1.1);
-    transition: transform 0.1s;
-}
-.container nav .nav li a span {
-    font-size: 1.4rem;
-}
-
-.container {
-    margin-bottom: 5%;
+    /*background-attachment: fixed;*/
 }
 .banner h1 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    padding-bottom: 50px;
     font-family: 'Open Sans Condensed', sans-serif;
     text-align: center;
     font-size: 2.5em;
     font-weight: 400;
     transition: all 0.5s;
     color: #fff;
+    text-transform: uppercase;
 }
-/* end of banner */
-.row {
-    margin-right: 0;
+.nav-container{height: auto; background: rgba(0,0,0,0.3);}
+.container nav .nav li a {
+    color: #fff;
+    transition: all 0.1s;
+}.nav.navbar-nav li a:hover {
+    background: none !important;
+    color: #eee;
+    transform: scale(1.1);
+    transition: all 0.1s;
+}
+.container nav .nav li a span {
+    font-size: 1.4rem;
 }
 
-.row nav {
-    text-align: center;
-    padding-top: 1%;
-    padding-bottom: 1%;
+.container {
+    margin-bottom: 1%;
 }
-.row nav ul li {
-    transition: all 0.5s;
-    display: inline-block;
-    
+/* end of banner */
+
+/*INDEX PAGE*/
+.title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 20px;
 }
-.row nav ul li:not(:last-child) {
-    margin-right: 10px;    
-}
-.row nav ul li a {
-    color: #000;
-    font-size: 1.7rem;
-}.row nav ul li a:hover{color: #999; text-decoration: none;}
+    /* POPULAR TOPICS*/
+
+        .category-content {
+            text-align: center;
+            height: auto;
+            margin-bottom: 5px;
+            padding: 3px;
+        }
+        .category {
+            padding-top: 10px;
+            height: 150px;
+        }
+
+        .category h3 {
+            margin-top: 50px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background: rgba(0,0,0,0.5);
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+        }
+        .category-content  h3 a {
+            display: block;
+            color: #fff;
+            font-size: 2.5rem;
+            font-family: 'Open Sans Condensed', sans-serif;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+        }.category-content .category h3 a:hover {
+            text-decoration: none;
+            color: #eee;
+            transform: scale(1.05);
+            -webkit-transform: scale(1.05);
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+        }
+            /* Quotes topcics background */
+                #motivational{background-image: url('images/motivational.jpg');transition: all 0.5s;
+            -webkit-transition: all 0.5s;}
+                #inspirational{background-image: url('http://infoselfdevelopment.com/wp-content/uploads/2014/07/inspirational-quotes-change-your-life-self-development.jpg');}
+                #love{background-image: url('http://lovewallpapers.org/wp-content/uploads/pinky-love.jpeg');}
+                #life{background-image: url('http://www.mortalflesh.com/wp-content/uploads/2016/02/feb25_what-is-life-660.jpg');}
+                #friendship{background-image: url('http://i.huffpost.com/gen/813511/images/o-FRIENDSHIP-facebook.jpg');}
+                #leadership{background-image: url('http://blogs-images.forbes.com/ryanwestwood/files/2015/02/humble-leader.jpg');}
+
+    /*End of Topics */
+
+    /* POPULAR AUTHORS */
+        #popular-authors h2 {text-align: center;}
+
+    /* END OF POPULAR AUTHORS */
+
+/*END OF INDEX PAGE*/
 
 .quote .pad {
     border: 1px solid #eee;
@@ -138,20 +189,53 @@ a {
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
-  h1{
-    font-size: 2em;
-  }
+    h1{
+        font-size: 2em;
+    }
+    .author {padding-bottom: 10px; background: rgba(0,0,0,0.0248);}
+    .author h3 a {color: #555;}
+    .author h3 a:hover {color: #010000;text-decoration: none;}
+    .author:not(:nth-child(4)){margin-bottom: 10px;}
+    .author-img {width: 50%;}
+    .author-quote {margin-top: 8px;}
 }
 
 /* Extra Small Devices, Phones */
+@media (max-width: 767px) {
+    .reorder-xs {
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+        direction: rtl;
+    }
+    .reorder-xs > [class*="col-sm"] {
+        -webkit-transform: rotate(-180deg);
+        -moz-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        -o-transform: rotate(-180deg);
+        transform: rotate(-180deg);
+        direction: ltr;
+    }
+    .author-img {max-height: 300px;}
+    .even {
+        float: right;
+    }
+}
+
 @media only screen and (min-width : 768px) {
-  h1{
-    font-size: 2.3em;
-  }
+    h1 {
+        font-size: 2.3em;
+    }
+    .author-img {width: 100%;}
+    .author-quote {padding-top: 50px;}
+    .author-img {max-height: 400px;}
 }
 
 @media only screen and (min-width : 992px) {
-  h1{
-    font-size: 2.5em;
-  }
+    h1{
+        font-size: 2.5em;
+    }
+    .author-quote {padding-top: 90px;}
 }

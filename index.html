@@ -1,10 +1,25 @@
+<!--<?php
+class HeadTags(){
+    function title(el) {
+        return el." Quotes at 'Site's name";
+    }
+    function meta_description(el) {
+        return "Description";
+    }
+}
+
+$meta_tags = new HeadTags();
+$title = $meta_tags->title();
+$description = $meta_tags->meta_description();
+?>-->
+
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Quotes | Bienvenidos</title>
+        <title>Find awesome quotes at 'Site's Name'</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/g/isotope@2.0.0(jquery.isotope.min.js)"></script>
         <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
@@ -14,115 +29,133 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <!-- End of Bootstrap -->
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="app.css"?
+        <link rel="stylesheet" href="app.css">
+        <!-- Meta tags -->
+        <meta name="description" content="At 'Site Name' you can find awesome quotes to share with your friends and family. You can also share your personal and favorite quotes with us, be it a motivational or inspirational quote, a funny quote or quotes about life.">
+        <meta name="keywords" content="quotes, quote, quotes about family, quotes about friendship, quotes about love, quotes about life, motivational quotes, popular quotes, funny, inspirational, motivational, love, brainy, life, success, positive, happiness, friendship, best, smile, gandhi, confucio, winston churchill, martin luther king, web, site, page, article">
+        <meta name="robots" content="index,follow">
+        <meta property="od:site_name" content="Sites Name">
+        <meta property="od:title" content="Find awesome quotes at Site Name">
+        <meta property="od:type" content="article">
+        <style>
+            .banner {
+                
+            }
+        </style>
     </head>
     <body>
-        <section class="banner">
-            <header class="container">
-                <nav>
-                    <ul class="nav navbar-nav">
-                        <li><a href="#One">One</a></li>
-                        <li><a href="#Two">Two</a></li>
-                        <li><a href="#Three">Three</a></li>
-                        <li><a href="#Four">Four</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                        <li><a href="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
-                    </ul>
-                </nav>
-            </header>
+        <section class="banner background" id="banner" role="banner">
+            <div class="nav-container">
+                <header class="container">
+                    <nav role="navigation">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#One">One</a></li>
+                            <li><a href="#Two">Two</a></li>
+                            <li><a href="#Three">Three</a></li>
+                            <li><a href="#Four">Four</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                            <li><a href="#signup" role="link"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                        </ul>
+                    </nav>
+                </header>
             </div>
-            <h1>Bootstrap Photo Gallery</h1>
+            <h1>Awesome Quotes Website</h1>
         </section>
-        
-        <div class="row">
-            <nav>
-                <ul class="menu" id="filters">
-                    <li><a  href="#One" class="filter" rel="*" name="isotope-filter">One</a></li>
-                    <li><a  href="#Two" class="filter" rel=".geek" name="isotope-filter">Two</a></li>
-                    <li><a  href="#Three" class="filter" rel=".nature" name="isotope-filter">Three</a></li>
-                    <li><a  href="#Four" class="filter" rel=".entertainment" name="isotope-filter">Four</a></li>
-                </ul>
-            </nav>
-        </div>
-        
-        <div class="isotope-wrapper">
+        <section id="popular-topics" role="contentinfo">
             <div class="container">
-                <div class="row masonry-container isotope-box">
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote geek">
-                        <div class="pad">
-                            <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
-                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
-                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                <div class="row">
+                    <h2 class="title">Popular topics</h2>
+                    <div class="col-xs-12 col-sm-6 col-md-4 category-content">
+                        <div class="category background" id="motivational">
+                            <h3><a href="" role="link">Motivational</a></h3>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote nature">
-                        <div class="pad">
-                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
-                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 category-content">
+                        <div class="category background" id="inspirational">
+                            <h3><a href="" role="link">Inspirational</a></h3>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote nature">
-                        <div class="pad">
-                            <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
-                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- Albert Einstein</span></blockquote>
-                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
-                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 category-content">
+                        <div class="category background" id="love">
+                           <h3><a href="" role="link">Love</a></h3>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote geek">
-                        <div class="pad">
-                            <img class="img-responsive" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
-                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
-                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 category-content">
+                        <div class="category background" id="life">
+                            <h3><a href="" role="link">Life</a></h3>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote entertainment">
-                        <div class="pad">
-                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                            <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                            <div class="addthis_sharing_toolbox col-xs-9 col-md-9" data-url="mycustomurl" data-title="THE TITLE"></div>
-                            <div class="col-xs-3 col-md-3"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 category-content">
+                        <div class="category background" id="friendship">
+                            <h3><a href="" role="link">Friendship</a></h3>
                         </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 category-content">
+                        <div class="category background" id="leadership">
+                            <h3><a href="" role="link">Leadership</a></h3>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 category-content">
+                        <h3><a href="" class="btn btn-primary" role="link">View more</a></h3>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         
-        <div class="container">
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <section id="popular-authors" role="contentinfo">
+            <div class="container">
+                <div class="row">
+                    <h2 class="title">Popular Authors</h2>
+                    <div class="col-xs-12 author">
+                        <h3 class="title"><a href="" role="link">Albert Einstein</a></h3>
+                        <div class="col-xs-12 col-sm-4 image-container">
+                            <img src="images/einstein.png" class="img-responsive author-img" alt="albert-einstein" role="img">
+                        </div>
+                        <div class="col-xs-12 col-sm-8 quote author-quote">
+                            <blockquote><h3>Imagination is more important than knowledge. <span>- Albert Einstein</span></h3></blockquote>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-12 reorder-xs author">
+                        <h3 class="title"><a href="" role="link">Winston Churchill</a></h3>
+                        <div class="col-xs-12 col-sm-8 quote author-quote">
+                            <blockquote><h3>Success consists of going from failure to failure without loss of enthusiasm.
+ <span>- Winston Churchill</span></h3></blockquote>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 image-container">
+                            <img src="images/winston-churchill.png" class="img-responsive author-img even" alt="winston-churchill" role="img">
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-12 author">
+                        <h3 class="title"><a href="" role="link">Mahatma Gandhi</a></h3>
+                        <div class="col-xs-12 col-sm-4 image-container">
+                            <img src="images/gandhi.png" class="img-responsive author-img" alt="mahatma-gandhi" role="img">
+                        </div>
+                        <div class="col-xs-12 col-sm-8 quote author-quote">
+                            <blockquote><h3>You must not lose faith in humanity. Humanity is an ocean; if a few drops of the ocean are dirty, the ocean does not become dirty.<span>- Mahatma Gandhi</span></h3></blockquote>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-12 category-content">
+                        <h3><a href="" class="btn btn-primary" role="link">View more</a></h3>
+                    </div>
+                </div>
+            </div>
+        </section>
         
-        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-573fcd941c5a9279"></script>
-
-        
+        <script>
+            $(document).ready(function(){
+                function randomWallpaper(){
+                    // 1 -> 10
+                    var num = Math.floor(Math.random() * 10) + 1;
+                    $('#banner').css({'background-image':'url(images/'+num+'.jpg)'});
+                }
+                randomWallpaper();
+            });
+        </script>
         <script src="app.js"></script>
     </body>
 </html>
