@@ -112,9 +112,11 @@ a {
     /* END OF POPULAR AUTHORS */
 
 /*END OF INDEX PAGE*/
-
+.quote {
+    margin-bottom: 10px;
+}
 .quote .pad {
-    border: 1px solid #eee;
+    border: 1px solid #ccc;
     padding: 2%;
     padding-bottom: 15%;
     transition: all 0.5s;
@@ -242,9 +244,9 @@ a {
     h1 {
         font-size: 2.3em;
     }
-    .author-img {width: 100%;}
+    .author-img {width: 90%;}
     .author-quote {padding-top: 50px;}
-    .author-img {max-height: 400px;}
+    .author-img {max-height: 300px;}
 }
 
 @media only screen and (min-width : 992px) {
