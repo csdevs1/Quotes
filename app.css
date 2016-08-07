@@ -16,16 +16,68 @@ a {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+/*SEARCH BOX*/
+#search-box{
+    background: rgba(0,0,0,0.8);
+    opacity: 0.99;
+    height:100vh;
+    top: 0;
+    padding-top: 5%;
+    z-index:2000;
+    width:100%;
+    position:fixed;
+    display:none;
+}
+
+#search-box .container{position: relative;}
+#search-box .container a {float: right;color:#fff;z-index: 3000;font-size: 3rem;}
+
+.input-search {
+    height:auto;
+    font-size: 7rem;
+    border: 0;
+    background: transparent;
+    color: #fff;
+}
+.input-search:focus {
+    border: 0 !important;
+    border-bottom: 1px solid #fff !important;
+    background: transparent;
+    color: #fff;
+    outline:0;
+    -webkit-box-shadow: none !important;
+    box-shadow: none;
+}
+.input-search::-webkit-input-placeholder {color: #777;font-weight:700;}
+.input-search:-moz-placeholder {color:#909;opacity:1;}
+.input-search::-moz-placeholder {color:#909;opacity:1;}
+.input-search:-ms-input-placeholder {color:#909;}
+
+#search-box label {color:#fff;}
+#search-box ul {margin-top: 10px;padding: 0;}
+#search-box ul li {display: inline-block;}
+#search-box ul li:first-child{margin-right:10px;}
+#search-box ul li input[type='radio'] {margin-right:10px;}
+/*END OF SEARCHBOX*/
+
 /*banner*/
 .banner {
     position: relative;
     top: 0;
     padding-bottom: 13%;
-    /*background-attachment: fixed;*/
+     background-size: 100% 100%;
+    height: 100vh;
 }
 .banner h1 {
-    margin-top: 150px;
+    
+    position:absolute;
+    top: 40%;
+    width: 100%;
     margin-bottom: 0px;
+    
+    /*margin-top: 150px;
+    margin-bottom: 0px;*/
     font-family: 'Open Sans Condensed', sans-serif;
     text-align: center;
     font-size: 2.5em;
@@ -34,8 +86,12 @@ a {
     color: #fff;
     text-transform: uppercase;
 }
+
 .nav-container{height: auto; background: rgba(0,0,0,0.3);}
 .container nav .nav li a {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 100;
+    font-size: 1.7rem;
     color: #fff;
     transition: all 0.1s;
 }.nav.navbar-nav li a:hover {
@@ -44,12 +100,32 @@ a {
     transform: scale(1.1);
     transition: all 0.1s;
 }
-.container nav .nav li a span {
-    font-size: 1.4rem;
-}
+.container nav .nav li a span {font-size: 1.7rem; vertical-align: top;margin-right: 1px;}
 
 .container {
     margin-bottom: 1%;
+}
+
+.arrow{position: absolute; text-align: center;bottom: 10px;}
+.arrow a{color: #fff; text-shadow: 1px 1px 2px #000;text-decoration: none;}
+.arrow a:hover{text-decoration: none;}
+.arrow p{font-family: 'Raleway', sans-serif; font-size: 2rem;}
+.arrow span{
+    font-size: 2rem;
+    -webkit-animation: bounce 1.2s infinite cubic-bezier(.25, 0.5, .5, 1.25);
+    -moz-animation: bounce 1.2s infinite cubic-bezier(.25, 0.5, .5, 1.25);
+    animation: bounce 1.2s infinite cubic-bezier(.25, 0.5, .5, 1.25);
+}
+@keyframes bounce {
+    0% {
+        transform: translateY(-20%);
+    }
+    50% {
+        transform: translateY(-0%);
+    }
+    100% {
+        transform: translateY(-20%);
+    }
 }
 /* end of banner */
 
@@ -96,8 +172,14 @@ a {
             -webkit-transition: all 0.5s;
         }
             /* Quotes topcics background */
-                #motivational{background-image: url('images/motivational.jpg');transition: all 0.5s;
+                #motivational, #inspirational, #love, #life, #friendship, #leadership {
+                    background-size: 100%; transition: all 0.5s;
+                    background-position: center;
+                    -webkit-transition: all 0.5s;
+                }
+                #motivational:hover, #inspirational:hover, #love:hover, #life:hover, #friendship:hover, #leadership:hover{background-size: 110%;transition: all 0.5s;
             -webkit-transition: all 0.5s;}
+                #motivational{background-image: url('images/motivational.jpg');}
                 #inspirational{background-image: url('http://infoselfdevelopment.com/wp-content/uploads/2014/07/inspirational-quotes-change-your-life-self-development.jpg');}
                 #love{background-image: url('http://lovewallpapers.org/wp-content/uploads/pinky-love.jpeg');}
                 #life{background-image: url('http://www.mortalflesh.com/wp-content/uploads/2016/02/feb25_what-is-life-660.jpg');}
