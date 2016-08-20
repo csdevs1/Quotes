@@ -1,4 +1,5 @@
 'use strict'
+var app = angular.module('quotesApp', []);
 $('.isotope-wrapper').each(function(){
     var $isotope = $('.isotope-box', this);
     $('#filters .filter').click(function() {

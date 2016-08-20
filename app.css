@@ -31,7 +31,7 @@ a {
 }
 
 #search-box .container{position: relative;}
-#search-box .container a {float: right;color:#fff;z-index: 3000;font-size: 3rem;}
+#search-box .container button {float: right;color:#fff;z-index: 3000;font-size: 3rem;background: transparent;border: 0;}
 
 .input-search {
     height:auto;
@@ -86,7 +86,10 @@ a {
     color: #fff;
     text-transform: uppercase;
 }
-
+.container {
+    margin-bottom: 1%;
+}
+.container nav .nav li button {background: transparent;color:#fff;border: 0;padding-top: 15px;}
 .nav-container{height: auto; background: rgba(0,0,0,0.3);}
 .container nav .nav li a {
     font-family: 'Raleway', sans-serif;
@@ -101,10 +104,6 @@ a {
     transition: all 0.1s;
 }
 .container nav .nav li a span {font-size: 1.7rem; vertical-align: top;margin-right: 1px;}
-
-.container {
-    margin-bottom: 1%;
-}
 
 .arrow{position: absolute; text-align: center;bottom: 10px;}
 .arrow a{color: #fff; text-shadow: 1px 1px 2px #000;text-decoration: none;}
@@ -180,7 +179,7 @@ a {
                 #motivational:hover, #inspirational:hover, #love:hover, #life:hover, #friendship:hover, #leadership:hover{background-size: 110%;transition: all 0.5s;
             -webkit-transition: all 0.5s;}
                 #motivational{background-image: url('images/motivational.jpg');}
-                #inspirational{background-image: url('http://infoselfdevelopment.com/wp-content/uploads/2014/07/inspirational-quotes-change-your-life-self-development.jpg');}
+                #inspirational{background-image: url('');}
                 #love{background-image: url('http://lovewallpapers.org/wp-content/uploads/pinky-love.jpeg');}
                 #life{background-image: url('http://www.mortalflesh.com/wp-content/uploads/2016/02/feb25_what-is-life-660.jpg');}
                 #friendship{background-image: url('http://i.huffpost.com/gen/813511/images/o-FRIENDSHIP-facebook.jpg');}
@@ -336,4 +335,15 @@ a {
         font-size: 2.5em;
     }
     .author-quote {padding-top: 90px;}
+}
+
+
+/* QUOTES GENERATOR */
+.textarea{
+    min-width: 30%;
+    min-height:100px;
+    border-radius: 10px;
+    margin-top: 10px;
+    resize: none;
+    box-shadow: 5px 3px 5px #ccc;
 }

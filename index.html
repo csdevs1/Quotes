@@ -48,7 +48,7 @@ $description = $meta_tags->meta_description();
                             <li><a href="#One"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                             <li><a href="#One">Topics</a></li>
                             <li><a href="#Two">Authors</a></li>
-                            <li><a href="" onclick="showSearch(this)"><span class="glyphicon glyphicon-search"></span></a></li>
+                            <li><button onclick="showSearch(this)"><span class="glyphicon glyphicon-search"></span> Search</button></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -61,7 +61,7 @@ $description = $meta_tags->meta_description();
             <!--Search box -->
             <div id="search-box">
                 <div class="container">
-                    <div class="col-xs-12 col-sm-12 col-md-10"><a href="" onclick="closeSearch(this)"><span class="glyphicon glyphicon-remove"></span></a></div>
+                    <div class="col-xs-12 col-sm-12 col-md-10"><button onclick="closeSearch(this)"><span class="glyphicon glyphicon-remove"></span></button></div>
                     <div class="col-xs-12">
                         <input class="input-search" id="input-search" type="search" placeholder="Search" autofocus>
                         <ul>

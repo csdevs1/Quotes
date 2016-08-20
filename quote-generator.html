@@ -1,0 +1,86 @@
+<!--<?php
+class HeadTags(){
+    function title(el) {
+        return el." Quotes at 'Site's name";
+    }
+    function meta_description(el) {
+        return "Description";
+    }
+}
+
+$meta_tags = new HeadTags();
+$title = $meta_tags->title();
+$description = $meta_tags->meta_description();
+?>-->
+
+<!doctype html>
+<html class="no-js" lang="en" ng-app="quotesApp">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Find awesome quotes at 'Site's Name'</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/g/isotope@2.0.0(jquery.isotope.min.js)"></script>
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>        
+        <script src="javascript/smoothScroll.js"></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- End of Bootstrap -->
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="app.css">
+        <!-- Meta tags -->
+        <meta name="description" content="At 'Site Name' you can find awesome quotes to share with your friends and family. You can also share your personal and favorite quotes with us, be it a motivational or inspirational quote, a funny quote or quotes about life.">
+        <meta name="keywords" content="quotes, quote, quotes about family, quotes about friendship, quotes about love, quotes about life, motivational quotes, popular quotes, funny, inspirational, motivational, love, brainy, life, success, positive, happiness, friendship, best, smile, gandhi, confucio, winston churchill, martin luther king, web, site, page, article">
+        <meta name="robots" content="index,follow">
+        <meta property="od:site_name" content="Sites Name">
+        <meta property="od:title" content="Find awesome quotes at Site Name">
+        <meta property="od:type" content="article">
+    </head>
+    <body ng-controller="imageController" ng-init="style={text:'default', top:50, left:50,color:'#000',font_size:32}">        
+        <section id="banner" role="banner">
+            <div class="nav-container">
+                <header class="container">
+                    <nav role="navigation">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#One">One</a></li>
+                            <li><a href="#Two">Two</a></li>
+                            <li><a href="#Three">Three</a></li>
+                            <li><a href="#Four">Four</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                            <li><a href="#signup" role="link"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                        </ul>
+                    </nav>
+                </header>
+            </div>
+        </section>
+        
+        <div class="container">
+            <div class="row">
+                <nav class="menu-image">
+                    <ul>
+                        <li><textarea class="textarea" maxlength="255"></textarea></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 preview">
+                    <canvas id="image"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-573fcd941c5a9279"></script>
+
+        
+        <script src="javascript/app.js"></script>
+    </body>
+</html>
