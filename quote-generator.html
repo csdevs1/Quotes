@@ -21,6 +21,7 @@ $description = $meta_tags->meta_description();
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Find awesome quotes at 'Site's Name'</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script src="https://cdn.jsdelivr.net/g/isotope@2.0.0(jquery.isotope.min.js)"></script>
         <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>        
         <script src="javascript/smoothScroll.js"></script>
@@ -31,6 +32,9 @@ $description = $meta_tags->meta_description();
         <!-- End of Bootstrap -->
         <!-- Custom CSS -->
         <link rel="stylesheet" href="app.css">
+        <!-- Slick Carousel -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+        <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
         <!-- Meta tags -->
         <meta name="description" content="At 'Site Name' you can find awesome quotes to share with your friends and family. You can also share your personal and favorite quotes with us, be it a motivational or inspirational quote, a funny quote or quotes about life.">
         <meta name="keywords" content="quotes, quote, quotes about family, quotes about friendship, quotes about love, quotes about life, motivational quotes, popular quotes, funny, inspirational, motivational, love, brainy, life, success, positive, happiness, friendship, best, smile, gandhi, confucio, winston churchill, martin luther king, web, site, page, article">
@@ -39,7 +43,7 @@ $description = $meta_tags->meta_description();
         <meta property="od:title" content="Find awesome quotes at Site Name">
         <meta property="od:type" content="article">
     </head>
-    <body ng-controller="imageController" ng-init="style={text:'default', top:50, left:50,color:'#000',font_size:32}">        
+    <body>
         <section id="banner" role="banner">
             <div class="nav-container">
                 <header class="container">
@@ -59,20 +63,86 @@ $description = $meta_tags->meta_description();
             </div>
         </section>
         
-        <div class="container">
-            <div class="row">
-                <nav class="menu-image">
-                    <ul>
-                        <li><textarea class="textarea" maxlength="255"></textarea></li>
-                    </ul>
-                </nav>
+        <div class="col-xs-12 panel panel-main">
+            <div class="container panel-container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                        <nav role="navigation">
+                            <ul class="nav navbar-nav">
+                                <li class="img-file-container">
+                                    <input type="file" id="img-file"/>
+                                    <span id="span"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span><br>Background</span>
+                                </li>
+                                <li><span class="glyphicon glyphicon-pencil"></span><br>Quote</li>
+                                <li id="fonts"><span class="glyphicon glyphicon-font"></span><br>Font Style</li>
+                                <li><span class="glyphicon glyphicon-flash"></span><br>Effects</li>
+                                <li id="gallery"><span class="glyphicon glyphicon-folder-open"></span><br>Gallery</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 preview">
-                    <canvas id="image"></canvas>
+        <div class="col-xs-12 font-style panel sub-panel" id="font-style">
+            <div class="container panel-container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-2">
+                        <nav role="navigation">
+                            <ul class="nav navbar-nav">
+                                <li><span class="glyphicon glyphicon-text-width"></span><br>Font</li>
+                                <li><span class="glyphicon glyphicon-record"></span><br>Color</li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button type="button" id="alignment-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            button
+                                        </button>
+                                        <span class="glyphicon glyphicon-align-left"></span><br>Alignment
+                                        <ul class="dropdown-menu" aria-labelledby="alignment-menu">
+                                            <li><span class="glyphicon glyphicon-align-center"></span> Center</li>
+                                            <li><span class="glyphicon glyphicon-align-left"></span> Left</li>
+                                            <li><span class="glyphicon glyphicon-align-right"></span> Right</li>
+                                            <li><span class="glyphicon glyphicon-align-justify"></span> Justify</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><span class="glyphicon glyphicon-resize-full"></span><br>Size</li>
+                                <li><span class="glyphicon glyphicon-adjust"></span><br>Font-Shadow</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xs-12 sub-panel" id="from-gallery">
+            <div class="container panel-container">
+                <div class="slider responsive">
+                    <div>
+                        <h3>1</h3>
+                    </div>
+                    <div>
+                        <h3>2</h3>
+                    </div>
+                    <div>
+                        <h3>3</h3>
+                    </div>
+                    <div>
+                        <h3>4</h3>
+                    </div>
+                    <div>
+                        <h3>5</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xs-12 preview-container">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <div class="container-fluid">
+                    <div class="col-xs-12 content">
+                        <img src="http://www.planwallpaper.com/static/images/ZhGEqAP.jpg" class="img-responsive">
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,5 +152,6 @@ $description = $meta_tags->meta_description();
 
         
         <script src="javascript/app.js"></script>
+        <script src="javascript/generator.js"></script>
     </body>
 </html>
