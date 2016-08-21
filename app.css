@@ -398,6 +398,11 @@ a {
     /* Custom, iPhone Retina */ 
     @media only screen and (min-width : 320px) {
         .panel ul li{display:inline-block;}
+        .dropdown-menu {
+            position: absolute !important;
+            background-color: #fff !important;
+            box-shadow: 0 6px 12px rgba(0,0,0,.175) !important;
+        }
     }
 
     /* Extra Small Devices, Phones */ 
