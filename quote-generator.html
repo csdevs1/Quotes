@@ -66,17 +66,13 @@ $description = $meta_tags->meta_description();
         <div class="col-xs-12 panel panel-main">
             <div class="container panel-container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-3">
                         <nav role="navigation">
                             <ul class="nav navbar-nav">
-                                <li class="img-file-container">
-                                    <input type="file" id="img-file"/>
-                                    <span id="span"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span><br>Background</span>
-                                </li>
+                                <li id="background"><span class="glyphicon glyphicon-picture"></span><br>Background</li>
                                 <li><span class="glyphicon glyphicon-pencil"></span><br>Quote</li>
                                 <li id="fonts"><span class="glyphicon glyphicon-font"></span><br>Font Style</li>
                                 <li><span class="glyphicon glyphicon-flash"></span><br>Effects</li>
-                                <li id="gallery"><span class="glyphicon glyphicon-folder-open"></span><br>Gallery</li>
                             </ul>
                         </nav>
                     </div>
@@ -84,10 +80,31 @@ $description = $meta_tags->meta_description();
             </div>
         </div>
         
+        <!-- Background options -->
+        <div class="col-xs-12 panel sub-panel" id="background-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-3">
+                        <nav role="navigation">
+                            <ul class="nav navbar-nav">
+                                <li class="img-file-container">
+                                    <input type="file" id="img-file" onchange="generator.preview(this)" />
+                                    <span id="span"><span class="glyphicon glyphicon-open" aria-hidden="true"></span><br>Upload</span>
+                                </li>
+                                <li id="gallery"><span class="glyphicon glyphicon-camera"></span><br>Gallery</li>
+                                <li><span class="glyphicon glyphicon-th-large"></span><br>Color</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <!-- Font options -->
         <div class="col-xs-12 font-style panel sub-panel" id="font-style">
             <div class="container panel-container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-10 col-sm-offset-2">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-3">
                         <nav role="navigation">
                             <ul class="nav navbar-nav">
                                 <li><span class="glyphicon glyphicon-text-width"></span><br>Font</li>
@@ -115,23 +132,24 @@ $description = $meta_tags->meta_description();
             </div>
         </div>
         
-        <div class="col-xs-12 sub-panel" id="from-gallery">
+        <!-- Gallery -->
+        <div class="col-xs-12" id="from-gallery">
             <div class="container panel-container">
                 <div class="slider responsive">
-                    <div>
-                        <h3>1</h3>
+                    <div class="img-gallery">
+                        <img src="https://bgcdn.s3.amazonaws.com/wp-content/uploads/2013/04/5-2-God-is-in-Nature.jpg">
                     </div>
-                    <div>
-                        <h3>2</h3>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-1.jpg">
                     </div>
-                    <div>
-                        <h3>3</h3>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-2.jpg">
                     </div>
-                    <div>
-                        <h3>4</h3>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-1.jpg">
                     </div>
-                    <div>
-                        <h3>5</h3>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-1.jpg">
                     </div>
                 </div>
             </div>
@@ -140,8 +158,9 @@ $description = $meta_tags->meta_description();
         <div class="col-xs-12 preview-container">
             <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="container-fluid">
-                    <div class="col-xs-12 content">
-                        <img src="http://www.planwallpaper.com/static/images/ZhGEqAP.jpg" class="img-responsive">
+                    <div class="content" id="quote-container">
+                        <img src="images/gallery/gallery-1.jpg" id="quote-img" class="img-responsive">
+                        <span id="water-mark">Quotes Generator</span>
                     </div>
                 </div>
             </div>

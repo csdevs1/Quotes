@@ -39,21 +39,36 @@ $description = $meta_tags->meta_description();
         <meta property="od:title" content="Find awesome quotes at Site Name">
         <meta property="od:type" content="article">
     </head>
-    <body>        
+    <body>
         <section class="banner background current" id="banner" role="banner">
             <div class="nav-container">
                 <header class="container">
                     <nav role="navigation">
-                        <ul class="nav navbar-nav">
-                            <li><a href="#One"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                            <li><a href="#One">Topics</a></li>
-                            <li><a href="#Two">Authors</a></li>
-                            <li><button onclick="showSearch(this)"><span class="glyphicon glyphicon-search"></span> Search</button></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                            <li><a href="#signup" role="link"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
-                        </ul>
+                        
+                        <div class="container-fluid">
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-items" aria-expanded="false" role="button">
+                                    <span class="glyphicon glyphicon-send"></span>
+                                </button>
+                                <h2>Awesome Quotes Website</h2>
+                            </div>
+                            
+                            <div class="collapse navbar-collapse" id="menu-items">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="#One"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                                    <li><a href="#One">Topics</a></li>
+                                    <li><a href="#Two">Authors</a></li>
+                                    <li><a href="quote-generator.html">Quote Generator</a></li>
+                                    <li><button onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</button></li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                                    <li><a href="#signup" role="link" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                                </ul>
+                            </div>
+                            
+                        </div>
                     </nav>
                 </header>
             </div>
@@ -63,7 +78,7 @@ $description = $meta_tags->meta_description();
                 <div class="container">
                     <div class="col-xs-12 col-sm-12 col-md-10"><button onclick="closeSearch(this)"><span class="glyphicon glyphicon-remove"></span></button></div>
                     <div class="col-xs-12">
-                        <input class="input-search" id="input-search" type="search" placeholder="Search" autofocus>
+                        <input class="input-search" id="input-search" type="search" placeholder="Search" autofocus role="search">
                         <ul>
                             <li><label><input type="radio" name="search">Quote</label></li>
                             <li><label><input type="radio" name="search">Author</label></li>
@@ -75,13 +90,34 @@ $description = $meta_tags->meta_description();
             
             <h1>
                 Awesome Quotes Website
-                <br><a href="">Sign up</a>
+                <br><a href="" role="link" data-toggle="modal" data-target="#signup">Sign up</a>
             </h1>
             <div class="col-xs-12 arrow">
                 <a href="#popular-topics" id="arrow"><p>View more</p>
                 <span class="glyphicon glyphicon-hand-down"></span></a>
             </div>
         </section>
+        
+        <!-- SIGN UP FORM -->
+        <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="signuplLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <!-- -->
+        
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <div class="addthis_sharing_toolbox"></div>
         <section id="popular-topics" role="contentinfo">
