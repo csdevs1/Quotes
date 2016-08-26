@@ -16,6 +16,25 @@ html {
 
 a, a:focus {text-decoration: none;}
 
+.modal{z-index: 3000;}
+.modal h4{font-family: 'Raleway', sans-serif;font-weight: 900;font-size: 2rem;}
+.modal h4:nth-child(1n+3){font-size: 1.9rem;text-align: center;}
+.modal-body{height: auto;overflow: hidden;}
+.modal-body select {font-size: 1.9rem;font-family: 'Glegoo', serif;font-weight: 900;padding-top:0 !important;}
+/*SIGN UP form*/
+.social-network{text-align: center;display: -webkit-flex; /* Safari */
+    -webkit-justify-content: space-around; /* Safari 6.1+ */
+    display: flex;
+    justify-content: center;}
+
+
+.social-network a{padding: 5px; text-align: center;border-radius: 5px;color:#fff;font-size: 1.8rem;font-family: 'Raleway', sans-serif;font-weight: 900;}
+.social-network a i{vertical-align: middle;font-size: 2.5rem;}
+.social-network a:hover{text-decoration: none;}
+.social-network a:nth-child(1){background:#ff3333;margin-right: 10px;}
+.social-network a:nth-child(2){background:#4e69a2;}
+/*End of sign up form*/
+
 .background {
     background: #000;
     background-position:top ;
@@ -127,16 +146,18 @@ a, a:focus {text-decoration: none;}
 /*Small Menu*/
 .navbar-header h2{font-size: 2.5rem;color: #fff;font-family: 'Open Sans Condensed', sans-serif;margin-right:0;margin-left: 0;}
 .navbar-header span{font-size: 3rem;color: #fff;}
-.nav-container{z-index: 5000;}
+.nav-container{z-index: 2000;}
 
 .banner.background .nav-container{height: auto; background: rgba(0,0,0,0.3);}
 .banner .container nav .nav {z-index: 4000;position: relative;}
-#banner .container nav .nav li a,#banner .container nav .nav li a:focus {
+#banner .container nav .nav li a,#banner .container nav .nav li a:focus,#banner .container nav .nav li a:active {
     font-family: 'Raleway', sans-serif;
     font-weight: 100;
     font-size: 1.7rem;
     color: #fff;
     transition: all 0.1s;
+    background:none !important;
+    outline: none;
 }.nav.navbar-nav li a:hover,.nav.navbar-nav li button:hover {
     background: none !important;
     color: #eee;

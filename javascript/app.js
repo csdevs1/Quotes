@@ -26,6 +26,7 @@ document.getElementById("input-search").addEventListener("keyup", function(event
 
 
 $(document).ready(function(){
+    $('.modal-body').validator();
     var $container = $('.masonry-container');
     $container.masonry({
         columnWidth: '.item',
