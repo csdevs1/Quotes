@@ -16,8 +16,7 @@ function closeSearch(el){
     document.getElementById('search-box').style.display="none";
 }
 
-document.getElementById("input-search")
-    .addEventListener("keyup", function(event) {
+document.getElementById("input-search").addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode == 13) {
       alert(document.getElementById("input-search").value);

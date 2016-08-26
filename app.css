@@ -75,7 +75,7 @@ a, a:focus {text-decoration: none;}
     background-size: 100% 100%;
     height: 100vh;
 }
-.banner h1 {
+.banner h1{
     z-index: 1000;
     position:absolute;
     top: 40%;
@@ -91,17 +91,43 @@ a, a:focus {text-decoration: none;}
     color: #fff;
     text-transform: uppercase;
 }
+/*QUOTES PAGE BANNER*/
+.banner-topic {
+    position: relative;
+    top: 0;
+    padding-bottom: 13%;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height:70vh;
+}.banner-topic h1 {
+    z-index: 1000;
+    position:absolute;
+    top: 40%;
+    width: 100%;
+    margin-bottom: 0px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: 400;
+    transition: all 0.5s;
+    color: #fff;
+    text-transform: uppercase;
+}
+/*END OF QUOTES PAGE BANNER*/
+
 .banner h1>a, .banner h1>a:focus{font-size: 1.5rem;padding:10px 25px 10px 25px;color: #ff5555;font-weight: 900;border:2px solid #ff8888;background:rgba(0,0,0,0.5);transition: all 0.2s;-webkit-transition: all 0.2s;}
 .banner h1>a:hover{text-decoration: none;border:2px solid #ff7777;background:rgba(0,0,0,0.5);box-shadow: -1px 1px 1px #666;transition: all 0.2s;-webkit-transition: all 0.2s;}
 .container {
     /*margin-bottom: 1%;*/
 }
 .container nav .nav li button,.container nav .nav li button:focus,.container nav .nav li button:active {background: transparent;color:#fff;border: 0;padding-top: 15px;}
-.nav-container{height: auto; background: rgba(0,0,0,0.8);}
+.nav-container{height: auto; background: rgba(0,0,0,0.8);position: relative;}
 
 /*Small Menu*/
-.navbar-header h2{font-size: 2.5rem;color: #fff;font-family: 'Open Sans Condensed', sans-serif;}
+.navbar-header h2{font-size: 2.5rem;color: #fff;font-family: 'Open Sans Condensed', sans-serif;margin-right:0;margin-left: 0;}
 .navbar-header span{font-size: 3rem;color: #fff;}
+.nav-container{z-index: 5000;}
 
 .banner.background .nav-container{height: auto; background: rgba(0,0,0,0.3);}
 .banner .container nav .nav {z-index: 4000;position: relative;}
@@ -111,7 +137,7 @@ a, a:focus {text-decoration: none;}
     font-size: 1.7rem;
     color: #fff;
     transition: all 0.1s;
-}.nav.navbar-nav li a:hover {
+}.nav.navbar-nav li a:hover,.nav.navbar-nav li button:hover {
     background: none !important;
     color: #eee;
     transform: scale(1.1);
@@ -574,3 +600,7 @@ a, a:focus {text-decoration: none;}
   text-align: center;
     }
 /*END OF QUOTE GENERATOR*/
+
+/*USER PANEL*/
+    
+/*end of USER PANEL*/

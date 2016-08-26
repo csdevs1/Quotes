@@ -1,3 +1,7 @@
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
+@import 'https://fonts.googleapis.com/css?family=Raleway|Reem+Kufi';
+@import url(http://fonts.googleapis.com/css?family=Glegoo);
 /*
 Template Name: Velonic Dashboard build with Bootstrap v3.3.6
 Template Version: 2.1
@@ -1975,3 +1979,86 @@ ul.p-social-link li a {
 #legend .line {
   color: #333; 
 }
+
+/*QUOTES*/
+    .quote {
+        margin-bottom: 10px;
+    }
+    .quote .pad {
+        border: 1px solid #ccc;
+        padding: 2%;
+        padding-bottom: 15%;
+        transition: all 0.5s;
+    }
+
+    .quote blockquote {
+        margin-top: 5px;
+        font-family: 'Glegoo', serif;
+        font-size: 1.5rem;
+        position: relative;
+        border-left: 2px solid #ccc;
+        transition: all 0.5s;
+    }
+    .quote blockquote:before {
+        position: absolute;
+        left: 0;
+        top:0px;
+        content:"\201C";
+        font-size: 3em;
+        color: #000;
+    }
+
+    .quote blockquote span {
+        font-family: 'Raleway', sans-serif;
+        font-weight: 700;
+        display: block;
+        text-align: right;
+        font-size: 1.3rem;
+        margin-top: 10px;
+        text-transform: uppercase;
+    }
+    /* Upvote system */
+    .quote p {
+        text-align: right;
+    }
+    .quote a,.quote a:hover {
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .quote p span:not(.heart){
+        padding-right: 5px;
+        font-family: 'Raleway', sans-serif;
+        color:#777;
+        font-size: 2rem;
+    }
+/*END OF QUOTE*/
+
+/*TEXT AREA*/
+    #add-quote{cursor: pointer;}
+
+    .textarea-box{position:fixed;width:100%;height:100vh;background:rgba(0,0,0,0.7);z-index:7000;text-align:center;}
+    #textarea-box{display:none;}
+    .relative-container{position:relative;background:rgba(10,50,205,0.8);top:100px;height:50px;box-shadow:0px 5px 5px rgba(0,0,0,0.5);}
+    .relative-container span{position:absolute;color:#000; right:15px;top:10px;font-size:2rem;}
+    .relative-container span:hover{text-shadow:1px 1px 1px #fff;transform:scale(1.1);cursor:pointer;}
+
+    .textarea-box textarea{
+        margin-top:50px;
+        resize:none;
+        height:180px;
+        width:100%;
+        padding:60px 50px 50px 50px;
+        font-size:1.7rem;
+        letter-spacing:1px;
+        border: 1px solid #fff;
+    }
+    #author{
+        width:100%;
+        margin-top:-6px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        padding:6px 50px 5px 50px;
+        border: 1px solid #fff;
+        border-top: 1px solid #ccc;
+    }
+/*END OF TEXT AREA*/
