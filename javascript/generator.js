@@ -16,7 +16,14 @@ var generator = {
         $('#water-mark').addClass('water-mark');
         $('#quote-container').append('<img src="'+imageUrl+'" id="quote-img" class="img-responsive">');
         // End of new content
+        
         //displayEditor();
+    },
+    closeWindow:function(){
+        document.getElementById('textarea-box').style.display="none";
+    },
+    openWindow:function(){
+        document.getElementById('textarea-box').style.display="block";
     },
     changeText: function(el){
         var text = el.value;
@@ -31,7 +38,7 @@ var generator = {
     changeFont: function(el){
         var font = el.value;
         $('#text').css('font-family', font);
-        // displayEditor();  
+        // displayEditor();
     },
     changeFontSize: function(el){
         var size= el.value;
@@ -47,15 +54,10 @@ var generator = {
 
 $(document).ready(function() {
     $('#water-mark').css('display', 'none');
-    var text_max = 150;
-    $('#textarea_feedback').html('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ( ' + text_max + ' characters left)');
-    $('#textarea').keyup(function() {
-        var text_length = $('#textarea').val().length;
-        var text_remaining = text_max - text_length;
-        $('#textarea_feedback').html('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ( ' + text_remaining + ' characters left)');
-    });
-    //REFACTOR FUNCTION BELOW
+    //Draggable element
+    $("#text").draggable({scroll: false});
     
+    //REFACTOR FUNCTION BELOW    
     $('#background').click(function() {
         $('.sub-panel').not($("#background-section")).hide();
         $("#background-section").toggle("slide");
@@ -108,8 +110,7 @@ $(document).ready(function() {
     
 });
 
-document.getElementById("textarea") // Adds line breaks on enter
-    .addEventListener("keyup", function(event) {
+document.getElementById("textarea").addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode == 13) {
         document.getElementById("textarea").value+="<br>";
