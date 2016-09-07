@@ -435,7 +435,7 @@ header {
 
 .content {
   margin-left: 230px;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
 }
 
 .content > .container-fluid {
@@ -445,7 +445,6 @@ header {
 
 .wraper {
   padding-top: 20px;
-  padding-bottom: 20px;
   min-height: 550px;
 }
 .page-title {
@@ -2034,31 +2033,24 @@ ul.p-social-link li a {
 /*END OF QUOTE*/
 
 /*TEXT AREA*/
+    .quote-form{
+        position: relative;
+        margin-top: 10px;
+        padding: 1px;
+        display: none;
+    }
     #add-quote{cursor: pointer;}
 
-    .textarea-box{position:fixed;width:100%;height:100vh;background:rgba(0,0,0,0.7);z-index:7000;text-align:center;}
-    #textarea-box{display:none;}
-    .relative-container{position:relative;background:rgba(10,50,205,0.8);top:100px;height:50px;box-shadow:0px 5px 5px rgba(0,0,0,0.5);}
-    .relative-container span{position:absolute;color:#000; right:15px;top:10px;font-size:2rem;}
-    .relative-container span:hover{text-shadow:1px 1px 1px #fff;transform:scale(1.1);cursor:pointer;}
+    .relative-container label{color:#999;font-size:1.5rem;}
+    .relative-container label:hover{text-shadow:1px 1px 1px #fff;cursor:pointer;}
 
-    .textarea-box textarea{
-        margin-top:50px;
+    .textarea{
         resize:none;
-        height:180px;
+        max-height:150px;
         width:100%;
         padding:60px 50px 50px 50px;
         font-size:1.7rem;
         letter-spacing:1px;
-        border: 1px solid #fff;
-    }
-    #author{
-        width:100%;
-        margin-top:-6px;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        padding:6px 50px 5px 50px;
-        border: 1px solid #fff;
-        border-top: 1px solid #ccc;
+        border: 1px solid #eee;
     }
 /*END OF TEXT AREA*/

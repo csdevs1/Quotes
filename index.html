@@ -45,6 +45,10 @@ $description = $meta_tags->meta_description();
     </head>
     <body>
         <section class="banner background current" id="banner" role="banner">
+            <video playsinline autoplay muted loop>
+                <source src="MadetobeSeen.mp4.mp4" type="video/mp4">
+            </video>
+            
             <div class="nav-container">
                 <header class="container">
                     <nav role="navigation">
@@ -323,7 +327,7 @@ $description = $meta_tags->meta_description();
                     var num = Math.floor(Math.random() * 10) + 1;
                     $('#banner').css({'background-image':'url(images/'+num+'.jpg)'});
                 }
-                randomWallpaper();
+                //randomWallpaper();
             });
         </script>
         <script src="javascript/app.js"></script>
