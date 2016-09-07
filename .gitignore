@@ -7,5 +7,5 @@
 # Ignore db file.
 quotesDB.txt# 
 
-Ignore video file.
+#Ignore video file.
 MadetobeSeen.mp4
