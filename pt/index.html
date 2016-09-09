@@ -14,7 +14,7 @@ $description = $meta_tags->meta_description();
 ?>-->
 
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="pt">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -46,7 +46,7 @@ $description = $meta_tags->meta_description();
     <body>
         <section class="banner background current" id="banner" role="banner">
             <video playsinline autoplay muted loop id="background-video">
-                <source src="../MadetobeSeen.webm" type="video/webm">
+                <source type="video/mp4">
             </video>
             
             <div class="nav-container">
@@ -319,6 +319,17 @@ $description = $meta_tags->meta_description();
         <script>
             $(document).ready(function(){
                 var count=0;
+                function randomVideo(){
+                    //Download videos in 2K (1440p)
+                    var num = Math.floor(Math.random() * 1) + 1;
+                    var video = document.getElementById('background-video');
+                    var sources = video.getElementsByTagName('source');
+                    sources[0].src = 'Assets/videos/'+num+'.mp4';
+                    video.load();
+                    video.play();
+                }
+                randomVideo();
+                
                 function randomWallpaper(){
                     // 1 -> 10
                     var num = Math.floor(Math.random() * 10) + 1;
@@ -351,7 +362,7 @@ $description = $meta_tags->meta_description();
                     else
                         return true;
                 }
-                if(!supportType("video/webm"))
+                if(!supportType("video/mp4"))
                     randomWallpaper();
             });
         </script>

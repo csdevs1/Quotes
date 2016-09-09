@@ -118,8 +118,8 @@ video{
     margin: 0;
     padding: 0;
     position: absolute;
-    -webkit-filter: blur(0.03rem);
-    filter: blur(0.03rem);
+    -webkit-filter: grayscale(25%) blur(0.03rem);
+    filter: grayscale(25%) blur(0.03rem);
 }
 
 @media (min-aspect-ratio: 16/9) {
