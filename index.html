@@ -333,13 +333,15 @@ $description = $meta_tags->meta_description();
                     count++;
                 }
                 $(window).resize(function(){
+                    var isBackground = document.getElementById('banner').style.backgroundImage;
                     if(window.innerWidth <= 767){
-                        if(count<1)
+                        if(count<1 || isBackground == '')
                             randomWallpaper();
-                        else
+                        else {
                             console.log('Hi there!');
-                    } else{
-                        $('#banner').css({'background-image':'url()'});
+                        }
+                    } else {
+                        $('#banner').css({'background-image':''});
                     }
                     count++;
                 });
