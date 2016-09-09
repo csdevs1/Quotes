@@ -110,9 +110,30 @@ a, a:focus {text-decoration: none;}
     color: #fff;
     text-transform: uppercase;
 }
+
 video{
     width: 100%;
+    min-height: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
     position: absolute;
+    z-index: 1;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  video {
+      width: 100%;
+      height: auto;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  video {
+      left: -5%;
+      width: auto;
+      height: 100%;
+  }
 }
 
 /*QUOTES PAGE BANNER*/
@@ -350,7 +371,8 @@ video{
 }
 
 /* Extra Small Devices, Phones */
-@media (max-width: 767px) {    
+@media (max-width: 767px) {
+    video{display: none;}
     .nav.navbar-nav li a:hover {
         transform: scale(1);
     }

@@ -45,8 +45,8 @@ $description = $meta_tags->meta_description();
     </head>
     <body>
         <section class="banner background current" id="banner" role="banner">
-            <video playsinline autoplay muted loop>
-                <source src="MadetobeSeen.mp4.mp4" type="video/mp4">
+            <video playsinline autoplay muted loop id="background-video">
+                <source src="MadetobeSeen.webm" type="video/webm">
             </video>
             
             <div class="nav-container">
@@ -322,11 +322,27 @@ $description = $meta_tags->meta_description();
         
         <script>
             $(document).ready(function(){
+                var count=0;
                 function randomWallpaper(){
                     // 1 -> 10
                     var num = Math.floor(Math.random() * 10) + 1;
                     $('#banner').css({'background-image':'url(images/'+num+'.jpg)'});
                 }
+                if(window.innerWidth <= 767){
+                    randomWallpaper();
+                    count++;
+                }
+                $(window).resize(function(){
+                    if(window.innerWidth <= 767){
+                        if(count<1)
+                            randomWallpaper();
+                        else
+                            console.log('Hi there!');
+                    } else{
+                        $('#banner').css({'background-image':'url()'});
+                    }
+                    count++;
+                });
                 //randomWallpaper();
             });
         </script>
