@@ -118,7 +118,6 @@ video{
     margin: 0;
     padding: 0;
     position: absolute;
-    z-index: 1;
     -webkit-filter: blur(0.03rem);
     filter: blur(0.03rem);
 }
@@ -268,7 +267,7 @@ video{
                 #motivational:hover, #inspirational:hover, #love:hover, #life:hover, #friendship:hover, #leadership:hover{background-size: 110% 110%;transition: all 0.5s;
             -webkit-transition: all 0.5s;}
                 #motivational{background-image: url('images/motivational.jpg');}
-                #inspirational{background-image: url('http://firstdescents.org/wp-content/uploads/2014/01/inspirational-photo.jpg');}
+                #inspirational{background-image: url('images/inspirational.jpg');}
                 #love{background-image: url('http://lovewallpapers.org/wp-content/uploads/pinky-love.jpeg');}
                 #life{background-image: url('http://www.mortalflesh.com/wp-content/uploads/2016/02/feb25_what-is-life-660.jpg');}
                 #friendship{background-image: url('http://i.huffpost.com/gen/813511/images/o-FRIENDSHIP-facebook.jpg');}
