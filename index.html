@@ -182,8 +182,7 @@ $description = $meta_tags->meta_description();
         </div>        
         <!-- -->
         
-        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <div class="addthis_sharing_toolbox"></div>
+        
         <section id="popular-topics" role="contentinfo">
             <div class="container">
                 <div class="row">
@@ -346,6 +345,17 @@ $description = $meta_tags->meta_description();
                     count++;
                 });
                 //randomWallpaper();
+                
+                function supportType(vidType) {
+                    var vid = document.getElementById('background-video');
+                    isSupp = vid.canPlayType(vidType);
+                    if (isSupp == "")
+                        return false;
+                    else
+                        return true;
+                }
+                if(!supportType("video/webm"))
+                    randomWallpaper();
             });
         </script>
         <script src="javascript/app.js"></script>
