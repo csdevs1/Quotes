@@ -321,7 +321,7 @@ $description = $meta_tags->meta_description();
                 var count=0;
                 function randomVideo(){
                     //Download videos in 2K (1440p)
-                    var num = Math.floor(Math.random() * 1) + 1;
+                    var num = Math.floor(Math.random() * 2) + 1;
                     var video = document.getElementById('background-video');
                     var sources = video.getElementsByTagName('source');
                     sources[0].src = 'Assets/videos/'+num+'.mp4';
