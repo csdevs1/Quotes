@@ -111,9 +111,9 @@ $description = $meta_tags->meta_description();
                     <div class="col-xs-12 col-sm-10 col-sm-offset-3">
                         <nav role="navigation">
                             <ul class="nav navbar-nav">
-                                <li id="background"><span class="glyphicon glyphicon-picture"></span><br>Background</li>
+                                <li id="background" onclick="generator.panelSlide('#background-section')"><span class="glyphicon glyphicon-picture"></span><br>Background</li>
                                 <li onclick="generator.openWindow()"><span class="glyphicon glyphicon-pencil"></span><br>Quote</li>
-                                <li id="fonts"><span class="glyphicon glyphicon-font"></span><br>Font Style</li>
+                                <li id="fonts" onclick="generator.panelSlide('#font-style')"><span class="glyphicon glyphicon-font"></span><br>Font Style</li>
                                 <li><span class="glyphicon glyphicon-flash"></span><br>Effects</li>
                             </ul>
                         </nav>
@@ -134,7 +134,7 @@ $description = $meta_tags->meta_description();
                                     <span id="span"><span class="glyphicon glyphicon-open" aria-hidden="true"></span><br>Upload</span>
                                 </li>
                                 <li id="gallery"><span class="glyphicon glyphicon-camera"></span><br>Gallery</li>
-                                <li><span class="glyphicon glyphicon-th-large"></span><br>Color</li>
+                                <li><span class="glyphicon glyphicon-th-large"></span><br>Color <input type="color" class="colorSelector" oninput="generator.changeColor(this,'#quote-container','background-color')" /></li>
                             </ul>
                         </nav>
                     </div>
@@ -149,8 +149,34 @@ $description = $meta_tags->meta_description();
                     <div class="col-xs-12 col-sm-10 col-sm-offset-3">
                         <nav role="navigation">
                             <ul class="nav navbar-nav">
-                                <li><span class="glyphicon glyphicon-text-width"></span><br>Font</li>
-                                <li><span class="glyphicon glyphicon-record"></span><br>Color</li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button type="button" id="alignment-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            button
+                                        </button>
+                                        <span class="glyphicon glyphicon-text-width"></span><br>Font-Family
+                                        <ul class="dropdown-menu font-list" aria-labelledby="alignment-menu">
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="abel">Abel</li>
+                                            <li onclick="generator.changeFont(this,'cursive')" id="amatic">Amatic SC</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="anton">Anton</li>
+                                            <li onclick="generator.changeFont(this,'cursive')" id="dancing">Dancing Script</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="dosis">Dosis</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="josefin">Josefin Sans</li>
+                                            <li onclick="generator.changeFont(this,'cursive')" id="lobster">Lobster</li>
+                                            <li onclick="generator.changeFont(this,'cursive')" id="lobster-2">Lobster Two</li>
+                                            <li onclick="generator.changeFont(this,'cursive')" id="modak">Modak</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="muli">Muli</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="condensed">Open Sans Condensed</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="oswald">Oswald</li>
+                                            <li onclick="generator.changeFont(this,'cursive')" id="poiret">Poiret One</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="quicksand">Quicksand</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="raleway">Raleway</li>
+                                            <li onclick="generator.changeFont(this,'sans-serif')" id="rubik">Rubik</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                
+                                <li><span class="glyphicon glyphicon-record"></span><br>Color <input type="color" class="colorSelector" oninput="generator.changeColor(this,'#text','color')" /></li>
                                 <li>
                                     <div class="dropdown">
                                         <button type="button" id="alignment-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -179,19 +205,10 @@ $description = $meta_tags->meta_description();
             <div class="container panel-container">
                 <div class="slider responsive">
                     <div class="img-gallery">
-                        <img src="https://bgcdn.s3.amazonaws.com/wp-content/uploads/2013/04/5-2-God-is-in-Nature.jpg">
+                        <img src="images/gallery/gallery-1.jpg" onclick="generator.changeImage(this)">
                     </div>
                     <div class="img-gallery">
-                        <img src="images/gallery/gallery-1.jpg">
-                    </div>
-                    <div class="img-gallery">
-                        <img src="images/gallery/gallery-2.jpg">
-                    </div>
-                    <div class="img-gallery">
-                        <img src="images/gallery/gallery-1.jpg">
-                    </div>
-                    <div class="img-gallery">
-                        <img src="images/gallery/gallery-1.jpg">
+                        <img src="images/gallery/gallery-2.jpg" onclick="generator.changeImage(this)">
                     </div>
                 </div>
             </div>
@@ -200,7 +217,7 @@ $description = $meta_tags->meta_description();
         <div class="col-xs-12 preview-container">
             <div class="content" id="quote-container">
                 <span class="text" id="text"></span>
-                <img src="images/gallery/gallery-1.jpg" id="quote-img" class="img-responsive">
+                
                 <span id="water-mark">Quotes Generator</span>
             </div>
         </div>

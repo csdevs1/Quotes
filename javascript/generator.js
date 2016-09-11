@@ -19,25 +19,32 @@ var generator = {
         
         //displayEditor();
     },
-    closeWindow:function(){
+    closeWindow:function(){ //Close Quote textarea
         document.getElementById('textarea-box').style.display="none";
     },
-    openWindow:function(){
+    openWindow:function(){ // Open Quote textarea
         document.getElementById('textarea-box').style.display="block";
+    },
+    changeImage: function(el){
+        var imageSrc = el.src;
+        $('#quote-img').remove();
+        $('#water-mark').css('display', 'block');
+        $('#water-mark').addClass('water-mark');
+        $('#quote-container').append('<img src="'+imageSrc+'" id="quote-img" class="img-responsive">');
     },
     changeText: function(el){
         var text = el.value;
         document.getElementById('text').innerHTML=text;
         //displayEditor();
     },
-    changeColor: function(el){
+    changeColor: function(el,id,cssAttr){
         var color = el.value;
-        $('#text').css('color', color);
+        $(id).css(cssAttr, color);
         //displayEditor();
     },
-    changeFont: function(el){
-        var font = el.value;
-        $('#text').css('font-family', font);
+    changeFont: function(el,alternFont){
+        var font = el.innerHTML;
+        $('#text').css('font-family', "'"+font+"',"+alternFont+"");
         // displayEditor();
     },
     changeFontSize: function(el){
@@ -49,6 +56,12 @@ var generator = {
         var just= el.value;
         $('#text').css('text-align', just);
         //displayEditor();
+    },
+    panelSlide: function(id) {
+        $('.sub-panel').not($(id)).hide();
+        $(id).toggle("slide");
+        if($("#from-gallery").css('display')=='block')
+            $("#from-gallery").toggle("slide");
     }
 }
 
@@ -56,19 +69,6 @@ $(document).ready(function() {
     $('#water-mark').css('display', 'none');
     //Draggable element
     $("#text").draggable({scroll: false});
-    
-    //REFACTOR FUNCTION BELOW    
-    $('#background').click(function() {
-        $('.sub-panel').not($("#background-section")).hide();
-        $("#background-section").toggle("slide");
-        if($("#from-gallery").css('display')=='block')
-            $("#from-gallery").toggle("slide");
-    });
-    
-    $('#fonts').click(function() {
-        $('.sub-panel').not($("#font-style")).hide();
-        $("#font-style").toggle("slide");
-    });
     
     $('#gallery').click(function() {
         $("#from-gallery").toggle("slide");

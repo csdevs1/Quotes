@@ -1,6 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
-@import 'https://fonts.googleapis.com/css?family=Raleway|Reem+Kufi';
 @import url(http://fonts.googleapis.com/css?family=Glegoo);
+
+/*Fonts for quote generatir*/
+@import 'https://fonts.googleapis.com/css?family=Abel|Amatic+SC|Anton|Dancing+Script|Dosis|Josefin+Sans|Lobster|Lobster+Two|Modak|Muli|Open+Sans+Condensed:300|Oswald|Poiret+One|Quicksand|Raleway|Rubik';
+/**/
 
 body {
     overflow-x: hidden;
@@ -428,6 +430,26 @@ video{
 
 
 /* QUOTES GENERATOR */
+
+/*FONT-FAMILY*/
+#abel{font-family: 'Abel', sans-serif;}
+#amatic{font-family: 'Amatic SC', cursive;}
+#anton{font-family: 'Anton', sans-serif;}
+#dancing{font-family: 'Dancing Script', cursive;}
+#dosis{font-family: 'Dosis', sans-serif;}
+#josefin{font-family: 'Josefin Sans', sans-serif;}
+#lobster{font-family: 'Lobster', cursive;}
+#lobster-2{font-family: 'Lobster Two', cursive;}
+#modak{font-family: 'Modak', cursive;}
+#muli{font-family: 'Muli', sans-serif;}
+#condensed{font-family: 'Open Sans Condensed', sans-serif;}
+#oswald{font-family: 'Oswald', sans-serif;}
+#poiret{font-family: 'Poiret One', cursive;}
+#quicksand{font-family: 'Quicksand', sans-serif;}
+#raleway{font-family: 'Raleway', sans-serif;}
+#rubik{font-family: 'Rubik', sans-serif;}
+/*FONT-FAMILY*/
+
     .panel{margin-bottom:0px;}
     .panel ul li{color:#000 !important;position:relative;padding:10px;cursor:pointer;text-align:center;}
     .panel ul li button{position:absolute;opacity:0;left:0;padding:15px;border:1px solid #000;z-index:4000;}
@@ -438,6 +460,13 @@ video{
     .font-style{box-shadow:-1px 5px 5px rgba(0,0,0,0.5);background:rgba(200,20,0,0.78);}
     .font-style{box-shadow:-1px 5px 5px rgba(0,0,0,0.5);background:rgba(200,20,0,0.78);}
     .font-style ul li{text-align:center;text-shadow:1px 1px 1px rgba(0,0,0,0.5);}
+
+    .font-list{
+        max-height: 155px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
     .dropdown .dropdown-menu li{text-shadow:0px 0px 0px rgba(0,0,0,0.5);}
 
     #background-section{
@@ -458,6 +487,9 @@ video{
 
     .preview-container{background:rgba(0,0,0,0.8);padding-bottom:10px;padding-top:5px;overflow: hidden;text-align: center;}
     #quote-container{
+        /*min-height: 450px;
+        min-width: 350px;*/
+        background-color: #fff; 
         padding:0 !important;
         display: inline-block;
         overflow:hidden;
@@ -481,34 +513,41 @@ video{
         color:#eee;
     }
 
-.img-file-container{position:relative;display:inline-block;}
+    .img-file-container{position:relative;display:inline-block;}
 
 @media only screen and (min-width : 1340px) {
-        #quote-container{
-            /*width: 100%;*/
-            padding:0 !important;
-            display: inline-block;
-            overflow:hidden;
-            height:auto;        
-            background-size: 100% 100%;
-            box-shadow:-2px 1px 2px #000;
-            position:relative;
-        }
+    #quote-container{
+        /*width: 100%;*/
+        padding:0 !important;
+        display: inline-block;
+        overflow:hidden;
+        height:auto;
+        background-size: 100% 100%;
+        box-shadow:-2px 1px 2px #000;
+        position:relative;
     }
+}
 
     .img-file-container{position:relative;display:inline-block;}
-    #img-file {
+    #img-file,.colorSelector {
         width:100%;
         max-width:90px;
         position:absolute;
         opacity:0;
         border:1px solid #000;
-        left: 10;
+        left: 0;
         top:0;
+        bottom: 0;
         padding: 10px;
         z-index: 4000;
         cursor:pointer;
     }
+    .colorSelector{
+        width: 100%;
+        left: 0;
+        height: 65px;
+    }
+
     #span{text-align:center;padding:10px 10px 10px 0px;top:0px;z-index: 2000;cursor:default;}
 
     /* Custom, iPhone Retina */ 
