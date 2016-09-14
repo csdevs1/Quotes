@@ -2054,3 +2054,25 @@ ul.p-social-link li a {
         border: 1px solid #eee;
     }
 /*END OF TEXT AREA*/
+
+.search-list{
+    position: absolute;
+    z-index: 5000;
+    background: #fff;
+    border: 1px solid #eee;
+    top: 30px;
+    clear: both;
+    box-shadow: 3px 3px 6px #ccc;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x:hidden;
+    padding: 0;
+    display: none;
+}
+.search-list li {
+    padding: 5px;
+}.search-list li:hover{
+    cursor: pointer;
+    background: rgba(0,0,250,0.5);
+    color: #fff;
+}
