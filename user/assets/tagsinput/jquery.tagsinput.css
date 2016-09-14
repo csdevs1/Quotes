@@ -1,9 +1,8 @@
 div.tagsinput {
    border:1px solid #ccc;
    background: #FFF;
-   padding:5px;
+   padding:5px 5px 0px 5px;
    width:300px;
-   height:100px;
    overflow-y: auto;
    -moz-border-radius: 2px;
    -webkit-border-radius: 2px;

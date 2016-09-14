@@ -324,7 +324,7 @@ $description = $meta_tags->meta_description();
                     var num = Math.floor(Math.random() * 2) + 1;
                     var video = document.getElementById('background-video');
                     var sources = video.getElementsByTagName('source');
-                    sources[0].src = 'Assets/videos/'+num+'.mp4';
+                    sources[0].src = '../Assets/videos/'+num+'.mp4';
                     video.load();
                     video.play();
                 }

@@ -4,8 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-# Ignore db file.
-quotesDB.txt# 
+# Ignore db files.
+quotesDB.sql
+quotesDB2.sql 
 
 #Ignore video file.
 Assets/videos
