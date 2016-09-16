@@ -31,12 +31,12 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="Motivational, Inspirational">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="">
                 
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
-                        <li onclick="selectTag(this,'topic_tag','csv')">Motivational</li>
-                        <li onclick="selectTag(this,'topic_tag','csv')">Inspirational</li>
+                        <li onclick="selectTag(this,'topic','csv')">Motivational</li>
+                        <li onclick="selectTag(this,'topic','csv')">Inspirational</li>
                     </ul>
                 </div>
                 
@@ -190,11 +190,18 @@
     
     var selectTag=function(el,inp,format=""){
         var elVal = el.innerHTML;
-        if(format=="csv")
-            document.getElementById(inp).value += ", "+elVal;
+        if(format=="csv"){
+            var val = document.getElementById(inp).value.split(',');
+            val[val.length-1] = elVal;
+            document.getElementById(inp).value = val.join(',');
+            var incorrecTag = $('.tag').last().children('span').html().split('&');
+            if(incorrecTag[0]!='Motivational' || incorrecTag[0] != 'Inspirational') // BRING DATA FROM DB TO COMPARE HERE
+                $('.tag').last().children('a').click();
+            $(el).parent().parent().slideUp();
+        }
         else{
             document.getElementById(inp).value = elVal;
-             $(el).parent().parent().slideUp();
+            $(el).parent().parent().slideUp();
         }
     }
 </script>
