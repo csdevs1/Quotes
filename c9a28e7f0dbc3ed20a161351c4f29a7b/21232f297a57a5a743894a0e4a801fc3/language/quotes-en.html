@@ -12,17 +12,17 @@
             <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Insert your quote..." maxlength="255" class="textarea"></textarea>
+            <textarea placeholder="Insert your quote..." maxlength="255" class="textarea" id="quote"></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author...">
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="listSearch(this,'authorList')">
                 
-                <div class="col-xs-12 search-list">
+                <div class="col-xs-12 search-list" id="authorList">
                     <ul class="list-unstyled">
-                        <li>Einstein</li>
-                        <li>Albert</li>
+                        <li onclick="selectTag(this,'author')">Einstein</li>
+                        <li onclick="selectTag(this,'author')">Albert</li>
                     </ul>
                 </div>
                 
@@ -31,12 +31,12 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="Love, Friendship">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="Motivational, Inspirational">
                 
-                <div class="col-xs-12 search-list">
+                <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
-                        <li>Einstein</li>
-                        <li>Albert</li>
+                        <li onclick="selectTag(this,'topic_tag','csv')">Motivational</li>
+                        <li onclick="selectTag(this,'topic_tag','csv')">Inspirational</li>
                     </ul>
                 </div>
                 
@@ -44,7 +44,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save()">Save</button>
             </div>
         </div>
     </div>
@@ -135,5 +135,66 @@
     $(document).ready(function($) {
         // Tags Input
         $('#topic').tagsInput({width:'auto'});
+        $('.search-list').hide();
+        document.getElementById('topic_tag').setAttribute('oninput','listSearch(this,"topicList")');
     });
+    
+    var save = function(){
+        var quote = $('#quote').val(),
+            author = $('#author').val(),
+            topics = $('#topic').val();
+        if(!quote || quote==''){
+            console.log('Error quote');
+        }else if(!author || author==''){
+            console.log('Error author');
+        }else if(!topics || topics==''){
+            console.log('Error topic');
+        }else{
+            var arr = {};
+            arr['quote']=quote;
+            arr['author']=author;
+            
+            var newQuote = insert('quotes',arr);            
+            newQuote.done(function(response){
+                if(response){
+                    var lastQuote = limit('quotes','quoteID','quoteID',1);
+                    lastQuote.done(function(dataID){
+                        var arr2={};
+                        arr2['quoteID']=dataID[0][0].quoteID;
+                        var topic = topics.split(',');
+                        for(var i in topic){
+                            var topicSearch = find_by('topics','topicName',topic[i]);
+                            topicSearch.done(function(topicId){
+                                arr2['topicID']=topicId[0][0].topicID;
+                                var topicQuote = insert('quotesTopicEN',arr2);
+                                topicQuote.done(function(data){
+                                    console.log(data);
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+    
+    var listSearch = function(el,id){
+        if(el.value=="" || el.value=="add a tag"){
+            $('#'+id).slideUp();
+        }else {
+            if($(el).is(':focus'))
+                $('.search-list').not('#'+id).slideUp();
+            $('#'+id).slideDown();
+        }
+    }
+    
+    var selectTag=function(el,inp,format=""){
+        var elVal = el.innerHTML;
+        if(format=="csv")
+            document.getElementById(inp).value += ", "+elVal;
+        else{
+            document.getElementById(inp).value = elVal;
+             $(el).parent().parent().slideUp();
+        }
+    }
 </script>
