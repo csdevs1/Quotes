@@ -6,6 +6,8 @@
 
 # Ignore db files.
 quotesDB.sql
+
+# Ignore db files.
 quotesDB2.sql 
 
 #Ignore video file.
@@ -14,6 +16,8 @@ Assets/videos
 #Ignore token test file.
 tokentest.html
 
-#Ignore token generate files.
+#Ignore token file.
 AppClasses/Token.php
+
+#Ignore token generate files.
 AppClasses/GenerateToken.php
