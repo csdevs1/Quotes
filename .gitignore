@@ -10,3 +10,10 @@ quotesDB2.sql
 
 #Ignore video file.
 Assets/videos
+
+#Ignore token test file.
+tokentest.html
+
+#Ignore token generate files.
+AppClasses/Token.php
+AppClasses/GenerateToken.php

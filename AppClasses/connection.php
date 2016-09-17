@@ -11,7 +11,7 @@
             $this->Usuario = "root"; /* <- Cambiar antes de subir */
             $this->Clave = "root";
         }
-        function conectar() {
+        protected function conectar() {
             if(!($con=@mysql_connect($this->Servidor,$this->Usuario,$this->Clave))){
                 echo"<h3> Error al conectar a la base de datos</h3>";
                 exit();

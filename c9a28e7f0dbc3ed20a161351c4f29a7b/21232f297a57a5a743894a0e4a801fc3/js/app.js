@@ -24,11 +24,12 @@ function limit(table,column,order,limit){
     });
 }
 
-var insert = function(table,data){
+var insert = function(table,data,token){
     var formData = new FormData();
     formData.append("data", JSON.stringify(data));
     formData.append("table", table);
     formData.append("action", 'insert');
+    formData.append("token", token);
     return $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -36,5 +37,13 @@ var insert = function(table,data){
         contentType:  false,
         data: formData,
         url: 'Classes/GlobalController.php'
+    });
+}
+
+var generateToken = function(){
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: '../../AppClasses/GenerateToken.php'
     });
 }

@@ -153,27 +153,32 @@
             var arr = {};
             arr['quote']=quote;
             arr['author']=author;
-            
-            var newQuote = insert('quotes',arr);            
-            newQuote.done(function(response){
-                if(response){
-                    var lastQuote = limit('quotes','quoteID','quoteID',1);
-                    lastQuote.done(function(dataID){
-                        var arr2={};
-                        arr2['quoteID']=dataID[0][0].quoteID;
-                        var topic = topics.split(',');
-                        for(var i in topic){
-                            var topicSearch = find_by('topics','topicName',topic[i]);
-                            topicSearch.done(function(topicId){
-                                arr2['topicID']=topicId[0][0].topicID;
-                                var topicQuote = insert('quotesTopicEN',arr2);
-                                topicQuote.done(function(data){
-                                    console.log(data);
+            var token1 = generateToken();
+            token1.done(function(generatedToken1){
+                var newQuote = insert('quotes',arr,generatedToken1);
+                newQuote.done(function(response){
+                    if(response){
+                        var lastQuote = limit('quotes','quoteID','quoteID',1);
+                        lastQuote.done(function(dataID){
+                            var arr2={};
+                            arr2['quoteID']=dataID[0][0].quoteID;
+                            var topic = topics.split(',');
+                            for(var i in topic){
+                                var topicSearch = find_by('topics','topicName',topic[i]);
+                                topicSearch.done(function(topicId){
+                                    arr2['topicID']=topicId[0][0].topicID;
+                                    var token3 = generateToken();
+                                    token3.done(function(generatedToken3){
+                                        var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
+                                        topicQuote.done(function(data){
+                                            console.log(data);
+                                        });
+                                    });
                                 });
-                            });
-                        }
-                    });
-                }
+                            }
+                        });
+                    }
+                });
             });
         }
     }
