@@ -11,7 +11,8 @@ var find_by = function(table,row,val){
         type: 'POST',
         dataType: 'json',
         data: {table:table,row:row,val:val,action:'find_by'},
-        url: 'Classes/GlobalController.php'
+        url: 'Classes/GlobalController.php',
+        async:false
     });
 }
 
@@ -36,7 +37,8 @@ var insert = function(table,data,token){
         processData: false,
         contentType:  false,
         data: formData,
-        url: 'Classes/GlobalController.php'
+        url: 'Classes/GlobalController.php',
+        async:false
     });
 }
 
@@ -44,6 +46,7 @@ var generateToken = function(){
     return $.ajax({
         type: 'POST',
         dataType: 'json',
-        url: '../../AppClasses/GenerateToken.php'
+        url: '../../AppClasses/GenerateToken.php',
+        async:false
     });
 }
