@@ -1,23 +1,23 @@
 <!-- Load with Jquery Load function -->
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
-        Your quotes
+        Tus Frases
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Agrega una nueva frase</span></div>
 </div>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
-            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
+            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Insert your quote..." maxlength="255" class="textarea" id="quote"></textarea>
+            <textarea placeholder="Ingresa una frase..." maxlength="255" class="textarea" id="quote"></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="listSearch(this,'authorList')">
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Ingresa Autor..."  oninput="listSearch(this,'authorList')">
                 
                 <div class="col-xs-12 search-list" id="authorList">
                     <ul class="list-unstyled">
@@ -31,7 +31,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Ingresa los Temas" value="">
                 
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
@@ -44,7 +44,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save()">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save()">Guardar</button>
             </div>
         </div>
     </div>
@@ -155,21 +155,21 @@
             arr['author']=author;
             var token1 = generateToken();
             token1.done(function(generatedToken1){
-                var newQuote = insert('quotes',arr,generatedToken1);
+                var newQuote = insert('quotes_es',arr,generatedToken1);
                 newQuote.done(function(response){
                     if(response){
-                        var lastQuote = limit('quotes','quoteID','quoteID',1);
+                        var lastQuote = limit('quotes_es','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
                             var arr2={};
                             arr2['quoteID']=dataID[0][0].quoteID;
                             var topic = topics.split(',');
                             for(var i in topic){
-                                var topicSearch = find_by('topics','topicName',topic[i]);
+                                var topicSearch = find_by('topics_es','topicName',topic[i]);
                                 topicSearch.done(function(topicId){
                                     var token3 = generateToken();
                                     token3.done(function(generatedToken3){
                                         arr2['topicID']=topicId[0][0].topicID;
-                                        var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
+                                        var topicQuote = insert('quotesTopicES',arr2,generatedToken3);
                                         topicQuote.done(function(data){
                                             console.log(data);
                                         });

@@ -572,12 +572,12 @@ header {
 
 /***************** 7.Portlets ****************/
 .portlet {
-  margin-bottom: 20px;
-  background: #fff;
-  transition: all 0.4s;
-  -moz-transition: all 0.4s;
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
+    margin-bottom: 20px;
+    background: #fff;
+    transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
 }
 
 .portlet .portlet-heading {
