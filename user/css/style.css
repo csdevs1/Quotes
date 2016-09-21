@@ -2075,3 +2075,22 @@ ul.p-social-link li a {
     background: rgba(0,0,250,0.5);
     color: #fff;
 }
+
+.form-group{position: relative;}
+#image{
+    position: absolute;
+    z-index: 1500;
+    width: 100%;
+    opacity: 0;
+}#image:hover{
+    cursor: pointer;
+}
+.up-label{
+    font-family: 'Raleway', sans-serif;
+    position: absolute;
+    z-index: 1000;
+    left: 38px;
+    width: 97%;
+    border: 1px solid #eee;
+    padding: 2px;
+}

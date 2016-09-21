@@ -10,9 +10,12 @@
         $json_response = array('response'=>200,$obj->find_by($table,$row,$val));
         echo json_encode($json_response);
     } elseif(isset($_POST['table']) && !empty($_POST['data']) && $_POST['action']=='insert' && $token->check($_POST['token'])){ //check Token function
-        $table = $_POST['table'];
-        $data = json_decode($_POST['data'],true);
-        foreach($data as $key => $val){
+        //$table = $_POST['table'];
+        //$data = json_decode($_POST['data'],true);
+        if(isset($_FILES['image']) && !empty($_FILES['image'])){
+            $image = $_FILES['image']['name'];
+        }
+        /*foreach($data as $key => $val){
             $cols[]=$key;
             $vals[]="'$val'";
         }
@@ -25,7 +28,9 @@
         } else{
             $json_response = array('response'=>400,$response);
             echo json_encode($json_response);
-        }
+        }*/
+        $json_response = array('response'=>$image);
+        echo json_encode($json_response);
     } elseif(isset($_POST['table']) && isset($_POST['column']) && !empty($_POST['column']) && isset($_POST['order']) && !empty($_POST['order']) && $_POST['action']=='limit'){
         $table = $_POST['table'];
         $column = $_POST['column'];

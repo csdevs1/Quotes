@@ -25,12 +25,15 @@ function limit(table,column,order,limit){
     });
 }
 
-var insert = function(table,data,token){
+var insert = function(table,data,token,image=''){
     var formData = new FormData();
     formData.append("data", JSON.stringify(data));
     formData.append("table", table);
     formData.append("action", 'insert');
     formData.append("token", token);
+    if(image!=''){
+        formData.append("image", image);
+    }
     return $.ajax({
         type: 'POST',
         dataType: 'json',

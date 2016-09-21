@@ -44,6 +44,13 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
+                <span class="input-group-addon"><i class="ion-image"></i></span>                
+                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
+                <span class="up-label">Carregar uma imagem</span>
+            </div>
+        </div>
+        <div class="form-group col-xs-12">
+            <div class="input-group">
                 <button type="button" class="btn btn-primary" onclick="save()">Salvar</button>
             </div>
         </div>
@@ -139,6 +146,23 @@
         document.getElementById('topic_tag').setAttribute('oninput','listSearch(this,"topicList")');
     });
     
+    $("#image").on("change", function(){
+        var imgType = $(this).prop('files')[0].type;
+        if(imgType.split('/')[0] == 'image'){
+            // Name of file and placeholder
+            var file = this.files[0].name;
+            var dflt = $(this).attr("placeholder");
+            if($(this).val()!=""){
+                $(this).next().text(file);
+            } else {
+                $(this).next().text(dflt);
+            }
+        } else {
+            document.getElementById("image").value = "";
+            $(this).next().text("Oops! Isso não é uma imagem!");
+        }
+    });
+    
     var save = function(){
         var quote = $('#quote').val(),
             author = $('#author').val(),
@@ -154,8 +178,11 @@
             arr['quote']=quote;
             arr['author']=author;
             var token1 = generateToken();
+            if($('#image').val() && $('#image').val() !=''){
+                var image=$('#image').prop('files')[0];
+            }
             token1.done(function(generatedToken1){
-                var newQuote = insert('quotes_pt',arr,generatedToken1);
+                var newQuote = insert('quotes_pt',arr,generatedToken1,image);
                 newQuote.done(function(response){
                     if(response){
                         var lastQuote = limit('quotes_pt','quoteID','quoteID',1);
