@@ -2067,6 +2067,7 @@ ul.p-social-link li a {
     overflow-y: auto;
     overflow-x:hidden;
     padding: 0;
+    width: 97% !important;
 }
 .search-list li {
     padding: 5px;

@@ -25,6 +25,15 @@ function limit(table,column,order,limit){
     });
 }
 
+function like(table,col,pattern){
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: {table:table,column:col,pattern:pattern,action:'like'},
+        url: 'Classes/GlobalController.php'
+    });
+}
+
 var insert = function(table,data,token,image=''){
     var formData = new FormData();
     formData.append("data", JSON.stringify(data));

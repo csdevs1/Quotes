@@ -39,6 +39,17 @@
         $response = $response=$obj->limit($column,$table,$limit,$order);
         $json_response = array($response,'response'=>200);
         echo json_encode($json_response);
+    }elseif(isset($_POST['table']) && isset($_POST['column']) && !empty($_POST['column']) && isset($_POST['pattern']) && !empty($_POST['pattern']) && $_POST['action']=='like'){
+        $table = $_POST['table'];
+        $column = $_POST['column'];
+        $p = $_POST['pattern'];
+        foreach($column as $key => $val){
+            $like[] = "$val LIKE '$p'";
+        }
+        $pattern = implode(' OR ',$like);
+        $response = $response=$obj->like($table,$pattern);
+        $json_response = array($response,'response'=>200);
+        echo json_encode($json_response);
     } else {
         $json_response = array('response'=>400);
         echo json_encode($json_response);

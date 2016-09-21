@@ -17,12 +17,10 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="listSearch(this,'authorList')">
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="listSearch(this,'authorList','authors','author')">
                 
                 <div class="col-xs-12 search-list" id="authorList">
                     <ul class="list-unstyled">
-                        <li onclick="selectTag(this,'author')">Einstein</li>
-                        <li onclick="selectTag(this,'author')">Albert</li>
                     </ul>
                 </div>
                 
@@ -35,8 +33,6 @@
                 
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
-                        <li onclick="selectTag(this,'topic','csv')">Motivational</li>
-                        <li onclick="selectTag(this,'topic','csv')">Inspirational</li>
                     </ul>
                 </div>
                 
@@ -143,7 +139,7 @@
         // Tags Input
         $('#topic').tagsInput({width:'auto'});
         $('.search-list').hide();
-        document.getElementById('topic_tag').setAttribute('oninput','listSearch(this,"topicList")');
+        document.getElementById('topic_tag').setAttribute('oninput','listSearch(this,"topicList","topics","topic")');
     });
     
     $("#image").on("change", function(){
@@ -210,13 +206,31 @@
         }
     }
     
-    var listSearch = function(el,id){
+    var listSearch = function(el,id,table,row){
         if(el.value=="" || el.value=="add a tag"){
             $('#'+id).slideUp();
         }else {
             if($(el).is(':focus'))
                 $('.search-list').not('#'+id).slideUp();
             $('#'+id).slideDown();
+            var pattern = $(el).val()+'%';
+            if(row=='topic')
+                var arr = {'topicName':'topicName'};
+            else
+                var arr = {'authorName':'authorName'};
+            var search = like(table,arr,pattern);
+            search.done(function(response){
+                if(Object.keys(response[0]).length != 0){
+                    $('#'+id+' ul').html('');
+                    for(var i in response[0]){
+                        if(row==='topic')
+                            $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\',\'csv\')">'+response[0][i].topicName+'</li>');
+                        else
+                            $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\')">'+response[0][i].authorName+'</li>');
+                    }
+                } else
+                    $('#'+id+' ul').html('<li>Not found!</li>');
+            });
         }
     }
     
