@@ -1,0 +1,7 @@
+# RewriteEngine On
+# RewriteCond %{HTTP_HOST} localhost$ 
+# DirectoryIndex visitorsCountry.php
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+
+# RewriteRule ^home$ index.php [NC]
