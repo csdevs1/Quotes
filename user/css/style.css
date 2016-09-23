@@ -2106,7 +2106,6 @@ ul.p-social-link li a {
     }
     .box-content{padding:1px;}   
     .inner-box{
-        border: 1px solid #eee;
         position: relative;
         height: 250px;
         transition: all 0.2s;
