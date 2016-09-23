@@ -62,3 +62,21 @@ var generateToken = function(){
         async:false
     });
 }
+
+function imgur_upload(image_file) {
+    var formData = new FormData();
+    formData.append("image", image_file);
+    return $.ajax({
+        url: "https://api.imgur.com/3/image",
+        type: "POST",
+        datatype: "json",
+        headers: {
+            "Authorization": "Client-ID 4571ccbf369395f",
+            Accept: 'application/json'
+        },
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+}
