@@ -1,7 +1,7 @@
 <?php
-require_once('../../../AppClasses/AppController.php');
-$obj = new AppController();
-$quotes = $obj->all('quotes');
+    require_once('../../../AppClasses/AppController.php');
+    $obj = new AppController();
+    $quotes = $obj->all('quotes');
 ?>
 
 <!-- Load with Jquery Load function -->

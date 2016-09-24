@@ -26,6 +26,13 @@ function authors(msg="",el) {
     document.getElementById("quotes-area").innerHTML="";
     $("#quotes-area").load("content/authors.html",{msg:msg});
 }
+function topics(msg="",el) {
+    $('.lang-nav li').not(el).removeClass('active');
+    $('.has-submenu').not('#topics-menu').removeClass('active');
+    $(el).addClass('active');
+    document.getElementById("quotes-area").innerHTML="";
+    $("#quotes-area").load("content/topics.php",{msg:msg});
+}
 $(document).ready(function(){
     english('','#eng');
 });

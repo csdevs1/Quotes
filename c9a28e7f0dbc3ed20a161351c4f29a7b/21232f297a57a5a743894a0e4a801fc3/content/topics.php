@@ -1,9 +1,15 @@
+<?php
+    require_once('../../../AppClasses/AppController.php');
+    $obj = new AppController();
+    $topics = $obj->all('topics');
+?>
+
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
-        Authors
+        Topic
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new topics</span></div>
 </div>
 
 <div class="container quote-form" id="quote-form">
@@ -14,7 +20,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="checkAvailability(this)">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic..."  oninput="checkAvailability(this)">
                 
             </div>
         </div>
@@ -36,16 +42,28 @@
 
 <div class="container">
     <div class="row">
+        <?php
+            foreach($topics as $key=>$val){
+        ?>
+        <div class="col-xs-12 col-sm-6 col-md-4 box-content">
+            <div class="inner-box background" style="background-image:url('<?php echo $topics[$key]['topicImage'] ?>');">
+                <h3 data-placement="top" title="Edit Topic"><a><?php echo $topics[$key]['topicName'] ?></a></h3>
+            </div>
+        </div>
+        <?php
+            }
+        ?>
+        <!--
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
             <div class="inner-box background">
-                <h3 data-placement="top" title="Edit Author"><a>Winston Churchill</a></h3>
+                <h3 data-placement="top" title="Edit Topic"><a>Motivational</a></h3>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
             <div class="inner-box background">
-                <h3 data-placement="top" title="Edit Author"><a>Albert Einstein</a></h3>
+                <h3 data-placement="top" title="Edit Topic"><a>Inspirational</a></h3>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -92,40 +110,40 @@
     var save = function(el) {
         $(el).attr('disabled','disabled');
         el.innerHTML = "Saving";
-        var author = $('#author').val(),
+        var author = $('#topic').val(),
             arr = {};
         if(author && author != '')
-            arr['authorName'] = author;
+            arr['topicName'] = author;
         else
-            console.log('Error author');
+            console.log('Error topic');
         if($('#image').val()!=''){
-            if(arr['authorName'] != ''){
+            if(arr['topicName'] != ''){
                 var token = generateToken();
                 token.done(function(generatedToken){
                     var image = imgur_upload($('#image').prop('files')[0]);
                     image.done(function(response){
                         var url = response.data.link;
-                        arr['authorImage'] = url.replace('http','https');
-                        var insert_author = insert('authors',arr,generatedToken);
+                        arr['topicImage'] = url.replace('http','https');
+                        var insert_author = insert('topics',arr,generatedToken);
                         insert_author.done(function(data){
                             $(el).removeAttr('disabled');
                             el.innerHTML = "Saved!";
                             setTimeout(function() {
-                                authors('Author Saved correctly',document.getElementById('author-menu'));
+                                topics('Topic Saved correctly',document.getElementById('topics-menu'));
                             }, 2000);
                         });
                     });
                 });
             }
-        }else if(arr['authorName'] != ''){
+        }else if(arr['topicName'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
-                var insert_author = insert('authors',arr,generatedToken);
+                var insert_author = insert('topics',arr,generatedToken);
                 insert_author.done(function(data){
                     $(el).removeAttr('disabled');
                     el.innerHTML = "Saved!";
                     setTimeout(function() {
-                        authors('Author Saved correctly',document.getElementById('author-menu'));
+                        authors('Topic Saved correctly',document.getElementById('author-menu'));
                     }, 2000);
                 });
             });

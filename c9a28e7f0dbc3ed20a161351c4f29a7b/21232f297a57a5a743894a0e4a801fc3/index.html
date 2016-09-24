@@ -51,14 +51,20 @@
             <!-- Navbar Start -->
             <nav class="navigation">
                 <ul class="list-unstyled">
-                    <li class="has-submenu active" id="quote-menu"><a href="#"><i class="ion-home"></i> <span class="nav-label">Quotes</span></a>
+                    <li class="has-submenu active" id="quote-menu"><a><i class="ion-home"></i> <span class="nav-label">Quotes</span></a>
                         <ul class="list-unstyled lang-nav">
                             <li class="active" onclick="english('',this)" id="eng"><a>English</a></li>
                             <li class="" onclick="spanish('',this)"><a>Spanish</a></li>
                             <li class="" onclick="portuguese('',this)"><a>Portuguese</a></li>
                         </ul>
                     </li>
-                    <li class="has-submenu"><a><i class="ion-flask"></i> <span class="nav-label">Topics</span></a></li>
+                    <li class="has-submenu active" id="topics-menu"><a><i class="ion-chatbubble-working"></i> <span class="nav-label">Topics</span></a>
+                        <ul class="list-unstyled lang-nav">
+                            <li onclick="topics('',this)" id="topic-eng"><a>English</a></li>
+                            <li onclick="topics('',this)"><a>Spanish</a></li>
+                            <li onclick="topics('',this)"><a>Portuguese</a></li>
+                        </ul>
+                    </li>
                     <li class="has-submenu" onclick="authors('',this)" id="author-menu"><a><i class="ion-android-contacts"></i> <span class="nav-label">Authors</span></a></li>
                     <li class="has-submenu"><a><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
                 </ul>
