@@ -14,12 +14,24 @@
         $data = json_decode($_POST['data'],true);
         
         if(isset($_FILES['image']) && !empty($_FILES['image'])){
-            $image = $_FILES['image']['name'];
+            $image_name = $_FILES['image']['name'];
+            $image_type = $_FILES['image']['type'];
+            $image_temp = $_FILES['image']['tmp_name'];
+            $img_ext = pathinfo($image_name, PATHINFO_EXTENSION);
+            $error = $_FILES['image']['error'];
+            $random = rand(1000, 99000);
+            if($error > 0) {
+                $error = die("Error uploading file! Codigo: $error.");
+                $json_response = array('error'=>$error);
+            } else {
+                move_uploaded_file($file_temp, "../../../images/quotes/".$random.".".$file_ext);
+                $data['quoteImage']=$random.".".$img_ext;
+            }
         }
         
         foreach($data as $key => $val){
             $cols[]=$key;
-            $vals[]="'$val'";
+            $vals[]='"'.$val.'"';
         }
         $col = implode(", " , $cols);
         $val= implode(", " , $vals);

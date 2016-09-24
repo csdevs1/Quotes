@@ -21,3 +21,6 @@ AppClasses/Token.php
 
 #Ignore token generate files.
 AppClasses/GenerateToken.php
+
+#Ignore token generate files.
+c9a28e7f0dbc3ed20a161351c4f29a7b

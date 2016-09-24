@@ -3,7 +3,7 @@ function english(msg="",el) {
     $('.has-submenu').not('#quote-menu').removeClass('active');
     $(el).addClass('active');
     document.getElementById("quotes-area").innerHTML="";
-    $("#quotes-area").load("language/quotes-en.html",{msg:msg});
+    $("#quotes-area").load("language/quotes-en.php",{msg:msg});
 }
 function spanish(msg="",el) {
     $('.lang-nav li').not(el).removeClass('active');
