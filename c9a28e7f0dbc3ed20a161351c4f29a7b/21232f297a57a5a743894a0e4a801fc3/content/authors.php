@@ -1,15 +1,15 @@
 <?php
     require_once('../Classes/AppController.php');
     $obj = new AppController();
-    $topics = $obj->all('topics');
+    $authors = $obj->all('authors');
 ?>
 
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
-        Topic
+        Authors
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new topic</span></div>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
 </div>
 
 <div class="container quote-form" id="quote-form">
@@ -20,7 +20,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic..."  oninput="checkAvailability(this)">
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="checkAvailability(this)">
                 
             </div>
         </div>
@@ -42,28 +42,18 @@
 
 <div class="container">
     <div class="row">
+        
         <?php
-            foreach($topics as $key=>$val){
+            foreach($authors as $key=>$val){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
-            <div class="inner-box background" style="background-image:url('<?php echo $topics[$key]['topicImage'] ?>');">
-                <h3 data-placement="top" title="Edit Topic"><a><?php echo $topics[$key]['topicName'] ?></a></h3>
+            <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage'] ?>');">
+                <h3 data-placement="top" title="Edit Topic"><a><?php echo $authors[$key]['authorName'] ?></a></h3>
             </div>
-        </div>
+        </div>        
         <?php
             }
         ?>
-        <!--
-        <div class="col-xs-12 col-sm-6 col-md-4 box-content">
-            <div class="inner-box background">
-                <h3 data-placement="top" title="Edit Topic"><a>Motivational</a></h3>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 box-content">
-            <div class="inner-box background">
-                <h3 data-placement="top" title="Edit Topic"><a>Inspirational</a></h3>
-            </div>
-        </div> -->
     </div>
 </div>
 
@@ -107,43 +97,43 @@
         }
     });
     
-    var save = function(el) {
+    var save = function(el){
         $(el).attr('disabled','disabled');
         el.innerHTML = "Saving";
-        var author = $('#topic').val(),
+        var author = $('#author').val(),
             arr = {};
         if(author && author != '')
-            arr['topicName'] = author;
+            arr['authorName'] = author;
         else
-            console.log('Error topic');
+            console.log('Error author');
         if($('#image').val()!=''){
-            if(arr['topicName'] != ''){
+            if(arr['authorName'] != ''){
                 var token = generateToken();
                 token.done(function(generatedToken){
                     var image = imgur_upload($('#image').prop('files')[0]);
                     image.done(function(response){
                         var url = response.data.link;
-                        arr['topicImage'] = url.replace('http','https');
-                        var insert_author = insert('topics',arr,generatedToken);
+                        arr['authorImage'] = url.replace('http','https');
+                        var insert_author = insert('authors',arr,generatedToken);
                         insert_author.done(function(data){
                             $(el).removeAttr('disabled');
                             el.innerHTML = "Saved!";
                             setTimeout(function() {
-                                topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                                authors('Author Saved correctly',document.getElementById('author-menu'));
                             }, 2000);
                         });
                     });
                 });
             }
-        }else if(arr['topicName'] != ''){
+        }else if(arr['authorName'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
-                var insert_author = insert('topics',arr,generatedToken);
+                var insert_author = insert('authors',arr,generatedToken);
                 insert_author.done(function(data){
                     $(el).removeAttr('disabled');
                     el.innerHTML = "Saved!";
                     setTimeout(function() {
-                        topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                        authors('Author Saved correctly',document.getElementById('author-menu'));
                     }, 2000);
                 });
             });

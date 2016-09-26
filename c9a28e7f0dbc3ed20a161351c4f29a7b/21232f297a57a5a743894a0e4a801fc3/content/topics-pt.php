@@ -1,39 +1,39 @@
 <?php
     require_once('../Classes/AppController.php');
     $obj = new AppController();
-    $topics = $obj->all('topics');
+    $topics = $obj->all('topics_pt');
 ?>
 
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
-        Topic
+        Tópico
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new topic</span></div>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Adicionar novo tópico</span></div>
 </div>
 
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
-            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
+            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic..."  oninput="checkAvailability(this)">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..."  oninput="checkAvailability(this)">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
-                <span class="up-label">Upload an image</span>
+                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Adicionar uma imagem.." accept="image/*">          
+                <span class="up-label">Adicionar uma imagem</span>
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this)">Salvar</button>
             </div>
         </div>
     </div>
@@ -124,12 +124,12 @@
                     image.done(function(response){
                         var url = response.data.link;
                         arr['topicImage'] = url.replace('http','https');
-                        var insert_author = insert('topics',arr,generatedToken);
+                        var insert_author = insert('topics_pt',arr,generatedToken);
                         insert_author.done(function(data){
                             $(el).removeAttr('disabled');
-                            el.innerHTML = "Saved!";
+                            el.innerHTML = "Salvou!";
                             setTimeout(function() {
-                                topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                                topicsPT('Frase salvas com sucesso',document.getElementById('topic-pt'));
                             }, 2000);
                         });
                     });
@@ -138,12 +138,12 @@
         }else if(arr['topicName'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
-                var insert_author = insert('topics',arr,generatedToken);
+                var insert_author = insert('topics_pt',arr,generatedToken);
                 insert_author.done(function(data){
                     $(el).removeAttr('disabled');
-                    el.innerHTML = "Saved!";
+                    el.innerHTML = "Salvou!";
                     setTimeout(function() {
-                        topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                        topicsPT('Frase salvas com sucesso',document.getElementById('topic-pt'));
                     }, 2000);
                 });
             });

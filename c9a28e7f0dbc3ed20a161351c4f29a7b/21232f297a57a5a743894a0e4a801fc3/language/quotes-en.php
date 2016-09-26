@@ -1,5 +1,5 @@
 <?php
-    require_once('../../../AppClasses/AppController.php');
+    require_once('../Classes/AppController.php');
     $obj = new AppController();
     $quotes = $obj->all('quotes');
 ?>
@@ -151,15 +151,25 @@
     </nav>
 </div>
 <!-- Load with Jquery Load function -->
-<script src="../../user/js/app.js"></script>
 
-<script src="../../user/assets/tagsinput/jquery.tagsinput.min.js"></script>
+<script src="../assets/tagsinput/jquery.tagsinput.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function($) {
         // Tags Input
         $('#topic').tagsInput({width:'auto'});
         $('.search-list').hide();
         document.getElementById('topic_tag').setAttribute('oninput','listSearch(this,"topicList","topics","topic")');
+        
+       $('#topic_tag').bind("enterKey",function(e){
+           console.log('Pressed Enter');
+       });
+        $('#topic_tag').keyup(function(e){
+            if(e.keyCode == 13){
+                detectWord();
+                $('#topicList').slideUp();
+            }
+        });
+        
     });
     
     $("#image").on("change", function(){
@@ -181,7 +191,7 @@
     
     var save = function(el){
         $(el).attr('disabled','disabled');
-        el.innerHTML = "Saving";
+        el.innerHTML = "Saving...";
         var quote = $('#quote').val(),
             author = $('#author').val(),
             topics = $('#topic').val();
@@ -268,15 +278,23 @@
         }
     }
     
+    function detectWord(){
+        var incorrecTag = $('.tag').last().children('span').html().split('&');
+        var topicSearch = find_by('topics','topicName',incorrecTag[0]);
+        topicSearch.done(function(response){
+            if(Object.keys(response[0]).length == 0)
+                $('.tag').last().children('a').click();
+        });
+    }
+    
     var selectTag=function(el,inp,format=""){
         var elVal = el.innerHTML;
         if(format=="csv"){
             var val = document.getElementById(inp).value.split(',');
             val[val.length-1] = elVal;
             document.getElementById(inp).value = val.join(',');
+            detectWord();
             var incorrecTag = $('.tag').last().children('span').html().split('&');
-            if(incorrecTag[0]!='Motivational' || incorrecTag[0] != 'Inspirational') // BRING DATA FROM DB TO COMPARE HERE
-                $('.tag').last().children('a').click();
             $(el).parent().parent().slideUp();
         }
         else{

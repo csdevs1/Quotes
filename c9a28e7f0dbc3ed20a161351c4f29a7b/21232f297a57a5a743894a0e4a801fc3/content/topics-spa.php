@@ -1,33 +1,39 @@
+<?php
+    require_once('../Classes/AppController.php');
+    $obj = new AppController();
+    $topics = $obj->all('topics_es');
+?>
+
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
-        Authors
+        Tema
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Agregar un nuevo tema</span></div>
 </div>
 
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
-            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
+            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="checkAvailability(this)">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Ingresa tema..."  oninput="checkAvailability(this)">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
-                <span class="up-label">Upload an image</span>
+                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Sube una imagen" accept="image/*">          
+                <span class="up-label">Sube una imagen</span>
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this)">Guardar</button>
             </div>
         </div>
     </div>
@@ -36,16 +42,28 @@
 
 <div class="container">
     <div class="row">
+        <?php
+            foreach($topics as $key=>$val){
+        ?>
+        <div class="col-xs-12 col-sm-6 col-md-4 box-content">
+            <div class="inner-box background" style="background-image:url('<?php echo $topics[$key]['topicImage'] ?>');">
+                <h3 data-placement="top" title="Edit Topic"><a><?php echo $topics[$key]['topicName'] ?></a></h3>
+            </div>
+        </div>
+        <?php
+            }
+        ?>
+        <!--
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
             <div class="inner-box background">
-                <h3 data-placement="top" title="Edit Author"><a>Winston Churchill</a></h3>
+                <h3 data-placement="top" title="Edit Topic"><a>Motivational</a></h3>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
             <div class="inner-box background">
-                <h3 data-placement="top" title="Edit Author"><a>Albert Einstein</a></h3>
+                <h3 data-placement="top" title="Edit Topic"><a>Inspirational</a></h3>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -85,47 +103,47 @@
             }
         } else {
             document.getElementById("image").value = "";
-            $(this).next().text("Oops! that's not an image!");
+            $(this).next().text("Oops! Eso no es una imagen!");
         }
     });
     
-    var save = function(el){
+    var save = function(el) {
         $(el).attr('disabled','disabled');
-        el.innerHTML = "Saving";
-        var author = $('#author').val(),
+        el.innerHTML = "Guardando";
+        var author = $('#topic').val(),
             arr = {};
         if(author && author != '')
-            arr['authorName'] = author;
+            arr['topicName'] = author;
         else
-            console.log('Error author');
+            console.log('Error topic');
         if($('#image').val()!=''){
-            if(arr['authorName'] != ''){
+            if(arr['topicName'] != ''){
                 var token = generateToken();
                 token.done(function(generatedToken){
                     var image = imgur_upload($('#image').prop('files')[0]);
                     image.done(function(response){
                         var url = response.data.link;
-                        arr['authorImage'] = url.replace('http','https');
-                        var insert_author = insert('authors',arr,generatedToken);
+                        arr['topicImage'] = url.replace('http','https');
+                        var insert_author = insert('topics_es',arr,generatedToken);
                         insert_author.done(function(data){
                             $(el).removeAttr('disabled');
-                            el.innerHTML = "Saved!";
+                            el.innerHTML = "Guardado!";
                             setTimeout(function() {
-                                authors('Author Saved correctly',document.getElementById('author-menu'));
+                                topicsES('Tema guardado correctamente!',document.getElementById('topic-spa'));
                             }, 2000);
                         });
                     });
                 });
             }
-        }else if(arr['authorName'] != ''){
+        }else if(arr['topicName'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
-                var insert_author = insert('authors',arr,generatedToken);
+                var insert_author = insert('topics_es',arr,generatedToken);
                 insert_author.done(function(data){
                     $(el).removeAttr('disabled');
-                    el.innerHTML = "Saved!";
+                    el.innerHTML = "Guardado!";
                     setTimeout(function() {
-                        authors('Author Saved correctly',document.getElementById('author-menu'));
+                        topicsES('Tema guardado correctamente',document.getElementById('topic-spa'));
                     }, 2000);
                 });
             });

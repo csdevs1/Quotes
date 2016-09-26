@@ -1,6 +1,6 @@
 <?php
-    require_once('../../../AppClasses/AppController.php');
-    require_once('../../../AppClasses/Token.php');
+    require_once('AppClasses/AppController.php');
+    require_once('AppClasses/Token.php');
     $token = new Token();
     $obj = new AppController();
     if(isset($_POST['table']) && !empty($_POST['table']) && isset($_POST['row']) && !empty($_POST['row']) && isset($_POST['val']) && !empty($_POST['val']) && $_POST['action']=='find_by'){
@@ -24,7 +24,7 @@
                 $error = die("Error uploading file! Codigo: $error.");
                 $json_response = array('error'=>$error);
             } else {
-                move_uploaded_file($file_temp, "../../../images/quotes/".$random.".".$file_ext);
+                move_uploaded_file($image_temp, "../../../images/quotes/".$random.".".$img_ext);
                 $data['quoteImage']=$random.".".$img_ext;
             }
         }
