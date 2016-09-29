@@ -1988,7 +1988,23 @@ ul.p-social-link li a {
         padding: 2%;
         padding-bottom: 10%;
         transition: all 0.5s;
+        position: relative;
     }
+    .circle-ref {
+        position: absolute;
+        background-color: #428bca;
+        right: -15px;
+        top:-15px;
+        padding: 25px;
+        border-radius: 50px;
+        z-index: 100;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        color: #fff;
+        font-weight: 900;
+        box-shadow: -3px 2px 4px #999;
+    }.circle-ref:hover{cursor: pointer;}
     .quote blockquote {
         margin-top: 5px;
         font-family: 'Glegoo', serif;
@@ -2038,7 +2054,7 @@ ul.p-social-link li a {
         padding: 1px;
         display: none;
     }
-    #add-quote{cursor: pointer;}
+    #add-quote,.addquote{cursor: pointer;}
 
     .relative-container label{color:#999;font-size:1.5rem;}
     .relative-container label:hover{text-shadow:1px 1px 1px #fff;cursor:pointer;}

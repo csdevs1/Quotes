@@ -27,6 +27,14 @@
             }
             return $lista;
         }
+        public function custom($sql) {
+            $res=$this->consulta_sql($sql);
+            $lista=array();
+            while($row=mysql_fetch_assoc($res)) {
+                $lista[]=$row;
+            }
+            return $lista;
+        }
         
         public function like($table,$pattern) {
             $sql="SELECT * FROM $table WHERE $pattern;";

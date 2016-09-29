@@ -1,7 +1,7 @@
 <?php
     require_once('../Classes/AppController.php');
     $obj = new AppController();
-    $quotes = $obj->all('quotes');
+    $quotes = $obj->all('quotes_en');
 ?>
 
 <!-- Load with Jquery Load function -->
@@ -68,14 +68,27 @@
                         
                         <?php
                             foreach($quotes as $key=>$val){
+                                $translations = $obj->find_by('quotes','en_id',$quotes[$key]['quoteID']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote">
                             <div class="pad">
+                                <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
                                     <img class="img-responsive" src="../../images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $quotes[$key]['quote']; ?> <span>- <?php echo $quotes[$key]['author']; ?></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
+                                <div class="col-xs-8 col-md-8">
+                                    Lang: 
+                                    <?php if(isset($translations[0]['en_id']) && !empty($translations[0]['en_id'])){ ?>
+                                        <img src="images/eng.png" width="25px" height="25px">
+                                    <?php } ?>
+                                    <?php if(isset($translations[0]['pt_id']) && !empty($translations[0]['pt_id'])){ ?>
+                                        <img src="images/Portugal.png" width="25px" height="25px">
+                                    <?php } ?>
+                                    <?php if(isset($translations[0]['es_id']) && !empty($translations[0]['pt_id'])){ ?>
+                                        <img src="images/es.png" width="25px" height="25px">
+                                    <?php } ?>
+                                </div>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
                             </div>
                         </div>
@@ -151,13 +164,13 @@
     </nav>
 </div>
 <!-- Load with Jquery Load function -->
-
+<script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function($) {
         // Tags Input
         $('#topic').tagsInput({width:'auto'});
         $('.search-list').hide();
-        document.getElementById('topic_tag').setAttribute('oninput','listSearch(this,"topicList","topics","topic")');
+        document.getElementById('topic_tag').setAttribute('oninput','listSearch(this,"topicList","topics_en","topic")');
         
        $('#topic_tag').bind("enterKey",function(e){
            console.log('Pressed Enter');
@@ -215,24 +228,32 @@
             }
             var token1 = generateToken();
             token1.done(function(generatedToken1){
-                var newQuote = insert('quotes',arr,generatedToken1,image);
+                var newQuote = insert('quotes_en',arr,generatedToken1,image);
                 newQuote.done(function(response){
-                    console.log(response);
                     if(response){
-                        var lastQuote = limit('quotes','quoteID','quoteID',1);
+                        var lastQuote = limit('quotes_en','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
-                            var arr2={};
+                            var arr2={},
+                                arr3={};
                             arr2['quoteID']=dataID[0][0].quoteID;
+                            arr3['en_id']=dataID[0][0].quoteID;
+                            var token2 = generateToken();
+                            token2.done(function(generatedToken2){
+                                var quoteRelation = insert('quotes',arr3,generatedToken2);
+                                quoteRelation.done(function(re){
+                                    console.log('Rel: '+ re);
+                                });
+                            });
                             var topic = topics.split(',');
                             for(var i in topic){
-                                var topicSearch = find_by('topics','topicName',topic[i]);
+                                var topicSearch = find_by('topics_en','topicName',topic[i]);
                                 topicSearch.done(function(topicId){
                                     var token3 = generateToken();
                                     token3.done(function(generatedToken3){
                                         arr2['topicID']=topicId[0][0].topicID;
                                         var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
                                         topicQuote.done(function(data){
-                                            //console.log(data);
+                                            var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
                                             $(el).removeAttr('disabled');
                                             el.innerHTML = "Saved!";
                                             setTimeout(function() {
@@ -279,7 +300,7 @@
     
     function detectWord(){
         var incorrecTag = $('.tag').last().children('span').html().split('&');
-        var topicSearch = find_by('topics','topicName',incorrecTag[0]);
+        var topicSearch = find_by('topics_en','topicName',incorrecTag[0]);
         topicSearch.done(function(response){
             if(Object.keys(response[0]).length == 0)
                 $('.tag').last().children('a').click();

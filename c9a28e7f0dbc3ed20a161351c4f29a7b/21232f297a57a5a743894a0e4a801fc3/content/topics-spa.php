@@ -26,6 +26,13 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
+                <span class="input-group-addon"><i class="ion-person"></i></span>
+                <input type="text" class="form-control" id="keywords" data-error="Field required" aria-describedby="topic" placeholder="Keywords separados por coma...">
+                
+            </div>
+        </div>
+        <div class="form-group col-xs-12">
+            <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
                 <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Sube una imagen" accept="image/*">          
                 <span class="up-label">Sube una imagen</span>
@@ -111,40 +118,67 @@
         $(el).attr('disabled','disabled');
         el.innerHTML = "Guardando";
         var author = $('#topic').val(),
+            keywords = $('#keywords').val(),
             arr = {};
         if(author && author != '')
             arr['topicName'] = author;
         else
             console.log('Error topic');
+        if(keywords && keywords != '')
+            arr['keywords'] = author;
+        else
+            console.log('Error keyword');
         if($('#image').val()!=''){
-            if(arr['topicName'] != ''){
+            if(arr['topicName'] != '' && arr['keywords'] != ''){
                 var token = generateToken();
                 token.done(function(generatedToken){
                     var image = imgur_upload($('#image').prop('files')[0]);
                     image.done(function(response){
                         var url = response.data.link;
                         arr['topicImage'] = url.replace('http','https');
-                        var insert_author = insert('topics_es',arr,generatedToken);
-                        insert_author.done(function(data){
-                            $(el).removeAttr('disabled');
-                            el.innerHTML = "Guardado!";
-                            setTimeout(function() {
-                                topicsES('Tema guardado correctamente!',document.getElementById('topic-spa'));
-                            }, 2000);
+                        var insert_topic = insert('topics_es',arr,generatedToken);
+                        insert_topic.done(function(data){
+                            var lastTopic = limit('topics_es','topicID','topicID',1);
+                            lastTopic.done(function(dataID){
+                                var arr2={};
+                                arr2['tES_id']=dataID[0][0].topicID;
+                                var token2 = generateToken();
+                                token2.done(function(generatedToken2){
+                                    var topicRelation = insert('topics',arr2,generatedToken2);
+                                    topicRelation.done(function(){
+                                        $(el).removeAttr('disabled');
+                                        el.innerHTML = "Guardado!";
+                                        setTimeout(function() {
+                                            topics('Topic Saved correctly',document.getElementById('topic-es'));
+                                        }, 2000);
+                                    });
+                                });
+                            });
                         });
                     });
                 });
             }
-        }else if(arr['topicName'] != ''){
+        }else if(arr['topicName'] != '' && arr['keywords'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
-                var insert_author = insert('topics_es',arr,generatedToken);
-                insert_author.done(function(data){
-                    $(el).removeAttr('disabled');
-                    el.innerHTML = "Guardado!";
-                    setTimeout(function() {
-                        topicsES('Tema guardado correctamente',document.getElementById('topic-spa'));
-                    }, 2000);
+                var insert_topic = insert('topics_es',arr,generatedToken);
+                insert_topic.done(function(data){
+                    var lastTopic = limit('topics_es','topicID','topicID',1);
+                    lastTopic.done(function(dataID){
+                        var arr2={};
+                        arr2['tES_id']=dataID[0][0].topicID;
+                        var token2 = generateToken();
+                        token2.done(function(generatedToken2){
+                            var topicRelation = insert('topics',arr2,generatedToken2);
+                            topicRelation.done(function(){
+                                $(el).removeAttr('disabled');
+                                el.innerHTML = "Guardado!";
+                                setTimeout(function() {
+                                    topics('Tema guardado correctamente',document.getElementById('topic-es'));
+                                }, 2000);
+                            });
+                        });
+                    });
                 });
             });
         }

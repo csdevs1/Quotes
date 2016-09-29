@@ -1,6 +1,6 @@
 <?php
-    require_once('AppClasses/AppController.php');
-    require_once('AppClasses/Token.php');
+    require_once('AppController.php');
+    require_once('Token.php');
     $token = new Token();
     $obj = new AppController();
     if(isset($_POST['table']) && !empty($_POST['table']) && isset($_POST['row']) && !empty($_POST['row']) && isset($_POST['val']) && !empty($_POST['val']) && $_POST['action']=='find_by'){

@@ -19,6 +19,9 @@ function portuguese(msg="",el) {
     document.getElementById("quotes-area").innerHTML="";
     $("#quotes-area").load("language/quotes-pt.php",{msg:msg});
 }
+function quotesTranslation(id) {
+    $("#quotes-area").load("language/quotes-translation.php",{id:id});
+}
 function authors(msg="",el) {
     $('.lang-nav li').not(el).removeClass('active');
     $('.has-submenu').not(el).removeClass('active');

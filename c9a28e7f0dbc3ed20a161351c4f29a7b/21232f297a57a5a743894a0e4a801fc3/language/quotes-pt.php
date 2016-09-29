@@ -151,7 +151,7 @@
     </nav>
 </div>
 <!-- Load with Jquery Load function -->
-
+<script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function($) {
         // Tags Input

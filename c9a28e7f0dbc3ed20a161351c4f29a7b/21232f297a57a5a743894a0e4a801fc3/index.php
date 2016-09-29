@@ -27,7 +27,7 @@
         <link href="assets/sweet-alert/sweet-alert.min.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
-        <link href="css/style.css" rel="stylesheet">
+        <link href="css/style.css?<?php echo time(); ?>" rel="stylesheet">
         <link href="css/helper.css" rel="stylesheet">
         <link href="css/style-responsive.css" rel="stylesheet" />
         
@@ -225,7 +225,6 @@
         <!-- js placed at the end of the document so the pages load faster -->
         <script src="js/app.js"></script>
         <script src="js/load.js"></script>
-        <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
         <script src="js/modernizr.min.js"></script>
         <script src="js/pace.min.js"></script>
         <script src="js/wow.min.js"></script>
