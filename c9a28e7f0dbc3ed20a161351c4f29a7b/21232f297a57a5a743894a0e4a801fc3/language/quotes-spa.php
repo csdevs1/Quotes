@@ -78,14 +78,14 @@
                                 <?php } ?>
                                 <blockquote><?php echo $quotes[$key]['quote']; ?> <span>- <?php echo $quotes[$key]['author']; ?></span></blockquote>
                                 <div class="col-xs-8 col-md-8">
-                                    Lang: 
+                                    Leng: 
                                     <?php if(isset($translations[0]['en_id']) && !empty($translations[0]['en_id'])){ ?>
                                         <img src="images/eng.png" width="25px" height="25px">
                                     <?php } ?>
                                     <?php if(isset($translations[0]['pt_id']) && !empty($translations[0]['pt_id'])){ ?>
                                         <img src="images/Portugal.png" width="25px" height="25px">
                                     <?php } ?>
-                                    <?php if(isset($translations[0]['es_id']) && !empty($translations[0]['pt_id'])){ ?>
+                                    <?php if(isset($translations[0]['es_id']) && !empty($translations[0]['es_id'])){ ?>
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
