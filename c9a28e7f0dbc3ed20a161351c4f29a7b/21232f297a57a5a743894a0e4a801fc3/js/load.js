@@ -20,6 +20,7 @@ function portuguese(msg="",el) {
     $("#quotes-area").load("language/quotes-pt.php",{msg:msg});
 }
 function quotesTranslation(id) {
+    document.getElementById("quotes-area").innerHTML="";
     $("#quotes-area").load("language/quotes-translation.php",{id:id});
 }
 function authors(msg="",el) {

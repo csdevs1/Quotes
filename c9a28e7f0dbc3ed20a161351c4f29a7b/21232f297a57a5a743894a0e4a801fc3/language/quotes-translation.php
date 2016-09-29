@@ -169,7 +169,7 @@
                         <?php
                             }else{
                         ?>
-                        <div class="col-lg-12 text-dark"><span class="addquote"  onclick="openForm(this,eng)"><span class="glyphicon glyphicon-edit"></span> Add translation in english</span></div>
+                        <div class="col-lg-12 text-dark"><span class="addquote"  onclick="openForm(this,'eng')"><span class="glyphicon glyphicon-edit"></span> Add translation in english</span></div>
                         <?php
                             }
                         ?>
@@ -198,7 +198,7 @@
                         <!-- PORTUGUESE -->
                         <?php 
                             if(isset($translations[0]['pt_id']) && !empty($translations[0]['pt_id'])){
-                                $pt = $obj->find_by('pt_id','quoteID',$translations[0]['pt_id']);
+                                $pt = $obj->find_by('quotes_pt','quoteID',$translations[0]['pt_id']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote">
                             <div class="pad">

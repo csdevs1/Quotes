@@ -15,7 +15,7 @@
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
-            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
+            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
         </div>
         <div class="col-xs-12">
             <textarea placeholder="Digite sua frase..." maxlength="255" class="textarea" id="quote"></textarea>
@@ -47,7 +47,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Adicionar uma imagem..." accept="image/*">          
+                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Adicionar uma imagem...<" accept="image/*">          
                 <span class="up-label">Adicionar uma imagem...</span>
             </div>
         </div>
@@ -68,15 +68,28 @@
                         
                         <?php
                             foreach($quotes as $key=>$val){
+                                $translations = $obj->find_by('quotes','pt_id',$quotes[$key]['quoteID']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote">
                             <div class="pad">
+                                <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
                                     <img class="img-responsive" src="../../images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $quotes[$key]['quote']; ?> <span>- <?php echo $quotes[$key]['author']; ?></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
+                                <div class="col-xs-8 col-md-8">
+                                    Lang: 
+                                    <?php if(isset($translations[0]['en_id']) && !empty($translations[0]['en_id'])){ ?>
+                                        <img src="images/eng.png" width="25px" height="25px">
+                                    <?php } ?>
+                                    <?php if(isset($translations[0]['pt_id']) && !empty($translations[0]['pt_id'])){ ?>
+                                        <img src="images/Portugal.png" width="25px" height="25px">
+                                    <?php } ?>
+                                    <?php if(isset($translations[0]['es_id']) && !empty($translations[0]['pt_id'])){ ?>
+                                        <img src="images/es.png" width="25px" height="25px">
+                                    <?php } ?>
+                                </div>
+                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Editar</a></p></div>
                             </div>
                         </div>
                         <?php
@@ -190,22 +203,22 @@
     
     var save = function(el){
         $(el).attr('disabled','disabled');
-        //el.innerHTML = "Saving";
+        //el.innerHTML = "Saving...";
         var quote = $('#quote').val(),
             author = $('#author').val(),
             topics = $('#topic').val();
         if(!quote || quote==''){
             console.log('Error quote');
             $(el).removeAttr('disabled');
-           // el.innerHTML = "Save";
+            //el.innerHTML = "Save";
         }else if(!author || author==''){
             console.log('Error author');
             $(el).removeAttr('disabled');
-           // el.innerHTML = "Save";
+            //el.innerHTML = "Save";
         }else if(!topics || topics==''){
             console.log('Error topic');
             $(el).removeAttr('disabled');
-           // el.innerHTML = "Save";
+            //el.innerHTML = "Save";
         }else{
             var arr = {};
             arr['quote']=quote;
@@ -217,12 +230,20 @@
             token1.done(function(generatedToken1){
                 var newQuote = insert('quotes_pt',arr,generatedToken1,image);
                 newQuote.done(function(response){
-                    console.log(response);
                     if(response){
                         var lastQuote = limit('quotes_pt','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
-                            var arr2={};
+                            var arr2={},
+                                arr3={};
                             arr2['quoteID']=dataID[0][0].quoteID;
+                            arr3['pt_id']=dataID[0][0].quoteID;
+                            var token2 = generateToken();
+                            token2.done(function(generatedToken2){
+                                var quoteRelation = insert('quotes',arr3,generatedToken2);
+                                quoteRelation.done(function(re){
+                                    console.log('Rel: '+ re);
+                                });
+                            });
                             var topic = topics.split(',');
                             for(var i in topic){
                                 var topicSearch = find_by('topics_pt','topicName',topic[i]);
@@ -232,9 +253,9 @@
                                         arr2['topicID']=topicId[0][0].topicID;
                                         var topicQuote = insert('quotesTopicPT',arr2,generatedToken3);
                                         topicQuote.done(function(data){
-                                            //console.log(data);
+                                            var topicQuote = insert('quotesTopicPT',arr2,generatedToken3);
                                             $(el).removeAttr('disabled');
-                                            el.innerHTML = "Salvou!";
+                                            el.innerHTML = "Saved!";
                                             setTimeout(function() {
                                                 portuguese('Frase salvas com sucesso!',document.getElementById('pt'));
                                             }, 2000);
@@ -272,14 +293,14 @@
                             $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\')">'+response[0][i].authorName+'</li>');
                     }
                 } else
-                    $('#'+id+' ul').html('<li>Not found!</li>');
+                    $('#'+id+' ul').html('<li>Não encontrado!</li>');
             });
         }
     }
     
     function detectWord(){
         var incorrecTag = $('.tag').last().children('span').html().split('&');
-        var topicSearch = find_by('topics_pt','topicName',incorrecTag[0]);
+        var topicSearch = find_by('topics_es','topicName',incorrecTag[0]);
         topicSearch.done(function(response){
             if(Object.keys(response[0]).length == 0)
                 $('.tag').last().children('a').click();

@@ -18,12 +18,12 @@
             <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Ingresa la frase..." maxlength="255" class="textarea" id="quote"></textarea>
+            <textarea placeholder="Ingresar frase..." maxlength="255" class="textarea" id="quote"></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Ingresa el autor..."  oninput="listSearch(this,'authorList','authors','author')">
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Ingresar Author..."  oninput="listSearch(this,'authorList','authors','author')">
                 
                 <div class="col-xs-12 search-list" id="authorList">
                     <ul class="list-unstyled">
@@ -35,7 +35,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Ingresa tema" value="">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Ingresar tema..." value="">
                 
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
@@ -47,8 +47,8 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Subir imagen" accept="image/*">          
-                <span class="up-label">Subir una imagen</span>
+                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Subir una imagen..." accept="image/*">          
+                <span class="up-label">Subir una imagen...</span>
             </div>
         </div>
         <div class="form-group col-xs-12">
@@ -68,15 +68,28 @@
                         
                         <?php
                             foreach($quotes as $key=>$val){
+                                $translations = $obj->find_by('quotes','es_id',$quotes[$key]['quoteID']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote">
                             <div class="pad">
+                                <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
                                     <img class="img-responsive" src="../../images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $quotes[$key]['quote']; ?> <span>- <?php echo $quotes[$key]['author']; ?></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
+                                <div class="col-xs-8 col-md-8">
+                                    Lang: 
+                                    <?php if(isset($translations[0]['en_id']) && !empty($translations[0]['en_id'])){ ?>
+                                        <img src="images/eng.png" width="25px" height="25px">
+                                    <?php } ?>
+                                    <?php if(isset($translations[0]['pt_id']) && !empty($translations[0]['pt_id'])){ ?>
+                                        <img src="images/Portugal.png" width="25px" height="25px">
+                                    <?php } ?>
+                                    <?php if(isset($translations[0]['es_id']) && !empty($translations[0]['pt_id'])){ ?>
+                                        <img src="images/es.png" width="25px" height="25px">
+                                    <?php } ?>
+                                </div>
+                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Editar</a></p></div>
                             </div>
                         </div>
                         <?php
@@ -217,12 +230,20 @@
             token1.done(function(generatedToken1){
                 var newQuote = insert('quotes_es',arr,generatedToken1,image);
                 newQuote.done(function(response){
-                    console.log(response);
                     if(response){
                         var lastQuote = limit('quotes_es','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
-                            var arr2={};
+                            var arr2={},
+                                arr3={};
                             arr2['quoteID']=dataID[0][0].quoteID;
+                            arr3['es_id']=dataID[0][0].quoteID;
+                            var token2 = generateToken();
+                            token2.done(function(generatedToken2){
+                                var quoteRelation = insert('quotes',arr3,generatedToken2);
+                                quoteRelation.done(function(re){
+                                    console.log('Rel: '+ re);
+                                });
+                            });
                             var topic = topics.split(',');
                             for(var i in topic){
                                 var topicSearch = find_by('topics_es','topicName',topic[i]);
@@ -232,11 +253,11 @@
                                         arr2['topicID']=topicId[0][0].topicID;
                                         var topicQuote = insert('quotesTopicES',arr2,generatedToken3);
                                         topicQuote.done(function(data){
-                                            //console.log(data);
+                                            var topicQuote = insert('quotesTopicES',arr2,generatedToken3);
                                             $(el).removeAttr('disabled');
                                             el.innerHTML = "Guardada!";
                                             setTimeout(function() {
-                                                spanish('Frase guardada correctamente!',document.getElementById('es'));
+                                                spanish('Frase guardada exitosamente!',document.getElementById('es'));
                                             }, 2000);
                                         });
                                     });
@@ -272,7 +293,7 @@
                             $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\')">'+response[0][i].authorName+'</li>');
                     }
                 } else
-                    $('#'+id+' ul').html('<li>Not found!</li>');
+                    $('#'+id+' ul').html('<li>No entrado!</li>');
             });
         }
     }
