@@ -31,6 +31,24 @@
                 
             </div>
         </div>
+        
+        <!-- -->
+        
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-warning" onclick="addTextBox()"><span class="glyphicon glyphicon-plus"></span> Add a new image</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" id="image-box">
+            </div>
+        </div>
+        <!-- -->
+        <!--
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
@@ -38,6 +56,8 @@
                 <span class="up-label">Upload an image</span>
             </div>
         </div>
+        -->
+        
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <button type="button" class="btn btn-primary" onclick="save(this)">Save</button>
@@ -51,9 +71,11 @@
     <div class="row">
         <?php
             foreach($topics as $key=>$val){
+                $topicID = $obj->find_by('topics','tEN_id',$topics[$key]['topicID']);
+                $images = $obj->find_by('topicsImages','tID',$topicID[0]['id']);
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
-            <div class="inner-box background" style="background-image:url('<?php echo $topics[$key]['topicImage'] ?>');">
+            <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
                 <h3 data-placement="top" title="Edit Topic"><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
         </div>
@@ -96,29 +118,32 @@
     </nav>
 </div>
 
+<script src="js/multiimages.js"></script>
+
 <script>
-    $("#image").on("change", function(){
-        var imgType = $(this).prop('files')[0].type;
+    var changePlaceholder=function(el){
+        var imgType = $(el).prop('files')[0].type;
         if(imgType.split('/')[0] == 'image'){
             // Name of file and placeholder
-            var file = this.files[0].name;
-            var dflt = $(this).attr("placeholder");
-            if($(this).val()!=""){
-                $(this).next().text(file);
+            var file = el.files[0].name;
+            var dflt = $(el).attr("placeholder");
+            if($(el).val()!=""){
+                $(el).next().text(file);
             } else {
-                $(this).next().text(dflt);
+                $(el).next().text(dflt);
             }
         } else {
             document.getElementById("image").value = "";
-            $(this).next().text("Oops! that's not an image!");
+            $(el).next().text("Oops! that's not an image!");
         }
-    });
+    }
     
     var save = function(el) {
         $(el).attr('disabled','disabled');
         el.innerHTML = "Saving";
         var author = $('#topic').val(),
             keywords = $('#keywords').val(),
+            images = $("input[name='images[]']").map(function(){return $(this).prop('files')[0];}).get(),
             arr = {};
         if(author && author != '')
             arr['topicName'] = author;
@@ -128,37 +153,7 @@
             arr['keywords'] = author;
         else
             console.log('Error keyword');
-        if($('#image').val()!=''){
-            if(arr['topicName'] != '' && arr['keywords'] != ''){
-                var token = generateToken();
-                token.done(function(generatedToken){
-                    var image = imgur_upload($('#image').prop('files')[0]);
-                    image.done(function(response){
-                        var url = response.data.link;
-                        arr['topicImage'] = url.replace('http','https');
-                        var insert_topic = insert('topics_en',arr,generatedToken);
-                        insert_topic.done(function(data){
-                            var lastTopic = limit('topics_en','topicID','topicID',1);
-                            lastTopic.done(function(dataID){
-                                var arr2={};
-                                arr2['tEN_id']=dataID[0][0].topicID;
-                                var token2 = generateToken();
-                                token2.done(function(generatedToken2){
-                                    var topicRelation = insert('topics',arr2,generatedToken2);
-                                    topicRelation.done(function(){
-                                        $(el).removeAttr('disabled');
-                                        el.innerHTML = "Saved!";
-                                        setTimeout(function() {
-                                            topics('Topic Saved correctly',document.getElementById('topic-eng'));
-                                        }, 2000);
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            }
-        }else if(arr['topicName'] != '' && arr['keywords'] != ''){
+        if(arr['topicName'] != '' && arr['keywords'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
                 var insert_topic = insert('topics_en',arr,generatedToken);
@@ -171,16 +166,48 @@
                         token2.done(function(generatedToken2){
                             var topicRelation = insert('topics',arr2,generatedToken2);
                             topicRelation.done(function(){
-                                $(el).removeAttr('disabled');
-                                el.innerHTML = "Saved!";
-                                setTimeout(function() {
-                                    topics('Topic Saved correctly',document.getElementById('topic-eng'));
-                                }, 2000);
+                                console.log('Topic Created!');
+                                if(Object.keys(images).length > 0){
+                                    var topicRelID = limit('topics','id','id',1); // GET LAST TOPICS ID
+                                    topicRelID.done(function(relID){
+                                        var arr3={};
+                                        console.log(relID[0][0].id);
+                                        arr3['tID']=relID[0][0].id;
+                                        for(var i in images){
+                                            var image = imgur_upload(images[i]);
+                                            image.done(function(img){
+                                                var url = img.data.link;
+                                                arr3['img_url']=url.replace('http','https');
+                                                var token3 = generateToken();
+                                                token3.done(function(generatedToken3){
+                                                    var insertImages = insert('topicsImages',arr3,generatedToken3);
+                                                    insertImages.done(function(){
+                                                        $(el).removeAttr('disabled');
+                                                        el.innerHTML = "Saved!";
+                                                        console.log('Done!');
+                                                        setTimeout(function() {
+                                                            topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                                                        }, 2000);
+                                                    });
+                                                });
+                                            });
+                                        }
+                                    });
+                                } else{
+                                    $(el).removeAttr('disabled');
+                                    el.innerHTML = "Saved!";
+                                    console.log('Done!');
+                                    setTimeout(function() {
+                                        topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                                    }, 2000);
+                                }
                             });
                         });
                     });
                 });
             });
+        } else {
+            console.log('Error');
         }
     }
     

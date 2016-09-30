@@ -255,7 +255,7 @@
                                         topicQuote.done(function(data){
                                             var topicQuote = insert('quotesTopicPT',arr2,generatedToken3);
                                             $(el).removeAttr('disabled');
-                                            el.innerHTML = "Saved!";
+                                            el.innerHTML = "Salvou!";
                                             setTimeout(function() {
                                                 portuguese('Frase salvas com sucesso!',document.getElementById('pt'));
                                             }, 2000);
