@@ -74,6 +74,27 @@ var insert = function(table,data,token,image=''){
     });
 }
 
+var update = function(table,arr,id,token,image=''){
+    var formData = new FormData();
+    formData.append("data", JSON.stringify(arr));
+    formData.append("table", table);
+    formData.append("id", id);
+    formData.append("action", 'update');
+    formData.append("token", token);
+    if(image!=''){
+        formData.append("image", image);
+    }
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        processData: false,
+        contentType:  false,
+        data: formData,
+        url: 'Classes/GlobalController.php',
+        async:false
+    });
+}
+
 var generateToken = function(){
     return $.ajax({
         type: 'POST',

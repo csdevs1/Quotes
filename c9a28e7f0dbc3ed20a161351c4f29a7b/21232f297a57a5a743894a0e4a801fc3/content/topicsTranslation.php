@@ -6,10 +6,10 @@
         $topicID = $obj->find_by('topics_en','topicID',$translations[0]['tEN_id']);
     }
     if(isset($translations[0]['tES_id']) && !empty($translations[0]['tES_id'])){
-        $topicID = $obj->find_by('topics_es','topicID',$translations[0]['tES_id']);
+        $topicIDES = $obj->find_by('topics_es','topicID',$translations[0]['tES_id']);
     }
     if(isset($translations[0]['tPT_id']) && !empty($translations[0]['tPT_id'])){
-        $topicID = $obj->find_by('topics_pt','topicID',$translations[0]['tPT_id']);
+        $topicIDPT = $obj->find_by('topics_pt','topicID',$translations[0]['tPT_id']);
     }
 
 ?>
@@ -31,20 +31,20 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic..."  oninput="checkAvailability(this)">
+                <input type="text" class="form-control" id="tp-en" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic..."  oninput="checkAvailability(this)">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="keywords" data-error="Field required" aria-describedby="topic" placeholder="Keywords separated by coma...">
+                <input type="text" class="form-control" id="keywords-en" data-error="Field required" aria-describedby="topic" placeholder="Keywords separated by coma...">
                 
             </div>
         </div>        
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'en',<?php echo $_POST['id']; ?>)">Save</button>
             </div>
         </div>
     </div>
@@ -58,20 +58,20 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Ingresa tema..."  oninput="checkAvailability(this)">
+                <input type="text" class="form-control" id="tp-es" data-error="Field required" aria-describedby="topic" placeholder="Ingresa tema..."  oninput="checkAvailability(this)">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="keywords" data-error="Field required" aria-describedby="topic" placeholder="Keywords separados por coma...">
+                <input type="text" class="form-control" id="keywords-es" data-error="Field required" aria-describedby="topic" placeholder="Keywords separados por coma...">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'es',<?php echo $_POST['id']; ?>)">Guardar</button>
             </div>
         </div>
     </div>
@@ -85,20 +85,20 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..."  oninput="checkAvailability(this)">
+                <input type="text" class="form-control" id="tp-pt" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..."  oninput="checkAvailability(this)">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="keywords" data-error="Field required" aria-describedby="topic" placeholder="Keywords separados por vírgulas...">
+                <input type="text" class="form-control" id="keywords-pt" data-error="Field required" aria-describedby="topic" placeholder="Keywords separados por vírgulas...">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'pt',<?php echo $_POST['id']; ?>)">Salvar</button>
             </div>
         </div>
     </div>
@@ -135,12 +135,12 @@
         <div class="row">
             <h1>Español</h1>
             <?php
-                foreach($topicID as $key=>$val){
+                foreach($topicIDES as $key=>$val){
                     $images = $obj->find_by('topicsImages','tID',$_POST['id']);
             ?>
             <div class="col-xs-12 col-sm-6 col-md-4 box-content">
                 <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                    <h3 data-placement="top" title="Edit Topic"><a><?php echo $topicID[$key]['topicName'] ?></a></h3>
+                    <h3 data-placement="top" title="Edit Topic"><a><?php echo $topicIDES[$key]['topicName'] ?></a></h3>
                 </div>
             </div>
             <?php
@@ -161,12 +161,12 @@
         <div class="row">
             <h1>Português</h1>
             <?php
-                foreach($topicID as $key=>$val){
+                foreach($topicIDPT as $key=>$val){
                     $images = $obj->find_by('topicsImages','tID',$_POST['id']);
             ?>
             <div class="col-xs-12 col-sm-6 col-md-4 box-content">
                 <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                    <h3 data-placement="top" title="Edit Topic"><a><?php echo $topicID[$key]['topicName'] ?></a></h3>
+                    <h3 data-placement="top" title="Edit Topic"><a><?php echo $topicIDPT[$key]['topicName'] ?></a></h3>
                 </div>
             </div>
             <?php
@@ -198,5 +198,39 @@
         $('.addquote').hide(100);
     }
     
-    var save = function(){}
+    var save = function(el,lang,relationID){        
+        $(el).attr('disabled','disabled');
+        var topic = $('#tp-'+lang).val(),
+            keywords = $('#keywords-'+lang).val(),
+            arr = {};
+        if(topic && topic != '')
+            arr['topicName'] = topic;
+        if(keywords && keywords != '')
+            arr['keywords'] = keywords;
+        if(Object.keys(arr).length > 1){
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var table = 'topics_'+lang;
+                var insert_topic = insert(table,arr,generatedToken);
+                insert_topic.done(function(response){
+                    var lastTopic = limit(table,'topicID','topicID',1);
+                    lastTopic.done(function(data){                        
+                        var arr2={},
+                            uppercaseLang = lang.toUpperCase();
+                        arr2['t'+uppercaseLang+'_id']=data[0][0].topicID;
+                        var token2 = generateToken();
+                        token2.done(function(generatedToken2){
+                            var updateRelation = update('topics',arr2,relationID,generatedToken2);
+                            updateRelation.done(function(updated){
+                                topicsTranslation(relationID);
+                            });
+                        });
+                    });
+                });
+            });
+        } else{
+            $(el).removeAttr('disabled');
+            console.log('Error!');
+        }
+    }
 </script>

@@ -2097,15 +2097,21 @@ ul.p-social-link li a {
 .close:hover{cursor: pointer;}
 #image-box{margin-top: 10px; margin-bottom: 15px;}
 .img-container{margin-top: 10px;}
-.img-file{
+.img-file, .image-file{
     position: absolute;
-    z-index: 1500;
+    z-index: 1500 !important;
     width: 100%;
     height: 100%;
     top: 0;
     opacity: 0;
-}.img-file:hover{
-    cursor: pointer;
+}.img-file:hover,.image-file:hover{
+    cursor: pointer !important;
+}
+.image-file + .up-label{ /* FOR SINGLE IMAGES */
+    border: 1px dashed #eee !important;
+    left: 38px;
+    height: 100%;
+    z-index: 1000;
 }
 .up-label{
     font-family: 'Raleway', sans-serif;

@@ -47,7 +47,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Subir una imagen..." accept="image/*">          
+                <input type="file" class="form-control image-file" id="image" aria-describedby="image" placeholder="Subir una imagen..." accept="image/*">          
                 <span class="up-label">Subir una imagen...</span>
             </div>
         </div>

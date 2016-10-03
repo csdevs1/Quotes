@@ -47,7 +47,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
+                <input type="file" class="form-control image-file" id="image" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
                 <span class="up-label">Upload an image</span>
             </div>
         </div>
@@ -253,7 +253,6 @@
                                         arr2['topicID']=topicId[0][0].topicID;
                                         var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
                                         topicQuote.done(function(data){
-                                            var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
                                             $(el).removeAttr('disabled');
                                             el.innerHTML = "Saved!";
                                             setTimeout(function() {

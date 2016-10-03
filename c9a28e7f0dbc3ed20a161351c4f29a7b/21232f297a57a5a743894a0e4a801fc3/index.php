@@ -223,7 +223,7 @@
 
 
         <!-- js placed at the end of the document so the pages load faster -->
-        <script src="js/app.js"></script>
+        <script src="js/app.js?<?php echo time(); ?>"></script>
         <script src="js/load.js"></script>
         <script src="js/modernizr.min.js"></script>
         <script src="js/pace.min.js"></script>

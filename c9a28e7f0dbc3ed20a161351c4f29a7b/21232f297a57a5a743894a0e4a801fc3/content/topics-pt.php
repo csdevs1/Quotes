@@ -62,7 +62,7 @@
     <div class="row">
         <?php
             foreach($topics as $key=>$val){
-                $topicID = $obj->find_by('topics','tEN_id',$topics[$key]['topicID']);
+                $topicID = $obj->find_by('topics','tPT_id',$topics[$key]['topicID']);
                 $images = $obj->find_by('topicsImages','tID',$topicID[0]['id']);
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
@@ -70,6 +70,20 @@
             <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
                 <h3 data-placement="top" title="Edit Topic"><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
+            
+            <div class="col-xs-8 col-md-8">
+                Lang:
+                <?php if(isset($topicID[0]['tEN_id']) && !empty($topicID[0]['tEN_id'])){ ?>
+                <img src="images/eng.png" width="25px" height="25px">
+                <?php } ?>
+                <?php if(isset($topicID[0]['tPT_id']) && !empty($topicID[0]['tPT_id'])){ ?>
+                <img src="images/Portugal.png" width="25px" height="25px">
+                <?php } ?>
+                <?php if(isset($topicID[0]['tES_id']) && !empty($topicID[0]['tES_id'])){ ?>
+                <img src="images/es.png" width="25px" height="25px">
+                <?php } ?>
+            </div>
+            
         </div>
         <?php
             }
