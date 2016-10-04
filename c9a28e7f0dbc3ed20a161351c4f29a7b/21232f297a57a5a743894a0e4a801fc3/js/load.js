@@ -51,6 +51,10 @@ function topicsES(msg="",el) {
     document.getElementById("quotes-area").innerHTML="";
     $("#quotes-area").load("content/topics-spa.php",{msg:msg});
 }
+function topicsTranslation(id) {
+    document.getElementById("quotes-area").innerHTML="";
+    $("#quotes-area").load("content/topicsTranslation.php",{id:id});
+}
 $(document).ready(function(){
     english('','#eng');
 });

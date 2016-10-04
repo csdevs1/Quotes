@@ -66,6 +66,7 @@
                 $images = $obj->find_by('topicsImages','tID',$topicID[0]['id']);
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
+            <div class="circle-ref" onclick="topicsTranslation(<?php echo $topicID[0]['id']; ?>)"><?php echo $topicID[0]['id']; ?></div>
             <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
                 <h3 data-placement="top" title="Edit Topic"><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
