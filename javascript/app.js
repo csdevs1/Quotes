@@ -1,4 +1,11 @@
 'use strict'
+
+var $container = $('.masonry-container');
+    $container.masonry({
+        columnWidth: '.item',
+        itemSelector: '.item'
+    });
+
 $('.isotope-wrapper').each(function(){
     var $isotope = $('.isotope-box', this);
     $('#filters .filter').click(function() {
@@ -29,11 +36,11 @@ $(document).ready(function(){
     document.getElementById('background-video').removeAttribute("controls"); // Remove video control
     
     $('.modal-body').validator();
-    var $container = $('.masonry-container');
+/*    var $container = $('.masonry-container');
     $container.masonry({
         columnWidth: '.item',
         itemSelector: '.item'
-    });
+    });*/
     
     $('#arrow').on('click', function(event){
         $('#banner').removeClass('current');

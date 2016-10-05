@@ -31,7 +31,7 @@
         
         foreach($data as $key => $val){
             $cols[]=$key;
-            $vals[]='"'.$val.'"';
+            $vals[]='"'.str_replace('"','\"',$val).'"';
         }
         $col = implode(", " , $cols);
         $val= implode(", " , $vals);
