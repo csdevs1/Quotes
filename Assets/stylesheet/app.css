@@ -164,8 +164,7 @@ video{
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    height:70vh;
-    background-image: url('https://pixabay.com/get/e831b70d2ef1043ed1534705fb0938c9bd22ffd41db6144795f6c378a5/mountain-1462655_1920.jpg');
+    min-height:70vh;
     margin-bottom: 15px;
 }.banner-topic h1 {
     z-index: 1000;
@@ -190,13 +189,12 @@ video{
     margin-right: auto;
     border-radius: 50%;
     background-color: black;
-    background-image: url('https://i.imgur.com/gBTukGr.jpg');
     background-size: cover;
     background-position: top;
     box-shadow: -2px 1px 6px #000;
 }
 .banner-topic h1 p{
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     float: none;
     margin-left: auto;
     margin-right: auto;
@@ -625,6 +623,12 @@ video{
 
     /* Small Devices, Tablets */
     @media only screen and (min-width : 768px) {
+    }
+    @media only screen and (max-height : 768px) {
+        .banner-topic h1 {
+            position:relative;
+            top: 20%;
+        }
     }
 
     /* Medium Devices, Desktops */

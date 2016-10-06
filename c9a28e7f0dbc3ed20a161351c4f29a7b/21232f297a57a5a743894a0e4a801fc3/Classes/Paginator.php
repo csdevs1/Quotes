@@ -6,20 +6,20 @@
         private $_page;
         private $_total;
         
-        public function __construct($table,$row,$val){
+        public function __construct(){
             $this->obj = new AppController();
-            $this->_total = count($this->obj->custom("SELECT * FROM $table WHERE $row='$val'"));
+            $this->_total = count($this->obj->all('authors'));
         }
         
-        public function getData($table,$row,$val,$limit = 10, $page = 1){
+        public function getData($limit = 10, $page = 1){
             $this->_limit = $limit;
             $this->_page = $page;
             
             if($this->_limit=='all'){
-                $rs=$this->obj->find_by($table,$row,$val);
+                $rs=$this->obj->all('authors');
             } else{
                 $count = (($this->_page - 1 ) * $this->_limit ) . ", $this->_limit";
-                $rs=$this->obj->custom("SELECT * FROM $table WHERE $row='$val' ORDER BY quoteID LIMIT $count");
+                $rs=$this->obj->limit('*','authors',$count,'authorID');
             }
             
             $result = new stdClass();
@@ -30,7 +30,7 @@
             return $result;
         }
         
-        public function createLinks($links, $list_class,$URI){
+        public function createLinks($links, $list_class){
             if($this->_limit=='all')
                 return '';
             $last = ceil($this->_total / $this->_limit);
@@ -40,7 +40,7 @@
             $html = '<ul class="'.$list_class.'">';
             
             $class = ($this->_page==1) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page-1).'" role="prev"><span aria-hidden="true">&laquo;</span></a></li>';
+            $html .= '<li class="'.$class.'"><a href="/quotes/example/'.$this->_limit.'/'.($this->_page-1).'">&laquo;</a></li>';
             
             if($start > 1){
                 $html .='<li><a href="/'.$this->_limit.'/1">1</a></li>';
@@ -49,15 +49,15 @@
             
             for($i=$start;$i<=$end;$i++){
                 $class=($this->page==$i) ? "active" : "";
-                $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.$i.'">'.$i.'</a></li>';;
+                $html .= '<li class="'.$class.'"><a href="/quotes/example/'.$this->_limit.'/'.$i.'">'.$i.'</a></li>';;
             }
             
             if($end < $last){
                 $html .= '<li class="disabled"><span>...</span</li>';
-                $html .= '<li><a href="'.$URI.'/'.$this->_limit.'/'.$last.'">'.$last.'</a></li>';
+                $html .= '<li><a href="/quotes/example/'.$this->_limit.'/'.$last.'">'.$last.'</a></li>';
             }
             $class = ($this->_page == $last) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page + 1).'" role="next"><span aria-hidden="true">&raquo;</span></a></li>';
+            $html .= '<li class="'.$class.'"><a href="/quotes/example/'.$this->_limit.'/'.($this->_page + 1).'">&raquo;</a></li>';
             $html .= '</ul>';
             
             return $html;

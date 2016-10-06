@@ -51,9 +51,7 @@ document.getElementById("input-search").addEventListener("keyup", function(event
 /**/
 
 
-$(document).ready(function(){
-    document.getElementById('background-video').removeAttribute("controls"); // Remove video control
-    
+$(document).ready(function(){    
     $('.modal-body').validator();
 /*    var $container = $('.masonry-container');
     $container.masonry({
