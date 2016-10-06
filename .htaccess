@@ -6,3 +6,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # RewriteRule ^home$ index.php [NC]
 
 RewriteRule ^example/(.*)/(.*)$ pagination.php?limit=$1&page=$2
+ErrorDocument 404 /404.html

@@ -19,6 +19,18 @@ html {
 
 a, a:focus {text-decoration: none;}
 
+/* FOOTER */
+footer{box-shadow: 1px -1px 5px #eee;margin-top: 10px;}
+footer h3{font-family: 'Raleway', sans-serif; font-size: 2rem;}
+footer ul li a{font-family: 'Rubik', sans-serif; font-size: 1.5rem;text-decoration: none;color: #555;transition: all 0.5s;}footer ul li a:hover{color: #111;text-decoration: none;}
+footer ul li a i{font-size: 2rem;}
+footer ul li:nth-child(1) a:hover i{color: #3b5998;}
+footer ul li:nth-child(2) a:hover i{color: #4099FF;}
+footer ul li:nth-child(3) a:hover i{color: #3f729b;}
+footer div .input-group-addon{padding: 0;background: none;border: 0;}
+footer div #subscribe{border-top-left-radius: 0;border-bottom-left-radius: 0;font-weight: 600;font-size: 1.5rem; transition: all 0.5s;}
+/* FOOTER */
+
 .modal{z-index: 3000;}
 .modal h4{font-family: 'Raleway', sans-serif;font-weight: 900;font-size: 2rem;}
 .modal h4:nth-child(1n+3){font-size: 1.9rem;text-align: center;}
@@ -295,19 +307,19 @@ video{
             -webkit-transition: all 0.5s;
         }
             /* Quotes topcics background */
-                #motivational, #inspirational, #love, #life, #friendship, #leadership {
+                .topic-animation {
                     background-size: 100% 100%; transition: all 0.5s;
                     background-position: center;
                     -webkit-transition: all 0.5s;
                 }
-                #motivational:hover, #inspirational:hover, #love:hover, #life:hover, #friendship:hover, #leadership:hover{background-size: 110% 110%;transition: all 0.5s;
+                .topic-animation{background-size: 110% 110%;transition: all 0.5s;
             -webkit-transition: all 0.5s;}
-                #motivational{background-image: url('images/motivational.jpg');}
+                /*#motivational{background-image: url('images/motivational.jpg');}
                 #inspirational{background-image: url('images/inspirational.jpg');}
                 #love{background-image: url('http://lovewallpapers.org/wp-content/uploads/pinky-love.jpeg');}
                 #life{background-image: url('http://www.mortalflesh.com/wp-content/uploads/2016/02/feb25_what-is-life-660.jpg');}
                 #friendship{background-image: url('http://i.huffpost.com/gen/813511/images/o-FRIENDSHIP-facebook.jpg');}
-                #leadership{background-image: url('http://blogs-images.forbes.com/ryanwestwood/files/2015/02/humble-leader.jpg');}
+                #leadership{background-image: url('http://blogs-images.forbes.com/ryanwestwood/files/2015/02/humble-leader.jpg');}*/
 
     /*End of Topics */
 
@@ -332,8 +344,9 @@ video{
     font-family: 'Glegoo', serif;
     font-size: 1.5rem;
     position: relative;
-    border-left: 2px solid #ccc;
     transition: all 0.5s;
+}.quote .pad blockquote {
+    border-left: 2px solid #ccc;
 }
 .quote blockquote:before {
     position: absolute;
@@ -345,6 +358,15 @@ video{
 }
 
 .quote blockquote span {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    display: block;
+    text-align: right;
+    font-size: 1.3rem;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+.author-quote blockquote span {
     font-family: 'Raleway', sans-serif;
     font-weight: 700;
     display: block;
@@ -536,14 +558,15 @@ video{
     .water-mark{
         padding-left:5px;
         padding-right:5px;
-        height:30px;
+        height:40px;
         position:absolute;
         background: rgba(0,0,0,0.3);
         right:7px;
-        bottom:5px;
-        font-size:2rem;
+        bottom:6px;
+        font-size:3rem;
         z-index:4000;
         color:#eee;
+        font-family: 'Tangerine', cursive;
     }
 
     .img-file-container{position:relative;display:inline-block;}

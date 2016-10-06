@@ -16,6 +16,9 @@ Assets/videos
 #Ignore token test file.
 tokentest.html
 
+#Ignore token test file.
+index.php
+
 #Ignore token file.
 AppClasses/Token.php
 
