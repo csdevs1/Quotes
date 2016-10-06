@@ -1,5 +1,24 @@
 'use strict'
 
+// JUST FOR FUN
+var css = "text-shadow: -1px 1px 5px #555;color:red;font-size:1.5rem;";
+var css2 = "text-shadow: -1px 1px 5px #888;color:#000;font-size:1rem;";
+var css3 = "border: 2px solid #fff;border-radius: 25px;padding:20px;background:rgba(0,0,0,0.8);color:#fff;font-size:1rem;";
+var css4 = "color:#000;font-size:0.8rem;background-color:#555;color:#eee;padding:5px;";
+
+console.log("%cHey bro!%s", css, ' Welcome to PortalQuote');
+console.log("%cCheck out my site at:", css2);
+console.log("\n");
+console.log('%cgabrielpinangoresume.com.ve',css3);
+console.log("\n\n");
+console.log("%cOr I can take you there if you type:%s", css4, ' take_me();');
+
+var take_me = function(){
+	var win = window.open('https://gabrielpinangoresume.com.ve', '_blank');
+    win.focus();
+}
+// END OF JOY
+
 var $container = $('.masonry-container');
     $container.masonry({
         columnWidth: '.item',

@@ -308,11 +308,12 @@ video{
         }
             /* Quotes topcics background */
                 .topic-animation {
-                    background-size: 100% 100%; transition: all 0.5s;
+                    background-size: 100% 100%; 
+                    transition: all 0.5s;
                     background-position: center;
                     -webkit-transition: all 0.5s;
                 }
-                .topic-animation{background-size: 110% 110%;transition: all 0.5s;
+                .topic-animation:hover{background-size: 110% 110%;transition: all 0.5s;
             -webkit-transition: all 0.5s;}
                 /*#motivational{background-image: url('images/motivational.jpg');}
                 #inspirational{background-image: url('images/inspirational.jpg');}
