@@ -346,7 +346,7 @@ video{
     transition: all 0.5s;
 }.quote .pad blockquote {
     border-left: 2px solid #ccc;
-}
+}.quote .pad blockquote a {color: #222;transition: all 0.5s;}.quote .pad blockquote a:hover {color: #555;}
 .quote blockquote:before {
     position: absolute;
     left: 0;
