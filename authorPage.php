@@ -313,12 +313,59 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                 </div>
             </div>
         </section>
-
+        
         <div class="container">
             <nav aria-label="Page navigation">
                 <?php echo $Paginator->createLinks($links, 'pagination pagination-sm',dirname($_SERVER[REQUEST_URI])); ?> 
             </nav>
         </div>
+        
+        <!-- FOOTER -->        
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <h3>Follow us on</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="/" target="_blank" rel="external"  role="link"><i class="ion-social-facebook"></i>acebook</a></li>
+                            <li><a href="/" target="_blank" rel="external"  role="link"><i class="ion-social-twitter"></i> Twitter</a></li>
+                            <li><a href="/" target="_blank" rel="external"  role="link"><i class="ion-social-instagram-outline"></i> Instagram</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-6 col-sm-4">
+                        <h3>Site</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="/" role="link">Home</a></li>
+                            <li><a href="/" role="link">Authors</a></li>
+                            <li><a href="/" role="link">Topics</a></li>
+                            <li><a href="/" role="link">Quotes Generator</a></li>
+                        </ul>
+                    </div>
+                    <hr class="col-sm-12 visible-xs">
+                    <div class="col-sm-4">
+                        <h3>About Us</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="/" role="link" rel="help">Contact Us</a></li>
+                            <li><a href="/" role="link" rel="help">Terms</a></li>
+                            <li><a href="/" role="link" rel="help">Privacy</a></li>
+                        </ul>                        
+                    </div>
+                </div>
+                <div class="row">
+                    <hr class="col-sm-12">
+                    <div class="col-xs-12 col-sm-6">
+                        <h3>Subscribe to our newsletter</h3>
+                        <div class="form-group col-xs-12">
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="newsemail" placeholder="Enter your email" requird>
+                                <span class="input-group-addon"><input type="submit" id="subscribe" class="btn btn-primary" value="Subscribe"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
         <script src="../../javascript/app.js?<?php echo time(); ?>"></script>
         <script>
             $(window).scroll(function(){

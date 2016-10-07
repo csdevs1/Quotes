@@ -17,45 +17,58 @@ var generator = {
         $('#quote-container').append('<img src="'+imageUrl+'" id="quote-img" class="img-responsive">');
         // End of new content
         
-        //displayEditor();
+        displayEditor();
     },
     closeWindow:function(){ //Close Quote textarea
         document.getElementById('textarea-box').style.display="none";
+        displayEditor();
     },
     openWindow:function(){ // Open Quote textarea
         document.getElementById('textarea-box').style.display="block";
+        displayEditor();
     },
+    displayOptions:function(id){ // Open Quote textarea
+        $('.popover').not($('#'+id)).hide();
+        $('#'+id).slideToggle();
+    },    
     changeImage: function(el){
         var imageSrc = el.src;
         $('#quote-img').remove();
         $('#water-mark').css('display', 'block');
         $('#water-mark').addClass('water-mark');
         $('#quote-container').append('<img src="'+imageSrc+'" id="quote-img" class="img-responsive">');
+        displayEditor();
     },
     changeText: function(el){
         var text = el.value;
         document.getElementById('text').innerHTML=text;
-        //displayEditor();
+        displayEditor();
     },
     changeColor: function(el,id,cssAttr){
         var color = el.value;
         $(id).css(cssAttr, color);
-        //displayEditor();
+        displayEditor();
     },
     changeFont: function(el,alternFont){
         var font = el.innerHTML;
         $('#text').css('font-family', "'"+font+"',"+alternFont+"");
-        // displayEditor();
+        displayEditor();
     },
-    changeFontSize: function(el){
-        var size= el.value;
+    changeFontSize: function(el,size){
         $('#text').css('font-size', size+"px");
-        //displayEditor();
+        displayEditor();
     },
-    changeJustification: function(el){
-        var just= el.value;
+    textShadow: function(){
+        var x= document.getElementById('shadow-x').value+'px';
+        var y= document.getElementById('shadow-y').value+'px';
+        var blur = document.getElementById('shadow-blur').value+'px';
+        var color = document.getElementById('shadow-color').value;
+        $('#text').css('text-shadow', x+' '+ y + ' ' + blur + ' '+ color);
+        displayEditor();
+    },
+    changeJustification: function(el,just){
         $('#text').css('text-align', just);
-        //displayEditor();
+        displayEditor();
     },
     panelSlide: function(id) {
         $('.sub-panel').not($(id)).hide();
@@ -65,8 +78,35 @@ var generator = {
     }
 }
 
+function displayEditor(){
+    $('#quote-container').css('display','inline-block'); // Distplay Editor
+    if($('#generated').css('display')=='inline-block'){ // Hide Image
+        $('#generated').css('display','none');
+    }
+}
+
+function hideEditor(){
+  $('#quote-container').css('display','none'); //Hide Editor
+  $('#generated').css('display','inline-block'); //Show image container
+}
+
 $(document).ready(function() {
     $('#water-mark').css('display', 'none');
+    //Generate Image
+    $('#generate').click(function(){
+        html2canvas($("#quote-container"), {
+            allowTaint: true,
+            onrendered: function(canvas) {
+                document.getElementById('generated').innerHTML="";
+                $('#generated').prepend(canvas);
+                var dataURL = canvas.toDataURL();
+                canvas.id = "image-canvas";
+                //console.log(dataURL);
+                hideEditor();
+            }
+        });
+    });  
+    
     //Draggable element
     $("#text").draggable({scroll: false});
     

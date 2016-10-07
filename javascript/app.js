@@ -19,12 +19,6 @@ var take_me = function(){
 }
 // END OF JOY
 
-var $container = $('.masonry-container');
-    $container.masonry({
-        columnWidth: '.item',
-        itemSelector: '.item'
-    });
-
 $('.isotope-wrapper').each(function(){
     var $isotope = $('.isotope-box', this);
     $('#filters .filter').click(function() {
@@ -51,7 +45,13 @@ document.getElementById("input-search").addEventListener("keyup", function(event
 /**/
 
 
-$(document).ready(function(){    
+$(document).ready(function(){
+    var $container = $('.masonry-container');
+    $container.masonry({
+        columnWidth: '.item',
+        itemSelector: '.item'
+    });
+    
     $('.modal-body').validator();
 /*    var $container = $('.masonry-container');
     $container.masonry({

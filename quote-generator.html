@@ -25,6 +25,7 @@ $description = $meta_tags->meta_description();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
             <!--JQUERY LIBRARY -->
         <script src="https://cdn.jsdelivr.net/g/isotope@2.0.0(jquery.isotope.min.js)"></script>
         <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>        
@@ -88,27 +89,30 @@ $description = $meta_tags->meta_description();
             <div class="nav-container">
                 <header class="container">
                     <nav role="navigation">
+                        
                         <div class="container-fluid">
                             <!-- Brand and toggle get grouped for better mobile display -->
                             <div class="navbar-header">
                                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-items" aria-expanded="false" role="button">
                                     <span class="glyphicon glyphicon-send"></span>
                                 </button>
-                                <h2 class="navbar-toggle" style="float:left;">Awesome Quotes Website</h2>
-                            </div>                            
+                                <h2 class="navbar-toggle" style="float:left;">PortalQuote</h2>
+                            </div>
+                            
                             <div class="collapse navbar-collapse" id="menu-items">
                                 <ul class="nav navbar-nav">
                                     <li><a href="#One" role="link"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                                     <li><a href="#One" role="link">Topics</a></li>
                                     <li><a href="#Two" role="link">Authors</a></li>
                                     <li><a href="quote-generator.html">Quote Generator</a></li>
-                                    <li><button onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</button></li>
+                                    <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                                    <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
                                     <li><a href="#signup" role="link" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
                                 </ul>
-                            </div>                            
+                            </div>
+                            
                         </div>
                     </nav>
                 </header>
@@ -130,6 +134,80 @@ $description = $meta_tags->meta_description();
             <!-- -->
         </section>
         
+        <!-- SIGN UP FORM -->
+        <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="signuplLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
+                    </div>
+                    <div class="modal-body" role="form">
+                        
+                        <div class="form-group col-xs-12">
+                            <label for="fname" class="control-label">First Name</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ion-android-contact"></i></span>
+                                <input type="text" class="form-control" id="fname" data-error="Field required" aria-describedby="FirstName" placeholder="Enter First Name">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group col-xs-12">
+                            <label for="lname" class="control-label">Last Name</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ion-android-contact"></i></span>
+                                <input type="text" class="form-control" id="lname" data-error="Field required" aria-describedby="LastName" placeholder="Enter Last Name">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group col-xs-12">
+                            <label for="email" class="control-label">Email address</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="ion-android-mail"></i></span>
+                                <input type="email" class="form-control" id="email" data-error="Email address is invalid" aria-describedby="emailAddress" placeholder="Enter email" required>
+                            </div>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        
+                        <div class="form-group col-xs-12">
+                            <label for="passwd" class="control-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-sunglasses"></i></span>
+                                <input type="password" class="form-control" id="passwd" data-error="Min: 7, Max: 10" aria-describedby="password" minlength="7" maxlength="10" placeholder="Enter password" required>
+                            </div>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        
+                        <div class="form-group col-xs-12">
+                            <label for="gender" class="control-label">Gender</label>
+                            <div class="input-group col-xs-12">
+                                <select class="form-control">
+                                    <option role="option">F</option>
+                                    <option role="option">M</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <h4>Or sign up with</h4>
+                        <div class="form-group col-xs-12 social-network">
+                            <a href="" class="col-xs-12 col-md-4">
+                                <i class="ion-social-googleplus"></i> Gmail
+                            </a>
+                            <a  href="" class="col-xs-12 col-md-4">
+                                <i class="ion-social-facebook"></i> Facebook
+                            </a>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <!-- -->
+        
         <div class="col-xs-12 panel panel-main">
             <div class="container panel-container">
                 <div class="row">
@@ -137,9 +215,10 @@ $description = $meta_tags->meta_description();
                         <nav role="navigation">
                             <ul class="nav navbar-nav">
                                 <li id="background" onclick="generator.panelSlide('#background-section')"><span class="glyphicon glyphicon-picture"></span><br>Background</li>
-                                <li onclick="generator.openWindow()"><span class="glyphicon glyphicon-pencil"></span><br>Quote</li>
+                                <li onclick="generator.openWindow()"><i class="ion-quote"></i><br>Quote</li>
                                 <li id="fonts" onclick="generator.panelSlide('#font-style')"><span class="glyphicon glyphicon-font"></span><br>Font Style</li>
                                 <li><span class="glyphicon glyphicon-flash"></span><br>Effects</li>
+                                <li id="generate"><span class="glyphicon glyphicon-cd"></span><br>Generate</li>
                             </ul>
                         </nav>
                     </div>
@@ -214,16 +293,50 @@ $description = $meta_tags->meta_description();
                                             button
                                         </button>
                                         <span class="glyphicon glyphicon-align-left"></span><br>Alignment
-                                        <ul class="dropdown-menu" aria-labelledby="alignment-menu">
-                                            <li><span class="glyphicon glyphicon-align-center"></span> Center</li>
-                                            <li><span class="glyphicon glyphicon-align-left"></span> Left</li>
-                                            <li><span class="glyphicon glyphicon-align-right"></span> Right</li>
-                                            <li><span class="glyphicon glyphicon-align-justify"></span> Justify</li>
+                                        <ul class="dropdown-menu font-list" aria-labelledby="alignment-menu">
+                                            <li onclick="generator.changeJustification(this,'center')"><span class="glyphicon glyphicon-align-center"></span> Center</li>
+                                            <li onclick="generator.changeJustification(this,'left')"><span class="glyphicon glyphicon-align-left"></span> Left</li>
+                                            <li onclick="generator.changeJustification(this,'right')"><span class="glyphicon glyphicon-align-right"></span> Right</li>
+                                            <li onclick="generator.changeJustification(this,'justify')"><span class="glyphicon glyphicon-align-justify"></span> Justify</li>
                                         </ul>
                                     </div>
                                 </li>
-                                <li><span class="glyphicon glyphicon-resize-full"></span><br>Size</li>
-                                <li><span class="glyphicon glyphicon-adjust"></span><br>Font-Shadow</li>
+                                <li>
+                                    <div class="dropdown">
+                                        <button type="button" id="font-size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            button
+                                        </button>
+                                        <span class="glyphicon glyphicon-resize-full"></span><br>Size
+                                        <ul class="dropdown-menu font-list" aria-labelledby="font-size">
+                                            <li onclick="generator.changeFontSize(this,16)">16px</li>
+                                            <li onclick="generator.changeFontSize(this,32)">32px</li>
+                                            <li onclick="generator.changeFontSize(this,48)">48px</li>
+                                            <li onclick="generator.changeFontSize(this,64)">64px</li>
+                                            <li onclick="generator.changeFontSize(this,80)">80px</li>
+                                            <li onclick="generator.changeFontSize(this,80)">96px</li>
+                                            <li onclick="generator.changeFontSize(this,80)">112px</li>
+                                            <li onclick="generator.changeFontSize(this,80)">128px</li>
+                                            <li onclick="generator.changeFontSize(this,80)">144px</li>
+                                        </ul>
+                                    </div>
+                                    
+                                </li>
+                                <li>
+                                    <button type="button" id="font-shadow" style="width:100%;" onclick="generator.displayOptions('shadow-options')">
+                                        button
+                                    </button>
+                                    <span class="glyphicon glyphicon-adjust"></span><br>Font-Shadow
+                                    <div class="popover fade bottom in" role="tooltip" id="shadow-options" style="top: 55px;left:-120px;min-width:350px;z-index:5000;">
+                                        <div class="arrow" style="left: 50%;"></div>
+                                        <h3 class="popover-title">Font Shadow Options</h3>
+                                        <div class="popover-content">
+                                            <div class="col-xs-12" style="bottom: 5px;"><label>Shadow Color: <input type="color" id="shadow-color" oninput="generator.textShadow()"></label></div>
+                                            <div class="col-xs-12" style="bottom: 5px;"><label>Shadow Blur: <input type="range" id="shadow-blur" value="0" min="0" max="50" oninput="generator.textShadow()"></label></div>
+                                            <div class="col-xs-12 col-sm-6"><label>Shadow-X:<input type="range" id="shadow-x" value="0" min="-25" max="50" oninput="generator.textShadow()"></label></div>
+                                            <div class="col-xs-12 col-sm-6"><label>Shadow-Y:<input type="range" id="shadow-y" value="0" min="-25" max="50" oninput="generator.textShadow()"></label></div>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
                         </nav>
                     </div>
@@ -247,9 +360,14 @@ $description = $meta_tags->meta_description();
         
         <div class="col-xs-12 preview-container">
             <div class="content" id="quote-container">
-                <span class="text" id="text"></span>
-                
+                <!-- <div style="height:350px;width:350px;background:#fff;"></div> Do it later -->
+                <span class="text" id="text"></span>                
                 <span id="water-mark">PortalQuote</span>
+            </div>
+        </div>
+        
+        <div class="col-xs-12 preview-container">
+            <div class="content" id="generated">
             </div>
         </div>
         
