@@ -20,7 +20,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         else {
             return $string;
         }
-    }    
+    }
     
     // Get Author's Name
     $authorArr=explode("-",$_GET['name']);
@@ -36,7 +36,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         // META TAGS
         $meta_tags = new HeadTags();
         $title = $meta_tags->titlePage('Find The Best Quotes By '.$author);
-        $description = $meta_tags->meta_description("Find the best quotes from $author, ".$authorDescription[0]['profession'].", born in ".$authorDescription[0]['birth'].". Share with your frinds on Facebook, Twitter, Instagram...");
+        $description = $meta_tags->meta_description("Find the best quotes from $author, ".$authorDescription[0]['profession'].", born in ".$authorDescription[0]['birth'].". Share with your friends on Facebook, Twitter, Instagram...");
         $image = $authorDescription[0]['authorImage'];
         
         // Pagination
@@ -44,8 +44,8 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
         $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
         $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
-        $Paginator  = new Paginator('quotes_en','author',$author);
-        $quotesARR = $Paginator->getData('quotes_en','author',$author,$limit,$page);
+        $Paginator  = new Paginator("quotes_en WHERE author='$author'");
+        $quotesARR = $Paginator->getData("quotes_en WHERE author='$author'","quoteID",$limit,$page);
         //End of Pagination
 ?>
 

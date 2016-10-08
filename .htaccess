@@ -5,6 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^home$ index.php [NC]
 RewriteRule ^author/(.*)/(.*)$ authorPage.php?name=$1&page=$2
+RewriteRule ^authors/(.*)/(.*)$ authorsPage.php?page=$1&l=$2
 
 RewriteRule ^example/(.*)/(.*)$ pagination.php?limit=$1&page=$2
 ErrorDocument 404 /404.html

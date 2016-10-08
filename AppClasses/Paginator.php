@@ -6,12 +6,12 @@
         private $_page;
         private $_total;
         
-        public function __construct($table,$row,$val){
+        public function __construct($table){
             $this->obj = new AppController();
-            $this->_total = count($this->obj->custom("SELECT * FROM $table WHERE $row='$val'"));
+            $this->_total = count($this->obj->custom("SELECT * FROM $table"));
         }
         
-        public function getData($table,$row,$val,$limit = 10, $page = 1){
+        public function getData($table,$id,$limit = 10, $page = 1){
             $this->_limit = $limit;
             $this->_page = $page;
             
@@ -19,7 +19,7 @@
                 $rs=$this->obj->find_by($table,$row,$val);
             } else{
                 $count = (($this->_page - 1 ) * $this->_limit ) . ", $this->_limit";
-                $rs=$this->obj->custom("SELECT * FROM $table WHERE $row='$val' ORDER BY quoteID LIMIT $count");
+                $rs=$this->obj->custom("SELECT * FROM $table ORDER BY ".$id." LIMIT $count");
             }
             
             $result = new stdClass();
