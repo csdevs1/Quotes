@@ -1,4 +1,5 @@
 <?php
+if(isset($_GET['page']) && !empty($_GET['page'])){
     require_once('AppClasses/AppController.php');
     require_once 'AppClasses/Paginator.php';
     $obj = new AppController();
@@ -30,7 +31,7 @@
             $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
             $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
             $Paginator  = new Paginator("authors WHERE authorName LIKE '".$_GET['l']."%'");
-            $authors = $Paginator->getData("authors",$limit,$page);
+            $authorsArr = $Paginator->getData("authors WHERE authorName LIKE '".$_GET['l']."%'","authorID",$limit,$page);
         //End of Pagination
         
     } else{
@@ -217,7 +218,7 @@
                         <?php
                         foreach($alphas as $key=>$val){
                         ?>
-                            <li><a href="http://localhost/quotes/authors/<?php echo $val; ?>" role="link"><?php echo $val ?></a></li>
+                            <li><a href="http://localhost/quotes/authors/1/<?php echo $val; ?>" role="link"><?php echo $val ?></a></li>
                         <?php
                         }
                         ?>
@@ -231,6 +232,7 @@
             <div class="container">
                 <div class="row" itemtype="https://schema.org/Person">
                     <?php
+                    if(isset($authors) && !empty($authors)){
                         foreach($authors as $key=>$val){
                             $split=split(" ",strtolower($authors[$key]['authorName']));
                             $seoURL = join("-",$split);
@@ -241,6 +243,9 @@
                     </div>
                     <?php
                         }
+                    } else{
+                        echo "<h1>Sorry, authors not found!</h1>";
+                    }
                     ?>
                 </div>
             </div>
@@ -302,3 +307,9 @@
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-573fcd941c5a9279"></script>
     </body>
 </html>
+<?php
+} else{
+    include('404.html');
+    exit();
+}
+?>
