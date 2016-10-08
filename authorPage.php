@@ -109,11 +109,11 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                             </div>
                             
                             <div class="collapse navbar-collapse" id="menu-items">
-                                <ul class="nav navbar-nav">
-                                    <li><a href="#One" role="link"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                                    <li><a href="#One" role="link">Topics</a></li>
-                                    <li><a href="#Two" role="link">Authors</a></li>
-                                    <li><a href="quote-generator.html">Quote Generator</a></li>
+                                <ul class="nav navbar-nav" itemscope itemtype="http://www.schema.org/SiteNavigationElement">
+                                    <li itemprop="name"><a href="" role="link" itemprop="url"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                                    <li itemprop="name"><a href="" role="link" itemprop="url">Topics</a></li>
+                                    <li itemprop="name"><a href="" role="link" itemprop="url">Authors</a></li>
+                                    <li itemprop="name"><a href="quote-generator.html" itemprop="url">Quote Generator</a></li>
                                     <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
@@ -142,11 +142,12 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
             </div>
             <!-- -->
             
-            <h1>
+            <h1 itemtype="https://schema.org/Person">
+                <meta itemprop="image" content="<?php echo $image; ?>"></meta>
                 <div class="profile"></div>
-                <?php echo $author; ?>
-                <p class="col-xs-12 col-md-6 biography"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?><a href="<?php echo $authorDescription[0]['sourceURL'] ?>" target="_blank">Read more</a></p>
-                <p class="col-xs-12 col-md-6"><span>Profession: </span><?php echo $authorDescription[0]['profession'] ?></p><p class="col-xs-12 col-md-6"><span>Born: </span><?php echo $authorDescription[0]['birth'] ?> - <span>Died: </span> <?php echo $authorDescription[0]['died'] ?></p>
+                <span itemprop="author"><?php echo $author; ?></span>
+                <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?><a href="<?php echo $authorDescription[0]['sourceURL'] ?>" target="_blank">Read more</a></p>
+                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo $authorDescription[0]['profession'] ?></p><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $authorDescription[0]['birth'] ?></span> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $authorDescription[0]['died'] ?></span></p>
             </h1>
         </section>
         
@@ -255,14 +256,14 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                     }
                                 }
                         ?>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
+                        <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad">
                                 <?php 
                                     if(isset($qImage) && !empty($qImage)){
                                 ?>
                                     <img class="img-responsive" src="<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
                                 <?php } ?>
-                                <blockquote><?php echo $quote; ?>. <span>- <a href="" rel="author"><?php echo $author; ?></a></span></blockquote>
+                                <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $author; ?></a></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="<?php echo $author; ?> | PortalQuote"></div>
                                 <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                             </div>
@@ -320,34 +321,34 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
             </nav>
         </div>
         
-        <!-- FOOTER -->        
+        <!-- FOOTER -->
         <footer>
-            <div class="container">
+            <div class="container" itemscope itemtype="http://www.schema.org/SiteNavigationElement">
                 <div class="row">
                     <div class="col-xs-6 col-sm-4">
                         <h3>Follow us on</h3>
                         <ul class="list-unstyled">
-                            <li><a href="/" target="_blank" rel="external"  role="link"><i class="ion-social-facebook"></i>acebook</a></li>
-                            <li><a href="/" target="_blank" rel="external"  role="link"><i class="ion-social-twitter"></i> Twitter</a></li>
-                            <li><a href="/" target="_blank" rel="external"  role="link"><i class="ion-social-instagram-outline"></i> Instagram</a></li>
+                            <li><a href="/" target="_blank" role="link" rel="me" itemprop="sameAs"><i class="ion-social-facebook"></i>acebook</a></li>
+                            <li><a href="https://twitter.com/PortalQuote" target="_blank" role="link" rel="me" itemprop="sameAs"><i class="ion-social-twitter"></i> Twitter</a></li>
+                            <li><a href="/" target="_blank" role="link" rel="me" itemprop="sameAs"><i class="ion-social-instagram-outline"></i> Instagram</a></li>
                         </ul>
                     </div>
                     <div class="col-xs-6 col-sm-4">
                         <h3>Site</h3>
                         <ul class="list-unstyled">
-                            <li><a href="/" role="link">Home</a></li>
-                            <li><a href="/" role="link">Authors</a></li>
-                            <li><a href="/" role="link">Topics</a></li>
-                            <li><a href="/" role="link">Quotes Generator</a></li>
+                            <li itemprop="name"><a href="/" role="link" itemprop="url">Home</a></li>
+                            <li itemprop="name"><a href="/" role="link" itemprop="url">Authors</a></li>
+                            <li itemprop="name"><a href="/" role="link" itemprop="url">Topics</a></li>
+                            <li itemprop="name"><a href="/" role="link" itemprop="url">Quotes Generator</a></li>
                         </ul>
                     </div>
                     <hr class="col-sm-12 visible-xs">
                     <div class="col-sm-4">
                         <h3>About Us</h3>
                         <ul class="list-unstyled">
-                            <li><a href="/" role="link" rel="help">Contact Us</a></li>
-                            <li><a href="/" role="link" rel="help">Terms</a></li>
-                            <li><a href="/" role="link" rel="help">Privacy</a></li>
+                            <li itemprop="name"><a href="/" role="link" rel="help" itemprop="url">Contact Us</a></li>
+                            <li itemprop="name"><a href="/" role="link" rel="help" itemprop="url">Terms</a></li>
+                            <li itemprop="name"><a href="/" role="link" rel="help" itemprop="url">Privacy</a></li>
                         </ul>                        
                     </div>
                 </div>

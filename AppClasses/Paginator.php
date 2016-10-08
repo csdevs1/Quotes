@@ -40,7 +40,7 @@
             $html = '<ul class="'.$list_class.'">';
             
             $class = ($this->_page==1) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page-1).'" role="prev"><span aria-hidden="true">&laquo;</span></a></li>';
+            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page-1).'" rel="prev"><span aria-hidden="true">&laquo;</span></a></li>';
             
             if($start > 1){
                 $html .='<li><a href="/'.$this->_limit.'/1">1</a></li>';
@@ -57,7 +57,7 @@
                 $html .= '<li><a href="'.$URI.'/'.$this->_limit.'/'.$last.'">'.$last.'</a></li>';
             }
             $class = ($this->_page == $last) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page + 1).'" role="next"><span aria-hidden="true">&raquo;</span></a></li>';
+            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page + 1).'" rel="next"><span aria-hidden="true">&raquo;</span></a></li>';
             $html .= '</ul>';
             
             return $html;

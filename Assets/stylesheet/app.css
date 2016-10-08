@@ -204,7 +204,7 @@ video{
 .banner-topic h1 a{
     color: aquamarine;
 }
-.banner-topic h1 p span{
+.banner-topic h1 p .strong{
     font-weight: 900;
 }
 /*END OF QUOTES PAGE BANNER*/
