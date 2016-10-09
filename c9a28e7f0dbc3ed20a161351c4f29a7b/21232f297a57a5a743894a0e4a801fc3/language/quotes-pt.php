@@ -53,7 +53,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this)" id="save">Salvar</button>
             </div>
         </div>
     </div>
@@ -89,7 +89,7 @@
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Editar</a></p></div>
+                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>);">Editar</a></p></div>
                             </div>
                         </div>
                         <?php
@@ -183,6 +183,34 @@
         });
         
     });
+    
+    var openUpdate = function(quotID){
+        var quote = find_by('quotes_pt','quoteID',quotID);
+        $('#save').attr('onclick','update(this)');
+        document.getElementById('save').innerHTML="Update";
+        quote.done(function(data){
+            if(Object.keys(data[0][0]).length > 1){
+                $('#quote-form').show(500);
+                $('#quote').val(data[0][0].quote);
+                $('#author').val(data[0][0].author);
+                var getTopics = find_by('quotesTopicPT','quoteID',quotID);
+                getTopics.done(function(rel){
+                    for(var i in rel[0]){
+                        var topic = find_by('topics_pt','topicID',rel[0][i].topicID);
+                        topic.done(function(response){
+                            var val = document.getElementById('topic').value;
+                            if(document.getElementById('topic').value!=""){
+                                $('#topic').addTag(response[0][0].topicName);
+                            }else{
+                                $('#topic').addTag(response[0][0].topicName);
+                            }
+                            console.log($('#topic').val());
+                        });
+                    }
+                });
+            }
+        });
+    }
     
     $("#image").on("change", function(){
         var imgType = $(this).prop('files')[0].type;
