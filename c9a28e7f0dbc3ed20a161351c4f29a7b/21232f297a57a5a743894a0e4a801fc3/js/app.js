@@ -83,16 +83,35 @@ var insert = function(table,data,token,image=''){
     });
 }
 
-var update = function(table,arr,id,token,image=''){
+var update = function(table,arr,row,id,token,image=''){
     var formData = new FormData();
     formData.append("data", JSON.stringify(arr));
     formData.append("table", table);
+    formData.append("row", row);
     formData.append("id", id);
     formData.append("action", 'update');
     formData.append("token", token);
     if(image!=''){
         formData.append("image", image);
     }
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        processData: false,
+        contentType:  false,
+        data: formData,
+        url: 'Classes/GlobalController.php',
+        async:false
+    });
+}
+
+var delete_function = function(table,row,val,token){
+    var formData = new FormData();
+    formData.append("table", table);
+    formData.append("row", row);
+    formData.append("val", val);
+    formData.append("token", token);
+    formData.append("action", 'delete');
     return $.ajax({
         type: 'POST',
         dataType: 'json',

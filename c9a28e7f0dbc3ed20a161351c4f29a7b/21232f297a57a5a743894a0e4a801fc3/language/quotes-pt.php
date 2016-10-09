@@ -184,9 +184,28 @@
         
     });
     
+    $("#image").on("change", function(){
+        var imgType = $(this).prop('files')[0].type;
+        if(imgType.split('/')[0] == 'image'){
+            // Name of file and placeholder
+            var file = this.files[0].name;
+            var dflt = $(this).attr("placeholder");
+            if($(this).val()!=""){
+                $(this).next().text(file);
+            } else {
+                $(this).next().text(dflt);
+            }
+        } else {
+            document.getElementById("image").value = "";
+            $(this).next().text("Oops! Isso não é uma imagem!");
+        }
+    });
+    
     var openUpdate = function(quotID){
+        $('.tag').remove();
+        $('#topic').val('');
         var quote = find_by('quotes_pt','quoteID',quotID);
-        $('#save').attr('onclick','update(this)');
+        $('#save').attr('onclick','updateQuote(this,'+quotID+')');
         document.getElementById('save').innerHTML="Update";
         quote.done(function(data){
             if(Object.keys(data[0][0]).length > 1){
@@ -204,7 +223,6 @@
                             }else{
                                 $('#topic').addTag(response[0][0].topicName);
                             }
-                            console.log($('#topic').val());
                         });
                     }
                 });
@@ -212,22 +230,67 @@
         });
     }
     
-    $("#image").on("change", function(){
-        var imgType = $(this).prop('files')[0].type;
-        if(imgType.split('/')[0] == 'image'){
-            // Name of file and placeholder
-            var file = this.files[0].name;
-            var dflt = $(this).attr("placeholder");
-            if($(this).val()!=""){
-                $(this).next().text(file);
-            } else {
-                $(this).next().text(dflt);
+    var updateQuote = function(el, quotID){
+        el.innerHTML = "Updating...";
+        var quote = $('#quote').val(),
+            author = $('#author').val(),
+            topics = $('#topic').val();
+        if(!quote || quote==''){
+            console.log('Error quote');
+            $(el).removeAttr('disabled');
+            el.innerHTML = "Update";
+        }else if(!author || author==''){
+            console.log('Error author');
+            $(el).removeAttr('disabled');
+            el.innerHTML = "Update";
+        }else if(!topics || topics==''){
+            console.log('Error topic');
+            $(el).removeAttr('disabled');
+            el.innerHTML = "Update";
+        }else{
+            var arr = {};
+            arr['quote']=quote;
+            arr['author']=author;
+            if($('#image').val() && $('#image').val() !=''){
+                var image=$('#image').prop('files')[0];
             }
-        } else {
-            document.getElementById("image").value = "";
-            $(this).next().text("Oops! Isso não é uma imagem!");
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var quoteUpdate = update('quotes_pt',arr,'quoteID',quotID,generatedToken);
+                quoteUpdate.done(function(data){
+                    console.log(data);
+                    var token2 = generateToken();
+                    token2.done(function(generatedToken2){
+                        var deleteRel = delete_function('quotesTopicPT','quoteID',quotID,generatedToken2);
+                        deleteRel.done(function(delResponse){
+                            console.log(delResponse);
+                            var arr2={};
+                            arr2['quoteID']=quotID;
+                            var topic = topics.split(',');
+                            for(var i in topic){
+                                var topicSearch = find_by('topics_pt','topicName',topic[i]);
+                                topicSearch.done(function(topicId){
+                                    var token3 = generateToken();
+                                    token3.done(function(generatedToken3){
+                                        arr2['topicID']=topicId[0][0].topicID;
+                                        var topicQuote = insert('quotesTopicPT',arr2,generatedToken3);
+                                        topicQuote.done(function(data2){
+                                            console.log(data2);
+                                            $(el).removeAttr('disabled');
+                                            el.innerHTML = "Update!";
+                                            setTimeout(function() {
+                                                portuguese('Quote saved successfully!',document.getElementById('pt'));
+                                            }, 1000);
+                                        });
+                                    });
+                                });
+                            }
+                        });
+                    });
+                });
+            });
         }
-    });
+    }
     
     var save = function(el){
         $(el).attr('disabled','disabled');

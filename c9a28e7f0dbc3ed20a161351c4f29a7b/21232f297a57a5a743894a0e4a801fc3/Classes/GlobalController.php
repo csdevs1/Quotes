@@ -46,6 +46,7 @@
     }elseif(isset($_POST['id']) && !empty($_POST['id']) && isset($_POST['table']) && !empty($_POST['data']) && $_POST['action']=='update' && $token->check($_POST['token'])){ //check Token function
         $id = $_POST['id'];
         $table = $_POST['table'];
+        $row = $_POST['row'];
         $data = json_decode($_POST['data'],true);
         
         if(isset($_FILES['image']) && !empty($_FILES['image'])){
@@ -68,7 +69,7 @@
             $vals[] = "$key='$val'";
         }
         $values = implode(',',$vals);
-        $response =$obj->update($table,$values,$id);
+        $response =$obj->update($table,$values,$row,$id);
         if($response){
             $json_response = array('response'=>200,$response);
             echo json_encode($json_response);
@@ -76,7 +77,15 @@
             $json_response = array('response'=>400,$response);
             echo json_encode($json_response);
         }
-    } elseif(isset($_POST['table']) && isset($_POST['column']) && !empty($_POST['column']) && isset($_POST['order']) && !empty($_POST['order']) && $_POST['action']=='limit'){
+    }elseif($_POST['action']=='delete' && $token->check($_POST['token'])){
+        $val = $_POST['val'];
+        $row = $_POST['row'];
+        $table = $_POST['table'];
+        $response =$obj->delete($_POST['table'],$row,$val);        
+        $json_response = array('response'=>200,$response);
+        echo json_encode($json_response);
+    }
+    elseif(isset($_POST['table']) && isset($_POST['column']) && !empty($_POST['column']) && isset($_POST['order']) && !empty($_POST['order']) && $_POST['action']=='limit'){
         $table = $_POST['table'];
         $column = $_POST['column'];
         $order = $_POST['order'];

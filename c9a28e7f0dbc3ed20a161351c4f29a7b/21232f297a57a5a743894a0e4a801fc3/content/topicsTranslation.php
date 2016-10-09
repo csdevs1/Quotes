@@ -220,7 +220,7 @@
                         arr2['t'+uppercaseLang+'_id']=data[0][0].topicID;
                         var token2 = generateToken();
                         token2.done(function(generatedToken2){
-                            var updateRelation = update('topics',arr2,relationID,generatedToken2);
+                            var updateRelation = update('topics',arr2,'id',relationID,generatedToken2);
                             updateRelation.done(function(updated){
                                 topicsTranslation(relationID);
                             });

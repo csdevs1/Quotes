@@ -64,7 +64,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image-en" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
+                <input type="file" class="form-control image-file" id="image-en" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
                 <span class="up-label">Upload an image</span>
             </div>
         </div>
@@ -99,7 +99,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image-es" aria-describedby="image" placeholder="Subir imagen" accept="image/*">          
+                <input type="file" class="form-control image-file" id="image-es" aria-describedby="image" placeholder="Subir imagen" accept="image/*">          
                 <span class="up-label">Subir una imagen</span>
             </div>
         </div>
@@ -133,7 +133,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <span class="input-group-addon"><i class="ion-image"></i></span>                
+                <span class="input-group-addon image-file"><i class="ion-image"></i></span>                
                 <input type="file" class="form-control" id="image-pt" aria-describedby="image" placeholder="Adicionar uma imagem..." accept="image/*">          
                 <span class="up-label">Adicionar uma imagem...</span>
             </div>
@@ -277,7 +277,7 @@
                             arr3[lang+'_id']=dataID[0][0].quoteID;
                             var token2 = generateToken();
                             token2.done(function(generatedToken2){
-                                var quoteRelation = update('quotes',arr3,relationID,generatedToken2);
+                                var quoteRelation = update('quotes',arr3,'id',relationID,generatedToken2);
                                 quoteRelation.done(function(re){
                                     console.log('Rel: '+ re);
                                 });
