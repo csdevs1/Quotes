@@ -361,6 +361,7 @@ $description = $meta_tags->meta_description();
         
         <div class="col-xs-12 preview-container">
             <div class="content" id="quote-container">
+                <div class="processing"><img src="images/loading.gif"></div>
                 <!-- <div style="height:350px;width:350px;background:#fff;"></div> Do it later -->
                 <span class="text" id="text"></span>                
                 <span id="water-mark">PortalQuote</span>
@@ -369,6 +370,18 @@ $description = $meta_tags->meta_description();
         
         <div class="col-xs-12 preview-container">
             <div class="content" id="generated">
+            </div>
+            
+            <div class="container copy-form">
+                <div class="form-group col-xs-12 col-sm-6 copy-container">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="copyURL">
+                        <span class="input-group-addon" onclick="clickToCopy(this);"><button id="copy" class="btn btn-primary"><i class="glyphicon glyphicon-link"></i></button></span>
+                    </div>
+                </div>
+                <div class="col-xs-12 download col-sm-6 copy-container">
+                    <a href="" download><i class="glyphicon glyphicon-circle-arrow-down"></i> Download Image</a>
+                </div>
             </div>
         </div>
         
