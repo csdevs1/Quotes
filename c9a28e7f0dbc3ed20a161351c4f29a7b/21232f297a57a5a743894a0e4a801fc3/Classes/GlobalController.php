@@ -66,7 +66,7 @@
         }
         
         foreach($data as $key => $val){
-            $vals[] = "$key='$val'";
+            $vals[] = $key.'="'.str_replace('"','\"',$val).'"';
         }
         $values = implode(',',$vals);
         $response =$obj->update($table,$values,$row,$id);

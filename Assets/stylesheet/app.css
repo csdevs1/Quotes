@@ -596,14 +596,11 @@ video{
         position:relative;
     }
     .water-mark{
-        padding-left:5px;
-        padding-right:5px;
-        height:40px;
+        width: 100%;
         position:absolute;
         background: rgba(0,0,0,0.3);
-        right:7px;
-        bottom:6px;
-        font-size:3rem;
+        bottom:0px;
+        font-size:4.5rem;
         z-index:4000;
         color:#eee;
         font-family: 'Tangerine', cursive;

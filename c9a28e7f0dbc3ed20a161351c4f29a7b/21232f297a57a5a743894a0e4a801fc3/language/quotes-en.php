@@ -256,7 +256,7 @@
             }
             var token = generateToken();
             token.done(function(generatedToken){
-                var quoteUpdate = update('quotes_en',arr,'quoteID',quotID,generatedToken);
+                var quoteUpdate = update('quotes_en',arr,'quoteID',quotID,generatedToken,image);
                 quoteUpdate.done(function(data){
                     console.log(data);
                     var token2 = generateToken();
