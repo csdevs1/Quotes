@@ -146,6 +146,45 @@
         }
     });
     
+    // FB API INIT
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '{app-id}',
+            xfbml      : true,
+            version    : 'v2.8'
+        });
+    };
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    
+    function fb_publish(param){
+        var path = param.split(' ').join('-').toLowerCase();
+        var msg={message:'Check out my '+param,link: 'https://gabrielpinangoresume.com/'+path};
+        /*FB.login(function(){
+            // Note: The call will only work if you accept the permission request
+            FB.api('/me/feed', 'post', msg);
+        }, {scope: 'publish_actions'});*/
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                var uid = response.authResponse.userID;
+                var accessToken = response.authResponse.accessToken;
+                FB.api('/me/feed', 'post', msg,{scope: 'publish_actions'});
+            } else if (response.status === 'not_authorized') {
+                alert('not authorized');
+            } else {
+                FB.login(function(){
+                    // Note: The call will only work if you accept the permission request
+                    FB.api('/me/feed', 'post', msg);
+                }, {scope: 'publish_actions'});
+            }
+        });
+    }
+    
     var save = function(el){
         $(el).attr('disabled','disabled');
         el.innerHTML = "Saving";
@@ -195,6 +234,7 @@
                             $(el).removeAttr('disabled');
                             el.innerHTML = "Saved!";
                             console.log(data);
+                            fb_publish(author);
                             setTimeout(function() {
                                 authors('Author Saved correctly',document.getElementById('author-menu'));
                             }, 2000);
@@ -209,8 +249,9 @@
                 insert_author.done(function(data){
                     $(el).removeAttr('disabled');
                     el.innerHTML = "Saved!";
+                    fb_publish(author);
                     setTimeout(function() {
-                        //authors('Author Saved correctly',document.getElementById('author-menu'));
+                        authors('Author Saved correctly',document.getElementById('author-menu'));
                     }, 2000);
                 });
             });

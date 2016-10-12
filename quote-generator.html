@@ -49,10 +49,10 @@ $description = $meta_tags->meta_description();
         <meta name="description" content="<?php echo $description; ?>">
         <meta name="robots" content="index,follow">
             <!-- Facebook metatags -->
-        <meta property="od:site_name" content="PortalQuote">
-        <meta property="od:title" content="<?php echo $title; ?>">
-        <meta property="od:type" content="article">
-        <meta property="od:image" content="image">
+        <meta property="og:site_name" content="PortalQuote">
+        <meta property="og:title" content="<?php echo $title; ?>">
+        <meta property="og:type" content="article">
+        <meta property="og:image" content="image">
             <!-- Twitter metatags -->
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="<?php echo $title; ?>">
@@ -281,6 +281,7 @@ $description = $meta_tags->meta_description();
                                             <li onclick="generator.changeFont(this,'cursive')" id="poiret">Poiret One</li>
                                             <li onclick="generator.changeFont(this,'sans-serif')" id="quicksand">Quicksand</li>
                                             <li onclick="generator.changeFont(this,'sans-serif')" id="raleway">Raleway</li>
+                                            <li onclick="generator.changeFont(this,'cursive')" id="rogue">Rouge Script</li>
                                             <li onclick="generator.changeFont(this,'sans-serif')" id="rubik">Rubik</li>
                                         </ul>
                                     </div>
@@ -364,7 +365,7 @@ $description = $meta_tags->meta_description();
                 <div class="processing"><img src="images/loading.gif"></div>
                 <!-- <div style="height:350px;width:350px;background:#fff;"></div> Do it later -->
                 <span class="text" id="text"></span>                
-                <span id="water-mark">PortalQuote</span>
+                <span id="water-mark">PortalQuote.com</span>
             </div>
         </div>
         
@@ -380,7 +381,7 @@ $description = $meta_tags->meta_description();
                     </div>
                 </div>
                 <div class="col-xs-12 download col-sm-6 copy-container">
-                    <a href="" download><i class="glyphicon glyphicon-circle-arrow-down"></i> Download Image</a>
+                    <a href="" target="_blank" download><i class="glyphicon glyphicon-circle-arrow-down"></i> Download Image</a>
                 </div>
             </div>
         </div>

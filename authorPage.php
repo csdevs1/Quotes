@@ -78,10 +78,10 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         <meta name="description" content="<?php echo $description; ?>">
         <meta name="robots" content="index,follow">
             <!-- Facebook metatags -->
-        <meta property="od:site_name" content="PortalQuote">
-        <meta property="od:title" content="<?php echo $title; ?>">
-        <meta property="od:type" content="article">
-        <meta property="od:image" content="image">
+        <meta property="og:site_name" content="PortalQuote">
+        <meta property="og:title" content="<?php echo $title; ?>">
+        <meta property="og:type" content="article">
+        <meta property="og:image" content="image">
             <!-- Twitter metatags -->
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="<?php echo $title; ?>">

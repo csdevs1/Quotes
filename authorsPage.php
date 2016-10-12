@@ -42,7 +42,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
             $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
             $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
             $Paginator  = new Paginator('authors');
-            $authorsArr = $Paginator->getData("authors","authorID",$limit,$page);
+            $authorsArr = $Paginator->getData("authors","authorName",$limit,$page);
         //End of Pagination
     }
     $authors = $authorsArr->data;
@@ -77,10 +77,10 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
         <meta name="description" content="<?php echo $description; ?>">
         <meta name="robots" content="index,follow">
             <!-- Facebook metatags -->
-        <meta property="od:site_name" content="PortalQuote">
-        <meta property="od:title" content="<?php echo $title; ?>">
-        <meta property="od:type" content="article">
-        <meta property="od:image" content="image">
+        <meta property="og:site_name" content="PortalQuote">
+        <meta property="og:title" content="<?php echo $title; ?>">
+        <meta property="og:type" content="article">
+        <meta property="og:image" content="image">
             <!-- Twitter metatags -->
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="<?php echo $title; ?>">

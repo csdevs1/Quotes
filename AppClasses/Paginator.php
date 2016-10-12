@@ -11,7 +11,7 @@
             $this->_total = count($this->obj->custom("SELECT * FROM $table"));
         }
         
-        public function getData($table,$id,$limit = 10, $page = 1){
+        public function getData($table,$order,$limit = 10, $page = 1){
             $this->_limit = $limit;
             $this->_page = $page;
             
@@ -19,7 +19,7 @@
                 $rs=$this->obj->find_by($table,$row,$val);
             } else{
                 $count = (($this->_page - 1 ) * $this->_limit ) . ", $this->_limit";
-                $rs=$this->obj->custom("SELECT * FROM $table ORDER BY ".$id." LIMIT $count");
+                $rs=$this->obj->custom("SELECT * FROM $table ORDER BY ".$order." LIMIT $count");
             }
             
             $result = new stdClass();

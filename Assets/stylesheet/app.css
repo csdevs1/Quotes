@@ -4,6 +4,7 @@
 @import 'https://fonts.googleapis.com/css?family=Abel|Amatic+SC|Anton|Dancing+Script|Dosis|Josefin+Sans|Lobster|Lobster+Two|Modak|Muli|Open+Sans+Condensed:300|Oswald|Poiret+One|Quicksand|Raleway|Rubik';
 @import 'https://fonts.googleapis.com/css?family=Lobster';
 @import 'https://fonts.googleapis.com/css?family=Tangerine';
+@import 'https://fonts.googleapis.com/css?family=Rouge+Script';
 /**/
 
 body {
@@ -514,6 +515,7 @@ video{
 #poiret{font-family: 'Poiret One', cursive;}
 #quicksand{font-family: 'Quicksand', sans-serif;}
 #raleway{font-family: 'Raleway', sans-serif;}
+#rogue{font-family: 'Rouge Script', cursive;}
 #rubik{font-family: 'Rubik', sans-serif;}
 /*FONT-FAMILY*/
 
@@ -642,7 +644,7 @@ video{
         font-size:4.5rem;
         z-index:4000;
         color:#eee;
-        font-family: 'Tangerine', cursive;
+        font-family: 'Rouge Script', cursive;
     }
 
     .img-file-container{position:relative;display:inline-block;}
@@ -660,19 +662,23 @@ video{
     }
 }
 
-    .img-file-container{position:relative;display:inline-block;}
+    .img-file-container{position:relative;display:inline-block;overflow: hidden;}
     #img-file,.colorSelector {
         width:100%;
+        height: 100%;
         max-width:90px;
         position:absolute;
         opacity:0;
-        border:1px solid #000;
-        left: 0;
+        border:0px solid #000;
         top:0;
+        left: 0;
         bottom: 0;
         padding: 10px;
         z-index: 4000;
         cursor:pointer;
+    }
+    #img-file {
+        left: -10px;
     }
     .colorSelector{
         width: 100%;
