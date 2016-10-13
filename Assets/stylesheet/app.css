@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Glegoo);
+@import url(https://fonts.googleapis.com/css?family=Glegoo);
 
 /*Fonts for quote generatir*/
 @import 'https://fonts.googleapis.com/css?family=Abel|Amatic+SC|Anton|Dancing+Script|Dosis|Josefin+Sans|Lobster|Lobster+Two|Modak|Muli|Open+Sans+Condensed:300|Oswald|Poiret+One|Quicksand|Raleway|Rubik';
@@ -202,6 +202,29 @@ video{
     margin-top: 10px;
     font-weight: 400;
 }
+/*TOPIC PAGE*/
+    .banner-topic h1.topic-info{
+        padding: 50px;
+    }
+    .banner-topic h1 p.random-quote{
+        font-size: 2.5rem;
+        padding: 15px 0 5px;
+        font-family: 'Poiret One', cursive;
+        font-weight: 500;
+    }
+    .banner-topic h1 p.random-quote .quote:before{
+        position: relative;
+        left: -15px;
+        top:25px;
+        content:"\201C";
+        font-size: 3em;
+        color: #eee;
+        font-weight: 900;
+    }
+    .banner-topic h1 p.random-author{
+        font-size: 1.8rem;
+    }
+/*TOPIC PAGE*/
 .banner-topic h1 a{
     color: aquamarine;
 }

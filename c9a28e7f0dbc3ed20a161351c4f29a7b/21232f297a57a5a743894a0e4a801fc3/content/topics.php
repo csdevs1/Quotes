@@ -152,6 +152,35 @@
             $(el).next().text("Oops! that's not an image!");
         }
     }
+
+    // FB API INIT
+	window.fbAsyncInit = function() {
+                FB.init({
+                  appId      : '186483935126603',
+                  xfbml      : true,
+                  version    : 'v2.8'
+                });
+              };
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+            function postToPage(param) {
+                var page_id = '864112963723491';
+		var path = '/'+param.split(' ').join('-');
+                FB.api('/' + page_id, {fields: 'access_token'}, function(resp) {
+                    FB.api('/' + page_id + '/feed',
+                           'post',
+                           { message:'Check out these quotes about '+param+' at PortalQuote...',link:'https://portalquote.com/topic/'+path+'/1',access_token:
+                            'EAACpmyy1pEsBAOwhT8zJq5nT24Aet6joultEPRc4J6XvYqZCOleZCEU27jegDP8wyMBQCh8Y64s4TlnSvZABESiUFG2ilU9gVVKolNygNX3ebqDqrPw6nuJ3JBEmzns5EjToYEcCZBQqeWBrZBZCrGItZCppdZA8AN8PTp8ZCAr1ibwTOZChtBLVo7' }
+                           ,function(response) {
+                        console.log(response);
+                    });
+                });
+            }
     
     var save = function(el) {
         $(el).attr('disabled','disabled');
@@ -200,6 +229,7 @@
                                                         $(el).removeAttr('disabled');
                                                         el.innerHTML = "Saved!";
                                                         console.log('Done!');
+						postToPage(author);
                                                         setTimeout(function() {
                                                             topics('Topic Saved correctly',document.getElementById('topic-eng'));
                                                         }, 2000);
@@ -212,6 +242,7 @@
                                     $(el).removeAttr('disabled');
                                     el.innerHTML = "Saved!";
                                     console.log('Done!');
+					postToPage(author);
                                     setTimeout(function() {
                                         topics('Topic Saved correctly',document.getElementById('topic-eng'));
                                     }, 2000);

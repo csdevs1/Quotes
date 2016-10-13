@@ -1,5 +1,5 @@
 <?php
-if(isset($_GET['name']) && !empty($_GET['name'])){
+if(isset($_GET['topic']) && !empty($_GET['topic'])){
     require_once('AppClasses/AppController.php');
     require_once 'AppClasses/Paginator.php';
     $obj = new AppController();
@@ -23,29 +23,32 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
     }
     
     // Get Author's Name
-    $authorArr=explode("-",$_GET['name']);
-    foreach($authorArr as $key=>$val){
-        if($key != (count($authorArr)-1))
-           $author .= ucwords($val)." ";
+    $topicArr=explode("-",$_GET['topic']);
+    foreach($topicArr as $key=>$val){
+        if($key != (count($topicArr)-1))
+           $topic .= ucwords($val)." ";
         else
-            $author .= ucwords($val);
+            $topic .= ucwords($val);
     }
-    $authorDescription = $obj->find_by('authors','authorName',$author);
-    
-    if(isset($authorDescription) && !empty($authorDescription)){
+    $topicDescription = $obj->find_by('topics_en','topicName',$topic);
+
+    if(isset($topicDescription) && !empty($topicDescription)){
         // META TAGS
         $meta_tags = new HeadTags();
-        $title = $meta_tags->titlePage('Find The Best Quotes By '.$author);
-        $description = $meta_tags->meta_description("Find the best quotes from $author, ".$authorDescription[0]['profession'].", born in ".$authorDescription[0]['birth'].". Share with your friends on Facebook, Twitter, Instagram...");
-        $image = $authorDescription[0]['authorImage'];
-        
+        $title = $meta_tags->titlePage('Find The Best '.$topic.' Quotes');
+        $description = $meta_tags->meta_description("Find the best quotes from $topic, ".$topicDescription[0]['keywords']." and more by the best authors and famous people. Share with your friends on Facebook, Twitter, Instagram...");
+        $images = $obj->find_by('topicsImages','tID',$topicDescription[0]['topicID']);
+        $num = rand(0,count($images)-1); // TO SELECT A RANDOM IMAGE
         // Pagination
         //$quotes = $obj->find_by('quotes_en','author',$author);        
         $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
         $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
         $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
-        $Paginator  = new Paginator("quotes_en WHERE author='$author'");
-        $quotesARR = $Paginator->getData("quotes_en WHERE author='$author'","quoteID",$limit,$page);
+        $Paginator  = new Paginator("quotesTopicEN WHERE topicID='".$topicDescription[0]['topicID']."'");
+        $quotesARR = $Paginator->getData("quotesTopicEN WHERE topicID='".$topicDescription[0]['topicID']."'","id",$limit,$page);
+        $quoteData = $quotesARR->data;
+        $num2 = rand(0,count($quoteData)-1); // TO SELECT A RANDOM QUOTE
+        $randomQuote = $obj->find_by('quotes_en','quoteID',$quoteData[$num2]['quoteID']);
         //End of Pagination
 ?>
 
@@ -81,7 +84,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         <meta property="og:site_name" content="PortalQuote">
         <meta property="og:title" content="<?php echo $title; ?>">
         <meta property="og:type" content="article">
-        <meta property="og:image" content="<?php echo $image; ?>">
+        <meta property="og:image" content="<?php echo $images[$num]['img_url']; ?>">
         <meta property="og:description" content="<?php echo $description; ?>" />
             <!-- Twitter metatags -->
         <meta property="twitter:card" content="summary_large_image">
@@ -89,8 +92,9 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         <meta property="twitter:description" content="<?php echo $description; ?>">
         <meta property="twitter:image" content="<?php echo $image; ?>">
         <style>
-            .profile{
-                background-image: url('<?php echo $image; ?>');
+            .background{
+                background-image: url('<?php echo $images[$num]['img_url']; ?>');
+                background-position: top;
             }
         </style>
     </head>
@@ -143,12 +147,12 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
             </div>
             <!-- -->
             
-            <h1 itemtype="https://schema.org/Person">
-                <meta itemprop="image" content="<?php echo $image; ?>"></meta>
-                <div class="profile"></div>
-                <span itemprop="author"><?php echo $author; ?></span>
-                <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?><a href="<?php echo $authorDescription[0]['sourceURL'] ?>" target="_blank">Read more</a></p>
-                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo $authorDescription[0]['profession'] ?></p><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $authorDescription[0]['birth'] ?></span> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $authorDescription[0]['died'] ?></span></p>
+            <h1 class="topic-info" itemtype="https://schema.org/CreativeWork">
+                <meta itemprop="image" content="<?php echo $images[$num]['img_url']; ?>"></meta>
+                <meta itemprop="keywords" content="<?php echo $topicDescription[0]['keywords']; ?>"></meta>
+                <span><?php echo $topic; ?></span>
+                <p class="col-xs-12 col-md-6 biography random-quote" itemprop="citation"><span class="quote"><?php echo $randomQuote[0]['quote']; ?></span></p>
+                <p class="col-xs-12 col-md-6 biography random-author" itemprop="author"><span> - <?php echo $randomQuote[0]['author']; ?></span></p>
             </h1>
         </section>
         
@@ -225,34 +229,22 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
             </div>
         </div>        
         <!-- -->
-        
-        
-<!--        <div class="row">
-            <nav>
-                <ul class="menu" id="filters">
-                    <li><a  href="#One" class="filter" rel="*" name="isotope-filter">One</a></li>
-                    <li><a  href="#Two" class="filter" rel=".geek" name="isotope-filter">Two</a></li>
-                    <li><a  href="#Three" class="filter" rel=".nature" name="isotope-filter">Three</a></li>
-                    <li><a  href="#Four" class="filter" rel=".entertainment" name="isotope-filter">Four</a></li>
-                </ul>
-            </nav>
-        </div>
-        -->
+
         <section id="quotes-day" role="contentinfo">
             <div class="container">
                 <div class="row">
                     <div class="masonry-container">
                         <?php
-                            $quotes=$quotesARR->data;
-                            foreach($quotes as $key=>$val){
-                                $qID=$quotes[$key]['quoteID'];
-                                $quote=$quotes[$key]['quote'];
-                                $qImage=$quotes[$key]['quoteImage'];
-                                $topics = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
+                            foreach($quoteData as $key=>$val){
+                                $quotes = $obj->find_by('quotes_en','quoteID',$quoteData[$key]['quoteID']);
+                                $qID=$quotes[0]['quoteID'];
+                                $quote=$quotes[0]['quote'];
+                                $qImage=$quotes[0]['quoteImage'];
+                                $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
                                 $count=0;
-                                if(!empty($topics)){
-                                    foreach($topics as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
-                                        $arrEN[$count]=$topics[$key]['topicName']; // TOPIC'S NAME IN SPANISH
+                                if(!empty($topicsArr)){
+                                    foreach($topicsArr as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
+                                        $arrEN[$count]=$topicsArr[$key]['topicName']; // TOPIC'S NAME IN SPANISH
                                         $count++;
                                     }
                                 }
@@ -262,9 +254,9 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 <?php 
                                     if(isset($qImage) && !empty($qImage)){
                                 ?>
-                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
+                                    <img class="img-responsive" src="<?php echo $qImage; ?>" alt="<?php echo $quotes[0]['author']; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
                                 <?php } ?>
-                                <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $author; ?></a></span></blockquote>
+                                <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $quotes[0]['author']; ?></a></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="<?php echo $author; ?> | PortalQuote"></div>
                                 <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                             </div>
@@ -272,45 +264,6 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                         <?php
                             }
                         ?>
-                        <!--
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="images/1.jpg" alt="image description" title="Quote Tags">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                                <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                            </div>
-                        </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                        <div class="pad">
-                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                        <div class="pad">
-                            <img class="img-responsive" src="images/2.jpg" alt="image description" title="Quote Tags">
-                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                        <div class="pad">
-                            <img class="img-responsive" src="images/3.jpg" alt="image description" title="Love, Friendship, Family">
-                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                        <div class="pad">
-                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                        </div>
-                        </div>-->
                     </div>
                 </div>
             </div>
@@ -377,25 +330,17 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                     'opacity': ((height - scrollTop) / height)
                 });
             });
-            $(document).ready(function(){
-                function randomWallpaper(){
-                    // 1 -> 5
-                    var num = Math.floor(Math.random() * 5) + 1;
-                    $('.banner-topic').css({'background-image':'url(../../images/author-gallery/'+num+'.jpg)'});
-                }
-                randomWallpaper();
-            });
         </script>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-573fcd941c5a9279"></script>
     </body>
 </html>
 <?php 
-        } else{
+    } else{
             include('404.html');
             exit();
         }
-    }else{
+    } else{
         include('404.html');
         exit();
     }

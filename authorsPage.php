@@ -81,6 +81,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
         <meta property="og:title" content="<?php echo $title; ?>">
         <meta property="og:type" content="article">
         <meta property="og:image" content="image">
+        <meta property="og:description" content="<?php echo $description; ?>">
             <!-- Twitter metatags -->
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="<?php echo $title; ?>">
@@ -234,7 +235,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
                     <?php
                     if(isset($authors) && !empty($authors)){
                         foreach($authors as $key=>$val){
-                            $split=split(" ",strtolower($authors[$key]['authorName']));
+                            $split=explode(" ",strtolower($authors[$key]['authorName']));
                             $seoURL = join("-",$split);
                     ?>
                     <div class="col-xs-12 col-sm-6 author-list">
