@@ -10,11 +10,6 @@ $(document).ready(function(){
 var closeWindow=function(){
     $('#quote-form').hide(500);
     document.getElementById('add-quote').style.display='block';
-    $('#quote').val('');
-    $('#author').val('');
-    $('#topic').val('');
-    $('#image').val('');
-    
     // Change dynamically for every language
     $('.up-label').html('Upload an Image');
     $('#save').attr('onclick','save(this)');

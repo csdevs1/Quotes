@@ -10,12 +10,12 @@
         Tus frases
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Agrega una nueva frase</span></div>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Agrega una nueva frase</span></div>
 </div>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
-            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
+            <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
             <textarea placeholder="Ingresar frase..." maxlength="255" class="textarea" id="quote"></textarea>
@@ -183,6 +183,11 @@
         });
         
     });
+var clearFields=function(){
+        $('#author').val('');
+        $('#quote').val('');
+        $('.tag').remove();
+    }
     
     $("#image").on("change", function(){
         var imgType = $(this).prop('files')[0].type;

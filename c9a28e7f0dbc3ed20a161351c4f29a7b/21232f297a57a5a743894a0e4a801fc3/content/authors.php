@@ -2,7 +2,7 @@
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $authors = $obj->all('authors');
-    $countries = array('Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese','Puerto Rican', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian/Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean');
+    $countries = array('Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Puerto Rican', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian/Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean');
 
 ?>
 
@@ -11,13 +11,13 @@
         Authors
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
 </div>
 
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
-            <label onclick="closeWindow()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
+            <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
@@ -69,7 +69,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-university"></i></span>
-                <input type="text" class="form-control" id="url" data-error="Field required" aria-describedby="profession" placeholder="Source (URL)..." >
+                <input type="text" class="form-control" id="url" data-error="Field required" aria-describedby="url" placeholder="Source (URL)..." >
                 
             </div>
         </div>
@@ -82,7 +82,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this)" id="save">Save</button>
             </div>
         </div>
     </div>
@@ -96,8 +96,8 @@
             foreach($authors as $key=>$val){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
-            <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage'] ?>');">
-                <h3 data-placement="top" title="Edit Topic"><a><?php echo $authors[$key]['authorName'] ?></a></h3>
+            <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
+                <h3 data-placement="top" title="Edit Topic" onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"><a><?php echo $authors[$key]['authorName']; ?></a></h3>
             </div>
         </div>        
         <?php
@@ -128,7 +128,7 @@
     </nav>
 </div>
 
-<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button>
+<!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button>-->
 
 <script>
     $("#image").on("change", function(){
@@ -147,9 +147,109 @@
             $(this).next().text("Oops! that's not an image!");
         }
     });
+    
+    var clearFields=function(){
+        $('#author').val('');
+        $('#bdate').val('');
+        $('#pdate').val('');
+        $('#profession').val('');
+        $('#profile').val('');
+        $('#url').val('');
+        $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
+    }
+    
+    var openUpdate = function(authID){
+        var author = find_by('authors','authorID',authID);
+        $('#save').attr('onclick','updateAuthor(this,'+authID+')');
+        document.getElementById('save').innerHTML="Update";
+        author.done(function(data){
+            if(Object.keys(data[0][0]).length > 1){
+                $('#quote-form').show(500);
+                $('#author').val(data[0][0].authorName);
+                $('#bdate').val(data[0][0].birth);
+                $('#pdate').val(data[0][0].died);
+                $('#profession').val(data[0][0].profession);
+                $('#profile').val(data[0][0].bio);
+                $('#url').val(data[0][0].sourceURL);
+                $('#country option[value=""]').prop('selected', true);
+                $('#author').focus();
+            }
+        });
+    }
+    
+    
+    var updateAuthor = function(el, quotID){
+        $(el).attr('disabled','disabled');
+        el.innerHTML = "Updating";
+        var author = $('#author').val(),
+            birth=$('#bdate').val(),
+            country=$('#country').val(),
+            profession=$('#profession').val(),
+            bio=$('#profile').val(),
+            url=$('#url').val(),
+            arr = {};
+        if(author && author != '')
+            arr['authorName'] = author;
+        else
+            console.log('Error author');
+        if($('#bdate').val()!='')
+            arr['birth'] = birth;
+        else
+            console.log('Error Birthday');
+        if($('#pdate').val()!='')
+            arr['died'] = $('#pdate').val();
+        if($('#country').val()!='')
+            arr['nationality'] = country;
+        else
+            console.log('Error Country');
+        if($('#profession').val()!='')
+            arr['profession'] = profession;
+        else
+            console.log('Error profession');
+        if($('#profile').val()!='')
+            arr['bio'] = bio;
+        else
+            console.log('Error profile');
+        if($('#url').val()!='')
+            arr['sourceURL'] = url;
+        else
+            console.log('Error Source');
+        if($('#image').val()!=''){
+            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+                var token = generateToken();
+                token.done(function(generatedToken){
+                    var image = imgur_upload($('#image').prop('files')[0]);
+                    image.done(function(response){
+                        var url = response.data.link;
+                        arr['authorImage'] = url.replace('http','https');
+                        var update_author = update('authors',arr,'authorID',quotID,generatedToken);
+                        update_author.done(function(data){
+                            $(el).removeAttr('disabled');
+                            el.innerHTML = "Updated!";
+                            setTimeout(function() {
+                                authors('Author updated correctly',document.getElementById('author-menu'));
+                            }, 2000);
+                        });
+                    });
+                });
+            }
+        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var update_author = update('authors',arr,'authorID',quotID,generatedToken);
+                update_author.done(function(data){
+                    $(el).removeAttr('disabled');
+                    el.innerHTML = "Updated!";
+                    setTimeout(function() {
+                        authors('Author updated correctly',document.getElementById('author-menu'));
+                    }, 2000);
+                });
+            });
+        }
+    }
 
 // FB API INIT
-	/*window.fbAsyncInit = function() {
+	window.fbAsyncInit = function() {
                 FB.init({
                   appId      : '186483935126603',
                   xfbml      : true,
@@ -176,13 +276,13 @@
                     });
                 });
             }
-*/
-    var publish=function(){
+
+	var publish=function(){
         var authors=$('.inner-box h3 a').map(function(){return $(this).text();}).get();
         var i=0;
         var interval = setInterval(function() {
             postToPage(authors[i]);
-            if(i==(authors.length-1))
+            if(i==10)
                 clearInterval(interval);
             i++;
         }, 5*60000);
