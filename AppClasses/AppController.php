@@ -115,8 +115,8 @@
             }
         }
         
-        public function update($table,$values, $id){
-            $sql = "UPDATE $table SET $values WHERE id=$id";
+        public function update($table,$values,$row,$id){
+            $sql = "UPDATE $table SET $values WHERE $row=$id";
             //return $sql;
             $res = $this->save_record($sql);
             if($res){

@@ -174,7 +174,7 @@
                 FB.api('/' + page_id, {fields: 'access_token'}, function(resp) {
                     FB.api('/' + page_id + '/feed',
                            'post',
-                           { message:'Check out these quotes about '+param+' at PortalQuote...',link:'https://portalquote.com/topic/'+path+'/1',access_token:
+                           { message:'Check out these quotes about '+param+' at PortalQuote...',link:'https://portalquote.com/topic/quotes'+path+'/1',access_token:
                             'EAACpmyy1pEsBAOwhT8zJq5nT24Aet6joultEPRc4J6XvYqZCOleZCEU27jegDP8wyMBQCh8Y64s4TlnSvZABESiUFG2ilU9gVVKolNygNX3ebqDqrPw6nuJ3JBEmzns5EjToYEcCZBQqeWBrZBZCrGItZCppdZA8AN8PTp8ZCAr1ibwTOZChtBLVo7' }
                            ,function(response) {
                         console.log(response);
@@ -183,18 +183,21 @@
             }
     
     var save = function(el) {
-        $(el).attr('disabled','disabled');
+    $(el).attr('disabled','disabled');
         el.innerHTML = "Saving";
         var author = $('#topic').val(),
             keywords = $('#keywords').val(),
             images = $("input[name='images[]']").map(function(){return $(this).prop('files')[0];}).get(),
             arr = {};
-        if(author && author != '')
+        if(author && author != ''){
             arr['topicName'] = author;
+            var seo = author.replace(/["']/g, "");
+            arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+        }
         else
             console.log('Error topic');
         if(keywords && keywords != '')
-            arr['keywords'] = author;
+            arr['keywords'] = keywords;
         else
             console.log('Error keyword');
         if(arr['topicName'] != '' && arr['keywords'] != ''){

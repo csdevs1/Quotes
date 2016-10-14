@@ -23,15 +23,16 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
     }
     
     // Get Author's Name
-    $topicArr=explode("-",$_GET['topic']);
+   /* $topicArr=explode("-",$_GET['topic']);
     foreach($topicArr as $key=>$val){
         if($key != (count($topicArr)-1))
            $topic .= ucwords($val)." ";
         else
             $topic .= ucwords($val);
-    }
-    $topicDescription = $obj->find_by('topics_en','topicName',$topic);
-
+    }*/
+    $seourl = strtolower($_GET['topic']);
+    $topicDescription = $obj->find_by('topics_en','seo_url',$seourl);
+    $topic = $topicDescription[0]['topicName'];
     if(isset($topicDescription) && !empty($topicDescription)){
         // META TAGS
         $meta_tags = new HeadTags();
@@ -59,12 +60,12 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="http://portalquote.com<?php echo $_SERVER[REQUEST_URI]; ?>">
-        <link rel="icon" type="image/png" href="../../images/icon.png" />
+        <link rel="icon" type="image/png" href="../../../images/icon.png" />
         <title><?php echo $title; ?></title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/g/isotope@2.0.0(jquery.isotope.min.js)"></script>
         <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>        
-        <script src="../../javascript/smoothScroll.js"></script>
+        <script src="../../../javascript/smoothScroll.js"></script>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <!-- Latest compiled and minified JavaScript -->
@@ -73,9 +74,9 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
         <!-- End of Bootstrap -->
         <!-- IO ICONS -->
-        <link href="../../Assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
+        <link href="../../../Assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="../../Assets/stylesheet/app.css?<?php echo time(); ?>">
+        <link rel="stylesheet" href="../../../Assets/stylesheet/app.css?<?php echo time(); ?>">
         <!-- Meta tags -->
         <meta name="google" content="notranslate">
         <meta name="description" content="<?php echo $description; ?>">
@@ -321,7 +322,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
             </div>
         </footer>
         
-        <script src="../../javascript/app.js?<?php echo time(); ?>"></script>
+        <script src="../../../javascript/app.js?<?php echo time(); ?>"></script>
         <script>
             $(window).scroll(function(){
                 var scrollTop = $(window).scrollTop();

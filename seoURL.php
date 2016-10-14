@@ -1,5 +1,5 @@
 <?php
-    require_once 'AppClasses/Paginator.php';
+    /*require_once 'AppClasses/Paginator.php';
     $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
     $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
     $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
@@ -59,3 +59,19 @@
         <?php echo $Paginator->createLinks($links, 'pagination pagination-sm'); ?> 
     </body>
 </html>
+<?php */
+    require_once 'AppClasses/AppController.php';
+    $obj = new AppController();
+    $topics = $obj->all('topics_en');
+$remove[] = "'";
+$remove[] = '"';
+$remove[] = "-"; // just as another example
+
+    foreach($topics as $key=>$val){
+        $seoURL= str_replace($remove, "", $topics[$key]['topicName']);
+        $seoURL = explode(' ',$seoURL);
+        $seoURL = join('-',$seoURL);
+        $seoURL = strtolower($seoURL);
+        echo $obj->update('topics_en','seo_url="'.$seoURL.'"','topicID',$topics[$key]['topicID']).'<br>';
+    }
+?>

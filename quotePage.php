@@ -1,9 +1,7 @@
 <?php
-if(isset($_GET['name']) && !empty($_GET['name'])){
+if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     require_once('AppClasses/AppController.php');
-    require_once 'AppClasses/Paginator.php';
     $obj = new AppController();
-
     class HeadTags{
         public function titlePage($el) {
             return $el." at PortalQuote";
@@ -12,7 +10,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
             return $el;
         }
     }
-    
+
     function add3dots($string, $repl, $limit){
         if(strlen($string) > $limit){
             return substr($string, 0, $limit) . $repl;
@@ -21,37 +19,32 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
             return $string;
         }
     }
-    
-    // Get Author's Name
-    $authorArr=explode("-",$_GET['name']);
-    foreach($authorArr as $key=>$val){
-        if($key != (count($authorArr)-1))
-           $author .= ucwords($val)." ";
-        else
-            $author .= ucwords($val);
+    $quote=$obj->find_by('quotes_en','quoteID',$_GET['quoteid']);
+    $meta_tags = new HeadTags();
+    $title = $meta_tags->titlePage('Find The Best Quotes At PortalQuote');
+    $description = $meta_tags->meta_description('"'.$quote[0]['quote'].'" -'.$quote[0]['author'].". Share with your friends on Facebook, Twitter, Instagram...");
+    $topicsArr=$obj->custom("SELECT topics_en.topicID, topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quotesTopicEN.quoteID=".$quote[0]['quoteID']);
+    $count=0;
+    $topics=array();
+    foreach($topicsArr as $key=>$val){
+        $topics[$count]=$topicsArr[$key]['topicName'];
+        $count++;
     }
-    $authorDescription = $obj->find_by('authors','authorName',$author);
-    
-    if(isset($authorDescription) && !empty($authorDescription)){
-        // META TAGS
-        $meta_tags = new HeadTags();
-        $title = $meta_tags->titlePage('Find The Best Quotes By '.$author);
-        $description = $meta_tags->meta_description("Find the best quotes by $author, ".$authorDescription[0]['profession'].", born in ".$authorDescription[0]['birth'].". Share with your friends on Facebook, Twitter, Instagram...");
-        $image = $authorDescription[0]['authorImage'];
-        
-        // Pagination
-        //$quotes = $obj->find_by('quotes_en','author',$author);        
-        $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
-        $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
-        $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
-        $Paginator  = new Paginator("quotes_en WHERE author='$author'");
-        $quotesARR = $Paginator->getData("quotes_en WHERE author='$author'","quoteID",$limit,$page);
-        //End of Pagination
+    $topic=join(",",$topics);
+    if(isset($quote[0]['quoteImage']) && !empty($quote[0]['quoteImage']))
+        $image = "https://portalquote.com/images/quotes/".$quote[0]['quoteImage'];
+    else
+        $image = "image";
 ?>
 
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
+        <script type="text/javascript">
+            var host = "portalquote.com";
+            if ((host == window.location.host) && (window.location.protocol != "https:"))
+                window.location.protocol = "https";
+        </script>
         <meta charset="utf-8" />
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -60,8 +53,9 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         <title><?php echo $title; ?></title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/g/isotope@2.0.0(jquery.isotope.min.js)"></script>
-        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>        
-        <script src="../../../javascript/smoothScroll.js"></script>
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+        <script src="../javascript/smoothScroll.js"></script>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <!-- Latest compiled and minified JavaScript -->
@@ -70,32 +64,40 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
         <!-- End of Bootstrap -->
         <!-- IO ICONS -->
-        <link href="../../../Assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
+        <link href="../Assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="../../../Assets/stylesheet/app.css?<?php echo time(); ?>">
+        <link rel="stylesheet" href="../Assets/stylesheet/app.css?<?php echo time(); ?>">
         <!-- Meta tags -->
         <meta name="google" content="notranslate">
-        <meta name="description" content="<?php echo $description; ?>">
+        <meta name="description" content="<?php echo add3dots($description,'...',160); ?>">
         <meta name="robots" content="index,follow">
             <!-- Facebook metatags -->
         <meta property="og:site_name" content="PortalQuote">
         <meta property="og:title" content="<?php echo $title; ?>">
         <meta property="og:type" content="article">
-        <meta property="og:image" content="<?php echo $image; ?>">
-        <meta property="og:description" content="<?php echo $description; ?>" />
+        <meta property="og:image" content="image">
+        <meta property="og:description" content="<?php echo add3dots($description,'...',160); ?>">
             <!-- Twitter metatags -->
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:title" content="<?php echo $title; ?>">
-        <meta property="twitter:description" content="<?php echo $description; ?>">
+        <meta property="twitter:description" content="<?php echo add3dots($description,'...',160); ?>">
         <meta property="twitter:image" content="<?php echo $image; ?>">
         <style>
-            .profile{
-                background-image: url('<?php echo $image; ?>');
+            .quote .pad{margin-top: 20px;padding-bottom: 0 !important;}
+            .quote blockquote:before {
+                content:"";
             }
+            .large-card{margin-left: auto;margin-right: auto;float: none;}
+            .large-card blockquote{font-size: 1.7rem;}
+            .large-card blockquote span{font-size: 1.5rem;}
+            .large-card p{width: 100%;padding:5px;text-align: center;font-size: 3rem;color: #bbb;font-family: 'Rouge Script', cursive;}
+            #quoteImg{text-align: center;margin-top: 20px;}
+            #quoteImg img{margin-left: auto;margin-right: auto;}
+            #renderedCanva{visibility: hidden;}
         </style>
     </head>
     <body>
-        <section class="banner-topic background" id="banner" role="banner">
+        <section class="background" id="banner" role="banner">
             <div class="nav-container">
                 <header class="container">
                     <nav role="navigation">
@@ -142,14 +144,6 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                 </div>
             </div>
             <!-- -->
-            
-            <h1 itemtype="https://schema.org/Person">
-                <meta itemprop="image" content="<?php echo $image; ?>"></meta>
-                <div class="profile"></div>
-                <span itemprop="author"><?php echo $author; ?></span>
-                <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?><a href="<?php echo $authorDescription[0]['sourceURL'] ?>" target="_blank">Read more</a></p>
-                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo $authorDescription[0]['profession'] ?></p><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $authorDescription[0]['birth'] ?></span> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $authorDescription[0]['died'] ?></span></p>
-            </h1>
         </section>
         
         <!-- SIGN UP FORM -->
@@ -223,104 +217,33 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                     </div>
                 </div>
             </div>
-        </div>        
-        <!-- -->
-        
-        
-<!--        <div class="row">
-            <nav>
-                <ul class="menu" id="filters">
-                    <li><a  href="#One" class="filter" rel="*" name="isotope-filter">One</a></li>
-                    <li><a  href="#Two" class="filter" rel=".geek" name="isotope-filter">Two</a></li>
-                    <li><a  href="#Three" class="filter" rel=".nature" name="isotope-filter">Three</a></li>
-                    <li><a  href="#Four" class="filter" rel=".entertainment" name="isotope-filter">Four</a></li>
-                </ul>
-            </nav>
         </div>
-        -->
-        <section id="quotes-day" role="contentinfo">
+        <!-- -->        
+        <section id="original-content" role="contentinfo">
             <div class="container">
                 <div class="row">
-                    <div class="masonry-container">
-                        <?php
-                            $quotes=$quotesARR->data;
-                            foreach($quotes as $key=>$val){
-                                $qID=$quotes[$key]['quoteID'];
-                                $quote=$quotes[$key]['quote'];
-                                $qImage=$quotes[$key]['quoteImage'];
-                                $topics = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
-                                $count=0;
-                                if(!empty($topics)){
-                                    foreach($topics as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
-                                        $arrEN[$count]=$topics[$key]['topicName']; // TOPIC'S NAME IN SPANISH
-                                        $count++;
-                                    }
-                                }
-                        ?>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
-                            <div class="pad">
-                                <?php 
-                                    if(isset($qImage) && !empty($qImage)){
-                                ?>
-                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
-                                <?php } ?>
-                                <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $author; ?></a></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="<?php echo $author; ?> | PortalQuote"></div>
-                                <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                            </div>
-                        </div>
-                        <?php
-                            }
-                        ?>
-                        <!--
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="images/1.jpg" alt="image description" title="Quote Tags">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                                <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                            </div>
-                        </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
+                    <div class="col-xs-8 col-sm-7 col-md-6 col-lg-5 item quote large-card" id="original">
                         <div class="pad">
-                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                            <?php if(isset($quote[0]['quoteImage']) && !empty($quote[0]['quoteImage'])){ ?>
+                                <img class="img-responsive" src="../images/quotes/<?php echo $quote[0]['quoteImage']; ?>">
+                            <?php } ?>
+                            <blockquote><?php echo $quote[0]['quote']; ?> <span>- <?php echo $quote[0]['author']; ?></span></blockquote>
+                            <p>PortalQuote</p>
                         </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                        <div class="pad">
-                            <img class="img-responsive" src="images/2.jpg" alt="image description" title="Quote Tags">
-                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                        <div class="pad">
-                            <img class="img-responsive" src="images/3.jpg" alt="image description" title="Love, Friendship, Family">
-                            <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                        <div class="pad">
-                            <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- <a href="" rel="author">Albert Einstein</a></span></blockquote>
-                            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="Author's Name"></div>
-                            <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
-                        </div>
-                        </div>-->
                     </div>
                 </div>
             </div>
         </section>
         
-        <div class="container">
-            <nav aria-label="Page navigation">
-                <?php echo $Paginator->createLinks($links, 'pagination pagination-sm',dirname($_SERVER[REQUEST_URI])); ?> 
-            </nav>
-        </div>
+        <section role="contentinfo">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12" id="quoteImg">
+                        <img class="img-responsive" id="renderedCanva" title="<?php echo $quote[0]['author']; ?>" alt="<?php echo $topic;  ?>">
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <!-- FOOTER -->
         <footer>
@@ -367,36 +290,28 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                 </div>
             </div>
         </footer>
-        
-        <script src="../../../javascript/app.js?<?php echo time(); ?>"></script>
-        <script>
-            $(window).scroll(function(){
-                var scrollTop = $(window).scrollTop();
-                var height = $(window).height();
-                $('.banner-topic h1').css({
-                    'opacity': ((height - scrollTop) / height)
-                });
-            });
-            $(document).ready(function(){
-                function randomWallpaper(){
-                    // 1 -> 5
-                    var num = Math.floor(Math.random() * 5) + 1;
-                    $('.banner-topic').css({'background-image':'url(../../../images/author-gallery/'+num+'.jpg)'});
-                }
-                randomWallpaper();
-            });
-        </script>
+        <script src="../javascript/app.js?<?php echo time(); ?>"></script>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-573fcd941c5a9279"></script>
+        <script>
+            window.onload=function(){
+                html2canvas($("#original"), {
+                    allowTaint: true,
+                    onrendered: function(canvas) {
+                        var dataURL = canvas.toDataURL();
+                        document.getElementById('renderedCanva').src=dataURL;
+                        canvas.id = "image-canva";
+                        $('#original-content').hide();
+                        $('#renderedCanva').css('visibility','visible');
+                    }
+                });
+            }
+        </script>
     </body>
 </html>
-<?php 
-        } else{
-            include('404.html');
-            exit();
-        }
-    }else{
-        include('404.html');
-        exit();
-    }
+<?php
+} else{
+    include('404.html');
+    exit();
+}
 ?>
