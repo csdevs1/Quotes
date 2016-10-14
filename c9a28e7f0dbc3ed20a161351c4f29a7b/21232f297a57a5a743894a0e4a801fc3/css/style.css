@@ -2095,7 +2095,7 @@ ul.p-social-link li a {
 .form-group{position: relative;}
 .close{position: absolute;font-size: 3rem;left: 15px;top:5px;z-index: 2000}
 .close:hover{cursor: pointer;}
-#image-box{margin-top: 10px; margin-bottom: 15px;}
+#image-box,#image-box2{margin-top: 10px; margin-bottom: 15px;}
 .img-container{margin-top: 10px;}
 .img-file, .image-file{
     position: absolute;

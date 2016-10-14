@@ -1,4 +1,4 @@
-function addTextBox(){    
+function addTextBox(id){    
     var x = document.createElement("INPUT"); //file
     var image = document.createElement("IMG");
     var i_Tag = document.createElement("I");
@@ -33,8 +33,7 @@ function addTextBox(){
     col.appendChild(image);
     col.appendChild(x);
     col.appendChild(span);
-    
-    document.getElementById('image-box').appendChild(col);
+    document.getElementById(id).appendChild(col);
 }
 
 function deleteField(e) {
