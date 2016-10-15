@@ -274,7 +274,9 @@ var openUpdate=function(topID){
                                 token2.done(function(generatedToken2){
                                     var update_image = update('topicsImages',arr3,'id',imagesToUpdateID[count],generatedToken2);
                                     update_image.done(function(updated_img){
-                                        console.log(updated_img);
+                                        setTimeout(function() {
+                                            topics('Topic Updated correctly',document.getElementById('topic-eng'));
+                                        }, 2000);
                                     });
                                 });
                             });
@@ -295,18 +297,15 @@ var openUpdate=function(topID){
                                     token3.done(function(generatedToken3){
                                          var insertImages = insert('topicsImages',arr3,generatedToken3);
                                         insertImages.done(function(data2){
-                                            console.log(data2);
+                                            setTimeout(function() {
+                                                topics('Topic Updated correctly',document.getElementById('topic-eng'));
+                                            }, 2000);
                                         });
                                     });
                                 });
                             }
                         });
-                    }
-                    if(Object.keys(imagesToUpdate).length == 0 && Object.keys(images).length == 0){
-                        setTimeout(function() {
-                            topics('Topic Updated correctly',document.getElementById('topic-eng'));
-                        }, 2000);
-                    } else{
+                    }if(Object.keys(imagesToUpdate).length == 0 && Object.keys(images).length == 0){
                         setTimeout(function() {
                             topics('Topic Updated correctly',document.getElementById('topic-eng'));
                         }, 2000);
