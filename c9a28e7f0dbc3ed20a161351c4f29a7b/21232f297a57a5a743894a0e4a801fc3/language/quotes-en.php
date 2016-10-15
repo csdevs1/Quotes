@@ -1,4 +1,6 @@
 <?php
+    session_start();
+    
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $quotes = $obj->all('quotes_en');
@@ -10,7 +12,9 @@
         Your quotes
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
+    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0])){ //Permission to insert    ?>
+        <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
+    <?php } ?>
 </div>
 <div class="container quote-form" id="quote-form">
     <div class="row">
@@ -89,7 +93,9 @@
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>);">Edit</a></p></div>
+                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1])){ //Permission to insert    ?>
+                                    <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>);">Edit</a></p></div>
+                                <?php } ?>
                             </div>
                         </div>
                         <?php

@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if(!isset($_SESSION['userName']) && empty($_SESSION['userName'])){
+        header("Location:/quotes/c9a28e7f0dbc3ed20a161351c4f29a7b/21232f297a57a5a743894a0e4a801fc3/signin");
+    } else{
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,7 +36,7 @@
         <!-- Custom styles for this template -->
         <link href="css/style.css?<?php echo time(); ?>" rel="stylesheet">
         <link href="css/helper.css" rel="stylesheet">
-        <link href="css/style-responsive.css" rel="stylesheet" />
+        <link href="css/style-responsive.css?<?php echo time(); ?>" rel="stylesheet" />
         
         <link href="assets/tagsinput/jquery.tagsinput.css" rel="stylesheet" />
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
@@ -223,8 +230,8 @@
 
 
         <!-- js placed at the end of the document so the pages load faster -->
-        <script src="js/app.js?<?php echo time(); ?>"></script>
-        <script src="js/load.js"></script>
+	<script src="js/app.js?<?php echo time(); ?>"></script>
+        <script src="js/load.js?<?php echo time(); ?>"></script>
         <script src="js/modernizr.min.js"></script>
         <script src="js/pace.min.js"></script>
         <script src="js/wow.min.js"></script>
@@ -249,3 +256,4 @@
 
     </body>
 </html>
+<?php } ?>
