@@ -62,9 +62,10 @@
 <?php */
     require_once 'AppClasses/AppController.php';
     $obj = new AppController();
-    $topics = $obj->all('topics_en');
+    $topics = $obj->all('authors');
 $remove[] = "'";
 $remove[] = '"';
+$remove[] = '.';
 $remove[] = "-"; // just as another example
 
     foreach($topics as $key=>$val){
