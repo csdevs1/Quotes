@@ -35,11 +35,11 @@
 <meta property="og:site_name" content="PortalQuote">
 <meta property="og:title" content="<?php echo $title; ?>">
 <meta property="og:type" content="article">
-<meta property="og:image" content="image">
+<meta property="og:image" content="<?php echo $image; ?>">
 <meta property="og:description" content="<?php echo $description; ?>" />
     <!-- Twitter metatags -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:site" content="@portalquote">
 <meta property="twitter:title" content="<?php echo $title; ?>">
 <meta property="twitter:description" content="<?php echo $description; ?>">
-<meta property="twitter:image" content="image">
+<meta property="twitter:image" content="<?php echo $image; ?>">

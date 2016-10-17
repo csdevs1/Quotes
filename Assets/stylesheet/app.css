@@ -19,6 +19,7 @@ html {
 }
 
 a, a:focus {text-decoration: none;}
+.category-content,.card{transition:all 0.5s;}
 
 /* FOOTER */
 footer{box-shadow: 1px -1px 5px #eee;margin-top: 10px;}
@@ -447,7 +448,7 @@ video{
 
     .author-list{margin-top:20px;}
     .img-media{width:100px;height:100px;position:absolute;border:3px solid #fff;z-index:1000;left:-10px;top:0;}
-    .author-list h4{width:100%;padding:25px;top:5px;right:-2px;text-align:center;background:rgba(0,0,0,0.5);border-bottom-right-radius:2em;font-family: 'Josefin Sans', sans-serif;}
+    .author-list h4{width:100%;padding:25px;top:5px;right:-2px;text-align:center;background:rgba(0,0,0,0.5);border-bottom-right-radius:2em;border-top-right-radius:2em;font-family: 'Josefin Sans', sans-serif;}
     .author-list h4 a{color: #fff;font-size: 2rem;font-weight:900;transition: all 0.5s;}
     .author-list h4 a:hover{color: #eee;text-decoration: none;text-shadow: 1px 1px 3px #000;}
 /* END OF AUTHORS PAGE */
