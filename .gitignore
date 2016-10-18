@@ -25,6 +25,11 @@ AppClasses/Token.php
 #Ignore token generate files.
 AppClasses/GenerateToken.php
 
+#Ignore MAP FILES
+seoURL.php
+siteMap.php
+mapAuthors.php
+
 #Ignore token file.
 c9a28e7f0dbc3ed20a161351c4f29a7b/21232f297a57a5a743894a0e4a801fc3/Classes/Token.php
 

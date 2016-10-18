@@ -23,15 +23,15 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
     }
     
     // Get Author's Name
-    $authorArr=explode("-",$_GET['name']);
+   /* $authorArr=explode("-",$_GET['name']);
     foreach($authorArr as $key=>$val){
         if($key != (count($authorArr)-1))
            $author .= ucwords($val)." ";
         else
             $author .= ucwords($val);
-    }
-    $authorDescription = $obj->find_by('authors','authorName',$author);
-    
+    }*/
+    $authorDescription = $obj->find_by('authors','seo_url',$_GET['name']);
+    $author=$authorDescription[0][authorName];
     if(isset($authorDescription) && !empty($authorDescription)){
         // META TAGS
         $meta_tags = new HeadTags();
@@ -47,7 +47,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         $Paginator  = new Paginator("quotes_en WHERE author='$author'");
         $quotesARR = $Paginator->getData("quotes_en WHERE author='$author'","quoteID",$limit,$page);
         //End of Pagination
-        $folder='../../../';
+	$folder='../../../';
 ?>
 
 <!doctype html>
@@ -85,7 +85,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         </section>
         
         <!-- SIGN UP FORM -->
-        <?php include 'layouts/signup.php'; ?>
+        <?php include 'layouts/signup.php'; ?>     
         <!-- -->
         
         <section id="quotes-day" role="contentinfo">

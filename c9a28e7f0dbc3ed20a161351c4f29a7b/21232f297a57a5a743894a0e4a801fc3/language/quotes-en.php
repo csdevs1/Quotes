@@ -5,14 +5,13 @@
     $obj = new AppController();
     $quotes = $obj->all('quotes_en');
 ?>
-
 <!-- Load with Jquery Load function -->
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
         Your quotes
     </h3>
     <div class="clearfix"></div>
-    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0])){ //Permission to insert    ?>
+   <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0])){ //Permission to insert    ?>
         <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
     <?php } ?>
 </div>
@@ -22,7 +21,7 @@
             <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Insert your quote..." maxlength="255" class="textarea" id="quote"></textarea>
+            <textarea placeholder="Insert your quote..." maxlength="500" class="textarea" id="quote"></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
@@ -66,7 +65,7 @@
 <div id="portlet1" class="panel-collapse collapse in">
     <div class="portlet-body">
         <section role="contentinfo">
-            <div class="container">
+            <div class="">
                 <div class="row">
                     <div class="masonry-container">
                         
@@ -78,7 +77,7 @@
                             <div class="pad">
                                 <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
-                                    <img class="img-responsive" src="../../images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
+                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $quotes[$key]['quote']; ?> <span>- <?php echo $quotes[$key]['author']; ?></span></blockquote>
                                 <div class="col-xs-8 col-md-8">
@@ -101,46 +100,6 @@
                         <?php
                             }
                         ?>
-                        <!--
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/3.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/1.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/2.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        -->
                     </div>
                 </div>
             </div>
@@ -171,7 +130,15 @@
 </div>
 <!-- Load with Jquery Load function -->
 <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
-<script type="text/javascript">
+<script>
+    $(document).ready(function() {
+        var container = $('.masonry-container');
+        container.masonry({
+            columnWidth: '.item',
+            itemSelector: '.item'
+        });
+    });
+
     $(document).ready(function($) {
         // Tags Input
         $('#topic').tagsInput({width:'auto'});
@@ -189,7 +156,7 @@
         });
         
     });
-    var clearFields=function(){
+   var clearFields=function(){
         $('#author').val('');
         $('#quote').val('');
         $('.tag').remove();

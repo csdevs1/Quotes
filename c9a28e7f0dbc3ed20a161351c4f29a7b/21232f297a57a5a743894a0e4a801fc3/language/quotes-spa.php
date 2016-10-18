@@ -166,6 +166,13 @@
 <!-- Load with Jquery Load function -->
 <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
 <script type="text/javascript">
+    $(document).ready(function() {
+        var container = $('.masonry-container');
+        container.masonry({
+            columnWidth: '.item',
+            itemSelector: '.item'
+        });
+    });
     $(document).ready(function($) {
         // Tags Input
         $('#topic').tagsInput({width:'auto'});

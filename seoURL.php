@@ -69,10 +69,10 @@ $remove[] = '.';
 $remove[] = "-"; // just as another example
 
     foreach($topics as $key=>$val){
-        $seoURL= str_replace($remove, "", $topics[$key]['topicName']);
+        $seoURL= str_replace($remove, "", $topics[$key]['authorName']);
         $seoURL = explode(' ',$seoURL);
         $seoURL = join('-',$seoURL);
         $seoURL = strtolower($seoURL);
-        echo $obj->update('topics_en','seo_url="'.$seoURL.'"','topicID',$topics[$key]['topicID']).'<br>';
+        echo $obj->update('authors','seo_url="'.$seoURL.'"','authorID',$topics[$key]['authorID']).'<br>';
     }
 ?>

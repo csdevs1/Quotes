@@ -14,7 +14,7 @@
         <link rel="shortcut icon" href="img/favicon_1.ico">
         <title>Username - Quotes</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>   
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
         <!-- Google-Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
         
@@ -230,10 +230,10 @@
 
 
         <!-- js placed at the end of the document so the pages load faster -->
-	<script src="js/app.js?<?php echo time(); ?>"></script>
+        <script src="js/app.js?<?php echo time(); ?>"></script>
         <script src="js/load.js?<?php echo time(); ?>"></script>
         <script src="js/modernizr.min.js"></script>
-        <script src="js/pace.min.js"></script>
+        
         <script src="js/wow.min.js"></script>
         <script src="js/jquery.scrollTo.min.js"></script>
         <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
