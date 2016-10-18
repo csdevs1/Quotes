@@ -1,3 +1,9 @@
+<?php 
+    include('AppClasses/GmailLogin.php');
+    require_once('AppClasses/Token.php');
+    $tokenObj = new Token();
+    $token=$tokenObj->generate();
+?>
 <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="signuplLabel">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -53,15 +59,16 @@
                         
                         <h4>Or sign up with</h4>
                         <div class="form-group col-xs-12 social-network">
-                            <a href="" class="col-xs-12 col-md-4">
+                            <a  href="<?php echo $authUrl; ?>" class="col-xs-12 col-md-4">
                                 <i class="ion-social-googleplus"></i> Gmail
                             </a>
-                            <a  href="" class="col-xs-12 col-md-4">
+                            <a class="col-xs-12 col-md-4" onclick="fbLogin('<?php echo $token;  ?>');" style="cursor:pointer;">
                                 <i class="ion-social-facebook"></i> Facebook
                             </a>
                         </div>
                         
                     </div>
+                    <input type="hidden" name="token" id="token" value="<?php echo $token;  ?>">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary">Save</button>
