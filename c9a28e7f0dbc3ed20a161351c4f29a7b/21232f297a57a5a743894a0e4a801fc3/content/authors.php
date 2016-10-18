@@ -90,12 +90,12 @@
 
 
 <div class="container">
-    <div class="row">
+    <div class="row" id="row">
         
         <?php
             foreach($authors as $key=>$val){
         ?>
-        <div class="col-xs-12 col-sm-6 col-md-4 box-content">
+        <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
             <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
                 <h3 data-placement="top" title="Edit Topic" onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"><a><?php echo $authors[$key]['authorName']; ?></a></h3>
             </div>
@@ -107,7 +107,10 @@
 </div>
 
 <div class="container">
-    <nav aria-label="Page navigation">
+    <div class="paging-container row col-centered" id="tablePaging">
+    </div>
+    
+    <!--<nav aria-label="Page navigation">
         <ul class="pagination">
             <li>
                 <a href="#" aria-label="Previous">
@@ -125,12 +128,39 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav>-->
 </div>
 
 <!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button>-->
+<script src="js/pagination.js?<?php echo time(); ?>"></script>
 
 <script>
+    /*Pagination*/
+    var count = <?php echo count($authors); ?>;
+    $(function () {
+        load = function() {
+            window.tp = new Pagination('#tablePaging', {
+                itemsCount: count,
+                onPageSizeChange: function (ps) {
+                    console.log('changed to ' + ps);
+                },
+                onPageChange: function (paging) {
+                    //custom paging logic here
+                    console.log(paging);
+                    var start = paging.pageSize * (paging.currentPage - 1),
+                        end = start + paging.pageSize,
+                        $rows = $('#row').find('.data');
+                    $rows.hide();
+                    for (var i = start; i < end; i++) {
+                        $rows.eq(i).show();
+                    }
+                }
+            });
+        }
+        load();
+    });
+    /*Pagination*/
+    
     $("#image").on("change", function(){
         var imgType = $(this).prop('files')[0].type;
         if(imgType.split('/')[0] == 'image'){
@@ -155,7 +185,7 @@
         $('#profession').val('');
         $('#profile').val('');
         $('#url').val('');
-        $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
+        $('#country option[value=""]').prop('selected', true);
     }
     
     var openUpdate = function(authID){
@@ -171,7 +201,7 @@
                 $('#profession').val(data[0][0].profession);
                 $('#profile').val(data[0][0].bio);
                 $('#url').val(data[0][0].sourceURL);
-                $('#country option[value=""]').prop('selected', true);
+                $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
                 $('#author').focus();
             }
         });
@@ -188,8 +218,12 @@
             bio=$('#profile').val(),
             url=$('#url').val(),
             arr = {};
-        if(author && author != '')
+        if(author && author != ''){
             arr['authorName'] = author;
+            var seo = author.replace(/["']/g, "");
+            seo = seo.replace(/["-]/g, "");
+            arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+        }
         else
             console.log('Error author');
         if($('#bdate').val()!='')
@@ -298,8 +332,13 @@
             bio=$('#profile').val(),
             url=$('#url').val(),
             arr = {};
-        if(author && author != '')
+        if(author && author != ''){
             arr['authorName'] = author;
+            var seo = author.replace(/["']/g, "");
+            seo = seo.replace(/["-]/g, "");
+            arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+            console.log(arr['seo_url']);
+        }
         else
             console.log('Error author');
         if($('#bdate').val()!='')
