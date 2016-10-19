@@ -1,6 +1,6 @@
 window.fbAsyncInit = function() {
     FB.init({
-        appId      : '',
+        appId      : '1811295922425676',
         xfbml      : true,
         version    : 'v2.8'
     });
@@ -27,7 +27,7 @@ function fbLogin(token){
     });
 }
 function getInfo(token){
-    FB.api('/me', 'GET', {fields: 'first_name,last_name,email,id',access_token:''}, function(response) {
+    FB.api('/me', 'GET', {fields: 'first_name,last_name,email,id',access_token:'EAAZAvXTIKD0wBAAfUwosEK2Egl8mBLtzKYkfDIvCCda2VTabIXoHujxk3co3yK0zW4w8ZCxDHtOQpnNEzrur5SndLWj08QyaF7FPH9MF2df7r7Vorfa5gE1uLZCD2ZBv5wARLyNfJRmYcpizMGNG'}, function(response) {
        var checked=checkUser(response.email,token);
         checked.done(function(usrData){
             console.log(usrData);
