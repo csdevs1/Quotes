@@ -62,7 +62,37 @@
 <?php */
     require_once 'AppClasses/AppController.php';
     $obj = new AppController();
-    $topics = $obj->all('authors');
+    $arr=$obj->custom("SELECT SUM(total_count) as total, value
+FROM (
+
+SELECT count(*) AS total_count, REPLACE(REPLACE(REPLACE(x.value,'?',''),'.',''),'!','') as value
+FROM (
+SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(t.quote, ' ', n.n), ' ', -1) value
+  FROM quotes_en t CROSS JOIN 
+(
+   SELECT a.N + b.N * 10 + 1 n
+     FROM 
+    (SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+   ,(SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+    ORDER BY n
+) n
+ WHERE n.n <= 1 + (LENGTH(t.quote) - LENGTH(REPLACE(t.quote, ' ', '')))
+ ORDER BY value
+
+) AS x
+GROUP BY x.value
+
+) AS y
+GROUP BY value ORDER BY total DESC LIMIT 50;
+");
+foreach($arr as $key=>$val){
+    if(strlen($arr[$key]['value']) > 3){
+        echo $arr[$key]['value'].' - '.$arr[$key]['total'].'<br>';
+    }
+}
+
+
+    /*$topics = $obj->all('authors');
 $remove[] = "'";
 $remove[] = '"';
 $remove[] = '.';
@@ -74,5 +104,5 @@ $remove[] = "-"; // just as another example
         $seoURL = join('-',$seoURL);
         $seoURL = strtolower($seoURL);
         echo $obj->update('authors','seo_url="'.$seoURL.'"','authorID',$topics[$key]['authorID']).'<br>';
-    }
+    }*/
 ?>

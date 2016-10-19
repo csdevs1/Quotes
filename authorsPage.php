@@ -24,8 +24,8 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
     $alphas = range('A', 'Z');
     $meta_tags = new HeadTags();
     if(isset($_GET['l']) && !empty($_GET['l'])){
-        $title = $meta_tags->titlePage('Find Quotes From Authors By '.$_GET['l']);
-        $description = $meta_tags->meta_description("Find the best quotes from authors which name begins with '".$_GET['l']."'. Share with your friends on Facebook, Twitter, Instagram...");        
+        $title = $meta_tags->titlePage('Find Quotes From Authors By Letter \''.$_GET['l'].'\'');
+        $description = $meta_tags->meta_description("Find the best quotes from authors whose name starts with '".$_GET['l']."'. Share with your friends on Facebook, Twitter, Instagram...");
         // Pagination
             $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 14;
             $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
@@ -35,7 +35,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
         //End of Pagination
         
     } else{
-        $title = $meta_tags->titlePage("Find your favorite author at PortalQuote");
+        $title = $meta_tags->titlePage("Find Your Favorite Authors At PortalQuote");
         $description = $meta_tags->meta_description("Find the best quotes from your favorite authors regarding topics like love, friendship, family, motivational, inspirational and more. Share with your friends...");
         // Pagination
             $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 14;

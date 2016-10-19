@@ -19,8 +19,8 @@
  */
 require_once 'vendor/autoload.php';
 
-const CLIENT_ID = '748556331553-i0l9s3cethj3t791bogopglkj309f4l0.apps.googleusercontent.com';
-const CLIENT_SECRET = '4x0Bn4z8czcWHCpZ6djJzbNk';
+const CLIENT_ID = '';
+const CLIENT_SECRET = '';
 const REDIRECT_URI = 'http://localhost/quotes';
 
 session_start();

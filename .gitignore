@@ -19,6 +19,12 @@ tokentest.html
 #Ignore token test file.
 index.php
 
+#JS FBLogin
+javascript/fbLog.js
+
+#Ignore G+ file.
+AppClasses/GmailLogin.php
+
 #Ignore token file.
 AppClasses/Token.php
 

@@ -1,6 +1,9 @@
 User-agent: *
-Disallow: /c9a28e7f0dbc3ed20a161351c4f29a7b/
-Disallow: /AppClasses/
-Disallow: /font-awesome/
-Disallow: /javascript/
-Disallow: /layouts/
+Disallow: /c9a28e7f0dbc3ed20a161351c4f29a7b
+Disallow: /user
+Disallow: /AppClasses
+Disallow: /font-awesome
+Disallow: /javascript
+Disallow: /layouts
+
+Sitemap: https://portalquote.com/sitemap.xml
