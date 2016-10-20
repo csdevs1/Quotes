@@ -13,7 +13,6 @@
         Authors
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
 </div>
 
 <div class="container quote-form" id="quote-form">
@@ -97,6 +96,7 @@
         
         <?php
             foreach($authors as $key=>$val){
+                if(!empty($authors[$key]['authorName']) || !empty($authors[$key]['sourceURL']) || !empty($authors[$key]['birth']) || !empty($authors[$key]['profession']) || !empty($authors[$key]['nationality']) || !empty($authors[$key]['seo_url'])){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
             <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
@@ -104,6 +104,7 @@
             </div>
         </div>        
         <?php
+                }
             }
         ?>
     </div>
@@ -264,8 +265,7 @@
                             $(el).removeAttr('disabled');
                             el.innerHTML = "Updated!";
                             setTimeout(function() {
-                                clearFields();
-                                closeWindow();
+                                completedAuthors(document.getElementById('author-completed'));
                             }, 200);
                         });
                     });
@@ -279,134 +279,8 @@
                     $(el).removeAttr('disabled');
                     el.innerHTML = "Updated!";
                     setTimeout(function() {
-                        clearFields();
-                        closeWindow();
-                        //authors('Author updated correctly',document.getElementById('author-menu'));
+                        completedAuthors(document.getElementById('author-completed'));
                     }, 200);
-                });
-            });
-        }
-    }
-
-// FB API INIT
-	window.fbAsyncInit = function() {
-                FB.init({
-                  appId      : '186483935126603',
-                  xfbml      : true,
-                  version    : 'v2.8'
-                });
-              };
-            (function(d, s, id){
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {return;}
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-            function postToPage(param) {
-                var page_id = '864112963723491';
-		var path = '/'+param.split(' ').join('-');
-                FB.api('/' + page_id, {fields: 'access_token'}, function(resp) {
-                    FB.api('/' + page_id + '/feed',
-                           'post',
-                           { message:'Find the best quotes from '+param,link:'https://portalquote.com/author/quotes'+path+'/1',access_token:
-                            'EAACpmyy1pEsBAOwhT8zJq5nT24Aet6joultEPRc4J6XvYqZCOleZCEU27jegDP8wyMBQCh8Y64s4TlnSvZABESiUFG2ilU9gVVKolNygNX3ebqDqrPw6nuJ3JBEmzns5EjToYEcCZBQqeWBrZBZCrGItZCppdZA8AN8PTp8ZCAr1ibwTOZChtBLVo7' }
-                           ,function(response) {
-                        console.log(response);
-                    });
-                });
-            }
-
-	var publish=function(){
-        var authors=$('.inner-box h3 a').map(function(){return $(this).text();}).get();
-        var i=0;
-        var interval = setInterval(function() {
-            postToPage(authors[i]);
-            if(i==10)
-                clearInterval(interval);
-            i++;
-        }, 5*60000);
-    }
-    
-    var save = function(el){
-        $(el).attr('disabled','disabled');
-        el.innerHTML = "Saving";
-        var author = $('#author').val(),
-            birth=$('#bdate').val(),
-            country=$('#country').val(),
-            profession=$('#profession').val(),
-            bio=$('#profile').val(),
-            url=$('#url').val(),
-            arr = {};
-        if(author && author != ''){
-            if($('.error').css('display')=='inline-block'){
-                alert('Exist');
-                $(el).removeAttr('disabled');
-                el.innerHTML = "Save";
-            }else{
-                arr['authorName'] = author;
-                var seo = author.replace(/["']/g, "");
-                seo = seo.replace(/["-]/g, "");
-                arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
-                console.log(arr['seo_url']);
-            }
-        }
-        else
-            console.log('Error author');
-        if($('#bdate').val()!='')
-            arr['birth'] = birth;
-        else
-            console.log('Error Birthday');
-        if($('#pdate').val()!='')
-            arr['died'] = $('#pdate').val();
-        if($('#country').val()!='')
-            arr['nationality'] = country;
-        else
-            console.log('Error Country');
-        if($('#profession').val()!='')
-            arr['profession'] = profession;
-        else
-            console.log('Error profession');
-        if($('#profile').val()!='')
-            arr['bio'] = bio;
-        else
-            console.log('Error profile');
-        if($('#url').val()!='')
-            arr['sourceURL'] = url;
-        else
-            console.log('Error Source');
-        if($('#image').val()!=''){
-            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
-                var token = generateToken();
-                token.done(function(generatedToken){
-                    var image = imgur_upload($('#image').prop('files')[0]);
-                    image.done(function(response){
-                        var url = response.data.link;
-                        arr['authorImage'] = url.replace('http','https');
-                        var insert_author = insert('authors',arr,generatedToken);
-                        insert_author.done(function(data){
-                            $(el).removeAttr('disabled');
-                            el.innerHTML = "Saved!";
-                            console.log(data);
-				postToPage(author);
-                            setTimeout(function() {
-                                authors('Author Saved correctly',document.getElementById('author-menu'));
-                            }, 2000);
-                        });
-                    });
-                });
-            }
-        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
-            var token = generateToken();
-            token.done(function(generatedToken){
-                var insert_author = insert('authors',arr,generatedToken);
-                insert_author.done(function(data){
-                    $(el).removeAttr('disabled');
-                    el.innerHTML = "Saved!";
-			postToPage(author);
-                    setTimeout(function() {
-                        authors('Author Saved correctly',document.getElementById('author-menu'));
-                    }, 2000);
                 });
             });
         }

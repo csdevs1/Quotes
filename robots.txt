@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /c9a28e7f0dbc3ed20a161351c4f29a7b
+Disallow: /15c563887e7fe28109af91fda7a3532f/df93a32d352b782e852806917765483c
 Disallow: /user
 Disallow: /AppClasses
 Disallow: /font-awesome

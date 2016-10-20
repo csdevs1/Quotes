@@ -44,5 +44,6 @@
 </footer>
 <script src="<?php echo $folder; ?>javascript/fbLog.js?<?php echo time(); ?>"></script>
 <script src="<?php echo $folder; ?>javascript/app.js?<?php echo time(); ?>"></script>
+<script src="<?php echo $folder; ?>javascript/bf96ff3caa364a37a099b5080ddcfa8e/958f6f56cd42c904603d226cd36a57b6.js?<?php echo time(); ?>"></script>
 <!-- Go to www.addthis.com/dashboard to customize your tools -->
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-573fcd941c5a9279"></script>

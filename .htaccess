@@ -10,5 +10,8 @@ RewriteRule ^topic/quotes/(.*)/(.*)$ topicPage.php?topic=$1&page=$2
 RewriteRule ^quote/(.*)$ quotePage.php?quoteid=$1
 RewriteRule ^generate$ quote-generator.php
 
+#Controller
+RewriteRule ^15c563887e7fe28109af91fda7a3532f/df93a32d352b782e852806917765483c$ AppClasses/SignUp.php
+
 RewriteRule ^example/(.*)/(.*)$ pagination.php?limit=$1&page=$2
 ErrorDocument 404 http://localhost/quotes/404.html

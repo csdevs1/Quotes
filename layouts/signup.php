@@ -50,7 +50,7 @@
                         <div class="form-group col-xs-12">
                             <label for="gender" class="control-label">Gender</label>
                             <div class="input-group col-xs-12">
-                                <select class="form-control">
+                                <select class="form-control" id="gender">
                                     <option role="option">F</option>
                                     <option role="option">M</option>
                                 </select>
@@ -71,7 +71,7 @@
                     <input type="hidden" name="token" id="token" value="<?php echo $token;  ?>">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-primary" id="save">Sign up</button>
                     </div>
                 </div>
             </div>

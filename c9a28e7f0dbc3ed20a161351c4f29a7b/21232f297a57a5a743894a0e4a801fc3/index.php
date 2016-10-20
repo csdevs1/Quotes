@@ -73,7 +73,14 @@
                             <li onclick="topicsPT('',this)" id="topic-pt"><a>Portuguese</a></li>
                         </ul>
                     </li>
-                    <li class="has-submenu" onclick="authors('',this)" id="author-menu"><a><i class="ion-android-contacts"></i> <span class="nav-label">Authors</span></a></li>
+                    <li class="has-submenu" id="author-menu"><a><i class="ion-android-contacts"></i> <span class="nav-label">Authors</span></a>
+                        <ul class="list-unstyled lang-nav">
+                            <li onclick="authors('',this)"><a>All Authors</a></li>
+                            <li onclick="uncompletedAuthors(this)" id="author-uncompleted"><a>Uncompleted Authors</a></li>
+                            <li onclick="completedAuthors(this)" id="author-completed"><a>Completed Authors</a></li>
+                        </ul>
+                    </li>
+                    <!--<li class="has-submenu" onclick="authors('',this)" id="author-menu"><a><i class="ion-android-contacts"></i> <span class="nav-label">Authors</span></a></li>-->
                     <li class="has-submenu"><a><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
                 </ul>
             </nav>

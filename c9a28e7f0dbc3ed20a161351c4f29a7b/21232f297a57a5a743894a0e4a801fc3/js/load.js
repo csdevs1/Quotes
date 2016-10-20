@@ -30,6 +30,22 @@ function authors(msg="",el) {
     document.getElementById("quotes-area").innerHTML="";
     $("#quotes-area").load("content/authors.php",{msg:msg});
 }
+/*AUTHORS*/
+    function uncompletedAuthors(el) {
+        $('.lang-nav li').not(el).removeClass('active');
+        $('.has-submenu').not(el).removeClass('active');
+        $(el).addClass('active');
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/uncompletedAuthors.php");
+    }
+    function completedAuthors(el) {
+        $('.lang-nav li').not(el).removeClass('active');
+        $('.has-submenu').not(el).removeClass('active');
+        $(el).addClass('active');
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/completedAuthors.php");
+    }
+/*AUTHORS*/
 function topics(msg="",el) {
     $('.lang-nav li').not(el).removeClass('active');
     $('.has-submenu').not('#topics-menu').removeClass('active');

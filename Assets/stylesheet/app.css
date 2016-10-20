@@ -50,6 +50,28 @@ footer div #subscribe{border-top-left-radius: 0;border-bottom-left-radius: 0;fon
 .social-network a:hover{text-decoration: none;}
 .social-network a:nth-child(1){background:#ff3333;margin-right: 10px;}
 .social-network a:nth-child(2){background:#4e69a2;}
+
+    /*ERROR ANIMATION*/
+    .error-box{
+        -webkit-animation: shining 0.5s 1 cubic-bezier(.25, 0.5, .5, 1.25);
+        -moz-animation: shining 0.5s 1 cubic-bezier(.25, 0.5, .5, 1.25);
+        animation: shining 0.5s 1 cubic-bezier(.25, 0.5, .5, 1.25);
+        transition: all 0.5s;
+        box-shadow: 1px -1px 3px #ff5555,-1px 1px 3px #ff5555;
+    }
+    @keyframes shining {
+        0% {
+            box-shadow: 1px -1px 3px #ff5555,-1px 1px 3px #ff5555;
+        }
+        50% {
+            box-shadow: 1px -1px 4px #ff2222,-1px 1px 6px #ff2222;
+        }
+        100% {
+            box-shadow: 1px -1px 3px #ff5555,-1px 1px 3px #ff5555;
+        }
+}
+    
+    /*ERROR ANIMATION*/
 /*End of sign up form*/
 
 .background {

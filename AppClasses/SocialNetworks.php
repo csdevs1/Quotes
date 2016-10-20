@@ -16,6 +16,12 @@
                 return $user; //CHECK IF EMAIL EXIST WITH A SQL QUERY, IF NOT SAVE IN DB, ELSE LOGIN
             }
         }
+        
+        public function signup($password){
+            if(isset($password) && !empty($password) && isset($this->email) && !empty($this->email)){
+                //SAVE USER
+            }
+        }
     }
 
     if(isset($_POST['action'])=='check' && isset($_POST['token']) && $token->check($_POST['token'])){
