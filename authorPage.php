@@ -33,12 +33,27 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
     $authorDescription = $obj->find_by('authors','seo_url',$_GET['name']);
     $author=$authorDescription[0][authorName];
     if(isset($authorDescription) && !empty($authorDescription)){
+        $professionArr = $obj->find_by('authorProfession','authorID',$authorDescription[0]['authorID']); // GET PROFESSIONS ID
+        $profession=array();
+        foreach($professionArr as $key=>$val){
+            $professions = $obj->find_by('professions','professionID',$professionArr[$key]['professionID']); // GET PROFESSIONS
+            foreach($professions as $key2=>$val2){
+                $profession[]= $professions[$key2]['professionName'];
+            }
+        }
+        //GET BIRTHDAY AND DEAD
+        $birthdate=date_create($authorDescription[0]['birth']);
+        $born=date_format($birthdate, 'F j, Y');
+         if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){
+             $dDate=date_create($authorDescription[0]['died']);
+             $dDate=date_format($dDate, 'F j, Y');
+         }
+        
         // META TAGS
         $meta_tags = new HeadTags();
         $title = $meta_tags->titlePage('Find The Best Quotes From '.$author);
-        $description = $meta_tags->meta_description("Find the best quotes by $author, ".$authorDescription[0]['profession'].", born in ".$authorDescription[0]['birth'].". Share with your friends on Facebook, Twitter, Instagram...");
+        $description = $meta_tags->meta_description("Find the best quotes by $author, ".join(', ',$profession).", born in ".$born.". Share with your friends on Facebook, Twitter, Instagram...");
         $image = $authorDescription[0]['authorImage'];
-        
         // Pagination
         //$quotes = $obj->find_by('quotes_en','author',$author);        
         $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
@@ -47,6 +62,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         $Paginator  = new Paginator("quotes_en WHERE author='$author'");
         $quotesARR = $Paginator->getData("quotes_en WHERE author='$author'","quoteID",$limit,$page);
         //End of Pagination
+        
 	$folder='../../../';
 ?>
 
@@ -80,7 +96,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                 <div class="profile"></div>
                 <span itemprop="author"><?php echo $author; ?></span>
                 <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?><a href="<?php echo $authorDescription[0]['sourceURL']; ?>" target="_blank">Read more</a></p>
-                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo $authorDescription[0]['profession']; ?></p><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $authorDescription[0]['birth']; ?></span><?php if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $authorDescription[0]['died']; ?></span></p><?php } ?>
+                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo join(', ',$profession); ?></p><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $born; ?></span><?php if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $dDate; ?></span></p><?php } ?>
             </h1>
         </section>
         
@@ -115,7 +131,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                     <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
                                 <?php } ?>
                                 <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $author; ?></a></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="<?php echo $author; ?> | PortalQuote"></div>
+                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo $qID; ?>" data-title="Hey, check out this quote by <?php echo $author; ?> | PortalQuote <?php foreach($arrEN as $key=>$val) echo '#'.$arrEN[$key].' '; ?>"></div>
                                 <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
                             </div>
                         </div>

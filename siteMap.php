@@ -8,8 +8,7 @@ $topics = $obj->all('topics_en');
 echo htmlspecialchars('<?xml version="1.0" encoding="UTF-8"?>');
 echo '<br>';
 echo htmlspecialchars('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" 
-  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">');
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">');
 echo '<br>';
 echo htmlspecialchars('<url>');
 echo '<br>';
@@ -36,7 +35,9 @@ foreach($quotes as $key=>$val){
     if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){
         echo htmlspecialchars('<image:image>');
         echo '<br>';
-        echo htmlspecialchars('https://portalquote.com/images/quotes/'.$quotes[$key]['quoteImage']);
+        echo htmlspecialchars('<image:loc>https://portalquote.com/images/quotes/'.$quotes[$key]['quoteImage'].'</image:loc>');
+        echo '<br>';
+        echo htmlspecialchars('<image:caption>'.$quotes[$key]['quote'].' - '.$quotes[$key]['author'].'</image:caption>');
         echo '<br>';
         echo htmlspecialchars('</image:image>');
         echo '<br>';

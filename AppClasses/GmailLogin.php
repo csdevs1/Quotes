@@ -24,7 +24,7 @@ const CLIENT_SECRET = '4x0Bn4z8czcWHCpZ6djJzbNk';
 const REDIRECT_URI = 'http://localhost/quotes';
 
 session_start();
-
+include('SocialNetworks.php');
 /* 
  * INITIALIZATION
  *
@@ -48,15 +48,6 @@ $plus = new Google_Service_Plus($client);
  * B. Authentication and Access token
  * C. Retrive Data
  */
-
-/* 
- * A. PRE-CHECK FOR LOGOUT
- * 
- * Unset the session variable in order to logout if already logged in    
- */
-if (isset($_REQUEST['logout'])) {
-   session_unset();
-}
 
 /* 
  * B. AUTHORIZATION AND ACCESS TOKEN
@@ -87,6 +78,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
   $id = $me['id'];
   $name =  $me['displayName'];
   $email =  $me['emails'][0]['value'];
+  $gender =  $me['gender'];
   $profile_image_url = $me['image']['url'];
   $cover_image_url = $me['cover']['coverPhoto']['url'];
   $profile_url = $me['url'];
@@ -96,22 +88,18 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
   $authUrl = $client->createAuthUrl();
 }
 
-
-?>
-
-<!-- HTML CODE with Embeded PHP-->
-<div>
-    <?php/*
-    if (isset($authUrl)) {
-        echo "<a class='login' href='" . $authUrl . "'>Login with G+</a>";
-    } else {
-        print "ID: {$id} <br>";
+    if(!isset($authUrl)) {
+        $obj2=new SocialNetwork($email);
+        $nameArr=explode(" ",$name);
+        $fname=$nameArr[0];
+        $lname=$nameArr[1];
+        echo $obj2->signup('Google',$id,$fname,$lname,$gender[0],$profile_image_url);
+        /*print "ID: {$id} <br>";
         print "Name: {$name} <br>";
         print "Email: {$email } <br>";
         print "Image : {$profile_image_url} <br>";
         print "Cover  :{$cover_image_url} <br>";
         print "Url: {$profile_url} <br><br>";
-        echo "<a class='logout' href='?logout'><button>Logout</button></a>";
-    }*/
-    ?>
-</div>
+        echo "<a class='logout' href='?logout'><button>Logout</button></a>";*/
+    }
+?>

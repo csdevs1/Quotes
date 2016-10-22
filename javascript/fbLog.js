@@ -46,7 +46,7 @@ var checkUser=function(email,token){
         type: 'POST',
         dataType: 'json',
         data: {email:email,token:token,action:'check'},
-        url: 'AppClasses/SocialNetworks.php',
+        url: 'AppClasses/FBLogin.php',
         async:false
     });
 }

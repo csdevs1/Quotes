@@ -32,6 +32,7 @@
 
         <!-- sweet alerts -->
         <link href="assets/sweet-alert/sweet-alert.min.css" rel="stylesheet">
+        <script src="assets/sweet-alert/sweet-alert.min.js"></script>
 
         <!-- Custom styles for this template -->
         <link href="css/style.css?<?php echo time(); ?>" rel="stylesheet">

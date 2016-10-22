@@ -67,6 +67,11 @@
                             </a>
                         </div>
                         
+                        <div class="col-xs-12">
+                            <label class="agreed-terms">
+                                <input type="checkbox" id="terms"> <span>I agree with the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a></span>
+                            </label>
+                        </div>                        
                     </div>
                     <input type="hidden" name="token" id="token" value="<?php echo $token;  ?>">
                     <div class="modal-footer">

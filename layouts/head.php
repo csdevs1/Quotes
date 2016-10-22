@@ -22,6 +22,9 @@
 <!-- End of Bootstrap -->
 <!-- IO ICONS -->
 <link href="<?php echo $folder; ?>Assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
+<!-- SWEET ALERT -->
+<link href="<?php echo $folder; ?>Assets/stylesheet/sweetalert.css" rel="stylesheet" />
+<script src="<?php echo $folder; ?>javascript/sweetalert.min.js"></script>
 <!-- Custom CSS -->
 <link rel="stylesheet" href="<?php echo $folder; ?>Assets/stylesheet/app.css?<?php echo time(); ?>">
     <!-- Slick Carousel -->

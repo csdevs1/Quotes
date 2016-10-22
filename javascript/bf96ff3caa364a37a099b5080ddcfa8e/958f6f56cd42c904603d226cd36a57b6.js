@@ -34,40 +34,30 @@ function isValidEmailAddress(emailAddress) {
 }
 
 $("#save").click(function() {
-  var fname=$('#fname').val(),
+    var fname=$('#fname').val(),
       lname=$('#lname').val(),
       email=$('#email').val(),
       passwd=$('#passwd').val(),
       gender=$('#gender').val(),
       errors={},
       arr={};
-    $('#save').attr('disabled','disabled');
-    this.innerHTML = "Registering...";
     if(fname==''){
         errors['fname']="Name can't be empty";
-        $('#save').removeAttr('disabled');
-        document.getElementById('save').innerHTML = "Sign up";
     } else{
         arr['fname']=fname;
     }
     if(lname==''){
         errors['lname']="Last Name can't be empty";
-        $('#save').removeAttr('disabled');
-        document.getElementById('save').innerHTML = "Sign up";
     } else{
         arr['lname']=lname;
     }
     if(email=='' || !isValidEmailAddress(email)){
         errors['email']="Email can't be empty";
-        $('#save').removeAttr('disabled');
-        document.getElementById('save').innerHTML = "Sign up";
     } else{
         arr['email']=email;
     }
     if(passwd==''){
         errors['passwd']="Password can't be empty";
-        $('#save').removeAttr('disabled');
-        document.getElementById('save').innerHTML = "Sign up";
     } else{
         arr['passwd']=passwd;
     }
@@ -83,9 +73,9 @@ $("#save").click(function() {
         checkUser.done(function(checked){
             if(Object.keys(checked[0]).length>0){
                 console.log('User Exist');
-                $('#save').removeAttr('disabled');
-                document.getElementById('save').innerHTML = "Sign up";
             }else{
+                $('#save').attr('disabled','disabled');
+                this.innerHTML = "Registering...";
                 arr['gender']=gender;
                 var token=$('#token').val();
                 var signUp = insert('users',arr,token);
@@ -93,6 +83,7 @@ $("#save").click(function() {
                     console.log(response);
                     $('#save').removeAttr('disabled');
                     document.getElementById('save').innerHTML = "Sign up";
+                    swal({title: "Well Done!",text: "An email has been sent to your account.",type:"success",confirmButtonText: "OK",closeOnConfirm: false},function(isConfirm){if(isConfirm){location.reload();}});
                 });
             }
         });
@@ -109,3 +100,15 @@ var isUnavailable = function(el){
         }
     });
 }
+
+$('#terms').change(function(){
+    if(this.checked) {
+        $('#save').removeAttr('disabled');
+    }else{
+        $('#save').attr('disabled','disabled');
+    }
+});
+
+$(document).ready(function(){
+    $('#save').attr('disabled','disabled');
+});

@@ -1160,6 +1160,7 @@ lesshat-selector {
 /* Form-validation */
 .error {
   color: #ff0000;
+    display: none;
 }
 /* Datapicker */
 .datepicker {

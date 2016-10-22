@@ -72,6 +72,11 @@ footer div #subscribe{border-top-left-radius: 0;border-bottom-left-radius: 0;fon
 }
     
     /*ERROR ANIMATION*/
+.agreed-terms{
+    color: #444;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1.5rem;
+}
 /*End of sign up form*/
 
 .background {

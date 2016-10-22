@@ -106,13 +106,13 @@
         
         public function save($table,$columns,$values){
             $sql = "INSERT INTO $table ($columns) VALUES ($values)";
-            return $sql;
-            /*$res = $this->save_record($sql);
+            //return $sql;
+            $res = $this->save_record($sql);
             if($res){
                 return true;
             } else {
                 return false;
-            }*/
+            }
         }
         
         public function update($table,$values,$row,$id){

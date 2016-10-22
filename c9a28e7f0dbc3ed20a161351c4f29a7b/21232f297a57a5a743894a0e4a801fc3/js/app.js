@@ -14,10 +14,11 @@ var openWindow=function(el){
 /**********************/
 
 
-var all = function(){
+var all = function(table){
     return $.ajax({
         type: 'POST',
         dataType: 'json',
+        data: {table:table,action:'all'},
         url: 'Classes/GlobalController.php'
     });
 }

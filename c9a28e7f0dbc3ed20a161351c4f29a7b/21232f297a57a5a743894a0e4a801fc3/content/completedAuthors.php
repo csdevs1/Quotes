@@ -59,11 +59,15 @@
             </div>
         </div>
         <div class="form-group col-xs-12">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="ion-university"></i></span>
-                <input type="text" class="form-control" id="profession" data-error="Field required" aria-describedby="profession" placeholder="Enter Author's profession..." >
-                
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-warning" onclick="addProfession()"><span class="glyphicon glyphicon-plus"></span> Add a profession</button>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="form-group col-xs-12" id="professions-list">
         </div>
         <div class="form-group col-xs-12">
             <textarea placeholder="Brief Description About the author..." maxlength="500" class="textarea" id="profile"></textarea>
@@ -96,9 +100,11 @@
         
         <?php
             foreach($authors as $key=>$val){
-                if(!empty($authors[$key]['authorName']) || !empty($authors[$key]['sourceURL']) || !empty($authors[$key]['birth']) || !empty($authors[$key]['profession']) || !empty($authors[$key]['nationality']) || !empty($authors[$key]['seo_url'])){
+                $professions=$obj->find_by('authorProfession','authorID',$authors[$key]['authorID']);
+                if(!empty($authors[$key]['authorName']) && !empty($authors[$key]['sourceURL']) && !empty($authors[$key]['birth']) && count($professions)>0 && !empty($authors[$key]['nationality']) && !empty($authors[$key]['seo_url'])){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
+		<i class="ion-close-circled close" onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'></i>
             <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
                 <h3 data-placement="top" title="Edit Topic" onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"><a><?php echo $authors[$key]['authorName']; ?></a></h3>
             </div>
@@ -139,6 +145,17 @@
 <script src="js/pagination.js?<?php echo time(); ?>"></script>
 
 <script>
+    var addProfession=function(){
+        var professions=all('professions');
+        professions.done(function(response){
+            var arr=[];
+            for(var i in response[0]){
+                arr[i]='<option value="'+response[0][i].professionID+'">'+response[0][i].professionName+'</option>';
+            }
+            $('#professions-list').append('<div class="input-group col-xs-12 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
+        });
+    }
+    
     /*Pagination*/
     var count = <?php echo count($authors); ?>;
     $(function () {
@@ -202,15 +219,33 @@
                 $('#author').val(data[0][0].authorName);
                 $('#bdate').val(data[0][0].birth);
                 $('#pdate').val(data[0][0].died);
-                $('#profession').val(data[0][0].profession);
                 $('#profile').val(data[0][0].bio);
                 $('#url').val(data[0][0].sourceURL);
                 $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
                 $('#author').focus();
+                var professionAuthor=find_by('authorProfession','authorID',authID);
+                professionAuthor.done(function(response){
+                    document.getElementById('professions-list').innerHTML='';
+                    for(var i in response[0]){
+                        var professions=find_by('professions','professionID',response[0][i].professionID);
+                        professions.done(function(response2){
+                            var allProfessions=all('professions');
+                            allProfessions.done(function(response3){
+                                var arr=[];
+                                for(var i2 in response3[0]){
+                                    if(response3[0][i2].professionName==response2[0][0].professionName)
+                                        arr[i2]='<option value="'+response3[0][i2].professionID+'" selected>'+response3[0][i2].professionName+'</option>';
+                                    else
+                                        arr[i2]='<option value="'+response3[0][i2].professionID+'">'+response3[0][i2].professionName+'</option>';
+                                }
+                                $('#professions-list').append('<div class="input-group col-xs-12 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
+                            });
+                        });
+                    }
+                });
             }
         });
-    }
-    
+    }    
     
     var updateAuthor = function(el, quotID){
         $(el).attr('disabled','disabled');
@@ -218,15 +253,17 @@
         var author = $('#author').val(),
             birth=$('#bdate').val(),
             country=$('#country').val(),
-            profession=$('#profession').val(),
+            profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
             url=$('#url').val(),
-            arr = {};
+            arr = {},
+            arr2 = {};
         if(author && author != ''){
             arr['authorName'] = author;
-            var seo = author.replace(/["']/g, "");
+		var seo = author.replace(/["']/g, "");
             seo = seo.replace(/["-]/g, "");
             arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+            console.log(arr['seo_url']);
         }
         else
             console.log('Error author');
@@ -240,10 +277,6 @@
             arr['nationality'] = country;
         else
             console.log('Error Country');
-        if($('#profession').val()!='')
-            arr['profession'] = profession;
-        else
-            console.log('Error profession');
         if($('#profile').val()!='')
             arr['bio'] = bio;
         else
@@ -253,7 +286,7 @@
         else
             console.log('Error Source');
         if($('#image').val()!=''){
-            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
                 var token = generateToken();
                 token.done(function(generatedToken){
                     var image = imgur_upload($('#image').prop('files')[0]);
@@ -262,25 +295,80 @@
                         arr['authorImage'] = url.replace('http','https');
                         var update_author = update('authors',arr,'authorID',quotID,generatedToken);
                         update_author.done(function(data){
-                            $(el).removeAttr('disabled');
-                            el.innerHTML = "Updated!";
-                            setTimeout(function() {
-                                completedAuthors(document.getElementById('author-completed'));
-                            }, 200);
+                            if(profession.legnth > 0){
+                                arr2['authorID']=quotID;
+                                var token2 = generateToken();
+                                token2.done(function(generatedToken2){
+                                    var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
+                                    deleteRel.done(function(deleted){
+                                        for(var i in profession){
+                                            arr2['professionID']=profession[i];
+                                            var token3 = generateToken();
+                                            token3.done(function(generatedToken3){
+                                                var authorProfession = insert('authorProfession',arr2,generatedToken3);
+                                                authorProfession.done(function(response2){
+                                                    $(el).removeAttr('disabled');
+                                                    el.innerHTML = "Updated!";
+                                                    setTimeout(function() {
+                                                        clearFields();
+                                                        closeWindow();
+                                                    }, 200);
+                                                });
+                                            });
+                                        }
+                                    });
+                                });
+                            }else{
+                                console.log(data);
+                                $(el).removeAttr('disabled');
+                                el.innerHTML = "Updated!";
+                                setTimeout(function() {
+                                    clearFields();
+                                    closeWindow();
+                                }, 200);
+                            }
                         });
                     });
                 });
             }
-        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
                 var update_author = update('authors',arr,'authorID',quotID,generatedToken);
                 update_author.done(function(data){
-                    $(el).removeAttr('disabled');
-                    el.innerHTML = "Updated!";
-                    setTimeout(function() {
-                        completedAuthors(document.getElementById('author-completed'));
-                    }, 200);
+                    if(profession.length > 0){
+                        arr2['authorID']=quotID;
+                        var token2 = generateToken();
+                        token2.done(function(generatedToken2){
+                            var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
+                            deleteRel.done(function(deleted){
+                                console.log(deleted);
+                                for(var i in profession){
+                                    arr2['professionID']=profession[i];
+                                    var token3 = generateToken();
+                                    token3.done(function(generatedToken3){
+                                        var authorProfession = insert('authorProfession',arr2,generatedToken3);
+                                        authorProfession.done(function(response2){
+                                            $(el).removeAttr('disabled');
+                                            el.innerHTML = "Updated!";
+                                            setTimeout(function() {
+                                                clearFields();
+                                                closeWindow();
+                                            }, 200);
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    }else{
+                        console.log(data);
+                        $(el).removeAttr('disabled');
+                        el.innerHTML = "Updated!";
+                        setTimeout(function() {
+                            clearFields();
+                            closeWindow();
+                        }, 200);
+                    }
                 });
             });
         }
@@ -294,6 +382,19 @@
             } else{
                 $('.error').css('display','none');
             }
+        });
+    }
+
+	function deleteThis(el,id,name){
+        swal({title: "Are you sure?",text: "You're about to delete "+name+"!",type: "warning",showCancelButton: true,confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var deleted = delete_function('authors','authorID',id,generatedToken);
+                deleted.done(function(response){
+                    swal("Deleted!", name+" has been deleted.", "success");
+			el.parentNode.parentNode.removeChild(el.parentNode);
+                });
+            });     
         });
     }
 </script>

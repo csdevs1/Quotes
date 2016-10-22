@@ -18,19 +18,6 @@ class HeadTags{
 <html class="no-js" lang="en" ng-app="quotesApp">
     <head>
         <?php include 'layouts/head.php'; ?>
-        <style>
-            <?php
-                foreach($topics as $key=>$val){
-                    $images = $obj->find_by('topicsImages','tID',$val['topicID']);
-                    $topic = $obj->find_by('topics_en','topicID',$val['topicID']);
-                    $num = rand(0,count($images)-1);
-                    $lower = strtolower($topic[0]['topicName']);
-                    $tName=split(' ',$lower);
-                    $id=join('-',$tName);
-                    echo '#'.$id.'{background-image: url("'.$images[$num]['img_url'].'");}';
-                }
-            ?>
-        </style>
     </head>
     <body>
         
@@ -160,11 +147,11 @@ class HeadTags{
                                             <li onclick="generator.changeFontSize(this,48)">48px</li>
                                             <li onclick="generator.changeFontSize(this,64)">64px</li>
                                             <li onclick="generator.changeFontSize(this,80)">80px</li>
-                                            <li onclick="generator.changeFontSize(this,80)">96px</li>
-                                            <li onclick="generator.changeFontSize(this,80)">112px</li>
-                                            <li onclick="generator.changeFontSize(this,80)">128px</li>
-                                            <li onclick="generator.changeFontSize(this,80)">144px</li>
-                                            <li onclick="generator.changeFontSize(this,80)">160px</li>
+                                            <li onclick="generator.changeFontSize(this,96)">96px</li>
+                                            <li onclick="generator.changeFontSize(this,112)">112px</li>
+                                            <li onclick="generator.changeFontSize(this,128)">128px</li>
+                                            <li onclick="generator.changeFontSize(this,144)">144px</li>
+                                            <li onclick="generator.changeFontSize(this,160)">160px</li>
                                         </ul>
                                     </div>
                                     

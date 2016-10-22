@@ -2,12 +2,11 @@
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $authors = $obj->all('authors');
+    $professions = $obj->all('professions');
     $countries = array('Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Puerto Rican', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian/Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean');
 
 ?>
-<style>
-    .error{color: #ff4c4c;display: none;}
-</style>
+
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
         Authors
@@ -22,7 +21,7 @@
             <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
         </div>
         <div class="form-group col-xs-12">
-            <span class="error">Author alreay exist</span>
+		<span class="error">Author alreay exist</span>
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
                 <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author's name..."  oninput="checkAvailability(this)">
@@ -60,10 +59,28 @@
             </div>
         </div>
         <div class="form-group col-xs-12">
-            <div class="input-group">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-warning" onclick="addProfession()"><span class="glyphicon glyphicon-plus"></span> Add a profession</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12" id="professions-list">
+            <div class="input-group col-xs-12 col-sm-4 col-md-3">
                 <span class="input-group-addon"><i class="ion-university"></i></span>
-                <input type="text" class="form-control" id="profession" data-error="Field required" aria-describedby="profession" placeholder="Enter Author's profession..." >
-                
+                <!--<input type="text" class="form-control" id="profession" data-error="Field required" aria-describedby="profession" placeholder="Enter Author's profession..." >-->
+                <select class="form-control" name="professions[]" required>
+                    <option value="">-- Profession --</option>
+                    <?php
+                        foreach($professions as $key=>$val){
+                    ?>
+                        <option value="<?php echo $professions[$key]['professionID']; ?>"><?php echo $professions[$key]['professionName']; ?></option>
+                    <?php
+                        }
+                    ?>
+                </select>
             </div>
         </div>
         <div class="form-group col-xs-12">
@@ -99,6 +116,7 @@
             foreach($authors as $key=>$val){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
+		<i class="ion-close-circled close" onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'></i>
             <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
                 <h3 data-placement="top" title="Edit Topic" onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"><a><?php echo $authors[$key]['authorName']; ?></a></h3>
             </div>
@@ -134,10 +152,20 @@
     </nav>-->
 </div>
 
-<!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button>-->
+<!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button> -->
 <script src="js/pagination.js?<?php echo time(); ?>"></script>
-
 <script>
+    var addProfession=function(){
+        var professions=all('professions');
+        professions.done(function(response){
+            var arr=[];
+            for(var i in response[0]){
+                arr[i]='<option value="'+response[0][i].professionID+'">'+response[0][i].professionName+'</option>';
+            }
+            $('#professions-list').append('<div class="input-group col-xs-12 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
+        });
+    }
+
     /*Pagination*/
     var count = <?php echo count($authors); ?>;
     $(function () {
@@ -145,11 +173,11 @@
             window.tp = new Pagination('#tablePaging', {
                 itemsCount: count,
                 onPageSizeChange: function (ps) {
-                    console.log('changed to ' + ps);
+                    //console.log('changed to ' + ps);
                 },
                 onPageChange: function (paging) {
                     //custom paging logic here
-                    console.log(paging);
+                    //console.log(paging);
                     var start = paging.pageSize * (paging.currentPage - 1),
                         end = start + paging.pageSize,
                         $rows = $('#row').find('.data');
@@ -163,7 +191,7 @@
         load();
     });
     /*Pagination*/
-    
+
     $("#image").on("change", function(){
         var imgType = $(this).prop('files')[0].type;
         if(imgType.split('/')[0] == 'image'){
@@ -201,15 +229,33 @@
                 $('#author').val(data[0][0].authorName);
                 $('#bdate').val(data[0][0].birth);
                 $('#pdate').val(data[0][0].died);
-                $('#profession').val(data[0][0].profession);
                 $('#profile').val(data[0][0].bio);
                 $('#url').val(data[0][0].sourceURL);
                 $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
                 $('#author').focus();
+                var professionAuthor=find_by('authorProfession','authorID',authID);
+                professionAuthor.done(function(response){
+                    document.getElementById('professions-list').innerHTML='';
+                    for(var i in response[0]){
+                        var professions=find_by('professions','professionID',response[0][i].professionID);
+                        professions.done(function(response2){
+                            var allProfessions=all('professions');
+                            allProfessions.done(function(response3){
+                                var arr=[];
+                                for(var i2 in response3[0]){
+                                    if(response3[0][i2].professionName==response2[0][0].professionName)
+                                        arr[i2]='<option value="'+response3[0][i2].professionID+'" selected>'+response3[0][i2].professionName+'</option>';
+                                    else
+                                        arr[i2]='<option value="'+response3[0][i2].professionID+'">'+response3[0][i2].professionName+'</option>';
+                                }
+                                $('#professions-list').append('<div class="input-group col-xs-12 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
+                            });
+                        });
+                    }
+                });
             }
         });
     }
-    
     
     var updateAuthor = function(el, quotID){
         $(el).attr('disabled','disabled');
@@ -217,15 +263,17 @@
         var author = $('#author').val(),
             birth=$('#bdate').val(),
             country=$('#country').val(),
-            profession=$('#profession').val(),
+            profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
             url=$('#url').val(),
-            arr = {};
+            arr = {},
+            arr2 = {};
         if(author && author != ''){
             arr['authorName'] = author;
-            var seo = author.replace(/["']/g, "");
+		var seo = author.replace(/["']/g, "");
             seo = seo.replace(/["-]/g, "");
             arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+            console.log(arr['seo_url']);
         }
         else
             console.log('Error author');
@@ -239,10 +287,6 @@
             arr['nationality'] = country;
         else
             console.log('Error Country');
-        if($('#profession').val()!='')
-            arr['profession'] = profession;
-        else
-            console.log('Error profession');
         if($('#profile').val()!='')
             arr['bio'] = bio;
         else
@@ -252,7 +296,7 @@
         else
             console.log('Error Source');
         if($('#image').val()!=''){
-            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
                 var token = generateToken();
                 token.done(function(generatedToken){
                     var image = imgur_upload($('#image').prop('files')[0]);
@@ -261,28 +305,80 @@
                         arr['authorImage'] = url.replace('http','https');
                         var update_author = update('authors',arr,'authorID',quotID,generatedToken);
                         update_author.done(function(data){
-                            $(el).removeAttr('disabled');
-                            el.innerHTML = "Updated!";
-                            setTimeout(function() {
-                                clearFields();
-                                closeWindow();
-                            }, 200);
+                            if(profession.legnth > 0){
+                                arr2['authorID']=quotID;
+                                var token2 = generateToken();
+                                token2.done(function(generatedToken2){
+                                    var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
+                                    deleteRel.done(function(deleted){
+                                        for(var i in profession){
+                                            arr2['professionID']=profession[i];
+                                            var token3 = generateToken();
+                                            token3.done(function(generatedToken3){
+                                                var authorProfession = insert('authorProfession',arr2,generatedToken3);
+                                                authorProfession.done(function(response2){
+                                                    $(el).removeAttr('disabled');
+                                                    el.innerHTML = "Updated!";
+                                                    setTimeout(function() {
+                                                        clearFields();
+                                                        closeWindow();
+                                                    }, 200);
+                                                });
+                                            });
+                                        }
+                                    });
+                                });
+                            }else{
+                                console.log(data);
+                                $(el).removeAttr('disabled');
+                                el.innerHTML = "Updated!";
+                                setTimeout(function() {
+                                    clearFields();
+                                    closeWindow();
+                                }, 200);
+                            }
                         });
                     });
                 });
             }
-        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
                 var update_author = update('authors',arr,'authorID',quotID,generatedToken);
                 update_author.done(function(data){
-                    $(el).removeAttr('disabled');
-                    el.innerHTML = "Updated!";
-                    setTimeout(function() {
-                        clearFields();
-                        closeWindow();
-                        //authors('Author updated correctly',document.getElementById('author-menu'));
-                    }, 200);
+                    if(profession.length > 0){
+                        arr2['authorID']=quotID;
+                        var token2 = generateToken();
+                        token2.done(function(generatedToken2){
+                            var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
+                            deleteRel.done(function(deleted){
+                                console.log(deleted);
+                                for(var i in profession){
+                                    arr2['professionID']=profession[i];
+                                    var token3 = generateToken();
+                                    token3.done(function(generatedToken3){
+                                        var authorProfession = insert('authorProfession',arr2,generatedToken3);
+                                        authorProfession.done(function(response2){
+                                            $(el).removeAttr('disabled');
+                                            el.innerHTML = "Updated!";
+                                            setTimeout(function() {
+                                                clearFields();
+                                                closeWindow();
+                                            }, 200);
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    }else{
+                        console.log(data);
+                        $(el).removeAttr('disabled');
+                        el.innerHTML = "Updated!";
+                        setTimeout(function() {
+                            clearFields();
+                            closeWindow();
+                        }, 200);
+                    }
                 });
             });
         }
@@ -309,7 +405,7 @@
                 FB.api('/' + page_id, {fields: 'access_token'}, function(resp) {
                     FB.api('/' + page_id + '/feed',
                            'post',
-                           { message:'Find the best quotes from '+param,link:'https://portalquote.com/author/quotes'+path+'/1',access_token:
+                           { message:'Find the best quotes from '+param+' at PortalQuote...',link:'https://portalquote.com/author/quotes'+path+'/1',access_token:
                             'EAACpmyy1pEsBAOwhT8zJq5nT24Aet6joultEPRc4J6XvYqZCOleZCEU27jegDP8wyMBQCh8Y64s4TlnSvZABESiUFG2ilU9gVVKolNygNX3ebqDqrPw6nuJ3JBEmzns5EjToYEcCZBQqeWBrZBZCrGItZCppdZA8AN8PTp8ZCAr1ibwTOZChtBLVo7' }
                            ,function(response) {
                         console.log(response);
@@ -318,31 +414,31 @@
             }
 
 	var publish=function(){
-        var authors=$('.inner-box h3 a').map(function(){return $(this).text();}).get();
-        var i=0;
-        var interval = setInterval(function() {
-            postToPage(authors[i]);
-            if(i==10)
-                clearInterval(interval);
-            i++;
-        }, 5*60000);
-    }
+		var authors=$('.inner-box h3 a').map(function(){return $(this).text();}).get();
+		var i=11;
+		var interval = setInterval(function() {
+		    postToPage(authors[i]);
+		    if(i==21){
+		        clearInterval(interval);
+			console.log('Done!');
+			}
+		    i++;
+		}, 3*60000);
+	    }
     
     var save = function(el){
-        $(el).attr('disabled','disabled');
-        el.innerHTML = "Saving";
         var author = $('#author').val(),
             birth=$('#bdate').val(),
             country=$('#country').val(),
-            profession=$('#profession').val(),
+            profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
             url=$('#url').val(),
-            arr = {};
-        if(author && author != ''){
+            arr = {},
+            arr2 = {};
+        console.log(profession.length);
+       if(author && author != ''){
             if($('.error').css('display')=='inline-block'){
-                alert('Exist');
-                $(el).removeAttr('disabled');
-                el.innerHTML = "Save";
+                alert('Author Exist');
             }else{
                 arr['authorName'] = author;
                 var seo = author.replace(/["']/g, "");
@@ -363,10 +459,6 @@
             arr['nationality'] = country;
         else
             console.log('Error Country');
-        if($('#profession').val()!='')
-            arr['profession'] = profession;
-        else
-            console.log('Error profession');
         if($('#profile').val()!='')
             arr['bio'] = bio;
         else
@@ -376,37 +468,72 @@
         else
             console.log('Error Source');
         if($('#image').val()!=''){
-            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
                 var token = generateToken();
                 token.done(function(generatedToken){
+                    $(el).attr('disabled','disabled');
+                    el.innerHTML = "Saving";
                     var image = imgur_upload($('#image').prop('files')[0]);
                     image.done(function(response){
                         var url = response.data.link;
                         arr['authorImage'] = url.replace('http','https');
                         var insert_author = insert('authors',arr,generatedToken);
                         insert_author.done(function(data){
-                            $(el).removeAttr('disabled');
-                            el.innerHTML = "Saved!";
                             console.log(data);
-				postToPage(author);
-                            setTimeout(function() {
-                                authors('Author Saved correctly',document.getElementById('author-menu'));
-                            }, 2000);
+                            var last_author = limit('authors','authorID','authorID',1);
+                            last_author.done(function(last){
+                                console.log(last);
+                                arr2['authorID']=last[0][0].authorID;
+                                for(var i in profession){
+                                    arr2['professionID']=profession[i];
+                                    var token2 = generateToken();
+                                    token2.done(function(generatedToken2){
+                                        var authorProfession = insert('authorProfession',arr2,generatedToken2);
+                                        authorProfession.done(function(response2){
+                                            $(el).removeAttr('disabled');
+                                            el.innerHTML = "Saved!";
+                                            console.log(response2);
+                                            postToPage(author);
+                                            setTimeout(function() {
+                                                authors('Author Saved correctly',document.getElementById('author-menu'));
+                                            }, 2000);
+                                        });
+                                    });
+                                }
+                            });
                         });
                     });
                 });
             }
-        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['profession'] != '' && arr['bio'] != ''){
+        }else if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
+                $(el).attr('disabled','disabled');
+                el.innerHTML = "Saving";
                 var insert_author = insert('authors',arr,generatedToken);
                 insert_author.done(function(data){
-                    $(el).removeAttr('disabled');
-                    el.innerHTML = "Saved!";
-			postToPage(author);
-                    setTimeout(function() {
-                        authors('Author Saved correctly',document.getElementById('author-menu'));
-                    }, 2000);
+                    console.log(data);
+                    var last_author = limit('authors','authorID','authorID',1);
+                    last_author.done(function(last){
+                        console.log(last);
+                        arr2['authorID']=last[0][0].authorID;
+                        for(var i in profession){
+                            arr2['professionID']=profession[i];
+                            var token2 = generateToken();
+                            token2.done(function(generatedToken2){
+                                var authorProfession = insert('authorProfession',arr2,generatedToken2);
+                                authorProfession.done(function(response2){
+                                    $(el).removeAttr('disabled');
+                                    el.innerHTML = "Saved!";
+                                    console.log(response2);
+                                    postToPage(author);
+                                    setTimeout(function() {
+                                        authors('Author Saved correctly',document.getElementById('author-menu'));
+                                    }, 2000);
+                                });
+                            });
+                        }
+                    });
                 });
             });
         }
@@ -420,6 +547,19 @@
             } else{
                 $('.error').css('display','none');
             }
+        });
+    }
+
+	function deleteThis(el,id,name){
+        swal({title: "Are you sure?",text: "You're about to delete "+name+"!",type: "warning",showCancelButton: true,confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var deleted = delete_function('authors','authorID',id,generatedToken);
+                deleted.done(function(response){
+                    swal("Deleted!", name+" has been deleted.", "success");
+			el.parentNode.parentNode.removeChild(el.parentNode);
+                });
+            });     
         });
     }
 </script>

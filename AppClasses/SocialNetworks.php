@@ -2,6 +2,7 @@
     require_once('AppController.php');
     require_once('Token.php');
     $token = new Token();
+    session_start();
     class SocialNetwork{
         private $email;
         private $obj;
@@ -9,26 +10,30 @@
             $this->obj = new AppController();
             $this->email = $email;
         }
-
-        public function checkUser(){
+        
+        private function checkUser(){
             if(isset($this->email) && !empty($this->email)){
-                $user=$this->obj->find_by('users', 'email',sha1($this->email));
-                return $user; //CHECK IF EMAIL EXIST WITH A SQL QUERY, IF NOT SAVE IN DB, ELSE LOGIN
+                $user=$this->obj->find_by('users', 'email',$this->email);
+                return $user;
             }
         }
         
-        public function signup($password){
-            if(isset($password) && !empty($password) && isset($this->email) && !empty($this->email)){
-                //SAVE USER
+        public function signup($oauth_provider='',$oauth_id='',$fname='',$lname='',$gender='',$picture=''){
+            $checked=$this->checkUser();
+            if(isset($checked[0]) && !empty($checked[0])){
+                login($checked[0]['email']);
+            } else{
+                $uname=substr($this->email, 0, strpos($this->email, "@"));
+                $col="oauth_provider,oauth_uid,fname,lname,email,username,gender,picture,passwd";
+                $val="'".$oauth_provider."','".$oauth_id."','".$fname."','".$lname."','".$this->email."','".$uname."','".$gender."','".$picture."',''";
+                if($this->obj->save('users',$col,$val)){
+                    $this->login($uname);
+                }
             }
         }
-    }
-
-    if(isset($_POST['action'])=='check' && isset($_POST['token']) && $token->check($_POST['token'])){
-        $obj=new SocialNetwork($_POST['email']);
-        $json_response = array($obj->checkUser());
-        echo json_encode($json_response);
-    }else{
-        echo 'Error 500';
+        
+        public function login($uname){
+            return 'logged';
+        }
     }
 ?>

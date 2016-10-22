@@ -104,6 +104,11 @@
         $response = $response=$obj->like($table,$pattern);
         $json_response = array($response,'response'=>200);
         echo json_encode($json_response);
+    }elseif(isset($_POST['table']) && $_POST['action']=='all'){
+        $table = $_POST['table'];
+        $response = $response=$obj->all($table);
+        $json_response = array($response,'response'=>200);
+        echo json_encode($json_response);
     } else {
         $json_response = array('response'=>400);
         echo json_encode($json_response);
