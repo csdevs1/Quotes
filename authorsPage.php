@@ -46,6 +46,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
         //End of Pagination
     }
     $authors = $authorsArr->data;
+    $image = "https://portalquote.com/images/thumbnail.png";
 	$folder='../../';
 ?>
 

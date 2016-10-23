@@ -21,7 +21,7 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     }
     $quote=$obj->find_by('quotes_en','quoteID',$_GET['quoteid']);
     $meta_tags = new HeadTags();
-    $title = $meta_tags->titlePage('Find The Best Quotes At PortalQuote');
+    $title = $meta_tags->titlePage('Find The Best Quotes');
     $description = $meta_tags->meta_description('\''.$quote[0]['quote'].'\' - '.$quote[0]['author'].". Share with your friends on Facebook, Twitter, Instagram...");
     $topicsArr=$obj->custom("SELECT topics_en.topicID, topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quotesTopicEN.quoteID=".$quote[0]['quoteID']);
     $count=0;
@@ -34,7 +34,7 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     if(isset($quote[0]['quoteImage']) && !empty($quote[0]['quoteImage']))
         $image = "https://portalquote.com/images/quotes/".$quote[0]['quoteImage'];
     else
-        $image = "image";
+        $image = "https://portalquote.com/images/thumbnail.png";
     $folder='../';
 ?>
 <!doctype html>
@@ -58,13 +58,13 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
                 font-size: 3rem;padding-top: 20%;color: #fff;
                 font-family: 'Comfortaa', cursive;
             }
-            .item blockquote span{font-size: 3rem;font-family: 'Poiret One', cursive;}
+            .item blockquote div{margin-top: 45px;}
+            .item blockquote div span{font-size: 3rem;font-family: 'Poiret One', cursive;padding-top: 5px;border-top: 1px solid #999;}
             .item p{width: 100%;padding:5px;text-align: center;font-size: 3rem;color: #fff;font-family: 'Rouge Script', cursive;margin-top: 15%;background: rgba(0,0,0,0.5);width: 100%}
             #quoteImg{text-align: center;margin-top: 20px;}
             #quoteImg img{margin-left: auto;margin-right: auto;}
             #renderedCanva{visibility: hidden;}
             blockquote {border: 0;text-align: center;}
-            blockquote span{display: block;margin-top: 10px;}
         </style>
     </head>
     <body>
@@ -103,7 +103,7 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
                             </div>
                         </div>-->
                         <div class="col-xs-12 item" id="original">
-                            <blockquote><?php echo $quote[0]['quote']; ?> <span><?php echo $quote[0]['author']; ?></span></blockquote>
+                            <blockquote><?php echo $quote[0]['quote']; ?> <div><span><?php echo $quote[0]['author']; ?></span></div></blockquote>
                             <p>PortalQuote</p>
                         </div>
                     </div>

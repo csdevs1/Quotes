@@ -11,6 +11,7 @@ class HeadTags{
     $meta_tags = new HeadTags();
     $title = $meta_tags->titlePage('Find The Best Quotes');
     $description = $meta_tags->meta_description('Find the best quotes about topics like love, family, friend, motivation, funny from popular authors. Share with your friends on Facebook, Twitter, Instagram...');
+    $image = "https://portalquote.com/images/thumbnail.png";
 // Conection
 ?>
 
@@ -188,6 +189,9 @@ class HeadTags{
                     </div>
                     <div class="img-gallery">
                         <img src="images/gallery/gallery-2.jpg" onclick="generator.changeImage(this)">
+                    </div>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-3.jpg" onclick="generator.changeImage(this)">
                     </div>
                 </div>
             </div>

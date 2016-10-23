@@ -7,6 +7,13 @@
 # Ignore db files.
 quotesDB.sql
 
+#Ignore Social Networks files.
+AppClasses/GmailLogin.php
+AppClasses/SocialNetworks.php
+AppClasses/FBLogin.php
+javascript/fbLog.js
+javascript/bf96ff3caa364a37a099b5080ddcfa8e
+
 # Ignore db files.
 quotesDB2.sql 
 
@@ -35,6 +42,7 @@ AppClasses/GenerateToken.php
 seoURL.php
 siteMap.php
 mapAuthors.php
+mapProfession.php
 
 #Ignore token file.
 c9a28e7f0dbc3ed20a161351c4f29a7b/21232f297a57a5a743894a0e4a801fc3/Classes/Token.php
