@@ -5,6 +5,9 @@
 @import 'https://fonts.googleapis.com/css?family=Lobster';
 @import 'https://fonts.googleapis.com/css?family=Tangerine';
 @import 'https://fonts.googleapis.com/css?family=Rouge+Script';
+@import url('https://fonts.googleapis.com/css?family=Bungee+Inline');
+@import url('https://fonts.googleapis.com/css?family=Bilbo+Swash+Caps');
+
 /**/
 
 body {
@@ -479,6 +482,47 @@ video{
     .author-list h4 a{color: #fff;font-size: 2rem;font-weight:900;transition: all 0.5s;}
     .author-list h4 a:hover{color: #eee;text-decoration: none;text-shadow: 1px 1px 3px #000;}
 /* END OF AUTHORS PAGE */
+
+/*TOPICS PAGE*/
+    .title h2{font-size: 4rem; text-align: center;}
+    .title-topic + div span{font-size: 2.8rem; text-align: center;font-family: 'Poiret One', cursive;display: block;color: #555;margin-bottom: 40px;}
+    .title-topic + div span strong{font-family: 'Bilbo Swash Caps', cursive;font-weight: 500;}
+.explore-more{
+    padding: 40px;
+    font-size: 1.6rem;
+}
+  /* Custom, iPhone Retina */ 
+    @media only screen and (min-width : 320px) {
+        .list-topics{transition:all 0.2s;margin-bottom: 10px;}
+        .list-topics h2{font-size:5rem;border-bottom:1px solid #999;padding:5px 0px 5px 10px;color:#444;font-family: 'Bungee Inline', cursive;}
+        .list-topics .list-unstyled a{color:#555;transtion:all 0.3s;}
+        .list-topics a:hover{text-decoration:none;color:#111;}
+        .list-topics > a:hover{color:#4c4cff;}
+    }
+
+    /* Extra Small Devices, Phones */ 
+    @media only screen and (min-width : 480px) {
+        .list-topics h2{font-size:5rem;border-bottom:1px solid #999;padding:5px 0px 5px 10px;background:#eee;}
+    }
+
+    /* Small Devices, Tablets */
+    @media only screen and (min-width : 768px) {
+        .list-topics{position:relative;margin-top:20px;}
+        .list-topics h2{float:left;padding:4px;font-size:5rem;border-bottom:0;background:#fff;}
+        .list-topics .list-unstyled{margin-left:50px;border-left:5px solid #ccc;padding-left:10px;}
+        .list-topics > a {margin-left:25px;}
+    }
+    /*TOPICS PAGE BY LETTER*/
+        .breadcrumb{background: #fff;}
+        .card-container{margin-top:10px;padding:2px;transition:all 0.5s;}
+        .card-header{height:200px;background-size:100% 100%;padding:0;}
+        .card-header h3{width:100%;text-align:center;margin-top:80px;background:rgba(0,0,0,0.5);padding:9px;}
+        .card-header h3 a{color:#fff;font-family: 'Poiret One', cursive;
+        font-size:3.5rem;text-shadow:-1px 0px 3px #000;transition:all 0.5s;}.card-header h3 a:hover{color:#ddd;text-decoration:none;}
+        .card-content{border:1px solid #ccc;padding:20px;}
+        .card-content a{float:right;transition:all 0.5s;}
+    /*END OF TOPICS PAGE BY LETTER*/
+/*END OF TOPICS PAGE*/
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {

@@ -7,6 +7,8 @@ RewriteRule ^home$ index.php [NC]
 RewriteRule ^author/quotes/(.*)/(.*)$ authorPage.php?name=$1&page=$2
 RewriteRule ^authors/(.*)/(.*)$ authorsPage.php?page=$1&l=$2
 RewriteRule ^topic/quotes/(.*)/(.*)$ topicPage.php?topic=$1&page=$2
+RewriteRule ^topics$ topicsPage.php
+RewriteRule ^topics/(.*)/(.*)$ topicsPageByLetter.php?l=$1&page=$2
 RewriteRule ^quote/(.*)$ quotePage.php?quoteid=$1
 RewriteRule ^generate$ quote-generator.php
 
