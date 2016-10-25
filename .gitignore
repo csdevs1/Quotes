@@ -24,7 +24,7 @@ AppClasses/send_mail.php
 AppClasses/PHPMailer.php
 =======
 # Ignore PHPMailer files.
-AppClasses/PHPMailers
+AppClasses/PHPMailer
 AppClasses/UserController.php
 AppClasses/send_mail.php
 >>>>>>> verify-user
