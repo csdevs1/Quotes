@@ -8,6 +8,7 @@
 quotesDB.sql
 
 #Ignore Social Networks files.
+AppClasses/vendor
 AppClasses/GmailLogin.php
 AppClasses/SocialNetworks.php
 AppClasses/FBLogin.php
@@ -16,6 +17,10 @@ javascript/bf96ff3caa364a37a099b5080ddcfa8e
 
 # Ignore db files.
 quotesDB2.sql 
+
+# Ignore mail files.
+AppClasses/send_mail.php
+AppClasses/PHPMailer.php
 
 #Ignore video file.
 Assets/videos
