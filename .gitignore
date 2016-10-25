@@ -17,17 +17,17 @@ javascript/bf96ff3caa364a37a099b5080ddcfa8e
 
 # Ignore db files.
 quotesDB2.sql 
+quotesDB.sql 
+Quotes BD
 
-<<<<<<< HEAD
 # Ignore mail files.
 AppClasses/send_mail.php
 AppClasses/PHPMailer.php
-=======
+
 # Ignore PHPMailer files.
 AppClasses/PHPMailer
 AppClasses/UserController.php
 AppClasses/send_mail.php
->>>>>>> verify-user
 
 #Ignore video file.
 Assets/videos
