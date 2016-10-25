@@ -24,8 +24,8 @@
                 login($checked[0]['email']);
             } else{
                 $uname=substr($this->email, 0, strpos($this->email, "@"));
-                $col="oauth_provider,oauth_uid,fname,lname,email,username,gender,picture,passwd";
-                $val="'".$oauth_provider."','".$oauth_id."','".$fname."','".$lname."','".$this->email."','".$uname."','".$gender."','".$picture."',''";
+                $col="oauth_provider,oauth_uid,fname,lname,email,username,gender,picture,active,passwd";
+                $val="'".$oauth_provider."','".$oauth_id."','".$fname."','".$lname."','".$this->email."','".$uname."','".$gender."','".$picture."',1,''";
                 if($this->obj->save('users',$col,$val)){
                     $this->login($uname);
                 }

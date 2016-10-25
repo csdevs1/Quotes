@@ -93,7 +93,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         $nameArr=explode(" ",$name);
         $fname=$nameArr[0];
         $lname=$nameArr[1];
-        echo $obj2->signup('Google',$id,$fname,$lname,$gender[0],$profile_image_url);
+        $obj2->signup('Google',$id,$fname,$lname,$gender[0],$profile_image_url);
         /*print "ID: {$id} <br>";
         print "Name: {$name} <br>";
         print "Email: {$email } <br>";
