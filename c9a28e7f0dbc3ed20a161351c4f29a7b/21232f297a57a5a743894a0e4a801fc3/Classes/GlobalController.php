@@ -90,7 +90,7 @@
         $column = $_POST['column'];
         $order = $_POST['order'];
         $limit = $_POST['limit'];
-        $response = $response=$obj->limit($column,$table,$limit,$order);
+        $response = $obj->limit($column,$table,$limit,$order);
         $json_response = array($response,'response'=>200);
         echo json_encode($json_response);
     }elseif(isset($_POST['table']) && isset($_POST['column']) && !empty($_POST['column']) && isset($_POST['pattern']) && !empty($_POST['pattern']) && $_POST['action']=='like'){

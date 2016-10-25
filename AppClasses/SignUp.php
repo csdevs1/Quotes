@@ -12,6 +12,7 @@
         echo json_encode($json_response);
     }elseif(isset($_POST['table']) && !empty($_POST['data']) && $_POST['action']=='insert' && !empty($_POST['token'])){ //check Token function
         $table = $_POST['table'];
+        $json_response = array('response'=>200,$table);
         $token = $_POST['token'];
         $data = json_decode($_POST['data'],true);
         $data['username']=substr($data['email'], 0, strpos($data['email'], "@"));
@@ -21,7 +22,7 @@
             $json_response = array('response'=>200,$response);
             echo json_encode($json_response);
         } else{
-                $json_response = array('response'=>400,$response);
+            $json_response = array('response'=>400,$response);
             echo json_encode($json_response);
         }
     }
