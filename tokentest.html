@@ -1,0 +1,198 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Token Test</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>        
+        <!--<script>
+            $(document).ready(function(){
+                postToken();
+            });
+            
+            var postToken=function(){
+                var generated = generateToken();
+                generated.done(function(response){
+                    console.log(response);
+                    var generated2 = generateToken();
+                    generated2.done(function(response2){
+                        console.log(response2);
+                        var generated3 = generateToken();
+                        generated3.done(function(response3){
+                            console.log(response3);
+                            var generated3 = generateToken();
+                        });
+                    });
+                });
+            }
+    
+        var generateToken = function(){
+            return $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'AppClasses/GenerateToken.php'
+            });
+        }
+        </script>-->
+        <div  class="fb-like"  data-share="true"  data-width="450"  data-show-faces="true"></div>
+        <p><a href="" onclick='postToPage("User Page");'>Post to Group</a></p>
+
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                  appId      : '',
+                  xfbml      : true,
+                  version    : 'v2.8'
+                });
+              };
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+            function postToPage(param) {
+                var page_id = '864112963723491';
+                var path = '/'+param.split(" ").join('-');
+                FB.api('/' + page_id, {fields: 'access_token'}, function(resp) {
+                    FB.api('/' + page_id + '/feed',
+                           'post',
+                           { message:'Check out my '+param,link:'example.com'+path,access_token:
+                            '' }
+                           ,function(response) {
+                        console.log(response);
+                    });
+                });
+            }
+            
+            function getInfo(){
+                FB.api('/me/feed', 'GET', { fields: 'frist_name,last_name,name,id' }, function(response) {
+                    console.log(response);
+                });
+            }
+        </script>
+        
+    </body>
+</html>
+
+<?php
+if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
+    require_once('AppClasses/AppController.php');
+    $obj = new AppController();
+    class HeadTags{
+        public function titlePage($el) {
+            return $el." at PortalQuote";
+        }
+        public function meta_description($el) {
+            return $el;
+        }
+    }
+
+    function add3dots($string, $repl, $limit){
+        if(strlen($string) > $limit){
+            return substr($string, 0, $limit) . $repl;
+        }
+        else {
+            return $string;
+        }
+    }
+    $quote=$obj->find_by('quotes_en','quoteID',$_GET['quoteid']);
+    $meta_tags = new HeadTags();
+    $title = $meta_tags->titlePage('Find The Best Quotes');
+    $description = $meta_tags->meta_description('\''.$quote[0]['quote'].'\' - '.$quote[0]['author'].". Share with your friends on Facebook, Twitter, Instagram...");
+    $topicsArr=$obj->custom("SELECT topics_en.topicID, topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quotesTopicEN.quoteID=".$quote[0]['quoteID']);
+    $count=0;
+    $topics=array();
+    foreach($topicsArr as $key=>$val){
+        $topics[$count]=$topicsArr[$key]['topicName'];
+        $count++;
+    }
+    $topic=join(",",$topics);
+    if(isset($quote[0]['quoteImage']) && !empty($quote[0]['quoteImage']))
+        $image = "https://portalquote.com/images/quotes/".$quote[0]['quoteImage'];
+    else
+        $image = "image";
+	$folder='../';
+?>
+
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <?php include 'layouts/head.php'; ?>
+        <style>
+            .quote .pad{margin-top: 20px;padding-bottom: 0 !important;}
+            .quote blockquote:before {
+                content:"";
+            }
+            .large-card{margin-left: auto;margin-right: auto;float: none;}
+            .large-card blockquote{font-size: 1.7rem;}
+            .large-card blockquote span{font-size: 1.5rem;}
+            .large-card p{width: 100%;padding:5px;text-align: center;font-size: 3rem;color: #bbb;font-family: 'Rouge Script', cursive;}
+            #quoteImg{text-align: center;margin-top: 20px;}
+            #quoteImg img{margin-left: auto;margin-right: auto;}
+            #renderedCanva{visibility: hidden;}
+        </style>
+    </head>
+    <body>
+        <section class="background" id="banner" role="banner">
+            <?php include 'layouts/nav.php'; ?>
+            <!-- -->
+        </section>
+        
+        <!-- SIGN UP FORM -->
+        <?php include 'layouts/signup.php'; ?>
+        <!-- -->        
+        <section id="original-content" role="contentinfo">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-8 col-sm-7 col-md-6 col-lg-5 item quote large-card" id="original">
+                        <div class="pad">
+                            <?php if(isset($quote[0]['quoteImage']) && !empty($quote[0]['quoteImage'])){ ?>
+                                <img class="img-responsive" src="../images/quotes/<?php echo $quote[0]['quoteImage']; ?>">
+                            <?php } ?>
+                            <blockquote><?php echo $quote[0]['quote']; ?> <span>- <?php echo $quote[0]['author']; ?></span></blockquote>
+                            <p>PortalQuote</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section role="contentinfo">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12" id="quoteImg">
+                        <img class="img-responsive" id="renderedCanva" title="<?php echo $quote[0]['author']; ?>" alt="<?php echo $topic;  ?>">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FOOTER -->
+        <?php include 'layouts/footer.php'; ?>
+        <script>
+            window.onload=function(){
+                html2canvas($("#original"), {
+                    allowTaint: true,
+                    onrendered: function(canvas) {
+                        var dataURL = canvas.toDataURL();
+                        document.getElementById('renderedCanva').src=dataURL;
+                        canvas.id = "image-canva";
+                        $('#original-content').hide();
+                        $('#renderedCanva').css('visibility','visible');
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
+<?php
+} else{
+    include('404.html');
+    exit();
+}
+?>
