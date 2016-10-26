@@ -83,6 +83,9 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>     
         <!-- -->
+        <!-- LOGIN FORM -->
+        <?php include 'layouts/login.php'; ?>
+        <!-- -->
 
         <section id="quotes-day" role="contentinfo">
             <div class="container">

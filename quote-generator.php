@@ -41,6 +41,9 @@ class HeadTags{
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>        
         <!-- -->
+        <!-- LOGIN FORM -->
+        <?php include 'layouts/login.php'; ?>
+        <!-- -->
         
         <div class="col-xs-12 panel panel-main">
             <div class="container panel-container">

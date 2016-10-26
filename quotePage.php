@@ -75,7 +75,11 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
         
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>
-        <!-- -->   
+        <!-- -->
+        <!-- LOGIN FORM -->
+        <?php include 'layouts/login.php'; ?>
+        <!-- -->
+        
         <?php 
             if(isset($quote[0]['quoteImage']) && !empty($quote[0]['quoteImage'])){
         ?>

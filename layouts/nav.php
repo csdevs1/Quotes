@@ -19,8 +19,8 @@
                         <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                                    <li><a href="#login" role="link"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
-                        <li><a href="#signup" role="link" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                        <li><a href="" role="link"  data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
+                        <li><a href="" role="link" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
                     </ul>
                 </div>
                 

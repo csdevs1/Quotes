@@ -103,6 +103,9 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>     
         <!-- -->
+        <!-- LOGIN FORM -->
+        <?php include 'layouts/login.php'; ?>
+        <!-- -->
         
         <section id="quotes-day" role="contentinfo">
             <div class="container">

@@ -49,6 +49,9 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>
         <!-- -->
+        <!-- LOGIN FORM -->
+        <?php include 'layouts/login.php'; ?>
+        <!-- -->
         
         <section role="main">
             <div class="container">
