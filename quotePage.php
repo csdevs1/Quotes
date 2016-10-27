@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     require_once('AppClasses/AppController.php');
     $obj = new AppController();

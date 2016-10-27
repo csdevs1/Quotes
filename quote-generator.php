@@ -1,4 +1,5 @@
 <?php
+session_start();
 class HeadTags{
         public function titlePage($el) {
             return $el." at PortalQuote";

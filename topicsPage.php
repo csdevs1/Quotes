@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('AppClasses/AppController.php');
     $obj = new AppController();
     class HeadTags{

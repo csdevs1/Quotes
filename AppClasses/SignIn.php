@@ -1,5 +1,6 @@
 <?php
     require_once('AppController.php');
+    session_start();
     require_once('Token.php');
     $obj = new AppController();
     $token=new Token();

@@ -21,6 +21,7 @@ $("#login-btn").click(function(){
     var email=$('#email-login').val(),passwd=$('#passwd-login').val(),token=$('#token').val();
     var logged=login(email,passwd,token);
     logged.done(function(response){
+        console.log(response);
         if(response[0]){
             swal({title: "Welcome!",   text: "You've logged in correctly!",   type: "success",   showCancelButton: false,showConfirmButton: false });
             setTimeout(function() {

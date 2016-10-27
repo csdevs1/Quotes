@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_GET['topic']) && !empty($_GET['topic'])){
     require_once('AppClasses/AppController.php');
     require_once 'AppClasses/Paginator.php';
