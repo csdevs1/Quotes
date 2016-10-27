@@ -19,8 +19,29 @@
                         <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="" role="link"  data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
-                        <li><a href="" role="link" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                        <?php if(!isset($_SESSION['fname']) && empty($_SESSION['fname'])){ ?>
+                            <li><a href="" role="link"  data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
+                            <li><a href="" role="link" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                        <?php } else{ ?>
+                        <li>
+                            <div class="dropdown">
+                                <a href="" id="my-profile" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/quotes/<?php echo $_SESSION['profile']; ?>" class="profile-small"> <?php echo $_SESSION['fname']; ?></a>
+                                <ul class="dropdown-menu" aria-labelledby="my-profile">
+                                    <li> My Profile</li>
+                                    <li> Logout</li>
+                                </ul>
+                            </div>
+                        </li>
+                        <?php }?>
+                        <li>
+                            <div class="dropdown">
+                                <a href="" id="lang" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> Language</a>
+                                <ul class="dropdown-menu" aria-labelledby="lang">
+                                    <li><img src="images/pt.png"> Portuguese</li>
+                                    <li><img src="images/es.png"> Spanish</li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 

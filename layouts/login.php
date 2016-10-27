@@ -9,17 +9,17 @@
                 <form>
                     <div class="form-group">
                         <label for="email" class="control-label">Email:</label>
-                        <input type="email" class="form-control" id="email">
+                        <input type="email" class="form-control" id="email-login">
                     </div>
                     <div class="form-group">
                         <label for="passwd" class="control-label">Password:</label>
-                        <input type="password" class="form-control" id="passwd">
+                        <input type="password" class="form-control" id="passwd-login">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Login</button>
+                <button type="button" class="btn btn-primary" id="login-btn">Login</button>
             </div>
         </div>
     </div>
