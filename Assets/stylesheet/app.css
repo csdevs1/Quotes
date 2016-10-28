@@ -485,6 +485,10 @@ video{
     }
 }
 
+.disable + .popover{
+    width: 200%;
+}
+
 /* End of Upvote system*/
 
 /* AUTHORS PAGE */

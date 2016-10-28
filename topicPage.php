@@ -122,10 +122,15 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                             $liked=$obj->like('likes_en', "userID=".$_SESSION['uID']." AND quoteID=$qID");
                                 ?>
                                     
-                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like qtLikeLink <?php if(count($liked)>0) echo "liked qtDislikeLink";?>" data-qtlike="<?php echo $qID; ?>"><?php if(count($liked)>0) echo "Liked <span class='glyphicon glyphicon-heart liked'></span>"; else echo 'Like'; ?></a></p></div>
+                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like qtLikeLink <?php if(count($liked)>0) echo "liked qtDislikeLink";?>" role="button" data-qtlike="<?php echo $qID; ?>"><?php if(count($liked)>0) echo "Liked <span class='glyphicon glyphicon-heart liked'></span>"; elseif($nLikes[0]['cnt']>1) echo 'Likes'; else echo 'Like'; ?></a></p></div>
                                 <?php }else{ ?>
-                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable">Like</a></p></div>
+                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable" role="button" data-toggle="popover" data-placement="top" data-title="Want to like this?" data-content="<a href='' data-toggle='modal' data-target='#signup'>Sign up now!</a>">Like<?php if($nLikes[0]['cnt']>1) echo 's'; ?></a></p></div>
                                 <?php } ?>
+                            </div>
+                        </div>
+                        <?php
+                            }
+                        ?>
                             </div>
                         </div>
                         <?php
@@ -145,6 +150,9 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         <!-- FOOTER -->
         <?php include 'layouts/footer.php'; ?>
         <script>
+            $(document).ready(function(){
+                $('[data-toggle="popover"]').popover({html: true});
+            });
             $(window).scroll(function(){
                 var scrollTop = $(window).scrollTop();
                 var height = $(window).height();

@@ -20,8 +20,8 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if(!isset($_SESSION['fname']) && empty($_SESSION['fname'])){ ?>
-                            <li><a href="" role="link"  data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
-                            <li><a href="" role="link" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                            <li><a href="" role="buttom"  data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
+                            <li><a href="" role="buttom" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
                         <?php } else{ ?>
                         <li>
                             <div class="dropdown">
