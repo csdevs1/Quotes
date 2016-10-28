@@ -99,6 +99,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                 $quote=$quotes[0]['quote'];
                                 $qImage=$quotes[0]['quoteImage'];
                                 $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
+                                $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                 $count=0;
                                 if(!empty($topicsArr)){
                                     foreach($topicsArr as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
@@ -116,7 +117,15 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                 <?php } ?>
                                 <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $quotes[0]['author']; ?></a></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="<?php echo $author; ?> | PortalQuote"></div>
-                                <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                                <?php 
+                                        if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+                                            $liked=$obj->like('likes_en', "userID=".$_SESSION['uID']." AND quoteID=$qID");
+                                ?>
+                                    
+                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like qtLikeLink <?php if(count($liked)>0) echo "liked qtDislikeLink";?>" data-qtlike="<?php echo $qID; ?>"><?php if(count($liked)>0) echo "Liked <span class='glyphicon glyphicon-heart liked'></span>"; else echo 'Like'; ?></a></p></div>
+                                <?php }else{ ?>
+                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable">Like</a></p></div>
+                                <?php } ?>
                             </div>
                         </div>
                         <?php

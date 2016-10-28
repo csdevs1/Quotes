@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_GET['name']) && !empty($_GET['name'])){
     require_once('AppClasses/AppController.php');
     require_once 'AppClasses/Paginator.php';
@@ -118,6 +119,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 $quote=$quotes[$key]['quote'];
                                 $qImage=$quotes[$key]['quoteImage'];
                                 $topics = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
+                                $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                 $count=0;
                                 if(!empty($topics)){
                                     foreach($topics as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
@@ -135,7 +137,15 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 <?php } ?>
                                 <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $author; ?></a></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo $qID; ?>" data-title="Hey, check out this quote by <?php echo $author; ?> | PortalQuote <?php foreach($arrEN as $key=>$val) echo '#'.$arrEN[$key].' '; ?>" data-description="<?php echo '\''.$quote.'\' - '.$author.". Share with your friends on Facebook, Twitter, Instagram..." ?>"></div>
-                                <div class="col-xs-4 col-md-4"><p><span>0</span><a class="like" onclick="return myFunction(this)">Like</a></p></div>
+                                <?php 
+                                        if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+                                            $liked=$obj->like('likes_en', "userID=".$_SESSION['uID']." AND quoteID=$qID");
+                                ?>
+                                    
+                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like qtLikeLink <?php if(count($liked)>0) echo "liked qtDislikeLink";?>" data-qtlike="<?php echo $qID; ?>"><?php if(count($liked)>0) echo "Liked <span class='glyphicon glyphicon-heart liked'></span>"; else echo 'Like'; ?></a></p></div>
+                                <?php }else{ ?>
+                                    <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable">Like</a></p></div>
+                                <?php } ?>
                             </div>
                         </div>
                         <?php
