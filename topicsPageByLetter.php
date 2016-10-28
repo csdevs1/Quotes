@@ -76,7 +76,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
                                 <h3><a href="/topic/quotes/<?php echo $topics[$key]['seo_url']; ?>/1"><?php echo $topics[$key]['topicName']; ?></a></h3>
                             </div>
                             <div class="col-xs-12 card-content">
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/topic/quotes/<?php echo $topics[$key]['seo_url']; ?>/1" data-title="<?php echo "Find the best quotes about ".strtolower($topics[$key]['topicName']).", ".$topics[$key]['keywords']."and more by the best authors and famous people"; ?>. Share with your friends on Facebook, Twitter, Instagram..."></div>
+                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/topic/quotes/<?php echo $topics[$key]['seo_url']; ?>/1" data-title="Find the best quotes about <?php echo $topics[$key]['topicName']; ?> at PortalQuote" data-description="<?php echo "Find the best quotes about ".strtolower($topics[$key]['topicName']).", ".$topics[$key]['keywords']."and more by the best authors and famous people"; ?>. Share with your friends on Facebook, Twitter, Instagram..."></div>
                                 <a class="btn btn-primary" href="/topic/quotes/<?php echo $topics[$key]['seo_url']; ?>/1">View</a>
                             </div>
                         </div>
