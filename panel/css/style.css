@@ -2125,3 +2125,54 @@ ul.p-social-link li a {
         color: #fff;
         font-family: 'Raleway', sans-serif;
     }
+
+/*COLLECTION*/
+    .collection-cont div {
+        display: inline-block;
+        width: 100%;
+    }
+
+/* Custom, iPhone Retina */ 
+    @media only screen and (min-width : 320px) {
+        .collection-cont {
+            -moz-column-count: 1;
+            -moz-column-gap: 5px;
+            -webkit-column-count: 1;
+            -webkit-column-gap: 5px;
+            column-count: 1;
+            column-gap: 5px;
+        }
+    }
+    @media only screen and (min-width : 600px) {
+        .collection-cont {
+            -moz-column-count: 2;
+            -moz-column-gap: 5px;
+            -webkit-column-count: 2;
+            -webkit-column-gap: 5px;
+            column-count: 2;
+            column-gap: 5px;
+        }
+    }
+
+/* Extra Small Devices, Phones */ 
+    @media only screen and (min-width : 768px) {
+        .collection-cont {
+            -moz-column-count: 3;
+            -moz-column-gap: 5px;
+            -webkit-column-count: 3;
+            -webkit-column-gap: 5px;
+            column-count: 3;
+            column-gap: 5px;
+        }
+    }
+
+    @media only screen and (min-width : 992px) {
+        .collection-cont {
+            -moz-column-count: 4;
+            -moz-column-gap: 5px;
+            -webkit-column-count: 4;
+            -webkit-column-gap: 5px;
+            column-count: 4;
+            column-gap: 5px;
+        }
+    }

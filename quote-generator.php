@@ -197,6 +197,15 @@ class HeadTags{
                     <div class="img-gallery">
                         <img src="images/gallery/gallery-3.jpg" onclick="generator.changeImage(this)">
                     </div>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-4.jpg" onclick="generator.changeImage(this)">
+                    </div>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-5.jpg" onclick="generator.changeImage(this)">
+                    </div>
+                    <div class="img-gallery">
+                        <img src="images/gallery/gallery-6.jpg" onclick="generator.changeImage(this)">
+                    </div>
                 </div>
             </div>
         </div>
