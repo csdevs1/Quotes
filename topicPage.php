@@ -87,8 +87,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         <!-- LOGIN FORM -->
         <?php include 'layouts/login.php'; ?>
         <!-- -->
-
-        <section id="quotes-day" role="contentinfo">
+    <section id="quotes-day" role="contentinfo">
             <div class="container">
                 <div class="row">
                     <div class="masonry-container">
@@ -107,6 +106,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                         $count++;
                                     }
                                 }
+                                $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($quote)), 0, 10));
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad">
@@ -116,7 +116,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                     <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $qImage; ?>" alt="<?php echo $quotes[0]['author']; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
                                 <?php } ?>
                                 <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $quotes[0]['author']; ?></a></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="http://portalquote.com/quote/1" data-title="<?php echo $author; ?> | PortalQuote"></div>
+                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo $share_url; ?>" data-title="Hey, check out this quote by <?php echo $quotes[0]['author']; ?> | PortalQuote <?php foreach($arrEN as $key=>$val) echo '#'.$arrEN[$key].' '; ?>" data-description="<?php echo '\''.$quote.'\' - '.$quotes[0]['author'].". Share with your friends on Facebook, Twitter, Instagram..." ?>"></div>
                                 <?php 
                                         if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
                                             $liked=$obj->like('likes_en', "userID=".$_SESSION['uID']." AND quoteID=$qID");
@@ -131,21 +131,15 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                         <?php
                             }
                         ?>
-                            </div>
-                        </div>
-                        <?php
-                            }
-                        ?>
                     </div>
                 </div>
             </div>
-        </section>
-        
-        <div class="container">
+    </section>
+    <div class="container">
             <nav aria-label="Page navigation">
                 <?php echo $Paginator->createLinks($links, 'pagination pagination-sm',dirname($_SERVER[REQUEST_URI])); ?> 
             </nav>
-        </div>
+    </div>
         
         <!-- FOOTER -->
         <?php include 'layouts/footer.php'; ?>

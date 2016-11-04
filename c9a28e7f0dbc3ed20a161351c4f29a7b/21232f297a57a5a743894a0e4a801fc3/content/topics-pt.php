@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $topics = $obj->all('topics_pt');
@@ -9,7 +10,10 @@
         Tópico
     </h3>
     <div class="clearfix"></div>
+    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+            if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>
     <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this)"><span class="glyphicon glyphicon-edit"></span> Adicionar novo tópico</span></div>
+    <?php } } ?>
 </div>
 
 <div class="container quote-form" id="quote-form">
@@ -114,7 +118,7 @@
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
             <div class="circle-ref" onclick="topicsTranslation(<?php echo $topicID[0]['id']; ?>)"><?php echo $topicID[0]['id']; ?></div>
             <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                <h3 data-placement="top" title="Edit Topic" onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>)"><a><?php echo $topics[$key]['topicName'] ?></a></h3>
+                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
             
             <div class="col-xs-8 col-md-8">

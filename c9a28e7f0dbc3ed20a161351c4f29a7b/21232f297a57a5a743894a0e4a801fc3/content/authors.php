@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $authors = $obj->all('authors');
@@ -6,13 +7,19 @@
     $countries = array('Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Puerto Rican', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian/Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean');
 
 ?>
+<style>
+    .input-group-addon{background: #fff;border: 0;padding: 0;}
+</style>
 
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
         Authors
     </h3>
     <div class="clearfix"></div>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
+    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+            if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
+        <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
+    <?php } } ?>
 </div>
 
 <div class="container quote-form" id="quote-form">
@@ -116,9 +123,11 @@
             foreach($authors as $key=>$val){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
-		<i class="ion-close-circled close" onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'></i>
+            <?php if(isset($_SESSION['permission'][2]) && !empty($_SESSION['permission'][2]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
+            <i class="ion-close-circled close" onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'></i>
+            <?php } } ?>
             <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
-                <h3 data-placement="top" title="Edit Topic" onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"><a><?php echo $authors[$key]['authorName']; ?></a></h3>
+                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"<?php } } ?>><a><?php echo $authors[$key]['authorName']; ?></a></h3>
             </div>
         </div>        
         <?php
@@ -128,7 +137,18 @@
 </div>
 
 <div class="container">
-    <div class="paging-container row col-centered" id="tablePaging">
+    <div class="paging-container col-xs-12" id="tablePaging">
+    </div>
+    <div class="col-xs-12 ">
+        <div class="col-xs-12">
+            <label for="pageN">Go to page:</label>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="input-group">
+                <input type="text" name="pageN" id="pageN" class="form-control" placeholder="Go to page...">
+                <span class="input-group-addon"><input type="submit" id="goto" class="btn btn-primary" value="Go" onclick="goToPage()"></span>
+            </div>
+        </div>
     </div>
     
     <!--<nav aria-label="Page navigation">
@@ -172,6 +192,7 @@
         load = function() {
             window.tp = new Pagination('#tablePaging', {
                 itemsCount: count,
+                //currentPage:3, Get this variable to 
                 onPageSizeChange: function (ps) {
                     //console.log('changed to ' + ps);
                 },
@@ -190,6 +211,31 @@
         }
         load();
     });
+    
+    var goToPage=function(){
+        var nPage=$('#pageN').val();
+        if(nPage>0){
+            window.tp = new Pagination('#tablePaging', {
+                itemsCount: count,
+                currentPage:nPage,
+                onPageSizeChange: function (ps) {
+                    //console.log('changed to ' + ps);
+                },
+                onPageChange: function (paging) {
+                    //custom paging logic here
+                    //console.log(paging);
+                    var start = paging.pageSize * (paging.currentPage - 1),
+                        end = start + paging.pageSize,
+                        $rows = $('#row').find('.data');
+                    $rows.hide();
+                    for (var i = start; i < end; i++) {
+                        $rows.eq(i).show();
+                    }
+                }
+            });
+        }
+    }
+    
     /*Pagination*/
 
     $("#image").on("change", function(){
@@ -248,7 +294,7 @@
                                     else
                                         arr[i2]='<option value="'+response3[0][i2].professionID+'">'+response3[0][i2].professionName+'</option>';
                                 }
-                                $('#professions-list').append('<div class="input-group col-xs-12 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
+                                $('#professions-list').append('<div class="input-group col-xs-3 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
                             });
                         });
                     }

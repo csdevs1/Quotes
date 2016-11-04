@@ -6,7 +6,7 @@
     if(isset($_POST['table']) && !empty($_POST['table']) && isset($_POST['row']) && !empty($_POST['row']) && isset($_POST['val']) && !empty($_POST['val']) && $_POST['action']=='find_by'){
         $table = $_POST['table'];
         $row = $_POST['row'];
-        $val = $_POST['val'];
+        $val=str_replace("'","\'", $_POST['val']);
         $json_response = array('response'=>200,$obj->find_by($table,$row,$val));
         echo json_encode($json_response);
     } elseif(isset($_POST['table']) && !empty($_POST['data']) && $_POST['action']=='insert' && $token->check($_POST['token'])){ //check Token function

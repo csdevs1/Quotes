@@ -71,6 +71,39 @@ var insert = function(table,data,token,image=''){
     });
 }
 
+var insertLog = function(table,data,action){
+    var formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    formData.append("table", table);
+    formData.append("action", action);
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        processData: false,
+        contentType:  false,
+        data: formData,
+        url: 'Classes/LogController.php',
+        async:false
+    });
+}
+
+var signup = function(table,data,token){
+    var formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    formData.append("table", table);
+    formData.append("action", 'signup');
+    formData.append("token", token);
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        processData: false,
+        contentType:  false,
+        data: formData,
+        url: 'Classes/SignUp.php',
+        async:false
+    });
+}
+
 var update = function(table,arr,row,id,token,image=''){
     var formData = new FormData();
     formData.append("data", JSON.stringify(arr));

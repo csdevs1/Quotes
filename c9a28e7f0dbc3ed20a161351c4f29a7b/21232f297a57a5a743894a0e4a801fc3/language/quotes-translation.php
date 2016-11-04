@@ -1,4 +1,7 @@
 <?php
+#NEED TO ADD WHEN USER COMES FROM PORTUGUESE QUOTES
+
+	session_start();
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $translations = $obj->find_by('quotes','id',$_POST['id']);
@@ -30,11 +33,62 @@
                 $count++;
             }
         }
+    }elseif(isset($translations[0]['es_id']) && !empty($translations[0]['es_id'])){
+        $eng = $obj->find_by('quotes_es','quoteID',$translations[0]['es_id']);
+        $author = $eng[0]['author'];
+        $arrES = array();
+        $arrPT = array();
+        $topicRel = $obj->find_by('quotesTopicEN','quoteID',$eng[0]['quoteID']); // GET AN ARRAY WITH ALL THE TOPICS RELATED TO THIS QUOTE IN ENGLISH
+        $count=0;
+        
+        foreach($topicRel as $key=>$val){ // LOOP THROUGH ALL THE ID AND THEN STORE THEM IN THE ARRAY
+            $arrES[$count] = $obj->custom('SELECT topics_es.topicID,topics_es.topicName FROM topics_es INNER JOIN topics ON topics_es.topicID=topics.tEN_id WHERE topics.tES_id='.$val['topicID']); // USE join() FUNCTION
+            $arrPT[$count] = $obj->custom('SELECT topics_pt.topicID,topics_pt.topicName FROM topics_pt INNER JOIN topics ON topics_pt.topicID=topics.tPT_id WHERE topics.tEN_id='.$val['topicID']); // USE join() FUNCTION
+            $count++;
+        }
+        $count=0;
+        if(!empty($arrES)){
+            foreach($arrES as $key=>$val){// DELETE THIS LOOP AND USE ONLY JOIN LIKE BELOW
+                $arrES[$count]=$val[0]['topicName']; // TOPIC'S NAME IN SPANISH
+                $count++;
+            }
+        }
+        
+        $count=0;
+        if(!empty($arrPT)){
+            foreach($arrPT as $key=>$val){// DELETE THIS LOOP AND USE ONLY JOIN LIKE BELOW
+                $arrPT[$count]=$val[0]['topicName']; // TOPIC'S NAME IN SPANISH
+                $count++;
+            }
+        }
     }
 
+
+$next=$obj->custom("SELECT id FROM quotes WHERE id > ".$_POST['id']." ORDER BY id ASC LIMIT 1"); //TO SELECT NEXT SET OF QUOTES
+$previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER BY id DESC LIMIT 1"); //TO SELECT PREVIOUS SET OF QUOTES
 ?>
 
 <!-- Load with Jquery Load function -->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li <?php if(empty($previous[0]['id'])) echo 'class="disabled"'; ?>><a <?php if(!empty($previous[0]['id'])){?>onclick="quotesTranslation(<?php echo $previous[0]['id']; ?>)"<?php } ?>><span class="glyphicon glyphicon-arrow-left"></span> Previous</a></a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li <?php if(empty($next[0]['id'])) echo 'class="disabled"'; ?>><a <?php if(!empty($next[0]['id'])){?>onclick="quotesTranslation(<?php echo $next[0]['id']; ?>)"<?php } ?>><span class="glyphicon glyphicon-arrow-right"></span> Next</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </div>
+    </div>
+</div>
+
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
         Translate
@@ -70,7 +124,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'en',<?php echo $_POST['id']; ?>)">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'en','English',<?php echo $_POST['id']; ?>)">Save</button>
             </div>
         </div>
     </div>
@@ -105,7 +159,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'es',<?php echo $_POST['id']; ?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'es','Spanish',<?php echo $_POST['id']; ?>)">Guardar</button>
             </div>
         </div>
     </div>
@@ -140,7 +194,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'pt',<?php echo $_POST['id']; ?>)">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'pt','Portuguese',<?php echo $_POST['id']; ?>)">Salvar</button>
             </div>
         </div>
     </div>
@@ -164,14 +218,20 @@
                                 <?php } ?>
                                 <blockquote><?php echo $eng[0]['quote']; ?> <span>- <?php echo $eng[0]['author']; ?></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
+				<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){?>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
+				<?php } } ?>
                             </div>
                         </div>
                         <?php
                             }else{
-                        ?>
+                                if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){?>
                         <div class="col-lg-12 text-dark"><span class="addquote"  onclick="openForm(this,'eng')"><span class="glyphicon glyphicon-edit"></span> Add translation in english</span></div>
                         <?php
+                                    }
+                                }
                             }
                         ?>
                         <!-- SPANISH -->
@@ -186,14 +246,20 @@
                                 <?php } ?>
                                 <blockquote><?php echo $es[0]['quote']; ?> <span>- <?php echo $es[0]['author']; ?></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
+				<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                    if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){?>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
+                                <?php } } ?>
                             </div>
                         </div>
                         <?php
                             }else{
-                        ?>
+                                if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                    if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ ?>
                             <div class="col-lg-12 text-dark"><span class="addquote"  onclick="openForm(this,'es')"><span class="glyphicon glyphicon-edit"></span> Agregar traduccion en espa&ntilde;ol</span></div>
                         <?php
+                                    }
+                                }
                             }
                         ?>
                         <!-- PORTUGUESE -->
@@ -208,14 +274,20 @@
                                 <?php } ?>
                                 <blockquote><?php echo $pt[0]['quote']; ?> <span>- <?php echo $pt[0]['author']; ?></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
+			<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){?>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
+			<?php } } ?>
                             </div>
                         </div>
                         <?php
                             }else{
-                        ?>
+                                if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                    if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){?>
                             <div class="col-lg-12 text-dark"><span class="addquote" onclick="openForm(this,'pt')"><span class="glyphicon glyphicon-edit"></span> Adicionar uma tradução em português</span></div>
                         <?php
+                                    }
+                                }
                             }
                         ?>
                     </div>
@@ -242,7 +314,7 @@
         $('.addquote').hide();
     }
     
-    var save = function(el, lang, relationID){
+    var save = function(el, lang,languague, relationID){
         $(el).attr('disabled','disabled');
         var quote = $('#q-'+lang).val(),
             author = $('#a-'+lang).val(),
@@ -272,14 +344,29 @@
                         var lastQuote = limit(table,'quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
                             var arr2={},
-                                arr3={};
+                                arr3={},
+                                logArr={},relArr={};
                             arr2['quoteID']=dataID[0][0].quoteID;
                             arr3[lang+'_id']=dataID[0][0].quoteID;
+                            relArr['quoteID']=dataID[0][0].quoteID;
                             var token2 = generateToken();
                             token2.done(function(generatedToken2){
                                 var quoteRelation = update('quotes',arr3,'id',relationID,generatedToken2);
                                 quoteRelation.done(function(re){
                                     console.log('Rel: '+ re);
+                                    //NEW STUFF
+                                    var userQuoteRel=insertLog('dashboardUsr_Quote_'+lang,relArr,'relation');
+                                    userQuoteRel.done(function(res){
+                                        console.log(res);
+                                        var lastRel=find_by('quotes',lang+'_id',dataID[0][0].quoteID);
+                                        lastRel.done(function(resRel){
+                                            logArr['log']=' has translated a Quote in '+languague+'. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel[0][0].id+')">'+resRel[0][0].id+'</a>';
+                                            var log=insertLog('dashboard_logs',logArr,'logs');
+                                            log.done(function(res2){
+                                                console.log(res2);
+                                            });
+                                        });
+                                    });
                                 });
                             });
                             var topic = topics.split(',');

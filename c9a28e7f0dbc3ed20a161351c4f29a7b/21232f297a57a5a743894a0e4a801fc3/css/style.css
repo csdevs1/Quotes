@@ -826,13 +826,13 @@ lesshat-selector {
   font-weight: 600;
   font-size: 32px;
 }
-
+/*
 .widget-style-1:hover i {
   -moz-transform: scale(1.5);
   -webkit-transform: scale(1.5);
   -o-transform: scale(1.5);
   transform: scale(1.5);
-}
+}*/
 .widget-style-2 {
   padding-left: 30px;
 }

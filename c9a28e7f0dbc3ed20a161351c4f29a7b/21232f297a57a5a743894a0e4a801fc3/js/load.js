@@ -71,6 +71,24 @@ function topicsTranslation(id) {
     document.getElementById("quotes-area").innerHTML="";
     $("#quotes-area").load("content/topicsTranslation.php",{id:id});
 }
+
+/*USERS*/
+    function users(el) {
+        $(el).addClass('active');
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/Users.php");
+    }
+    function usrDetails(id) {
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/usrDetails.php",{id:id});
+    }
+    function addUser(msg,el) {
+        $(el).addClass('active');
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/addUser.php");
+    }
+/*USERS*/
+
 $(document).ready(function(){
     english('','#eng');
 });

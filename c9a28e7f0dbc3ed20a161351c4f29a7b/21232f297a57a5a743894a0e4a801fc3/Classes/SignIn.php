@@ -14,6 +14,7 @@
             $_SESSION['id']=$response[0]['id'];
             $_SESSION['userName']=$username;
             $_SESSION['lang']=$response[0]['lang'];
+            $_SESSION['label']=$response[0]['label'];
             if($response[0]['insrt'])
                 $_SESSION['permission'][0]=$response[0]['insrt'];
             if($response[0]['modif'])

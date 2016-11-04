@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $quotes = $obj->all('quotes_es');
@@ -10,7 +11,10 @@
         Tus frases
     </h3>
     <div class="clearfix"></div>
+    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+            if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){?>
     <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Agrega una nueva frase</span></div>
+    <?php } } ?>
 </div>
 <div class="container quote-form" id="quote-form">
     <div class="row">
@@ -18,7 +22,7 @@
             <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Ingresar frase..." maxlength="255" class="textarea" id="quote"></textarea>
+            <textarea placeholder="Ingresar frase..." maxlength="500" class="textarea" id="quote"></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
@@ -89,52 +93,15 @@
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
+                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+                                        if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>);">Editar</a></p></div>
+                                <?php } } ?>
                             </div>
                         </div>
                         <?php
                             }
                         ?>
-                        <!--
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/3.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/1.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/2.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        -->
                     </div>
                 </div>
             </div>
@@ -337,14 +304,29 @@ var clearFields=function(){
                         var lastQuote = limit('quotes_es','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
                             var arr2={},
-                                arr3={};
+                                arr3={},
+                                logArr={},relArr={};
                             arr2['quoteID']=dataID[0][0].quoteID;
                             arr3['es_id']=dataID[0][0].quoteID;
+                            relArr['quoteID']=dataID[0][0].quoteID;
                             var token2 = generateToken();
                             token2.done(function(generatedToken2){
                                 var quoteRelation = insert('quotes',arr3,generatedToken2);
                                 quoteRelation.done(function(re){
                                     console.log('Rel: '+ re);
+                                    //NEW STUFF
+                                    var userQuoteRel=insertLog('dashboardUsr_Quote_es',relArr,'relation');
+                                    userQuoteRel.done(function(res){
+                                        console.log(res);
+                                        var lastRel=find_by('quotes','es_id',dataID[0][0].quoteID);
+                                        lastRel.done(function(resRel){
+                                            logArr['log']=' has inserted a new Quote in Spanish. Quote ID: '+dataID[0][0].quoteID+' and Group ID: '+resRel[0][0].id;
+                                            var log=insertLog('dashboard_logs',logArr,'logs');
+                                            log.done(function(res2){
+                                                console.log(res2);
+                                            });
+                                        });
+                                    });
                                 });
                             });
                             var topic = topics.split(',');

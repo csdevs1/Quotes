@@ -11,9 +11,10 @@
         Your quotes
     </h3>
     <div class="clearfix"></div>
-   <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0])){ //Permission to insert    ?>
+   <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+            if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){?>
         <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
-    <?php } ?>
+    <?php } } ?>
 </div>
 <div class="container quote-form" id="quote-form">
     <div class="row">
@@ -92,9 +93,10 @@
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
-                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1])){ //Permission to insert    ?>
-                                    <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>);">Edit</a></p></div>
-                                <?php } ?>
+                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+                                        if($_SESSION['lang']=='eng' || $_SESSION['lang']='all'){ //Permission to insert    ?>
+                                        <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>);">Edit</a></p></div>
+                                <?php } } ?>
                             </div>
                         </div>
                         <?php
@@ -131,7 +133,7 @@
 <!-- Load with Jquery Load function -->
 <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
         var container = $('.masonry-container');
         container.masonry({
             columnWidth: '.item',
@@ -303,14 +305,29 @@
                         var lastQuote = limit('quotes_en','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
                             var arr2={},
-                                arr3={};
+                                arr3={},
+                                logArr={},relArr={};
                             arr2['quoteID']=dataID[0][0].quoteID;
                             arr3['en_id']=dataID[0][0].quoteID;
+                            relArr['quoteID']=dataID[0][0].quoteID;
                             var token2 = generateToken();
                             token2.done(function(generatedToken2){
                                 var quoteRelation = insert('quotes',arr3,generatedToken2);
                                 quoteRelation.done(function(re){
                                     console.log('Rel: '+ re);
+                                    //NEW STUFF
+                                    var userQuoteRel=insertLog('dashboardUsr_Quote_en',relArr,'relation');
+                                    userQuoteRel.done(function(res){
+                                        console.log(res);
+                                        var lastRel=find_by('quotes','en_id',dataID[0][0].quoteID);
+                                        lastRel.done(function(resRel){
+                                            logArr['log']=' has inserted a new Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel[0][0].id+')">'+resRel[0][0].id+'</a>';
+                                            var log=insertLog('dashboard_logs',logArr,'logs');
+                                            log.done(function(res2){
+                                                console.log(res2);
+                                            });
+                                        });
+                                    });
                                 });
                             });
                             var topic = topics.split(',');

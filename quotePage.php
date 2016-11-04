@@ -20,7 +20,19 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
             return $string;
         }
     }
-    $quote=$obj->find_by('quotes_en','quoteID',$_GET['quoteid']);
+    
+    $remove[] = "'";
+    $remove[] = '"';
+    $remove[] = '.';
+    
+    $getURL=explode('_',$_GET['quoteid']);
+    $quote=$obj->find_by('quotes_en','quoteID',$getURL[0]);
+    $quote[0]['quote']=str_replace($remove, "", $quote[0]['quote']);
+    $uri=$getURL[0].'_'.implode('-', array_slice(explode(' ', $quote[0]['quote']), 0, 10));
+    
+    if(strtolower($uri)!=$_GET['quoteid'])
+        header('Location:'.strtolower($uri));
+    
     $meta_tags = new HeadTags();
     $title = $meta_tags->titlePage('Find The Best Quotes');
     $description = $meta_tags->meta_description('\''.$quote[0]['quote'].'\' - '.$quote[0]['author'].". Share with your friends on Facebook, Twitter, Instagram...");

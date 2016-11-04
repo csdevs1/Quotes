@@ -43,7 +43,6 @@ var Pagination = function (el, options) {
 
 		process();
 	};
-
 	onPageRangeComboChange = function () {
 		var psValue = Number($(this).val()),
 			ps = psValue === ALL ? itemsCount : psValue;
@@ -104,7 +103,7 @@ var Pagination = function (el, options) {
 	};
 
 	getRenderedPager = function () {
-		return '<ul class="pagination">' + getRenderedPageNumbers() + '</ul>' + '<div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 page-num"><span class="n-items"> No de items:</span>' + getRenderedPageRange() +'</div>';
+		return '<ul class="pagination">' + getRenderedPageNumbers() + '</ul>' + '<div class="col-xs-3 col-sm-4 col-md-4 col-lg-2 page-num"><span class="n-items"> No de items:</span>' + getRenderedPageRange() +'</div>';
 	};
 
 	getRenderedPageRange = function () {
