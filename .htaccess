@@ -17,6 +17,8 @@ RewriteRule ^65279e1ecf00d0d1177a5b3b458fd187a1d6135e/(.*)$ verification.php?dig
 RewriteRule ^15c563887e7fe28109af91fda7a3532f/df93a32d352b782e852806917765483c$ AppClasses/SignUp.php
 RewriteRule ^c9dcc9a0e463aca2d9575c58a5e23fb9b12d9fa2/4a72dc8ceda3f3885da0aba3a857aa19abcef5bc$ AppClasses/SignIn.php
 RewriteRule ^fc4a695f02a8a53a129dcb9ace91e91ee1e7feb9/c3f5f65ee96aaa8376f9d1647b843329262a12d0$ AppClasses/LikesController.php
+RewriteRule ^a36a5ffa6e0dcfb64fac1b2b3d6fb176de9689de/03158f8543bd7d64c672b2fdfe38668a653487f0$ AppClasses/QuotesController.php
+
 
 #USER PANEL
 RewriteRule ^panel/quotes/(.*)$ panel/index.php?uname=$1

@@ -25,5 +25,20 @@
             $json_response = array('response'=>400,$response);
             echo json_encode($json_response);
         }
+    }elseif(isset($_POST['col']) && !empty($_POST['val']) && $_POST['action']=='update'){ //check Token function
+        $col = $_POST['col'];
+        $val = $_POST['val'];
+        $user=new User();
+        $response=$user->changePicture($col,$val,$_SESSION['uID']);
+        if($response){
+            $json_response = array('response'=>200,$response);
+            echo json_encode($json_response);
+        } else{
+            $json_response = array('response'=>400,$response);
+            echo json_encode($json_response);
+        }
+    }else{
+        $json_response = array('response'=>400);
+            echo json_encode($json_response);
     }
 ?>

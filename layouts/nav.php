@@ -1,3 +1,12 @@
+<?php
+$obj = new AppController();
+$user = $obj->like('users','userID="'.$_SESSION['uID'].'" AND active=1');
+if($user[0]['picture']=='/images/profile/male.png' || $user[0]['picture']=='/images/profile/female.png')
+        $u_picture='../..'.$user[0]['picture'];
+else
+    $u_picture=$user[0]['picture'];
+?>
+
 <div class="nav-container">
     <header class="container">
         <nav role="navigation">
@@ -24,8 +33,11 @@
                             <li><a href="" role="buttom" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
                         <?php } else{ ?>
                         <li>
-                            <div class="dropdown">
-                                <a href="" id="my-profile" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/quotes/<?php echo $_SESSION['profile']; ?>" class="profile-small"> <?php echo $_SESSION['fname']; ?></a>
+                            <div class="dropdown drop-lang">
+                                <a href="" id="my-profile" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="<?php echo $u_picture; ?>" class="profile-small"> 
+                                    <?php echo $_SESSION['fname']; ?>
+                                </a>
                                 <ul class="dropdown-menu" aria-labelledby="my-profile">
                                     <li> My Profile</li>
                                     <li> Logout</li>
@@ -34,7 +46,7 @@
                         </li>
                         <?php }?>
                         <li>
-                            <div class="dropdown">
+                            <div class="dropdown drop-lang">
                                 <a href="" id="lang" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> Language</a>
                                 <ul class="dropdown-menu" aria-labelledby="lang">
                                     <li><img src="images/pt.png"> Portuguese</li>

@@ -826,13 +826,13 @@ lesshat-selector {
   font-weight: 600;
   font-size: 32px;
 }
-
+/*
 .widget-style-1:hover i {
   -moz-transform: scale(1.5);
   -webkit-transform: scale(1.5);
   -o-transform: scale(1.5);
   transform: scale(1.5);
-}
+}*/
 .widget-style-2 {
   padding-left: 30px;
 }
@@ -1160,6 +1160,7 @@ lesshat-selector {
 /* Form-validation */
 .error {
   color: #ff0000;
+    display: none;
 }
 /* Datapicker */
 .datepicker {
@@ -1979,23 +1980,43 @@ ul.p-social-link li a {
   color: #333; 
 }
 
+.chng-pic{position:relative;text-align:right;color:#fff;padding: 40px;max-width: 350px;float: right;overflow: hidden;}
+.chng-pic input,.chng-pic i{position: absolute;right: -50px;z-index: 1000;}
+.chng-pic input{height: 100px;opacity: 0;}
+.chng-pic input:hover{cursor: pointer;}
+.chng-pic i{font-size: 3rem;right: 50px;z-index: 999;}
+
+.img-wrapper{position: relative;overflow: hidden;}
+.img-wrapper input,.img-wrapper i{position: absolute;z-index: 1000;}
+.img-wrapper input{height: 100px;opacity: 1;width: 99%;opacity: 0;}
+.img-wrapper input:hover{cursor: pointer;}
+.img-wrapper i{font-size: 1.9rem;z-index: 999;float: right;right: 5px;bottom: 0px;color: #fff;font-weight: 100;}
 /*QUOTES*/
     .quote {
         margin-bottom: 10px;
     }
-    .quote .pad {
-        border: 1px solid #ccc;
-        padding: 2%;
-        padding-bottom: 10%;
-        transition: all 0.5s;
-    }
+    .circle-ref {
+        position: absolute;
+        background-color: #428bca;
+        right: -15px;
+        top:-15px;
+        padding: 25px;
+        border-radius: 50px;
+        z-index: 100;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        color: #fff;
+        font-weight: 900;
+        box-shadow: -3px 2px 4px #222;
+    }.circle-ref:hover{cursor: pointer;}
     .quote blockquote {
         margin-top: 5px;
         font-family: 'Glegoo', serif;
         font-size: 1.5rem;
         position: relative;
         border-left: 2px solid #ccc;
-        transition: all 0.5s;
+        /*transition: all 0.5s;*/
     }
     .quote blockquote:before {
         position: absolute;
@@ -2038,7 +2059,7 @@ ul.p-social-link li a {
         padding: 1px;
         display: none;
     }
-    #add-quote{cursor: pointer;}
+    #add-quote,.addquote{cursor: pointer;}
 
     .relative-container label{color:#999;font-size:1.5rem;}
     .relative-container label:hover{text-shadow:1px 1px 1px #fff;cursor:pointer;}
@@ -2077,24 +2098,34 @@ ul.p-social-link li a {
 }
 
 .form-group{position: relative;}
-#image{
+.close{position: absolute;font-size: 3rem;left: 15px;top:5px;z-index: 2000}
+.close:hover{cursor: pointer;}
+#image-box,#image-box2{margin-top: 10px; margin-bottom: 15px;}
+.img-container{margin-top: 10px;}
+.img-file, .image-file{
     position: absolute;
-    z-index: 1500;
+    z-index: 1500 !important;
     width: 100%;
+    height: 100%;
+    top: 0;
     opacity: 0;
-}#image:hover{
-    cursor: pointer;
+}.img-file:hover,.image-file:hover{
+    cursor: pointer !important;
+}
+.image-file + .up-label{ /* FOR SINGLE IMAGES */
+    border: 1px dashed #eee !important;
+    left: 38px;
+    height: 100%;
+    z-index: 1000;
 }
 .up-label{
     font-family: 'Raleway', sans-serif;
     position: absolute;
     z-index: 1000;
-    left: 38px;
     width: 97%;
-    border: 1px solid #eee;
     padding: 2px;
+    margin-bottom: 10px;
 }
-
 /* AUTHORS */
     .background{
         background-color: #eee;
@@ -2142,6 +2173,12 @@ ul.p-social-link li a {
             column-count: 1;
             column-gap: 5px;
         }
+        .quote .pad {
+            border: 1px solid #ccc;
+            padding: 2%;
+            padding-bottom: 10%;
+            /*transition: all 0.1s;*/
+        }
     }
     @media only screen and (min-width : 600px) {
         .collection-cont {
@@ -2164,6 +2201,7 @@ ul.p-social-link li a {
             column-count: 3;
             column-gap: 5px;
         }
+        .quote .pad{padding-bottom: 15% !important;}
     }
 
     @media only screen and (min-width : 992px) {
@@ -2174,5 +2212,9 @@ ul.p-social-link li a {
             -webkit-column-gap: 5px;
             column-count: 4;
             column-gap: 5px;
+        }
+        .quote .pad {
+            padding-bottom: 15% !important;
+            /*transition: all 0.1s;*/
         }
     }
