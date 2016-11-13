@@ -10,12 +10,11 @@
         Tema
     </h3>
     <div class="clearfix"></div>
-    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
-            if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ ?>
+<?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
     <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);closeUpdate()"><span class="glyphicon glyphicon-edit"></span> Agregar un nuevo tema</span></div>
-    <?php } } ?>
+<?php } ?>
 </div>
-
+<?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -59,7 +58,7 @@
         </div>
     </div>
 </div>
-
+<?php } ?>
 <!-- Update Form -->
 <div class="container quote-form" id="update-form">
     <div class="row">
@@ -243,6 +242,13 @@ var openUpdate=function(topID){
             token.done(function(generatedToken){
                 var update_topic = update('topics_es',arr,'topicID',topID,generatedToken);
                 update_topic.done(function(data){
+                    //NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited a Topic in Spanish. Topic ID: <a class="idREL" onclick="topicsTranslation('+resRel+')">'+resRel+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                    });
                     console.log(data);
                     if(Object.keys(imagesToUpdate).length > 0){ // Images to be updated
                         var imagesToUpdateID = $("input[name='imageID[]']").map(function(){if($(this).prev().val()!='') return $(this).val();}).get();

@@ -11,11 +11,12 @@
         Suas Citações
     </h3>
     <div class="clearfix"></div>
-    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
-            if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){?>
+    <?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
         <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Adicionar uma nova cotação</span></div>
-    <?php } } ?>
+    <?php } ?>
 </div>
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -62,6 +63,7 @@
         </div>
     </div>
 </div>
+<?php }} ?>
 
 <div id="portlet1" class="panel-collapse collapse in">
     <div class="portlet-body">
@@ -74,7 +76,7 @@
                             foreach($quotes as $key=>$val){
                                 $translations = $obj->find_by('quotes','pt_id',$quotes[$key]['quoteID']);
                         ?>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
+                        <div class="col-xs-12 col-sm-6 col-md-4 item quote data">
                             <div class="pad">
                                 <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
@@ -95,7 +97,7 @@
                                 </div>
                                 <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
                                         if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>);">Editar</a></p></div>
+                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>,<?php echo $translations[0]['id']; ?>);">Editar</a></p></div>
                                 <?php } } ?>
                             </div>
                         </div>
@@ -150,7 +152,21 @@
 </div>
 
 <div class="container">
-    <nav aria-label="Page navigation">
+    <div class="paging-container col-xs-12" id="tablePaging">
+    </div>
+    <div class="col-xs-12 ">
+        <div class="col-xs-12">
+            <label for="pageN">Go to page:</label>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="input-group">
+                <input type="text" name="pageN" id="pageN" class="form-control" placeholder="Go to page...">
+                <span class="input-group-addon page-go"><input type="submit" id="goto" class="btn btn-primary" value="Go" onclick="goToPage()"></span>
+            </div>
+        </div>
+    </div>
+    
+    <!--<nav aria-label="Page navigation">
         <ul class="pagination">
             <li>
                 <a href="#" aria-label="Previous">
@@ -168,11 +184,62 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav>-->
 </div>
+<script src="js/pagination.js?<?php echo time(); ?>"></script>
 <!-- Load with Jquery Load function -->
 <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
 <script type="text/javascript">
+    /*Pagination*/
+    var count = <?php echo count($quotes); ?>;
+    $(function () {
+        load = function() {
+            window.tp = new Pagination('#tablePaging', {
+                itemsCount: count,
+                //currentPage:3, Get this variable to 
+                onPageSizeChange: function (ps) {
+                    //console.log('changed to ' + ps);
+                },
+                onPageChange: function (paging) {
+                    //custom paging logic here
+                    //console.log(paging);
+                    var start = paging.pageSize * (paging.currentPage - 1),
+                        end = start + paging.pageSize,
+                        $rows = $('.masonry-container').find('.data');
+                    $rows.hide();
+                    for (var i = start; i < end; i++) {
+                        $rows.eq(i).show();
+                    }
+                }
+            });
+        }
+        load();
+    });
+    
+    var goToPage=function(){
+        var nPage=$('#pageN').val();
+        if(nPage>0){
+            window.tp = new Pagination('#tablePaging', {
+                itemsCount: count,
+                currentPage:nPage,
+                onPageSizeChange: function (ps) {
+                    //console.log('changed to ' + ps);
+                },
+                onPageChange: function (paging) {
+                    //custom paging logic here
+                    //console.log(paging);
+                    var start = paging.pageSize * (paging.currentPage - 1),
+                        end = start + paging.pageSize,
+                        $rows = $('.masonry-container').find('.data');
+                    $rows.hide();
+                    for (var i = start; i < end; i++) {
+                        $rows.eq(i).show();
+                    }
+                }
+            });
+        }
+    }
+    
     $(document).ready(function() {
         var container = $('.masonry-container');
         container.masonry({
@@ -221,11 +288,11 @@
         }
     });
     
-    var openUpdate = function(quotID){
+    var openUpdate = function(quotID,resRel){
         $('.tag').remove();
         $('#topic').val('');
         var quote = find_by('quotes_pt','quoteID',quotID);
-        $('#save').attr('onclick','updateQuote(this,'+quotID+')');
+        $('#save').attr('onclick','updateQuote(this,'+quotID+','+resRel+')');
         document.getElementById('save').innerHTML="Update";
         quote.done(function(data){
             if(Object.keys(data[0][0]).length > 1){
@@ -250,7 +317,7 @@
         });
     }
     
-    var updateQuote = function(el, quotID){
+    var updateQuote = function(el, quotID,resRel){
         el.innerHTML = "Updating...";
         var quote = $('#quote').val(),
             author = $('#author').val(),
@@ -278,6 +345,14 @@
             token.done(function(generatedToken){
                 var quoteUpdate = update('quotes_pt',arr,'quoteID',quotID,generatedToken,image);
                 quoteUpdate.done(function(data){
+                    //NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited a Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel+')">'+resRel+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                    });
+                    
                     console.log(data);
                     var token2 = generateToken();
                     token2.done(function(generatedToken2){

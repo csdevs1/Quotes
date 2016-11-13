@@ -358,13 +358,10 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
                                     var userQuoteRel=insertLog('dashboardUsr_Quote_'+lang,relArr,'relation');
                                     userQuoteRel.done(function(res){
                                         console.log(res);
-                                        var lastRel=find_by('quotes',lang+'_id',dataID[0][0].quoteID);
-                                        lastRel.done(function(resRel){
-                                            logArr['log']=' has translated a Quote in '+languague+'. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel[0][0].id+')">'+resRel[0][0].id+'</a>';
-                                            var log=insertLog('dashboard_logs',logArr,'logs');
-                                            log.done(function(res2){
-                                                console.log(res2);
-                                            });
+                                        logArr['log']=' has translated a Quote in '+languague+'. Quote ID: <a class="idREL" onclick="quotesTranslation('+relationID+')">'+relationID+'</a>';
+                                        var log=insertLog('dashboard_logs',logArr,'logs');
+                                        log.done(function(res2){
+                                            console.log(res2);
                                         });
                                     });
                                 });

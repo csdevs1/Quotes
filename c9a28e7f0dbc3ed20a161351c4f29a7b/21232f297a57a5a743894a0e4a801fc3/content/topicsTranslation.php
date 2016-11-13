@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $translations = $obj->find_by('topics','id',$_POST['id']);
@@ -12,9 +13,30 @@
         $topicIDPT = $obj->find_by('topics_pt','topicID',$translations[0]['tPT_id']);
     }
 
+$next=$obj->custom("SELECT id FROM topics WHERE id > ".$_POST['id']." ORDER BY id ASC LIMIT 1"); //TO SELECT NEXT SET OF QUOTES
+$previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER BY id DESC LIMIT 1"); //TO SELECT PREVIOUS SET OF QUOTES
 ?>
 
 <!-- Load with Jquery Load function -->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li <?php if(empty($previous[0]['id'])) echo 'class="disabled"'; ?>><a <?php if(!empty($previous[0]['id'])){?>onclick="topicsTranslation(<?php echo $previous[0]['id']; ?>)"<?php } ?>><span class="glyphicon glyphicon-arrow-left"></span> Previous</a></a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li <?php if(empty($next[0]['id'])) echo 'class="disabled"'; ?>><a <?php if(!empty($next[0]['id'])){?>onclick="topicsTranslation(<?php echo $next[0]['id']; ?>)"<?php } ?>><span class="glyphicon glyphicon-arrow-right"></span> Next</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </div>
+    </div>
+</div>
 
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
@@ -22,7 +44,9 @@
     </h3>
     <div class="clearfix"></div>
 </div>
-
+<!-- ENGLISH -->
+<?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                 if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
 <div class="container quote-form" id="t-eng">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -44,12 +68,15 @@
         </div>        
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'en',<?php echo $_POST['id']; ?>)">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'en',<?php echo $_POST['id']; ?>,'English')">Save</button>
             </div>
         </div>
     </div>
 </div>
-
+<?php } } ?>
+<!-- SPANISH -->
+<?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                 if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ ?>
 <div class="container quote-form" id="t-es">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -71,12 +98,15 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'es',<?php echo $_POST['id']; ?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'es',<?php echo $_POST['id']; ?>,'Spanish')">Guardar</button>
             </div>
         </div>
     </div>
 </div>
-
+<?php } } ?>
+<!-- PORTUGUESE -->
+<?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                 if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>
 <div class="container quote-form" id="t-pt">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -98,11 +128,13 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'pt',<?php echo $_POST['id']; ?>)">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'pt',<?php echo $_POST['id']; ?>,'Portuguese')">Salvar</button>
             </div>
         </div>
     </div>
 </div>
+<?php } } ?>
+
 
 <div class="container">
     <?php if(isset($translations[0]['tEN_id']) && !empty($translations[0]['tEN_id'])){ ?>
@@ -123,11 +155,15 @@
         </div>
     <?php
         } else{
+             if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                 if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){
     ?>
         <div class="row">
             <div class="col-lg-12 text-dark"><span class="addquote" onclick="openForm(this,'eng')"><span class="glyphicon glyphicon-edit"></span> Add a new topic</span></div>
         </div>
     <?php
+                 }
+             }
         }
     ?>
     <!-- SPA -->
@@ -149,11 +185,15 @@
         </div>
     <?php
         } else{
+            if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                 if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){
     ?>
         <div class="row">
             <div class="col-lg-12 text-dark"><span class="addquote" onclick="openForm(this,'es')"><span class="glyphicon glyphicon-edit"></span> Agregar tema</span></div>
         </div>
     <?php
+                }
+             }
         }
     ?>
     <!-- PT -->
@@ -175,11 +215,15 @@
         </div>
     <?php
         } else{
+             if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                 if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){
     ?>
         <div class="row">
             <div class="col-lg-12 text-dark"><span class="addquote" onclick="openForm(this,'pt')"><span class="glyphicon glyphicon-edit"></span> Adicionar novo tópico</span></div>
         </div>
     <?php
+                 }
+             }
         }
     ?>
 </div>
@@ -193,12 +237,12 @@
         $('.quote-form').hide(500);
         $('.addquote').show();
     }
-    var openForm=function(el,lang){
+    var openForm=function(el,lang,language){
         $('#t-'+lang).show(500);
         $('.addquote').hide(100);
     }
     
-    var save = function(el,lang,relationID){        
+    var save = function(el,lang,relationID,language){
         $(el).attr('disabled','disabled');
         var topic = $('#tp-'+lang).val(),
             keywords = $('#keywords-'+lang).val(),
@@ -212,9 +256,22 @@
             token.done(function(generatedToken){
                 var table = 'topics_'+lang;
                 var insert_topic = insert(table,arr,generatedToken);
-                insert_topic.done(function(response){
+                insert_topic.done(function(response){                    
                     var lastTopic = limit(table,'topicID','topicID',1);
-                    lastTopic.done(function(data){                        
+                    lastTopic.done(function(data){
+                        //NEW STUFF
+                        var logArr={},relArr={};
+                        relArr['topicID']=data[0][0].topicID;
+                        var topicQuoteRel=insertLog('dashboardUsr_Topic_'+lang,relArr,'relation');
+                        topicQuoteRel.done(function(res){
+                            console.log(res);
+                            logArr['log']=' has translated a Topic in '+language+'. Topic ID: <a class="idREL" onclick="topicsTranslation('+relationID+')">'+relationID+'</a>';
+                            var log=insertLog('dashboard_logs',logArr,'logs');
+                            log.done(function(res2){
+                                console.log(res2);
+                            });
+                        });
+                        
                         var arr2={},
                             uppercaseLang = lang.toUpperCase();
                         arr2['t'+uppercaseLang+'_id']=data[0][0].topicID;

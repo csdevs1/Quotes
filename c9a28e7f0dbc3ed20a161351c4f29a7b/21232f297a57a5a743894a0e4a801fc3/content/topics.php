@@ -10,12 +10,11 @@
         Topic
     </h3>
     <div class="clearfix"></div>
-    <?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
-            if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
+<?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
     <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);closeUpdate()"><span class="glyphicon glyphicon-edit"></span> Add a new topic</span></div>
-    <?php } } ?>
+<?php } ?>
 </div>
-
+<?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -69,7 +68,7 @@
         </div>
     </div>
 </div>
-
+<?php } ?>
 <!-- Update Form -->
 <div class="container quote-form" id="update-form">
     <div class="row">
@@ -127,16 +126,16 @@
 
 
 <div class="container">
-    <div class="row">
+    <div class="row" id="row">
         <?php
             foreach($topics as $key=>$val){
                 $topicID = $obj->find_by('topics','tEN_id',$topics[$key]['topicID']);
                 $images = $obj->find_by('topicsImages','tID',$topicID[0]['id']);
         ?>
-        <div class="col-xs-12 col-sm-6 col-md-4 box-content">
+        <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
             <div class="circle-ref" onclick="topicsTranslation(<?php echo $topicID[0]['id']; ?>)"><?php echo $topicID[0]['id']; ?></div>
             <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
+                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>,<?php echo $topicID[0]['id']; ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
             
             <div class="col-xs-8 col-md-8">
@@ -171,7 +170,21 @@
 </div>
 
 <div class="container">
-    <nav aria-label="Page navigation">
+    <div class="paging-container col-xs-12" id="tablePaging">
+    </div>
+    <div class="col-xs-12 ">
+        <div class="col-xs-12">
+            <label for="pageN">Go to page:</label>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="input-group">
+                <input type="text" name="pageN" id="pageN" class="form-control" placeholder="Go to page...">
+                <span class="input-group-addon page-go"><input type="submit" id="goto" class="btn btn-primary" value="Go" onclick="goToPage()"></span>
+            </div>
+        </div>
+    </div>
+    
+    <!--<nav aria-label="Page navigation">
         <ul class="pagination">
             <li>
                 <a href="#" aria-label="Previous">
@@ -189,12 +202,65 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav>-->
 </div>
+
+<!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button> -->
 
 <script src="js/multiimages.js?<?php echo time(); ?>"></script>
 
 <script>
+    /*PAGINATION*/
+    var count = <?php echo count($topics); ?>;
+    $(function () {
+        load = function() {
+            window.tp = new Pagination('#tablePaging', {
+                itemsCount: count,
+                //currentPage:3, Get this variable to 
+                onPageSizeChange: function (ps) {
+                    //console.log('changed to ' + ps);
+                },
+                onPageChange: function (paging) {
+                    //custom paging logic here
+                    //console.log(paging);
+                    var start = paging.pageSize * (paging.currentPage - 1),
+                        end = start + paging.pageSize,
+                        $rows = $('#row').find('.data');
+                    $rows.hide();
+                    for (var i = start; i < end; i++) {
+                        $rows.eq(i).show();
+                    }
+                }
+            });
+        }
+        load();
+    });
+    
+    var goToPage=function(){
+        var nPage=$('#pageN').val();
+        if(nPage>0){
+            window.tp = new Pagination('#tablePaging', {
+                itemsCount: count,
+                currentPage:nPage,
+                onPageSizeChange: function (ps) {
+                    //console.log('changed to ' + ps);
+                },
+                onPageChange: function (paging) {
+                    //custom paging logic here
+                    //console.log(paging);
+                    var start = paging.pageSize * (paging.currentPage - 1),
+                        end = start + paging.pageSize,
+                        $rows = $('#row').find('.data');
+                    $rows.hide();
+                    for (var i = start; i < end; i++) {
+                        $rows.eq(i).show();
+                    }
+                }
+            });
+        }
+    }
+    /*PAGINATION*/
+    
     var changePlaceholder=function(el){
         var imgType = $(el).prop('files')[0].type;
         if(imgType.split('/')[0] == 'image'){
@@ -215,13 +281,13 @@
 var closeUpdate=function(){
     $('#update-form').hide(500);
 }
-var openUpdate=function(topID){
+var openUpdate=function(topID,resRel){
     var topic = find_by('topics_en','topicID',topID);
     $('#quote-form').hide(500);
     document.getElementById('image-box2').innerHTML="";
     topic.done(function(data){
         if(Object.keys(data[0][0]).length > 1){
-            document.getElementById('update').setAttribute("onclick","updateTopic(this,"+data[0][0].topicID+")");
+            document.getElementById('update').setAttribute("onclick","updateTopic(this,"+data[0][0].topicID+","+resRel+")");
             $('#update-form').show(500);
             $('#topic-up').val(data[0][0].topicName);
             $('#keywords-up').val(data[0][0].keywords);
@@ -239,7 +305,7 @@ var openUpdate=function(topID){
     });
 }
 
-    var updateTopic = function(el,topID){
+    var updateTopic = function(el,topID,resRel){
         $(el).attr('disabled','disabled');
         el.innerHTML = "Updating";
         var topic = $('#topic-up').val(),
@@ -263,6 +329,14 @@ var openUpdate=function(topID){
             token.done(function(generatedToken){
                 var update_topic = update('topics_en',arr,'topicID',topID,generatedToken);
                 update_topic.done(function(data){
+                    //NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited a Topic in English. Topic ID: <a class="idREL" onclick="topicsTranslation('+resRel+')">'+resRel+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                    });
+                    
                     console.log(data);
                     if(Object.keys(imagesToUpdate).length > 0){ // Images to be updated
                         var imagesToUpdateID = $("input[name='imageID[]']").map(function(){if($(this).prev().val()!='') return $(this).val();}).get();
@@ -364,7 +438,7 @@ function imagesToUpdate(src,id){
 }
     
     // FB API INIT
-    window.fbAsyncInit = function() {
+   /* window.fbAsyncInit = function() {
                 FB.init({
                   appId      : '186483935126603',
                   xfbml      : true,
@@ -391,6 +465,19 @@ function imagesToUpdate(src,id){
                     });
                 });
             }
+
+	var publish=function(){
+		var authors=$('.inner-box h3 a').map(function(){return $(this).text();}).get();
+		var i=22;
+		var interval = setInterval(function() {
+		    postToPage(authors[i]);
+		    if(i==32){
+		        clearInterval(interval);
+			console.log('Done!');
+			}
+		    i++;
+		}, 3*60000);
+	    }*/
             
     var save = function(el) {
         $(el).attr('disabled','disabled');
