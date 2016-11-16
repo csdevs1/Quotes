@@ -127,8 +127,12 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                         $count++;
                                     }
                                 }
-                                
-                                $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($quote)), 0, 10));
+                                $remove[] = "'";
+                                $remove[] = '"';
+                                $remove[] = '.';
+                                $remove[] = ',';
+                                $q=str_replace($remove, "", $quote);
+                                $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad">

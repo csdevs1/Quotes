@@ -24,11 +24,12 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     $remove[] = "'";
     $remove[] = '"';
     $remove[] = '.';
+    $remove[] = ',';
     
     $getURL=explode('_',$_GET['quoteid']);
     $quote=$obj->find_by('quotes_en','quoteID',$getURL[0]);
-    $quote[0]['quote']=str_replace($remove, "", $quote[0]['quote']);
-    $uri=$getURL[0].'_'.implode('-', array_slice(explode(' ', $quote[0]['quote']), 0, 10));
+    $q=str_replace($remove, "", $quote[0]['quote']);
+    $uri=$getURL[0].'_'.implode('-', array_slice(explode(' ', $q), 0, 10));
     
     if(strtolower($uri)!=$_GET['quoteid'])
         header('Location:'.strtolower($uri));

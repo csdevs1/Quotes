@@ -25,10 +25,10 @@ $token=$tokenObj->generate();
                         <div class="form-group ">
                             <label for="usrPswd" class="control-label col-lg-2">Password (*)</label>
                             <div class="col-lg-6">
-                                <input class="form-control " id="usrPswd" type="text" name="usrPswd">
+                                <input class="form-control " id="usrPswd" type="text" name="usrPswd" min="7" max="15">
                             </div>
                             <div class="col-lg-2">
-                                <input class="btn btn-primary " id="generatePass" type="submit" name="generatePass" value="Generate Password" min="7" max="15" onclick="generate()">
+                                <input class="btn btn-primary " id="generatePass" type="submit" name="generatePass" value="Generate Password" onclick="generate()">
                             </div>
                         </div>
                         <hr><h4 class="panel-title"><i class="ion-unlocked"></i> User's permission</h4>
@@ -106,14 +106,16 @@ $token=$tokenObj->generate();
             arr['del']=$('#del').val();
         }
         if(Object.keys(arr).length>=3){
-            arr['lang']=lang;
-            var token=$('#token').val();
-            var newUser=signup('dashboard_usrs',arr,token);
-            newUser.done(function(response){
-                if(response){
-                    swal({title: "Well Done!",text: "A new user has been added",type:"success",confirmButtonText: "OK"},function(isConfirm){if(isConfirm){location.reload();}});
-                }
-            });
+            if(usrPswd.length>=7 && usrPswd.length<=15){
+                arr['lang']=lang;
+                var token=$('#token').val();
+                var newUser=signup('dashboard_usrs',arr,token);
+                newUser.done(function(response){
+                    if(response){
+                        swal({title: "Well Done!",text: "A new user has been added",type:"success",confirmButtonText: "OK"},function(isConfirm){if(isConfirm){location.reload();}});
+                    }
+                });
+            }
         }
     }
     
