@@ -144,6 +144,15 @@ var delete_function = function(table,row,val,token){
     });
 }
 
+function search(table,column,text,id,action){
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: {table:table,col:column,text:text,id:id,action:action},
+        url: 'Classes/SearchController.php'
+    });
+}
+
 var generateToken = function(){
     return $.ajax({
         type: 'POST',

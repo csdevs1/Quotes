@@ -6,20 +6,20 @@
         private $_page;
         private $_total;
         
-        public function __construct(){
+        public function __construct($table){
             $this->obj = new AppController();
-            $this->_total = count($this->obj->all('authors'));
+            $this->_total = count($this->obj->all($table));
         }
         
-        public function getData($limit = 10, $page = 1){
+        public function getData($table,$limit = 10, $page = 1){
             $this->_limit = $limit;
             $this->_page = $page;
             
             if($this->_limit=='all'){
-                $rs=$this->obj->all('authors');
+                $rs=$this->obj->find_by($table,$row,$val);
             } else{
                 $count = (($this->_page - 1 ) * $this->_limit ) . ", $this->_limit";
-                $rs=$this->obj->limit('*','authors',$count,'authorID');
+                $rs=$this->obj->custom("SELECT * FROM $table ORDER BY quoteID LIMIT $count");
             }
             
             $result = new stdClass();
@@ -27,6 +27,7 @@
             $result->limit = $this->_limit;
             $result->total = $this->_total;
             $result->data = $rs;
+            $result->countw = $count;
             return $result;
         }
         
@@ -40,24 +41,24 @@
             $html = '<ul class="'.$list_class.'">';
             
             $class = ($this->_page==1) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="/quotes/example/'.$this->_limit.'/'.($this->_page-1).'">&laquo;</a></li>';
+            $html .= '<li class="'.$class.'"><a onclick="english(document.getElementById(\'eng\'),'.($this->_page-1).')">&laquo;</a></li>';
             
             if($start > 1){
-                $html .='<li><a href="/'.$this->_limit.'/1">1</a></li>';
+                $html .='<li><a onclick="english(document.getElementById(\'eng\'),1)">1</a></li>';
                 $html .= '<li class="disabled"><span>...</span></li>';
             }
             
             for($i=$start;$i<=$end;$i++){
-                $class=($this->page==$i) ? "active" : "";
-                $html .= '<li class="'.$class.'"><a href="/quotes/example/'.$this->_limit.'/'.$i.'">'.$i.'</a></li>';;
+                $class=($this->_page==$i) ? "active" : "";
+                $html .= '<li class="'.$class.'"><a onclick="english(document.getElementById(\'eng\'),'.$i.')">'.$i.'</a></li>';
             }
             
             if($end < $last){
                 $html .= '<li class="disabled"><span>...</span</li>';
-                $html .= '<li><a href="/quotes/example/'.$this->_limit.'/'.$last.'">'.$last.'</a></li>';
+                $html .= '<li><a onclick="english(document.getElementById(\'eng\'),'.$last.')">'.$last.'</a></li>';
             }
             $class = ($this->_page == $last) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="/quotes/example/'.$this->_limit.'/'.($this->_page + 1).'">&raquo;</a></li>';
+            $html .= '<li class="'.$class.'"><a onclick="english(document.getElementById(\'eng\'),'.($this->_page + 1).')">&raquo;</a></li>';
             $html .= '</ul>';
             
             return $html;

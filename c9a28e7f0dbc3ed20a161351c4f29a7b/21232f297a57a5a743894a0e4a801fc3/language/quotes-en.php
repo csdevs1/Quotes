@@ -3,7 +3,20 @@
     
     require_once('../Classes/AppController.php');
     $obj = new AppController();
-    $quotes = $obj->all('quotes_en');
+    //$quotes = $obj->all('quotes_en');
+
+//PAGINATOR
+if(empty($_POST['dataARR'])){
+    require_once('../Classes/Paginator.php');
+    $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
+    $page = (isset( $_POST['page'])) ? $_POST['page'] : 1;
+    $links = (isset( $_POST['links'])) ? $_POST['links'] : 7;
+    $Paginator  = new Paginator('quotes_en');
+    $quotesARR = $Paginator->getData("quotes_en",$limit,$page);
+    $quotes=$quotesARR->data;
+}else{
+    $quotes=$_POST['dataARR'];
+}
 ?>
 <!-- Load with Jquery Load function -->
 <div class="portlet-heading">
@@ -23,7 +36,8 @@
             <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Insert your quote..." maxlength="500" class="textarea" id="quote"></textarea>
+            <span class="label label-info" style="font-size:1.3rem" id="match"></span>
+            <textarea placeholder="Insert your quote..." maxlength="500" class="textarea" id="quote" onkeyup="match(this)"></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
@@ -65,7 +79,7 @@
 </div>
 <?php } } ?>
 
-<div id="portlet1" class="panel-collapse collapse in">
+<div id="portlet1" class="panel-collapse collapse in">    
     <div class="portlet-body">
         <section role="contentinfo">
             <div class="">
@@ -110,10 +124,14 @@
         </section>
     </div>
 </div>
+<?php if(empty($_POST['dataARR'])){ ?>
+<div class="container">
+    <nav aria-label="Page navigation">
+        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm'); ?> 
+    </nav>
+</div>
 
 <div class="container">
-    <div class="paging-container col-xs-12" id="tablePaging">
-    </div>
     <div class="col-xs-12 ">
         <div class="col-xs-12">
             <label for="pageN">Go to page:</label>
@@ -125,27 +143,8 @@
             </div>
         </div>
     </div>
-    
-    <!--<nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>-->
 </div>
+<?php } ?>
 <script src="js/pagination.js?<?php echo time(); ?>"></script>
 <!-- Load with Jquery Load function -->
 <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
@@ -178,6 +177,8 @@
     
     var goToPage=function(){
         var nPage=$('#pageN').val();
+        english(document.getElementById('eng'),nPage);
+        /*var nPage=$('#pageN').val();
         if(nPage>0){
             window.tp = new Pagination('#tablePaging', {
                 itemsCount: count,
@@ -197,10 +198,9 @@
                     }
                 }
             });
-        }
+        }*/
     }
-
-$(document).ready(function() {
+    $(document).ready(function() {
         var container = $('.masonry-container');
         container.masonry({
             columnWidth: '.item',
@@ -225,7 +225,8 @@ $(document).ready(function() {
         });
         
     });
-   var clearFields=function(){
+    
+    var clearFields=function(){
         $('#author').val('');
         $('#quote').val('');
         $('.tag').remove();
@@ -334,7 +335,7 @@ $(document).ready(function() {
                                             $(el).removeAttr('disabled');
                                             el.innerHTML = "Update!";
                                             setTimeout(function() {
-                                                english('Quote saved successfully!',document.getElementById('eng'));
+                                                english(document.getElementById('eng'));
                                             }, 1000);
                                         });
                                     });
@@ -417,7 +418,7 @@ $(document).ready(function() {
                                             $(el).removeAttr('disabled');
                                             el.innerHTML = "Saved!";
                                             setTimeout(function() {
-                                                english('Quote saved successfully!',document.getElementById('eng'));
+                                                english(document.getElementById('eng'));
                                             }, 2000);
                                         });
                                     });
@@ -480,6 +481,49 @@ $(document).ready(function() {
         else{
             document.getElementById(inp).value = elVal;
             $(el).parent().parent().slideUp();
+        }
+    }
+    
+    function match(el){
+        var text=$(el).val();
+        var matching=search('quotes_en','quote',text,'en_id','match');
+        matching.done(function(response){
+            //if(response['percent']>=40){
+                var percent=response['percent'],
+                    relID=response['relID'];
+                document.getElementById('match').innerHTML="This quote is similar to [<a onclick='quotesTranslation("+relID+")'>Quote ID: "+relID+"</a>] by "+percent+"%";
+          /*  }else{
+                document.getElementById('match').innerHTML="";
+            }*/
+        });
+    }
+    
+    //Search Quotes
+    /*document.getElementById('search').oninput=function(){
+        var text=this.value;
+        var searching=search('quotes_en','quote',text,'quoteID','search');
+        searching.done(function(data){
+            english('#eng',1,data);
+        });
+    }*/
+    
+    document.onkeydown = function(e){
+        if(e.keyCode == 13){
+            var text=document.getElementById('search').value;
+            if(text!=''){
+                $('#quotes-area').css('visibility','hidden');
+                $('.portlet .loader').css('display','block');
+                var searching=search('quotes_en','quote',text,'quoteID','search');
+                searching.done(function(data){
+                    setTimeout(function() {
+                        $('.portlet .loader').css('display','none');
+                        $('#quotes-area').css('visibility','visible');
+                        english('#eng',1,data);
+                    }, 2000);
+                });
+            }else{
+                english('#eng');
+            }
         }
     }
 </script>

@@ -1,9 +1,9 @@
-function english(msg="",el) {
+function english(el,nPage,dataARR="") {
     $('.lang-nav li').not(el).removeClass('active');
     $('.has-submenu').not('#quote-menu').removeClass('active');
     $(el).addClass('active');
     document.getElementById("quotes-area").innerHTML="";
-    $("#quotes-area").load("language/quotes-en.php",{msg:msg});
+    $("#quotes-area").load("language/quotes-en.php",{page:nPage,dataARR:dataARR});
 }
 function spanish(msg="",el) {
     $('.lang-nav li').not(el).removeClass('active');
@@ -90,5 +90,5 @@ function topicsTranslation(id) {
 /*USERS*/
 
 $(document).ready(function(){
-    english('','#eng');
+    english('#eng');
 });

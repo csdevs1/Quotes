@@ -3,6 +3,7 @@
 /*global $, console, alert, jQuery, confirm */
 
 var Pagination = function (el, options) {
+
 	options.labels = options.labels || {};
 
 	var $container = $(el),
