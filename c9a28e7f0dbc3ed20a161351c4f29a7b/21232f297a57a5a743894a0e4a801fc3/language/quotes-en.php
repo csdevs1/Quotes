@@ -111,7 +111,7 @@ if(empty($_POST['dataARR'])){
                                 </div>
                                 <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
                                         if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
-                                        <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>,<?php echo $translations[0]['id']; ?>);">Edit</a></p></div>
+                                        <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID']; ?>,<?php echo $translations[0]['id']; ?>);">Edit</a></p></div>
                                 <?php } } ?>
                             </div>
                         </div>

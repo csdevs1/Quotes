@@ -1,6 +1,4 @@
 <?php
-#NEED TO ADD WHEN USER COMES FROM PORTUGUESE QUOTES
-
 	session_start();
     require_once('../Classes/AppController.php');
     $obj = new AppController();
@@ -10,14 +8,29 @@
         $author = $eng[0]['author'];
         $arrES = array();
         $arrPT = array();
+        $topics_en = array();
         $topicRel = $obj->find_by('quotesTopicEN','quoteID',$eng[0]['quoteID']); // GET AN ARRAY WITH ALL THE TOPICS RELATED TO THIS QUOTE IN ENGLISH
         $count=0;
         
+        foreach($topicRel as $key=>$val){
+            $topics_en[$count]=$obj->find_by('topics_en','topicID',$val['topicID']);
+            $count++;
+        }
+        $count=0;
         foreach($topicRel as $key=>$val){ // LOOP THROUGH ALL THE ID AND THEN STORE THEM IN THE ARRAY
             $arrES[$count] = $obj->custom('SELECT topics_es.topicID,topics_es.topicName FROM topics_es INNER JOIN topics ON topics_es.topicID=topics.tES_id WHERE topics.tEN_id='.$val['topicID']); // USE join() FUNCTION
             $arrPT[$count] = $obj->custom('SELECT topics_pt.topicID,topics_pt.topicName FROM topics_pt INNER JOIN topics ON topics_pt.topicID=topics.tPT_id WHERE topics.tEN_id='.$val['topicID']); // USE join() FUNCTION
             $count++;
         }
+        
+        $count=0;
+        if(!empty($topics_en)){
+            foreach($topics_en as $key=>$val){// DELETE THIS LOOP AND USE ONLY JOIN LIKE BELOW
+                $topics_en[$count]=$val[0]['topicName']; // TOPIC'S NAME IN SPANISH
+                $count++;
+            }
+        }
+        
         $count=0;
         if(!empty($arrES)){
             foreach($arrES as $key=>$val){// DELETE THIS LOOP AND USE ONLY JOIN LIKE BELOW
@@ -36,20 +49,34 @@
     }elseif(isset($translations[0]['es_id']) && !empty($translations[0]['es_id'])){
         $eng = $obj->find_by('quotes_es','quoteID',$translations[0]['es_id']);
         $author = $eng[0]['author'];
-        $arrES = array();
+        $arrEN = array();
         $arrPT = array();
-        $topicRel = $obj->find_by('quotesTopicEN','quoteID',$eng[0]['quoteID']); // GET AN ARRAY WITH ALL THE TOPICS RELATED TO THIS QUOTE IN ENGLISH
+        $topics_es = array();
+        $topicRel = $obj->find_by('quotesTopicES','quoteID',$eng[0]['quoteID']); // GET AN ARRAY WITH ALL THE TOPICS RELATED TO THIS QUOTE IN ENGLISH
         $count=0;
         
-        foreach($topicRel as $key=>$val){ // LOOP THROUGH ALL THE ID AND THEN STORE THEM IN THE ARRAY
-            $arrES[$count] = $obj->custom('SELECT topics_es.topicID,topics_es.topicName FROM topics_es INNER JOIN topics ON topics_es.topicID=topics.tEN_id WHERE topics.tES_id='.$val['topicID']); // USE join() FUNCTION
-            $arrPT[$count] = $obj->custom('SELECT topics_pt.topicID,topics_pt.topicName FROM topics_pt INNER JOIN topics ON topics_pt.topicID=topics.tPT_id WHERE topics.tEN_id='.$val['topicID']); // USE join() FUNCTION
+        foreach($topicRel as $key=>$val){
+            $topics_es[$count]=$obj->find_by('topics_es','topicID',$val['topicID']);
             $count++;
         }
         $count=0;
-        if(!empty($arrES)){
-            foreach($arrES as $key=>$val){// DELETE THIS LOOP AND USE ONLY JOIN LIKE BELOW
-                $arrES[$count]=$val[0]['topicName']; // TOPIC'S NAME IN SPANISH
+        foreach($topicRel as $key=>$val){ // LOOP THROUGH ALL THE ID AND THEN STORE THEM IN THE ARRAY
+            $arrEN[$count] = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN topics ON topics_en.topicID=topics.tEN_id WHERE topics.tES_id='.$val['topicID']); // USE join() FUNCTION
+            $arrPT[$count] = $obj->custom('SELECT topics_pt.topicID,topics_pt.topicName FROM topics_pt INNER JOIN topics ON topics_pt.topicID=topics.tPT_id WHERE topics.tES_id='.$val['topicID']); // USE join() FUNCTION
+            $count++;
+        }
+        $count=0;
+        if(!empty($arrEN)){
+            foreach($arrEN as $key=>$val){// DELETE THIS LOOP AND USE ONLY JOIN LIKE BELOW
+                $arrEN[$count]=$val[0]['topicName']; // TOPIC'S NAME IN SPANISH
+                $count++;
+            }
+        }
+        
+        $count=0;
+        if(!empty($topics_sn)){
+            foreach($topics_es as $key=>$val){// DELETE THIS LOOP AND USE ONLY JOIN LIKE BELOW
+                $topics_es[$count]=$val[0]['topicName']; // TOPIC'S NAME IN SPANISH
                 $count++;
             }
         }
@@ -62,7 +89,6 @@
             }
         }
     }
-
 
 $next=$obj->custom("SELECT id FROM quotes WHERE id > ".$_POST['id']." ORDER BY id ASC LIMIT 1"); //TO SELECT NEXT SET OF QUOTES
 $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER BY id DESC LIMIT 1"); //TO SELECT PREVIOUS SET OF QUOTES
@@ -95,6 +121,7 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
     </h3>
     <div class="clearfix"></div>
 </div>
+
 <div class="container quote-form" id="quote-eng">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -112,19 +139,24 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="t-en" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="">
+                <input type="text" class="form-control" id="t-en" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="<?php if(!empty($topics_en[0])) echo join(',', $topics_en);elseif(!empty($arrEN[0])) echo join(',', $arrEN); ?>">
+                <div class="col-xs-12 search-list" id="topicListEN">
+                    <ul class="list-unstyled">
+                    </ul>
+                </div>
+                
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <span class="input-group-addon"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control image-file" id="image-en" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
+                <span class="input-group-addon"><i class="ion-image"></i></span>
+                <input type="file" class="form-control image-file" id="image-en" aria-describedby="image" placeholder="Upload Image" accept="image/*">
                 <span class="up-label">Upload an image</span>
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'en','English',<?php echo $_POST['id']; ?>)">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'en','English',<?php echo $_POST['id']; ?>)" id="save-eng">Save</button>
             </div>
         </div>
     </div>
@@ -159,7 +191,7 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'es','Spanish',<?php echo $_POST['id']; ?>)">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'es','Spanish',<?php echo $_POST['id']; ?>)" id="save-es">Guardar</button>
             </div>
         </div>
     </div>
@@ -176,25 +208,25 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="a-pt" data-error="Field required" aria-describedby="author" placeholder="Digite autor..." value="<?php if(!empty($author)) echo $author; ?>"  oninput="listSearch(this,'authorList','authors','author')">                
+                <input type="text" class="form-control" id="a-pt" data-error="Field required" aria-describedby="author" placeholder="Digite autor..." value="<?php if(!empty($author)) echo $author; ?>"  oninput="listSearch(this,'authorList','authors','author')">
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="t-pt" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..." value="<?php if(!empty($arrPT)) echo join(',', $arrPT); ?>">                
+                <input type="text" class="form-control" id="t-pt" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..." value="<?php if(!empty($arrPT)) echo join(',', $arrPT); ?>">
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <span class="input-group-addon image-file"><i class="ion-image"></i></span>                
-                <input type="file" class="form-control" id="image-pt" aria-describedby="image" placeholder="Adicionar uma imagem..." accept="image/*">          
+                <span class="input-group-addon"><i class="ion-image"></i></span>
+                <input type="file" class="form-control image-file" id="image-pt" aria-describedby="image" placeholder="Adicionar uma imagem..." accept="image/*">
                 <span class="up-label">Adicionar uma imagem...</span>
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'pt','Portuguese',<?php echo $_POST['id']; ?>)">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'pt','Portuguese',<?php echo $_POST['id']; ?>)" id="save-pt">Salvar</button>
             </div>
         </div>
     </div>
@@ -214,14 +246,14 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote">
                             <div class="pad">
                                 <?php if(isset($eng[0]['quoteImage']) && !empty($eng[0]['quoteImage'])){ ?>
-                                    <img class="img-responsive" src="../../images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
+                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $eng[0]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $eng[0]['quote']; ?> <span>- <?php echo $eng[0]['author']; ?></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-				<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
                                     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){?>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-				<?php } } ?>
+                                    <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $eng[0]['quoteID']; ?>,<?php echo $_POST['id']; ?>,'eng');">Edit</a></p></div>
+                                <?php } } ?>
                             </div>
                         </div>
                         <?php
@@ -242,13 +274,13 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote">
                             <div class="pad">
                                 <?php if(isset($es[0]['quoteImage']) && !empty($es[0]['quoteImage'])){ ?>
-                                    <img class="img-responsive" src="../../images/quotes/<?php echo $es[$key]['quoteImage']; ?>" alt="image description">
+                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $es[0]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $es[0]['quote']; ?> <span>- <?php echo $es[0]['author']; ?></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
 				<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
                                     if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){?>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
+                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $es[0]['quoteID']; ?>,<?php echo $_POST['id']; ?>,'es');">Edit</a></p></div>
                                 <?php } } ?>
                             </div>
                         </div>
@@ -270,13 +302,13 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote">
                             <div class="pad">
                                 <?php if(isset($pt[0]['quoteImage']) && !empty($pt[0]['quoteImage'])){ ?>
-                                    <img class="img-responsive" src="../../images/quotes/<?php echo $pt[$key]['quoteImage']; ?>" alt="image description">
+                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $pt[0]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $pt[0]['quote']; ?> <span>- <?php echo $pt[0]['author']; ?></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
 			<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
                                     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){?>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
+                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $pt[0]['quoteID']; ?>,<?php echo $_POST['id']; ?>,'pt');">Edit</a></p></div>
 			<?php } } ?>
                             </div>
                         </div>
@@ -304,14 +336,141 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
         $('#t-es').tagsInput({width:'auto'});
         $('#t-pt').tagsInput({width:'auto'});
         $('.quote-form').hide();
+        
+        $('.search-list').hide();
+        document.getElementById('t-en_tag').setAttribute('oninput','listSearch(this,"topicListEN","topics_en","t-en","en")');
+        document.getElementById('t-es_tag').setAttribute('oninput','listSearch(this,"topicListES","topics_es","t-es","es")');
+        document.getElementById('t-pt_tag').setAttribute('oninput','listSearch(this,"topicListPT","topics_pt","t-pt","pt")');
+       //eng 
+       $('#t-en_tag').bind("enterKey",function(e){
+           console.log('Pressed Enter');
+       });
+        $('#t-en_tag').keyup(function(e){
+            if(e.keyCode == 13){
+                detectWord();
+                $('#topicListEN').slideUp();
+            }
+        });
+        //es
+       $('#t-es_tag').bind("enterKey",function(e){
+           console.log('Pressed Enter');
+       });
+        $('#t-es_tag').keyup(function(e){
+            if(e.keyCode == 13){
+                detectWord();
+                $('#topicListES').slideUp();
+            }
+        });
+        //pt
+       $('#t-pt_tag').bind("enterKey",function(e){
+           console.log('Pressed Enter');
+       });
+        $('#t-pt_tag').keyup(function(e){
+            if(e.keyCode == 13){
+                detectWord();
+                $('#topicListPT').slideUp();
+            }
+        });
     });
+    
     var closeForm=function(){
         $('.quote-form').hide(500);
         $('.addquote').show();
     }
     var openForm=function(el,lang){
         $('#quote-'+lang).show(500);
+        $('.quote-form').not('#quote-'+lang).hide();
         $('.addquote').hide();
+    }
+    
+    var openUpdate = function(quotID,resRel,lan){
+        $('.quote-form').not('#quote-'+lan).hide();
+        var lang='',language='';
+        lan=='eng' ? lang='en':lang=lan;
+        switch(lan){
+            case 'es':
+                language='Spanish';
+                break;
+            case 'pt':
+                language='Portuguese';
+                break;
+            default:
+                language='English';
+        }
+        var quote = find_by('quotes_'+lang,'quoteID',quotID);
+        $('#save-'+lan).attr('onclick','updateQuote(this,"'+lang+'","'+language+'",'+quotID+','+resRel+')');
+        quote.done(function(data){
+            if(Object.keys(data[0][0]).length > 1){
+                $('#quote-'+lan).show(500);
+                $('#q-'+lang).val(data[0][0].quote);
+            }
+        });
+    }
+    
+    var updateQuote = function(el,lang,languague,quotID,resRel){
+        var quote = $('#q-'+lang).val(),
+            author = $('#a-'+lang).val(),
+            topics = document.getElementById('t-'+lang).value;
+        console.log(topics);
+        if(!quote || quote==''){
+            console.log('Error quote');
+        }else if(!author || author==''){
+            console.log('Error author');
+        }else if(!topics || topics==''){
+            console.log('Error topic');
+        }else{
+            $(el).attr('disabled','disabled');
+            var arr = {};
+            arr['quote']=quote;
+            arr['author']=author;
+            if($('#image').val() && $('#image').val() !=''){
+                var image=$('#image').prop('files')[0];
+            }
+            console.log(arr);
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var quoteUpdate = update('quotes_'+lang,arr,'quoteID',quotID,generatedToken,image);
+                quoteUpdate.done(function(data){
+                    console.log(data);
+		//NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited a Quote in '+languague+'. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel+')">'+resRel+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                    });
+
+                    console.log(data);
+                    var token2 = generateToken();
+                    token2.done(function(generatedToken2){
+                        var deleteRel = delete_function('quotesTopic'+lang.toUpperCase(),'quoteID',quotID,generatedToken2);
+                        deleteRel.done(function(delResponse){
+                            console.log(delResponse);
+                            var arr2={};
+                            arr2['quoteID']=quotID;
+                            var topic = topics.split(',');
+                            for(var i in topic){
+                                var topicSearch = find_by('topics_'+lang,'topicName',topic[i]);
+                                topicSearch.done(function(topicId){
+                                    var token3 = generateToken();
+                                    token3.done(function(generatedToken3){
+                                        arr2['topicID']=topicId[0][0].topicID;
+                                        var topicQuote = insert('quotesTopic'+lang.toUpperCase(),arr2,generatedToken3);
+                                        topicQuote.done(function(data2){
+                                            console.log(data2);
+                                            $(el).removeAttr('disabled');
+                                            setTimeout(function() {
+                                                quotesTranslation(resRel);
+                                            }, 1000);
+                                        });
+                                    });
+                                });
+                            }
+                        });
+                    });
+                });
+            });
+        }
     }
     
     var save = function(el, lang,languague, relationID){
@@ -388,6 +547,63 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
                     }
                 });
             });
+        }
+    }
+    
+    var listSearch = function(el,id,table,row,lan){
+        if(el.value=="" || el.value=="add a tag"){
+            $('#'+id).slideUp();
+        }else {
+            if($(el).is(':focus'))
+                $('.search-list').not('#'+id).slideUp();
+            $('#'+id).slideDown();
+            var pattern = $(el).val()+'%';
+            if(row=='t-'+lan)
+                var arr = {'topicName':'topicName'};
+            else
+                var arr = {'authorName':'authorName'};
+            var search = like(table,arr,pattern);
+            search.done(function(response){
+                console.log(response);
+                if(Object.keys(response[0]).length != 0){
+                    $('#'+id+' ul').html('');
+                    for(var i in response[0]){
+                        if(row==='t-'+lan)
+                            $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\',\''+lan+'\',\'csv\')">'+response[0][i].topicName+'</li>');
+                        else
+                            $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\',\''+lan+'\')">'+response[0][i].authorName+'</li>');
+                    }
+                } else
+                    $('#'+id+' ul').html('<li>Not found!</li>');
+            });
+        }
+    }
+    
+    function detectWord(lan){
+        var incorrecTag = $('.tag').last().children('span').html().split('&');
+        var topicSearch = find_by('topics_'+lan,'topicName',incorrecTag[0]);
+        topicSearch.done(function(response){
+            if(Object.keys(response[0]).length == 0)
+                $('.tag').last().children('a').click();
+        });
+    }
+    
+    var selectTag=function(el,inp,lan,format=""){
+        //detectWord(lan);
+        var elVal = el.innerHTML;
+        if(format=="csv"){
+            $('.tag').remove();
+            var val = document.getElementById(inp).value.split(',');
+            val[val.length-1] = elVal;
+            for(var i in val){
+                $('#t-'+lan).addTag(val[i]);
+            }
+            document.getElementById(inp).value=val.join(',');
+            $(el).parent().parent().slideUp();
+        }
+        else{
+            document.getElementById(inp).value = elVal;
+            $(el).parent().parent().slideUp();
         }
     }
 </script>

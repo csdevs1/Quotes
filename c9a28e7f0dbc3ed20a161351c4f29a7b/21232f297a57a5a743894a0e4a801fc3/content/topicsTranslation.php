@@ -68,7 +68,7 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
         </div>        
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'en',<?php echo $_POST['id']; ?>,'English')">Save</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'en',<?php echo $_POST['id']; ?>,'English')" id="save-en">Save</button>
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'es',<?php echo $_POST['id']; ?>,'Spanish')">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'es',<?php echo $_POST['id']; ?>,'Spanish')" id="save-es">Guardar</button>
             </div>
         </div>
     </div>
@@ -128,7 +128,7 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this,'pt',<?php echo $_POST['id']; ?>,'Portuguese')">Salvar</button>
+                <button type="button" class="btn btn-primary" onclick="save(this,'pt',<?php echo $_POST['id']; ?>,'Portuguese')" id="save-pt">Salvar</button>
             </div>
         </div>
     </div>
@@ -140,18 +140,12 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
     <?php if(isset($translations[0]['tEN_id']) && !empty($translations[0]['tEN_id'])){ ?>
         <div class="row">
             <h1>English</h1>
-            <?php
-                foreach($topicID as $key=>$val){
-                    $images = $obj->find_by('topicsImages','tID',$_POST['id']);
-            ?>
+            <?php $images = $obj->find_by('topicsImages','tID',$_POST['id']); ?>
             <div class="col-xs-12 col-sm-6 col-md-4 box-content">
                 <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                    <h3 data-placement="top" title="Edit Topic"><a><?php echo $topicID[$key]['topicName'] ?></a></h3>
+                    <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='en' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topicID[0]['topicID'] ?>,<?php echo $_POST['id']; ?>,'eng')"<?php } } ?>><a><?php echo $topicID[0]['topicName'] ?></a></h3>
                 </div>
             </div>
-            <?php
-                }
-            ?>
         </div>
     <?php
         } else{
@@ -170,18 +164,12 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
     <?php if(isset($translations[0]['tES_id']) && !empty($translations[0]['tES_id'])){ ?>
         <div class="row">
             <h1>Español</h1>
-            <?php
-                foreach($topicIDES as $key=>$val){
-                    $images = $obj->find_by('topicsImages','tID',$_POST['id']);
-            ?>
+            <?php $images = $obj->find_by('topicsImages','tID',$_POST['id']); ?>
             <div class="col-xs-12 col-sm-6 col-md-4 box-content">
                 <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                    <h3 data-placement="top" title="Edit Topic"><a><?php echo $topicIDES[$key]['topicName'] ?></a></h3>
+                    <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topicIDES[0]['topicID'] ?>,<?php echo $_POST['id']; ?>,'es')"<?php } } ?>><a><?php echo $topicIDES[0]['topicName'] ?></a></h3>
                 </div>
             </div>
-            <?php
-                }
-            ?>
         </div>
     <?php
         } else{
@@ -200,18 +188,12 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
     <?php if(isset($translations[0]['tPT_id']) && !empty($translations[0]['tPT_id'])){ ?>
         <div class="row">
             <h1>Português</h1>
-            <?php
-                foreach($topicIDPT as $key=>$val){
-                    $images = $obj->find_by('topicsImages','tID',$_POST['id']);
-            ?>
+            <?php $images = $obj->find_by('topicsImages','tID',$_POST['id']); ?>
             <div class="col-xs-12 col-sm-6 col-md-4 box-content">
                 <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                    <h3 data-placement="top" title="Edit Topic"><a><?php echo $topicIDPT[$key]['topicName'] ?></a></h3>
+                    <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topicIDPT[0]['topicID'] ?>,<?php echo $_POST['id']; ?>,'pt')"<?php } } ?>><a><?php echo $topicIDPT[0]['topicName'] ?></a></h3>
                 </div>
             </div>
-            <?php
-                }
-            ?>
         </div>
     <?php
         } else{
@@ -240,6 +222,79 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
     var openForm=function(el,lang,language){
         $('#t-'+lang).show(500);
         $('.addquote').hide(100);
+        $('.quote-form').not('#t-'+lang).hide();
+    }
+    
+    var closeUpdate=function(){
+        $('#update-form').hide(500);
+    }
+    var openUpdate=function(topID,resRel,lan){
+        $('.quote-form').not('#t-'+lan).hide();
+        lan=='eng' ? lang='en':lang=lan;
+        switch(lan){
+            case 'es':
+                language='Spanish';
+                break;
+            case 'pt':
+                language='Portuguese';
+                break;
+            default:
+                language='English';
+        }
+        var topic = find_by('topics_'+lang,'topicID',topID);
+        //document.getElementById('image-box2').innerHTML="";
+        topic.done(function(data){
+            if(Object.keys(data[0][0]).length > 1){
+                document.getElementById('save-'+lang).setAttribute("onclick","updateTopic(this,'"+lang+"','"+language+"',"+data[0][0].topicID+","+resRel+")");
+                $('#t-'+lan).show(500);
+                $('#tp-'+lang).val(data[0][0].topicName);
+                $('#keywords-'+lang).val(data[0][0].keywords);
+                $('#tp-'+lang).focus();
+                /*var topicRel = find_by('topics','t'+lang.toUpperCase()+'_id',topID);
+                topicRel.done(function(data2){
+                    var topicImages = find_by('topicsImages','tID',data2[0][0].id);
+                    topicImages.done(function(response){
+                        for(var i in response[0]){
+                            imagesToUpdate(response[0][i].img_url,response[0][i].id);
+                        }
+                    });
+                });*/
+            }
+        });
+    }
+    
+    var updateTopic = function(el,lang,language,topID,resRel){
+        var topic = $('#tp-'+lang).val(),
+            keywords = $('#keywords-'+lang).val(),
+            arr = {};
+        if(topic && topic != ''){
+            arr['topicName'] = topic;
+            var seo = topic.replace(/["']/g, "");
+            arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+        }
+        else
+            console.log('Error topic');
+        if(keywords && keywords != '')
+            arr['keywords'] = keywords;
+        else
+            console.log('Error keyword');
+        if(arr['topicName'] != '' && arr['keywords'] != ''){
+            $(el).attr('disabled','disabled');
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var update_topic = update('topics_'+lang,arr,'topicID',topID,generatedToken);
+                update_topic.done(function(data){
+                    //NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited a Topic in '+language+'. Topic ID: <a class="idREL" onclick="topicsTranslation('+resRel+')">'+resRel+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                        topicsTranslation(resRel);
+                    });
+                });
+            });
+        }
     }
     
     var save = function(el,lang,relationID,language){
