@@ -126,7 +126,7 @@
                         <h2>KEYWORDS</h2>
                     </div>
                     <div class="col-xs-12">
-                        <span>Didn't find what you were looking for at <a href="topics" role="link">Topics</a>? Don't worry, check out this list of keywords to help find the quote you're looking for. <strong>Enjoy</strong>!</span>
+                        <span>Didn't find what you were looking for at <a href="topics" role="link">Topics</a>? Don't worry, check out this list of keywords to help you find the quote you're looking for. <strong>Enjoy</strong>!</span>
                     </div>
                     <?php
                     foreach($arr as $key=>$val){
@@ -134,7 +134,7 @@
                         if(strlen($arr[$key]['value']) > 3 && !in_array($arr[$key]['value'], $uWords, true )){
                     ?>
                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 keywords">
-                        <a href="keywords" class="keyword" onclick="return false;" role="link"><?php echo ucwords($keywords); ?></a>
+                        <a href="/quotes/search/keyword/<?php echo strtolower($keywords).'/1'; ?>" class="keyword" role="link"><?php echo ucwords($keywords); ?></a>
                     </div>
                     <?php
                         }

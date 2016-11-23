@@ -24,6 +24,9 @@ html {
 a, a:focus,a:hover {text-decoration: none;}
 .category-content,.card{transition:all 0.5s;}
 .modal{z-index: 6000 !important;}
+.not-found{text-align: center;padding-top:50px;padding-bottom:50px;}
+.not-found span{font-size: 3.1rem;font-family: 'Cormorant Garamond', serif;}
+.not-found div span{font-size: 7rem;}
 /* FOOTER */
 footer{box-shadow: 1px -1px 5px #eee;margin-top: 10px;}
 footer h3{font-family: 'Raleway', sans-serif; font-size: 2rem;}
@@ -562,7 +565,7 @@ video{
         font-weight:600;
         text-shadow:-1px 1px 2px #ccc;
     }.keyword:hover{
-        text-shadow:-4px 1px 3px #bbb;
+        text-shadow:-2px 1px 3px #bbb;
         color:#000;
         text-decoration:none;
         transition:all 0.5s ease-in;

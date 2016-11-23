@@ -48,7 +48,7 @@
             }
             
             for($i=$start;$i<=$end;$i++){
-                $class=($this->page==$i) ? "active" : "";
+                $class=($this->_page==$i) ? "active" : "";
                 $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.$i.''.$l.'">'.$i.'</a></li>';
             }
             

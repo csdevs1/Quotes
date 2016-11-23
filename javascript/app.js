@@ -39,7 +39,10 @@ function closeSearch(el){
 document.getElementById("input-search").addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode == 13) {
-      alert(document.getElementById("input-search").value);
+        var t=$('input[name=search]:checked').val(),
+            q=$('#input-search').val();
+        var url='/quotes/search/'+t+'/'+escape(q)+'/1';
+        window.location=url;
     }
 });
 /**/
