@@ -112,6 +112,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                 $remove[] = ',';
                                 $q=str_replace($remove, "", $quote);
                                 $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
+                                $authorURL=$obj->find_by('authors','authorName',$quotes[0]['author']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad">
@@ -120,7 +121,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                 ?>
                                     <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $qImage; ?>" alt="<?php echo $quotes[0]['author']; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
                                 <?php } ?>
-                                <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $quotes[0]['author']; ?></a></span></blockquote>
+                                <blockquote itemprop="citation"><a href="/quote/<?php echo $share_url; ?>"><?php echo $quote; ?></a><span itemprop="author">- <a href="/author/quotes/<?php echo $authorURL[0]['seo_url'].'/1'; ?>" rel="author" itemprop="url"><?php echo $quotes[0]['author']; ?></a></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo $share_url; ?>" data-title="Hey, check out this quote by <?php echo $quotes[0]['author']; ?> | PortalQuote <?php foreach($arrEN as $key=>$val) echo '#'.$arrEN[$key].' '; ?>" data-description="<?php echo '\''.$quote.'\' - '.$quotes[0]['author'].". Share with your friends on Facebook, Twitter, Instagram..." ?>"></div>
                                 <?php 
                                         if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){

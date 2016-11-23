@@ -67,9 +67,9 @@ else
     <div class="container">
         <div class="col-xs-12 col-sm-12 col-md-10"><button onclick="closeSearch(this)"><span class="glyphicon glyphicon-remove"></span></button></div>
         <div class="col-xs-12">
-            <input class="input-search" id="input-search" type="search" placeholder="Search" autofocus role="search" name="q">
+            <input class="input-search" id="input-search" type="search" placeholder="Search" autofocus role="search">
             <ul>
-                <li><label><input type="radio" name="search" value="quote" checked>Quote</label></li>
+                <li><label><input type="radio" name="search" value="quotes" checked>Quote</label></li>
                 <li><label><input type="radio" name="search" value="author">Author</label></li>
                 <li><label><input type="radio" name="search" value="topic">Topic</label></li>
             </ul>

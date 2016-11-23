@@ -141,7 +141,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 ?>
                                     <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
                                 <?php } ?>
-                                <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $author; ?></a></span></blockquote>
+                                <blockquote itemprop="citation"><a href="/quote/<?php echo $share_url; ?>"><?php echo $quote; ?></a><span itemprop="author">- <a href="" rel="author" itemprop="url"><?php echo $author; ?></a></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo $share_url; ?>" data-title="Hey, check out this quote by <?php echo $author; ?> | PortalQuote <?php foreach($arrEN as $key=>$val) echo '#'.$arrEN[$key].' '; ?>" data-description="<?php echo '\''.$quote.'\' - '.$author.". Share with your friends on Facebook, Twitter, Instagram..." ?>"></div>
                                 <?php 
                                         if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){

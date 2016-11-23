@@ -35,7 +35,7 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
     if($_GET['t']=='author'){
         $Paginator  = new Paginator("quotes_en WHERE author LIKE '%$query%'");
         $quotesARR = $Paginator->getData("quotes_en WHERE author LIKE '%$query%'","quoteID",$limit,$page);
-    }elseif($_GET['t']=='quote' || $_GET['t']=='keyword'){
+    }elseif($_GET['t']=='quotes' || $_GET['t']=='keyword'){
         $Paginator  = new Paginator("quotes_en WHERE MATCH(quote) AGAINST('".$query."' IN BOOLEAN MODE) OR  quote LIKE '%".$query."%'");
         $quotesARR = $Paginator->getData("quotes_en WHERE MATCH(quote) AGAINST('".$query."' IN BOOLEAN MODE) OR  quote LIKE '%".$query."%'","quoteID",$limit,$page);
     }elseif($_GET['t']=='topic'){
