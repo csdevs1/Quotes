@@ -7,7 +7,7 @@
 @import 'https://fonts.googleapis.com/css?family=Rouge+Script';
 @import url('https://fonts.googleapis.com/css?family=Bungee+Inline');
 @import url('https://fonts.googleapis.com/css?family=Bilbo+Swash+Caps');
-
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond');
 /**/
 
 body {
@@ -550,6 +550,25 @@ video{
         .card-content a{float:right;transition:all 0.5s;}
     /*END OF TOPICS PAGE BY LETTER*/
 /*END OF TOPICS PAGE*/
+
+/*KEYWORD PAGE*/
+    .keywords{padding: 10px;text-align: center;display: none;}
+    .keyword,.keyword:focus{
+        font-family: 'Cormorant Garamond', serif;
+        font-size:2.6rem;
+        color:#111;
+        transition:all 0.5s ease-out;
+        text-decoration:none;
+        font-weight:600;
+        text-shadow:-1px 1px 2px #ccc;
+    }.keyword:hover{
+        text-shadow:-4px 1px 3px #bbb;
+        color:#000;
+        text-decoration:none;
+        transition:all 0.5s ease-in;
+        letter-spacing: 2px;
+    }
+/*KEYWORD PAGE*/
 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
