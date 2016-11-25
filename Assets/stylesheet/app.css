@@ -144,6 +144,7 @@ footer div #subscribe{border-top-left-radius: 0;border-bottom-left-radius: 0;fon
     background-size: 100% 100%;
     height: 100vh;
     overflow:hidden;
+    background-color: #000;
 }
 .banner h1{
     z-index: 1000;
@@ -159,6 +160,7 @@ footer div #subscribe{border-top-left-radius: 0;border-bottom-left-radius: 0;fon
     font-weight: 400;
     transition: all 0.5s;
     color: #fff;
+    text-shadow: -2px 1px 1px #000;
 }
 
 .banner h1 > a{
@@ -298,6 +300,7 @@ video{
 }
 /*Language Menu*/
 .nav.navbar-nav li .dropdown.drop-lang{padding: 12px;}
+.dropdown.drop-lang ul li a {color: #000 !important;}
 .nav.navbar-nav li .dropdown .dropdown-menu li{ 
     color: #000;padding: 5px;cursor: pointer;font-family: 'Raleway', sans-serif;font-weight: 500;font-size: 1.6rem;vertical-align: middle;
 }.nav.navbar-nav li .dropdown .dropdown-menu li:hover{
@@ -316,6 +319,7 @@ video{
 .vid-cover{width: 100%;
     height: 100%;
     position: absolute;
+    background-color: rgba(0,0,0,0.2);
     z-index: 1;}
 
 .arrow{position: absolute; text-align: center;bottom: 10px;z-index: 1000;}
@@ -385,13 +389,10 @@ video{
         }
             /* Quotes topcics background */
                 .topic-animation {
-                    background-size: 100% 100%; 
+                    background-size: cover; 
                     transition: all 0.5s;
-                    background-position: center;
-                    -webkit-transition: all 0.5s;
+                    background-position: center
                 }
-                .topic-animation:hover{background-size: 110% 110%;transition: all 0.5s;
-            -webkit-transition: all 0.5s;}
                 /*#motivational{background-image: url('images/motivational.jpg');}
                 #inspirational{background-image: url('images/inspirational.jpg');}
                 #love{background-image: url('http://lovewallpapers.org/wp-content/uploads/pinky-love.jpeg');}
@@ -414,10 +415,12 @@ video{
 .quote .pad {
     border: 1px solid #ccc;
     padding: 2%;
-    padding-bottom: 10%;
+    padding-bottom: 2%;
     transition: all 0.5s;
+    overflow: hidden;
 }
-
+.related-t a{font-size: 1.5rem;font-family: 'Raleway', sans-serif;color: #555;}
+.related-t a:hover{color: #222;}
 .quote blockquote {
     margin-top: 5px;
     font-family: 'Glegoo', serif;
@@ -507,7 +510,10 @@ video{
     div.abc + div h1{text-align: center;font-family: 'Open Sans Condensed', sans-serif;font-weight: 900;font-size: 4rem;}
 
     .author-list{margin-top:20px;}
-    .img-media{width:100px;height:100px;position:absolute;border:3px solid #fff;z-index:1000;left:-10px;top:0;}
+    .img-media{width:100px;height:100px;position:absolute;border:3px solid #fff;z-index:1000;left:-10px;top:0;    
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;}
     .author-list h4{width:100%;padding:25px;top:5px;right:-2px;text-align:center;background:rgba(0,0,0,0.5);border-bottom-right-radius:2em;border-top-right-radius:2em;font-family: 'Josefin Sans', sans-serif;}
     .author-list h4 a{color: #fff;font-size: 2rem;font-weight:900;transition: all 0.5s;}
     .author-list h4 a:hover{color: #eee;text-decoration: none;text-shadow: 1px 1px 3px #000;}
@@ -545,7 +551,7 @@ video{
     /*TOPICS PAGE BY LETTER*/
         .breadcrumb{background: #fff;}
         .card-container{margin-top:10px;padding:2px;transition:all 0.5s;}
-        .card-header{height:200px;background-size:100% 100%;padding:0;}
+        .card-header{height:200px;background-size:100% 100%;padding:0;background-color: #000;}
         .card-header h3{width:100%;text-align:center;margin-top:80px;background:rgba(0,0,0,0.5);padding:9px;}
         .card-header h3 a{color:#fff;font-family: 'Poiret One', cursive;
         font-size:3.5rem;text-shadow:-1px 0px 3px #000;transition:all 0.5s;}.card-header h3 a:hover{color:#ddd;text-decoration:none;}
@@ -866,6 +872,17 @@ video{
 
     /* Small Devices, Tablets */
     @media only screen and (min-width : 768px) {
+    }
+    @media only screen and (max-width : 1366px) {
+        video{display:none;}
+    }
+    @media only screen and (max-width : 768px) and (orientation : landscape) {
+        .banner {
+            height: 110vh;
+        }
+        .banner h1 {
+            top: 25%;
+        }
     }
     @media only screen and (max-height : 768px) {
         .banner-topic h1 {

@@ -35,16 +35,31 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
     if($_GET['t']=='author'){
         $Paginator  = new Paginator("quotes_en WHERE author LIKE '%$query%'");
         $quotesARR = $Paginator->getData("quotes_en WHERE author LIKE '%$query%'","quoteID",$limit,$page);
+        
+        $rand=rand(0,count($quotesARR->data)-1);
+        $qRand = $obj->find_by('quotes_en','quoteID',$quotesARR->data[$rand]['quoteID']);
+        $randQuote=$qRand[0]['quote'];
+        $randAuthor=$qRand[0]['author'];
     }elseif($_GET['t']=='quotes' || $_GET['t']=='keyword'){
         $Paginator  = new Paginator("quotes_en WHERE MATCH(quote) AGAINST('".$query."' IN BOOLEAN MODE) OR  quote LIKE '%".$query."%'");
         $quotesARR = $Paginator->getData("quotes_en WHERE MATCH(quote) AGAINST('".$query."' IN BOOLEAN MODE) OR  quote LIKE '%".$query."%'","quoteID",$limit,$page);
+        
+        $rand=rand(0,count($quotesARR->data)-1);
+        $qRand = $obj->find_by('quotes_en','quoteID',$quotesARR->data[$rand]['quoteID']);
+        $randQuote=$qRand[0]['quote'];
+        $randAuthor=$qRand[0]['author'];
     }elseif($_GET['t']=='topic'){
-        $Paginator  = new Paginator("quotes_en WHERE author LIKE '%$query%'");
-        $quotesARR = $Paginator->getData("quotes_en WHERE MATCH(quote) AGAINST('".$query."' IN BOOLEAN MODE) OR  quote LIKE '%".$query."%'","quoteID",$limit,$page);
+        $topics=$obj->custom("SELECT * FROM topics_en WHERE topicName LIKE '%".$query."%' OR keywords LIKE '%".$query."%' OR MATCH(topicName) AGAINST('".$query."' IN BOOLEAN MODE) OR MATCH(keywords) AGAINST('".$query."' IN BOOLEAN MODE) OR soundex(topicName)=soundex('".$query."')");
+        $Paginator  = new Paginator("quotesTopicEN WHERE topicID='".$topics[0]['topicID']."'");
+        $quotesARR = $Paginator->getData("quotesTopicEN WHERE topicID='".$topics[0]['topicID']."'","id",$limit,$page);
+        
+        $rand=rand(0,count($quotesARR->data)-1);
+        $qRand = $obj->find_by('quotes_en','quoteID',$quotesARR->data[$rand]['quoteID']);
+        $randQuote=$qRand[0]['quote'];
+        $randAuthor=$qRand[0]['author'];
     }
     //End of Pagination
     $quoteData=$quotesARR->data;
-    $rand=rand(0,count($quoteData)-1);
 	$folder='../../../';
 ?>
 
@@ -67,13 +82,13 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                 <span>"<?php echo $_GET['q']; ?>"</span>
                 <p class="col-xs-12 col-md-6 biography random-quote" itemprop="citation"><span class="quote">
                     <?php
-                        if(!empty($quoteData) && isset($quoteData))
-                            echo $quoteData[$rand]['quote']; 
+                        if(!empty($randQuote) && isset($randQuote))
+                            echo $randQuote; 
                         else
                             echo 'Sorry, it seems we couldn\'t find what you were looking for!';
                     ?>
                     </span></p>
-                <p class="col-xs-12 col-md-6 biography random-author" itemprop="author"><span><?php if(!empty($quoteData) && isset($quoteData)) echo ' - '.$quoteData[$rand]['author']; ?></span></p>
+                <p class="col-xs-12 col-md-6 biography random-author" itemprop="author"><span><?php if(!empty($randAuthor) && isset($randAuthor)) echo ' - '.$randAuthor; ?></span></p>
             </h1>
         </section>
         
@@ -95,13 +110,14 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                                     $qID=$quotes[0]['quoteID'];
                                     $quote=$quotes[0]['quote'];
                                     $qImage=$quotes[0]['quoteImage'];
-                                    $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
+                                    $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName,topics_en.seo_url FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
                                     $authorURL=$obj->find_by('authors','authorName',$quotes[0]['author']);
                                     $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                     $count=0;
                                     if(!empty($topicsArr)){
-                                        foreach($topicsArr as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
-                                            $arrEN[$count]=$topicsArr[$key]['topicName']; // TOPIC'S NAME IN SPANISH
+                                        foreach($topicsArr as $key=>$val){
+                                            $arrEN[$count]=$topicsArr[$key]['topicName']; // TOPIC'S NAME
+                                            $arrSEO[$count]=$topicsArr[$key]['seo_url']; // TOPIC'S SEO URL
                                             $count++;
                                         }
                                     }
@@ -130,15 +146,27 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                                 <?php }else{ ?>
                                     <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable" role="button" data-toggle="popover" data-placement="top" data-title="Want to like this?" data-content="<a href='' data-toggle='modal' data-target='#signup'>Sign up</a> or <a href='' data-toggle='modal' data-target='#login'>Login</a>">Like<?php if($nLikes[0]['cnt']>1) echo 's'; ?></a></p></div>
                                 <?php } ?>
+                                <div class="col-xs-12 related-t">
+                                    <?php
+                                        $tagsLinksArray = array();
+                                        foreach($arrEN as $key=>$val) {
+                                            $tagName = $val;
+                                            $tagsLinksArray[] = '<a href="/topic/quotes/'.$arrSEO[$key].'/1" role="link">'.$tagName.'</a>';
+                                        }
+                                        echo join(', ', $tagsLinksArray);
+                                    ?>
+                                </div>
                             </div>
                         </div>
                         <?php
                                 }
                             } else{
+                                $listURL='<a href="/authors/1/a" role="link">AUTHORS</a>, <a href="/topics" role="link">TOPICS</a> and
+                                              <a href="/quotes/keywords" role="link">KEYWORDS</a>';
                         ?>
                         <div class="col-xs-12 not-found">
                             <div class="col-xs-12"><span class="ion-sad"></span></div>
-                            <span>Didn't find what you were looking for? Don't worry, check out this list of <a href="/quotes/keywords" role="link">KEYWORDS</a> to help you find the quote you're looking for.</span>
+                            <span>Didn't find what you were looking for? Don't worry, check out this list of <?php echo $listURL; ?> to help you find the quote you're looking for.</span>
                         </div>
                         <?php
                             }

@@ -21,10 +21,10 @@ else
                 
                 <div class="collapse navbar-collapse" id="menu-items">
                     <ul class="nav navbar-nav" itemscope itemtype="http://www.schema.org/SiteNavigationElement">
-                        <li itemprop="name"><a href="" role="link" itemprop="url"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                        <li itemprop="name"><a href="" role="link" itemprop="url">Topics</a></li>
-                        <li itemprop="name"><a href="" role="link" itemprop="url">Authors</a></li>
-                        <li itemprop="name"><a href="quote-generator.html" itemprop="url">Quote Generator</a></li>
+                        <li itemprop="name"><a href="/" role="link" itemprop="url"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li itemprop="name"><a href="/topics" role="link" itemprop="url">Topics</a></li>
+                        <li itemprop="name"><a href="/authors/1/a" role="link" itemprop="url">Authors</a></li>
+                        <li itemprop="name"><a href="/quote-generator" itemprop="url">Quote Generator</a></li>
                         <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -39,8 +39,8 @@ else
                                     <?php echo $_SESSION['fname']; ?>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="my-profile">
-                                    <li> My Profile</li>
-                                    <li> Logout</li>
+                                    <li><a href="<?php echo '/panel/quotes/'.$_SESSION['uname'];?>" role="link"> My Profile</a></li>
+                                    <li><a href="<?php echo '/panel/quotes/'.$_SESSION['uname'];?>" role="link"> Logout</a></li>
                                 </ul>
                             </div>
                         </li>

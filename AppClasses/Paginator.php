@@ -43,7 +43,7 @@
             $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page-1).''.$l.'" rel="prev"><span aria-hidden="true">&laquo;</span></a></li>';
             
             if($start > 1){
-                $html .='<li><a href="/'.$this->_limit.'/1">1</a></li>';
+                $html .='<li><a href="'.$URI.'/1'.$l.'">1</a></li>';
                 $html .= '<li class="disabled"><span>...</span></li>';
             }
             

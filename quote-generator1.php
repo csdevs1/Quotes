@@ -1,6 +1,7 @@
 <?php
-session_start();
-class HeadTags{
+    session_start();
+    require_once('AppClasses/AppController.php');
+    class HeadTags{
         public function titlePage($el) {
             return $el." at PortalQuote";
         }

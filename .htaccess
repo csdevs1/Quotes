@@ -11,7 +11,7 @@ RewriteRule ^topics$ topicsPage.php
 RewriteRule ^quotes/keywords$ keywordsPage.php
 RewriteRule ^topics/(.*)/(.*)$ topicsPageByLetter.php?l=$1&page=$2
 RewriteRule ^quote/(.*)$ quotePage.php?quoteid=$1
-RewriteRule ^generate$ quote-generator.php
+RewriteRule ^quote-generator$ quote-generator1.php
 RewriteRule ^65279e1ecf00d0d1177a5b3b458fd187a1d6135e/(.*)$ verification.php?digest=$1
 RewriteRule ^search/(.*)/(.*)/(.*)$ searchPage.php?t=$1&q=$2&page=$3
 

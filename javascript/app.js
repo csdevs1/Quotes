@@ -56,12 +56,7 @@ $(document).ready(function(){
     });
     
     $('.modal-body').validator();
-/*    var $container = $('.masonry-container');
-    $container.masonry({
-        columnWidth: '.item',
-        itemSelector: '.item'
-    });*/
-    
+
     $('#arrow').on('click', function(event){
         $('#banner').removeClass('current');
         $('#popular-topics').addClass('current');

@@ -39,6 +39,17 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
+        <?php
+        if(isset($topics) && !empty($topics)){
+            foreach($topics as $key=>$val){
+                $images = $obj->find_by('topicsImages','tID',$topics[$key]['topicID']);
+                $num = rand(0,count($images)-1);
+        ?>
+        <link rel="preload" as="image" href="<?php echo $images[$num]['img_url']; ?>" >
+        <?php
+            }
+        }
+        ?>
         <?php include 'layouts/head.php'; ?>
     </head>
     <body>

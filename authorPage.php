@@ -118,12 +118,13 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 $qID=$quotes[$key]['quoteID'];
                                 $quote=$quotes[$key]['quote'];
                                 $qImage=$quotes[$key]['quoteImage'];
-                                $topics = $obj->custom('SELECT topics_en.topicID,topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
+                                $topics = $obj->custom('SELECT topics_en.topicID,topics_en.topicName,topics_en.seo_url FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
                                 $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                 $count=0;
                                 if(!empty($topics)){
                                     foreach($topics as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
                                         $arrEN[$count]=$topics[$key]['topicName']; // TOPIC'S NAME IN SPANISH
+                                        $arrSEO[$count]=$topics[$key]['seo_url']; // TOPIC'S SEO URL
                                         $count++;
                                     }
                                 }
@@ -152,6 +153,16 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 <?php }else{ ?>
                                     <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable" role="button" data-toggle="popover" data-placement="top" data-title="Want to like this?" data-content="<a href='' data-toggle='modal' data-target='#signup'>Sign up</a> or <a href='' data-toggle='modal' data-target='#login'>Login</a>">Like<?php if($nLikes[0]['cnt']>1) echo 's'; ?></a></p></div>
                                 <?php } ?>
+                                <div class="col-xs-12 related-t">
+                                    <?php
+                                        $tagsLinksArray = array();
+                                        foreach($arrEN as $key=>$val) {
+                                            $tagName = $val;
+                                            $tagsLinksArray[] = '<a href="/topic/quotes/'.$arrSEO[$key].'/1" role="link">'.$tagName.'</a>';
+                                        }
+                                        echo join(', ', $tagsLinksArray);
+                                    ?>
+                                </div>
                             </div>
                         </div>
                         <?php

@@ -80,7 +80,7 @@
                 
                 <div class="row explore-more">
                     <div class="col-xs-12">Want to explore more?</div>
-                    <div class="col-xs-12"><a class="btn btn-primary">CHECKOUT OUR LIST OF KEYWORDS!</a></div>
+                    <div class="col-xs-12"><a href="/quotes/keywords" class="btn btn-primary">CHECKOUT OUR LIST OF KEYWORDS!</a></div>
                 </div>
             </div>
         </section>
