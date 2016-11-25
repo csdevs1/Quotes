@@ -46,5 +46,5 @@ $msg="
          </div>
      </body>
 </html>";
-echo sendMail('gabriel_1492@hotmail.com','Welcome to PortalQuote',$msg);
+echo sendMail(' ','Welcome to PortalQuote',$msg);
 ?>
