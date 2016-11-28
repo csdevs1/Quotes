@@ -40,10 +40,11 @@
             $html = '<ul class="'.$list_class.'">';
             
             $class = ($this->_page==1) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page-1).''.$l.'" rel="prev"><span aria-hidden="true">&laquo;</span></a></li>';
+            $onclick = ($this->_page==1) ? 'onclick="return false;"' : "";
+            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page-1).''.$l.'" '.$onclick.' rel="prev"><span aria-hidden="true">&laquo;</span></a></li>';
             
             if($start > 1){
-                $html .='<li><a href="'.$URI.'/1'.$l.'">1</a></li>';
+                $html .='<li><a href="'.$URI.'/1'.$l.'" onclick="return false;">1</a></li>';
                 $html .= '<li class="disabled"><span>...</span></li>';
             }
             
@@ -54,10 +55,11 @@
             
             if($end < $last){
                 $html .= '<li class="disabled"><span>...</span</li>';
-                $html .= '<li><a href="'.$URI.'/'.$last.''.$l.'">'.$last.'</a></li>';
+                $html .= '<li><a href="'.$URI.'/'.$last.''.$l.'" onclick="return false;">'.$last.'</a></li>';
             }
             $class = ($this->_page == $last) ? "disabled" : "";
-            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page + 1).''.$l.'" rel="next"><span aria-hidden="true">&raquo;</span></a></li>';
+            $onclick = ($this->_page == $last) ? 'onclick="return false;"' : "";
+            $html .= '<li class="'.$class.'"><a href="'.$URI.'/'.($this->_page + 1).''.$l.'" '.$onclick.' rel="next"><span aria-hidden="true">&raquo;</span></a></li>';
             $html .= '</ul>';
             
             return $html;

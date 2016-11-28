@@ -121,6 +121,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 $topics = $obj->custom('SELECT topics_en.topicID,topics_en.topicName,topics_en.seo_url FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
                                 $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                 $count=0;
+                                $arrEN=array();
                                 if(!empty($topics)){
                                     foreach($topics as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
                                         $arrEN[$count]=$topics[$key]['topicName']; // TOPIC'S NAME IN SPANISH

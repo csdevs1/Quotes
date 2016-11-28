@@ -16,7 +16,7 @@ else
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-items" aria-expanded="false" role="button">
                         <span class="glyphicon glyphicon-send"></span>
                     </button>
-                    <h2 class="navbar-toggle" style="float:left;">PortalQuote</h2>
+                    <h2 class="navbar-toggle" style="float:left;"><a href="/">PortalQuote</a></h2>
                 </div>
                 
                 <div class="collapse navbar-collapse" id="menu-items">

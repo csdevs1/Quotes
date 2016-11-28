@@ -29,7 +29,7 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
     // Pagination
     //$query='"'.str_replace("'","\'",$_GET['q']).'"';
     $query=str_replace("'","\'",$_GET['q']);
-    $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
+    $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 20;
     $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
     $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
     if($_GET['t']=='author'){
@@ -110,10 +110,11 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                                     $qID=$quotes[0]['quoteID'];
                                     $quote=$quotes[0]['quote'];
                                     $qImage=$quotes[0]['quoteImage'];
-                                    $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName,topics_en.seo_url FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
+                                    $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName,topics_en.seo_url FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quotesTopicEN.quoteID='.$qID); // USE join() FUNCTION
                                     $authorURL=$obj->find_by('authors','authorName',$quotes[0]['author']);
                                     $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                     $count=0;
+                                    $arrEN=array();
                                     if(!empty($topicsArr)){
                                         foreach($topicsArr as $key=>$val){
                                             $arrEN[$count]=$topicsArr[$key]['topicName']; // TOPIC'S NAME

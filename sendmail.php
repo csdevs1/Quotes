@@ -28,7 +28,7 @@ $msg="
                  padding:10px !important;
                  background: #995fff !important;
                  color: #fff !important;
-                 width: 15% !important;
+                 width: 50% !important;
                  margin-left: auto !important;
                  margin-right: auto !important;
                  margin-top: 10px !important;
