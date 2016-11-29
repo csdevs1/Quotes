@@ -61,6 +61,8 @@
 </div>
 <?php } ?>
 <!-- Update Form -->
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+    if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ ?>
 <div class="container quote-form" id="update-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -105,7 +107,7 @@
         </div>
     </div>
 </div>
-
+<?php } } ?>
 
 <div class="container">
     <div class="row">
@@ -117,7 +119,7 @@
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
             <div class="circle-ref" onclick="topicsTranslation(<?php echo $topicID[0]['id']; ?>)"><?php echo $topicID[0]['id']; ?></div>
             <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
+                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>,<?php echo $topicID[0]['id']; ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
             
             <div class="col-xs-8 col-md-8">
@@ -195,13 +197,13 @@
     var closeUpdate=function(){
         $('#update-form').hide(500);
     }
-    var openUpdate=function(topID){
+    var openUpdate=function(topID,resRel){
         var topic = find_by('topics_pt','topicID',topID);
         $('#quote-form').hide(500);
         document.getElementById('image-box2').innerHTML="";
         topic.done(function(data){
             if(Object.keys(data[0][0]).length > 1){
-                document.getElementById('update').setAttribute("onclick","updateTopic(this,"+data[0][0].topicID+")");
+                document.getElementById('update').setAttribute("onclick","updateTopic(this,"+data[0][0].topicID+","+resRel+")");
                 $('#update-form').show(500);
                 $('#topic-up').val(data[0][0].topicName);
                 $('#keywords-up').val(data[0][0].keywords);
@@ -218,8 +220,16 @@
             }
         });
     }
+
+    String.prototype.allReplace = function(obj) {
+        var retStr = this;
+        for (var x in obj) {
+            retStr = retStr.replace(new RegExp(x, 'g'), obj[x]);
+        }
+        return retStr;
+    }
     
-    var updateTopic = function(el,topID){
+    var updateTopic = function(el,topID,resRel){
         $(el).attr('disabled','disabled');
         el.innerHTML = "Updating";
         var topic = $('#topic-up').val(),
@@ -229,8 +239,8 @@
             arr = {};
         if(topic && topic != ''){
             arr['topicName'] = topic;
-            /*var seo = topic.replace(/["']/g, "");
-            arr['seo_url'] = seo.split(' ').join('-').toLowerCase();*/
+            var seo = topic.allReplace({'á': 'a','ã':'a','à':'a','â':'a','ç':'c', 'é': 'e','ê':'e','í':'i','ó':'o','õ':'o','ô':'o','ü':'u','ú':'u','ñ':'n',"'":'','"':""});
+            arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
         }
         else
             console.log('Error topic');
@@ -295,11 +305,11 @@
                     }
                     if(Object.keys(imagesToUpdate).length == 0 && Object.keys(images).length == 0){
                         setTimeout(function() {
-                            topics('Topic Updated correctly',document.getElementById('topic-pt'));
+                            topicsPT('Topic Updated correctly',document.getElementById('topic-pt'));
                         }, 2000);
                     } else{
                         setTimeout(function() {
-                            topics('Topic Updated correctly',document.getElementById('topic-pt'));
+                            topicsPT('Topic Updated correctly',document.getElementById('topic-pt'));
                         }, 2000);
                     }
                 });
@@ -354,16 +364,19 @@ function imagesToUpdate(src,id){
     var save = function(el) {
         $(el).attr('disabled','disabled');
         //el.innerHTML = "Saving";
-        var author = $('#topic').val(),
+        var topic = $('#topic').val(),
             keywords = $('#keywords').val(),
             images = $("input[name='images[]']").map(function(){return $(this).prop('files')[0];}).get(),
             arr = {};
-        if(author && author != '')
-            arr['topicName'] = author;
+        if(topic && topic != ''){
+            arr['topicName'] = topic;
+            var seo = topic.allReplace({'á': 'a','ã':'a','à':'a','â':'a','ç':'c', 'é': 'e','ê':'e','í':'i','ó':'o','õ':'o','ô':'o','ü':'u','ú':'u','ñ':'n',"'":'','"':""});
+            arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+        }
         else
             console.log('Error topic');
         if(keywords && keywords != '')
-            arr['keywords'] = author;
+            arr['keywords'] = keywords;
         else
             console.log('Error keyword');
         if(arr['topicName'] != '' && arr['keywords'] != ''){

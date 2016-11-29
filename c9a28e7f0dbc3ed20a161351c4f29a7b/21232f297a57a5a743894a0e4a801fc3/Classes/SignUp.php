@@ -26,6 +26,8 @@
                 $val= implode(", " , $vals);
                 $response=$this->obj->save($this->table,$col,$val);
                 if($response){
+                    $curent_user=$this->obj->custom('SELECT * FROM dashboard_usrs ORDER BY created_at DESC');
+                    $this->obj->save('payment_rate','userID,rate',$curent_user[0]['id'].',0.001');
                     return $response;
                 }
             } else{

@@ -24,9 +24,10 @@ if(empty($_POST['dataARR'])){
         Your quotes
     </h3>
     <div class="clearfix"></div>
-   <?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
+   <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
         <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
-    <?php } ?>
+    <?php } } ?>
 </div>
 <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
@@ -488,13 +489,13 @@ if(empty($_POST['dataARR'])){
         var text=$(el).val();
         var matching=search('quotes_en','quote',text,'en_id','match');
         matching.done(function(response){
-            //if(response['percent']>=40){
+            if(response['percent']>=40){
                 var percent=response['percent'],
                     relID=response['relID'];
                 document.getElementById('match').innerHTML="This quote is similar to [<a onclick='quotesTranslation("+relID+")'>Quote ID: "+relID+"</a>] by "+percent+"%";
-          /*  }else{
+            }else{
                 document.getElementById('match').innerHTML="";
-            }*/
+            }
         });
     }
     
