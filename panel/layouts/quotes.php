@@ -46,3 +46,14 @@
     }
     ?>
 </div>
+
+<script>
+    $(document).ready(function(){
+        var $container = $('.masonry-container');
+        $container.masonry({
+            columnWidth: '.item',
+            itemSelector: '.item'
+        });
+        $('[data-toggle="popover"]').popover({html: true});
+    });
+</script>

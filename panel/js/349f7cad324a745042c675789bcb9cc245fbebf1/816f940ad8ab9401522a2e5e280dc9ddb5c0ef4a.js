@@ -44,10 +44,13 @@ $('#pq_qts').click(function(){
     $(el).attr('disabled','disabled');
     var author=$('#authorN').val(),
         quote=$('#quoteI').val(),
+        keywords=$('#keywords').val(),
         u_id=$('#token').val(),
+        n_keywords=keywords.split(',');
         arr={};
-    if(quote!=''){
+    if(quote!='' && keywords!='' && n_keywords.length <= 5){
         arr['quote']=quote;
+        arr['keywords']=keywords;
         if(author!='')
             arr['author']=author;
         if($('#image').val() && $('#image').val() !=''){
@@ -66,6 +69,7 @@ $('#pq_qts').click(function(){
                         $('#quoteI').val('');
                         $('#image').val('');
                         $('#image').next().text('Upload an Image');
+                        $('#keywords').tagsinput('removeAll');
                         quotePanel();
                         closeWindow();
                     }
