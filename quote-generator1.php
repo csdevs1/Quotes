@@ -66,10 +66,25 @@
                                 <li id="background" onclick="generator.panelSlide('#background-section')"><span class="glyphicon glyphicon-picture"></span><br>Background</li>
                                 <li onclick="generator.openWindow()"><i class="ion-quote"></i><br>Quote</li>
                                 <li id="fonts" onclick="generator.panelSlide('#font-style')"><span class="glyphicon glyphicon-font"></span><br>Font Style</li>
-                                <li><span class="glyphicon glyphicon-flash"></span><br>Effects</li>
+                                <li data-toggle="modal" data-target="#img-effect"><span class="glyphicon glyphicon-flash"></span><br>Effects </li>
                                 <li id="generate"><span class="glyphicon glyphicon-cd"></span><br>Generate</li>
                             </ul>
                         </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="img-effect" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Effects</h4>
+                    </div>
+                    <div class="modal-body" id="effects-body">
+                        <div class="col-xs-12"><label>Background Blur <span id="blur-scale">(0%)</span> <input type="range" id="bgBlur" min="0" max="100" value="0" onchange="generator.imageEffect()"></label></div>
+                        <div class="col-xs-12"><label>Background GreyScale <span id="grey-scale">(0%)</span><input type="range" id="bgGrey" min="0" max="100" value="0" onchange="generator.imageEffect()"></label></div>
                     </div>
                 </div>
             </div>
@@ -254,6 +269,6 @@
         
         <!-- FOOTER -->        
         <?php include 'layouts/footer.php'; ?>
-        <script src="javascript/generator.js"></script>
+        <script src="javascript/generator.js?<?php echo time(); ?>"></script>
     </body>
 </html>

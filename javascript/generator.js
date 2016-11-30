@@ -15,6 +15,8 @@ var generator = {
         $('#water-mark').css('display', 'block');
         $('#water-mark').addClass('water-mark');
         $('#quote-container').append('<img src="'+imageUrl+'" id="quote-img" class="img-responsive">');
+        window.myImage = new Image();
+        window.myImage.src = imageUrl;
         // End of new content
         
         //displayEditor();
@@ -70,12 +72,35 @@ var generator = {
         $('#text').css('text-align', just);
         //displayEditor();
     },
+    imageEffect:function(){
+        var img=window.myImage,
+            blur=document.getElementById('bgBlur').value,
+            greyscale=document.getElementById('bgGrey').value;
+        $('#blur-scale').text(blur+'%');
+        $('#grey-scale').text(greyscale+'%');
+        document.getElementById('quote-img').src=effects(img,blur,greyscale);
+    },
     panelSlide: function(id) {
         $('.sub-panel').not($(id)).hide();
         $(id).toggle("slide");
         if($("#from-gallery").css('display')=='block')
             $("#from-gallery").toggle("slide");
     }
+}
+
+function effects(imgObj,blur,grey) {
+    var canvas = document.createElement('canvas');
+    var canvasContext = canvas.getContext('2d');
+  
+    var imgW = imgObj.width;
+    var imgH = imgObj.height;
+    canvas.width = imgW;
+    canvas.height = imgH;
+    canvasContext.filter = "blur("+blur+"px) grayscale("+grey+"%)";
+  
+    canvasContext.drawImage(imgObj, 0, 0,imgW,imgH);
+  
+    return canvas.toDataURL();
 }
 
 function displayEditor(){
@@ -266,3 +291,22 @@ function copyToClipboard(elem) {
     }
     return succeed;
 }
+
+navigator.sayswho= (function(){
+    var ua= navigator.userAgent, tem, 
+    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return 'IE '+(tem[1] || '');
+    }
+    if(M[1]=== 'Chrome'){
+        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+        if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+    }
+    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+    return M.join(' ');
+})();
+
+var browser=navigator.sayswho;
+if((browser.split(' ')[0]!='Chrome' && browser.split(' ')[1]<52) || (browser.split(' ')[0]=='Firefox' && browser.split(' ')[1]>=49)){$('#effects-body').html('Your browser doesn\'t support Effects');}
