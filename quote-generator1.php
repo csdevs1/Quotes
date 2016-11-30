@@ -13,7 +13,7 @@
     $meta_tags = new HeadTags();
     $title = $meta_tags->titlePage('Find The Best Quotes');
     $description = $meta_tags->meta_description('Find the best quotes about topics like love, family, friend, motivation, funny from popular authors. Share with your friends on Facebook, Twitter, Instagram...');
-    $image = "https://portalquote.com/images/thumbnail.png";
+	$image = "https://portalquote.com/images/thumbnail.png";
 // Conection
 ?>
 
@@ -21,6 +21,16 @@
 <html class="no-js" lang="en" ng-app="quotesApp">
     <head>
         <?php include 'layouts/head.php'; ?>
+        <style>
+            .collection a{padding: 9px;width: 100%;}
+            <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
+                .download a {width: 100%;}
+                .download a {float: left;}
+                @media only screen and (min-width : 768px) {.copy-form .download{margin-left: 15.6%;}}
+            <?php }else{ ?>
+                .download a {float: none;}
+            <?php } ?>
+        </style>
     </head>
     <body>
         
@@ -43,7 +53,7 @@
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>        
         <!-- -->
-        <!-- LOGIN FORM -->
+	<!-- LOGIN FORM -->
         <?php include 'layouts/login.php'; ?>
         <!-- -->
         
@@ -79,7 +89,7 @@
                         <nav role="navigation">
                             <ul class="nav navbar-nav">
                                 <li class="img-file-container">
-                                    <input type="file" id="img-file" onchange="generator.preview(this)" />
+                                    <input type="file" id="img-file" onchange="generator.preview(this)" accept="image/*" />
                                     <span id="span"><span class="glyphicon glyphicon-open" aria-hidden="true"></span><br>Upload</span>
                                 </li>
                                 <li id="gallery"><span class="glyphicon glyphicon-camera"></span><br>Gallery</li>
@@ -198,7 +208,7 @@
                     <div class="img-gallery">
                         <img src="images/gallery/gallery-3.jpg" onclick="generator.changeImage(this)">
                     </div>
-                    <div class="img-gallery">
+			<div class="img-gallery">
                         <img src="images/gallery/gallery-4.jpg" onclick="generator.changeImage(this)">
                     </div>
                     <div class="img-gallery">
@@ -231,9 +241,14 @@
                         <span class="input-group-addon" onclick="clickToCopy(this);"><button id="copy" class="btn btn-primary"><i class="glyphicon glyphicon-link"></i></button></span>
                     </div>
                 </div>
-                <div class="col-xs-12 download col-sm-6 copy-container">
+                <div class="col-xs-12 col-sm-4 download copy-container">
                     <a href="" target="_blank" download><i class="glyphicon glyphicon-circle-arrow-down"></i> Download Image</a>
                 </div>
+                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
+                    <div class="col-xs-12 col-sm-4 collection">
+                        <a class="btn btn-default" id="clc-usr" role="button"><i class="glyphicon glyphicon-paperclip"></i> Save to my collection</a>
+                    </div>
+                <?php } ?>
             </div>
         </div>
         

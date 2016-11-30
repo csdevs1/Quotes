@@ -1,35 +1,92 @@
+<?php
+    session_start();
+    require_once('../AppClasses/AppController.php');
+    class HeadTags{
+        public function titlePage($el) {
+            return $el." at PortalQuote";
+        }
+        public function meta_description($el) {
+            return $el;
+        }
+    }
+    $obj = new AppController();
+    $user = $obj->like('users','username="'.$_GET['uname'].'" AND active=1');
+if(isset($user) && !empty($user)){
+    $u_id=$user[0]['userID'];
+    if($user[0]['picture']=='/images/profile/male.png' || $user[0]['picture']=='/images/profile/female.png')
+        $u_picture='../..'.$user[0]['picture'];
+    else
+        $u_picture=$user[0]['picture'];
+    $u_banner=$user[0]['banner'];
+    $fname=$user[0]['fname'];
+    $lname=$user[0]['lname'];
+    
+    if(isset($_SESSION['uID']) && !empty($_SESSION['uID']))
+        $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
+    if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+        $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
+        $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC");
+    }
+    $nFollowers=$obj->custom("SELECT COUNT(followerID) AS 'cnt' FROM followers WHERE userID=$u_id ");
+    
+    //USERS QUOTES
+    $quotes=$obj->find_by('userQuotes','userID',$u_id);
+    // Number of liked quotes
+    $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE userID=$u_id");
+    // Number of quotes
+    $nQuotes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM userQuotes WHERE userID=$u_id");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="img/favicon_1.ico">
-        <title>Username - Quotes</title>
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <link rel="shortcut icon" href="../../images/icon.png">
+
+        <title><?php echo $fname.' '.$lname; ?> - Dashboard</title>
+        
+        <!-- JQUERY LIBRARIES -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>   
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
+
         <!-- Google-Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
-        
-        <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link href="css/bootstrap-reset.css" rel="stylesheet">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        
-        <!--Animation css-->
-        <link href="css/animate.css" rel="stylesheet">
 
-        <!--Icon-fonts css-->
-        <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        <link href="assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
+
+        <!-- Bootstrap core CSS -->
+        <link href="../css/bootstrap.min.css?<?php echo time(); ?>" rel="stylesheet">
+        <link href="../css/bootstrap-reset.css" rel="stylesheet">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+        <!--Animation css-->
+        <link href="../css/animate.css" rel="stylesheet">
 
         <!-- sweet alerts -->
-        <link href="assets/sweet-alert/sweet-alert.min.css" rel="stylesheet">
+        <link href="../assets/sweet-alert/sweetalert.css" rel="stylesheet">
+        <script src="../assets/sweet-alert/sweetalert.min.js"></script>
+
+        <!--Icon-fonts css-->
+        <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <link href="../assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
 
         <!-- Custom styles for this template -->
-        <link href="css/style.css" rel="stylesheet">
-        <link href="css/helper.css" rel="stylesheet">
-        <link href="css/style-responsive.css" rel="stylesheet" />
-        <link href="assets/tagsinput/jquery.tagsinput.css" rel="stylesheet" />
+        <link href="../css/style.css?<?php echo time(); ?>" rel="stylesheet">
+        <link href="../css/helper.css" rel="stylesheet">
+        <link href="../css/style-responsive.css" rel="stylesheet" />
+        <link href="../assets/tagsinput/jquery.tagsinput.css" rel="stylesheet" />
+        <style>
+            .bg-picture{
+                background-image:url('<?php echo $u_banner; ?>');
+                background-color: #000;
+                background-repeat: no-repeat;
+                background-size:cover;
+            }
+        </style>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
         <!--[if lt IE 9]>
@@ -48,37 +105,26 @@
                 </a>
             </div>
             <!-- / brand -->
-        
-            <!-- Navbar Start -->
             <nav class="navigation">
                 <ul class="list-unstyled">
-                    <li class="has-submenu active"><a href="#"><i class="ion-home"></i> <span class="nav-label">Home</span></a>
-                        <ul class="list-unstyled">
-                            <li class="active"><a href="index.html">Your Quotes</a></li>
-                            <li><a href="dashboard2.html">Your Quotes as Images</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-submenu"><a href="#"><i class="ion-flask"></i> <span class="nav-label">Generate an Image</span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="typography.html">Typography</a></li>
-                            <li><a href="buttons.html">Buttons</a></li>
-                            <li><a href="icons.html">Icons</a></li>
-                            <li><a href="panels.html">Panels</a></li>
-                            <li><a href="tabs-accordions.html">Tabs &amp; Accordions</a></li>
-                            <li><a href="modals.html">Modals</a></li>
-                            <li><a href="bootstrap-ui.html">BS Elements</a></li>
-                            <li><a href="progressbars.html">Progress Bars</a></li>
-                            <li><a href="notification.html">Notification</a></li>
-                            <li><a href="sweet-alert.html">Sweet-Alert</a></li>
-                        </ul>
-                    </li>
+                    <li class="has-submenu"><a href="/panel/quotes/<?php echo $user[0]['username']; ?>"><i class="ion-home"></i> <span class="nav-label">
+                        <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
+                        Your Quotes
+                        <?php } else{ echo $fname."'s Quotes"; } ?>  
+                        </span></a></li>
                     <li class="has-submenu"><a href="#"><i class="ion-android-contacts"></i> <span class="nav-label">Following</span></a>
                         <ul class="list-unstyled">
-                            <li><a href="grid.html">Your Followers</a></li>
+                            <li><a href="">
+                                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
+                                    Your Followers
+                                <?php } else{ echo $fname."'s Followers"; } ?>                                
+                                </a></li>
                             <li><a href="portlets.html">Following</a></li>
                         </ul>
                     </li>
-                    <li class="has-submenu"><a href="#"><i class="ion-compose"></i> <span class="nav-label">Your Collection</span></a>
+                    <li class="has-submenu active"><a href="#"><i class="ion-compose"></i> <span class="nav-label"><?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
+                                        You Collection
+                                    <?php } else{ echo $fname."'s Collection"; } ?></span></a>
                         <ul class="list-unstyled">
                             <li><a href="form-elements.html">Quotes</a></li>
                             <li><a href="form-validation.html">Images</a></li>
@@ -87,12 +133,12 @@
                     <li class="has-submenu"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
                 </ul>
             </nav>
-                
         </aside>
         <!-- Aside Ends-->
 
         <!--Main Content Start -->
         <section class="content">
+            
             <!-- Header -->
             <header class="top-head container-fluid">
                 <button type="button" class="navbar-toggle pull-left">
@@ -104,26 +150,25 @@
                 
                 <!-- Search -->
                 <form role="search" class="navbar-left app-search pull-left hidden-xs">
-                    <input type="text" placeholder="Search..." class="form-control">
+                  <input type="text" placeholder="Search..." class="form-control">
                 </form>
-                
-                <!-- Left navbar -->
+                <!-- Left navbar 
                 <nav class=" navbar-default hidden-xs" role="navigation">
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">English <span class="caret"></span></a>
+                          <a data-toggle="dropdown" class="dropdown-toggle" href="#">English <span class="caret"></span></a>
                             <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">German</a></li>
-                                <li><a href="#">French</a></li>
-                                <li><a href="#">Italian</a></li>
+                                <li class="active"><a href="#">English</a></li>
+                                <li><a href="#">Portuguese</a></li>
                                 <li><a href="#">Spanish</a></li>
                             </ul>
                         </li>
                     </ul>
                 </nav>
+                -->
                 <!-- Right navbar -->
-                <ul class="list-inline navbar-right top-menu top-right-menu">
-                    <!-- mesages -->
+                <ul class="list-inline navbar-right top-menu top-right-menu">  
+                    <!-- mesages
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="fa fa-envelope-o "></i>
@@ -159,48 +204,67 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- /messages -->
+                    -->
                     <!-- Notification -->
+                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="fa fa-bell-o"></i>
-                            <span class="badge badge-sm up bg-pink count">3</span>
+                            <?php if($nNotifications[0]['cnt']>0){ ?>
+                                <span class="badge badge-sm up bg-pink count"><?php echo $nNotifications[0]['cnt']; ?></span>
+                            <?php } ?>
                         </a>
-                        <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5002">
-                            <li class="noti-header">
-                                <p>Notifications</p>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="pull-left"><i class="fa fa-user-plus fa-2x text-info"></i></span>
-                                    <span>New user registered<br><small class="text-muted">5 minutes ago</small></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="pull-left"><i class="fa fa-diamond fa-2x text-primary"></i></span>
-                                    <span>Use animate.css<br><small class="text-muted">5 minutes ago</small></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="pull-left"><i class="fa fa-bell-o fa-2x text-danger"></i></span>
-                                    <span>Send project demo files to client<br><small class="text-muted">1 hour ago</small></span>
-                                </a>
-                            </li>
-                            
-                            <li>
-                                <p><a href="#" class="text-right">See all notifications</a></p>
-                            </li>
-                        </ul>
+                        <?php if($nNotifications[0]['cnt']>0){ ?>
+                            <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5002">
+                                <li class="noti-header">
+                                    <p>Notifications</p>
+                                </li>
+                                <?php foreach($notifications as $key=>$val){
+                                        $date = strtotime($notifications[$key]['created_at']);
+                                        $date = date('M j, Y', $date);
+                                        $diff = date_diff(date_create($date),date_create(date("M j, Y"))); //GET DAY
+                                        $diff=$diff->format('%a');
+                                        if($diff==1)
+                                            $diff.=' day ago';
+                                        elseif($diff>1)
+                                            $diff.=' days ago';
+                                        elseif($diff==0){
+                                            $to_time = strtotime(date("Y-m-d H:i:s"));
+                                            $from_time = strtotime($notifications[$key]['created_at']);
+                                            $diff=floor(abs($to_time - $from_time) / 60); // GET MINUTES
+                                            if($diff==1)
+                                                $diff.=' minute ago';
+                                            elseif($diff>=60){
+                                                $diff=floor(abs($to_time - $from_time) / 3600); // GET HOURS
+                                                if($diff>1)
+                                                    $diff.=' hours ago';
+                                                else
+                                                    $diff.=' hour ago';
+                                            }else
+                                                $diff.=' minutes ago';
+                                        }
+                                ?>
+                                    <li>
+                                        <div>
+                                            <?php echo $notifications[$key]['notification']; ?><br><small class="text-muted"><?php echo $diff; ?></small></span>
+                                        </div>
+                                    </li>
+                                <?php } ?>
+                                <li>
+                                    <p><a href="#" class="text-right">See all notifications</a></p>
+                                </li>
+                            </ul>
+                        <?php } ?>
                     </li>
+                    <?php } ?>
                     <!-- /Notification -->
 
                     <!-- user login dropdown start-->
+                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
                     <li class="dropdown text-center">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="img/avatar-2.jpg" class="img-circle profile-img thumb-sm">
-                            <span class="username">John Deo </span> <span class="caret"></span>
+                            <img alt="" src="<?php echo $u_picture; ?>" class="img-circle profile-img thumb-sm">
+                            <span class="username"><?php echo $_SESSION['uname']; ?> </span> <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu extended pro-menu fadeInUp animated" tabindex="5003" style="overflow: hidden; outline: none;">
                             <li><a href="profile.html"><i class="fa fa-briefcase"></i>Profile</a></li>
@@ -209,16 +273,16 @@
                             <li><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
                         </ul>
                     </li>
+                    <?php } else{ ?>
+                        <li class="text-center"><a href="/">Home</a></li>
+                    <?php } ?>
                     <!-- user login dropdown end -->       
                 </ul>
                 <!-- End right navbar -->
+
             </header>
             <!-- Header Ends -->
 
-
-            <!-- Page Content Start -->
-            <!-- ================== -->
-            
             <div class="wraper container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
@@ -295,24 +359,24 @@
             <!-- ================== -->
         </section>
         <!-- Main Content Ends -->
-        
-
-
-        <!-- js placed at the end of the document so the pages load faster -->
-        
-        <script src="js/jquery.app.js"></script>
-        <script src="js/app.js"></script>
-        <script src="js/modernizr.min.js"></script>
-        <script src="js/pace.min.js"></script>
-        <script src="js/wow.min.js"></script>
-        <script src="js/jquery.scrollTo.min.js"></script>
-        <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
-
-        <!-- Counter-up -->
-        <script src="js/waypoints.min.js" type="text/javascript"></script>
-        <script src="js/jquery.counterup.min.js" type="text/javascript"></script>
-        
-        <!-- Tags -->
-        <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
+    <!-- js placed at the end of the document so the pages load faster -->
+        <script src="../js/app.js?<?php echo date(); ?>"></script>
+        <script src="../assets/tagsinput/jquery.tagsinput.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/pace.min.js"></script>
+        <script src="../js/modernizr.min.js"></script>
+        <script src="../js/wow.min.js"></script>
+        <script src="../js/jquery.scrollTo.min.js"></script>
+        <script src="../js/jquery.nicescroll.js" type="text/javascript"></script>
+        <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
+        <script src="../js/84628a0974ef75ce8cbcfdaf79ce37d619c81cfd/7facc5a9f1b1539c570b57de3134b78dd6f1fdfe.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <script src="../js/349f7cad324a745042c675789bcb9cc245fbebf1/816f940ad8ab9401522a2e5e280dc9ddb5c0ef4a.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <?php }elseif(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
+        <script src="../js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <?php } ?>
+        <script src="../js/jquery.app.js"></script>
     </body>
 </html>
+<?php }else{
+    header("Location:/");
+} ?>
