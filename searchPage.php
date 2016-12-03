@@ -49,14 +49,29 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
         $randQuote=$qRand[0]['quote'];
         $randAuthor=$qRand[0]['author'];
     }elseif($_GET['t']=='topic'){
-        $topics=$obj->custom("SELECT * FROM topics_en WHERE topicName LIKE '%".$query."%' OR keywords LIKE '%".$query."%' OR MATCH(topicName) AGAINST('".$query."' IN BOOLEAN MODE) OR MATCH(keywords) AGAINST('".$query."' IN BOOLEAN MODE) OR soundex(topicName)=soundex('".$query."')");
+        /*$topics=$obj->custom("SELECT * FROM topics_en WHERE topicName LIKE '%".$query."%' OR keywords LIKE '%".$query."%' OR MATCH(topicName) AGAINST('".$query."' IN BOOLEAN MODE) OR MATCH(keywords) AGAINST('".$query."' IN BOOLEAN MODE) OR soundex(topicName)=soundex('".$query."')");
         $Paginator  = new Paginator("quotesTopicEN WHERE topicID='".$topics[0]['topicID']."'");
         $quotesARR = $Paginator->getData("quotesTopicEN WHERE topicID='".$topics[0]['topicID']."'","id",$limit,$page);
         
         $rand=rand(0,count($quotesARR->data)-1);
         $qRand = $obj->find_by('quotes_en','quoteID',$quotesARR->data[$rand]['quoteID']);
         $randQuote=$qRand[0]['quote'];
-        $randAuthor=$qRand[0]['author'];
+        $randAuthor=$qRand[0]['author'];*/
+
+        $topics=$obj->custom("SELECT * FROM topics_en WHERE topicName LIKE '%".$query."%' OR keywords LIKE '%".$query."%' OR MATCH(topicName) AGAINST('".$query."' IN BOOLEAN MODE) OR MATCH(keywords) AGAINST('".$query."' IN BOOLEAN MODE) OR soundex(topicName)=soundex('".$query."')"); //OR MATCH(topicName) AGAINST('".$query."' IN BOOLEAN MODE) OR MATCH(keywords) AGAINST('".$query."' IN BOOLEAN MODE) OR soundex(topicName)=soundex('".$query."')
+        
+        $topicARR=array();
+        foreach($topics as $key=>$val){
+            $topicARR[$key]=$topics[$key]['topicID'];
+        }
+        
+        $topicQUERY=join(' OR topicID=',$topicARR);
+        $Paginator  = new Paginator("quotesTopicEN WHERE topicID=".$topicQUERY." GROUP BY quoteID");
+        $quotesARR = $Paginator->getData("quotesTopicEN WHERE topicID=".$topicQUERY." GROUP BY quoteID","id",$limit,$page);
+        $rand=rand(0,count($quotesARR->data)-1);
+        $qRand = $obj->find_by('quotes_en','quoteID',$quotesARR->data[$rand]['quoteID']);
+        $randQuote=$qRand[0]['quote'];
+        $randAuthor=$qRand[0]['author'];        
     }
     //End of Pagination
     $quoteData=$quotesARR->data;
