@@ -23,7 +23,7 @@
                                                         $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($quote)), 0, 10));*/
                                                 ?>
     <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
-        <div class="pad">
+        <div class="pad clearfix">
             <?php 
         if(isset($qImage) && !empty($qImage)){
             ?>

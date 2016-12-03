@@ -117,7 +117,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                 $authorURL=$obj->find_by('authors','authorName',$quotes[0]['author']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
-                            <div class="pad">
+                            <div class="pad clearfix">
                                 <?php 
                                     if(isset($qImage) && !empty($qImage)){
                                 ?>

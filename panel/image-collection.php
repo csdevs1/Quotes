@@ -25,16 +25,9 @@ if(isset($user) && !empty($user)){
         $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
     if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
         $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
-        $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC");
+        $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC LIMIT 6");
     }
-    $nFollowers=$obj->custom("SELECT COUNT(followerID) AS 'cnt' FROM followers WHERE userID=$u_id ");
-    
-    //USERS QUOTES
-    $quotes=$obj->find_by('userQuotes','userID',$u_id);
-    // Number of liked quotes
-    $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE userID=$u_id");
-    // Number of quotes
-    $nQuotes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM userQuotes WHERE userID=$u_id");
+    $images=$obj->find_by('userImagesCollection','userID',$u_id);
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +107,7 @@ if(isset($user) && !empty($user)){
                         </span></a></li>
                     <li class="has-submenu"><a href="#"><i class="ion-android-contacts"></i> <span class="nav-label">Following</span></a>
                         <ul class="list-unstyled">
-                            <li><a href="">
+                            <li><a href="/panel/followers/<?php echo $user[0]['username']; ?>">
                                 <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
                                     Your Followers
                                 <?php } else{ echo $fname."'s Followers"; } ?>                                
@@ -123,14 +116,14 @@ if(isset($user) && !empty($user)){
                         </ul>
                     </li>
                     <li class="has-submenu active"><a href="#"><i class="ion-compose"></i> <span class="nav-label"><?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
-                                        You Collection
+                                        Your Collection
                                     <?php } else{ echo $fname."'s Collection"; } ?></span></a>
                         <ul class="list-unstyled">
                             <li><a href="form-elements.html">Quotes</a></li>
-                            <li><a href="form-validation.html">Images</a></li>
+                            <li class="active"><a href="/panel/collection/<?php echo $user[0]['username']; ?>">Images</a></li>
                         </ul>
                     </li>
-                    <li class="has-submenu"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
+                    <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
                 </ul>
             </nav>
         </aside>
@@ -270,7 +263,7 @@ if(isset($user) && !empty($user)){
                             <li><a href="profile.html"><i class="fa fa-briefcase"></i>Profile</a></li>
                             <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
                             <li><a href="#"><i class="fa fa-bell"></i> Friends <span class="label label-info pull-right mail-info">5</span></a></li>
-                            <li><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                            <li onclick="signout()"><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
                         </ul>
                     </li>
                     <?php } else{ ?>
@@ -299,30 +292,11 @@ if(isset($user) && !empty($user)){
                                     <section role="main">
                                         
                                         <div class="row collection-cont">
+                                            <?php foreach($images as $key=>$val){?>
                                             <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg">
+                                                <img class="img-responsive img-thumbnail" src="<?php echo $images[$key]['url']; ?>">
                                             </div>
-                                            <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="http://www.pixelstalk.net/wp-content/uploads/2016/04/Landscape-wallpaper-hd-pictures-download.jpg">
-                                            </div>
-                                            <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="https://s-media-cache-ak0.pinimg.com/736x/ef/48/92/ef4892c111fa50e276674c669046fb52.jpg">
-                                            </div>
-                                            <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="http://orig01.deviantart.net/3224/f/2011/340/1/e/abstract_universe_wallpaper_2011___lei_by_lei_design-d4ibria.jpg">
-                                            </div>
-                                            <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="http://i1.wp.com/bitcast-a-sm.bitgravity.com/slashfilm/wp/wp-content/images/ZZ3F32EC65.jpg">
-                                            </div>
-                                            <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="http://cdn.collider.com/wp-content/uploads/martin-ansin-man-of-steel-poster.jpg">
-                                            </div>
-                                            <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="http://www.wired.com/wp-content/uploads/2014/10/ut_interstellarOpener_f.png">
-                                            </div>
-                                            <div class="col-xs-4 col-md-3 col-lg-2">
-                                                <img class="img-responsive img-thumbnail" src="http://i1.wp.com/bitcast-a-sm.bitgravity.com/slashfilm/wp/wp-content/images/ZZ3F32EC65.jpg">
-                                            </div>
+                                            <?php } ?>
                                         </div>
                                         
                                     </section>
@@ -373,6 +347,9 @@ if(isset($user) && !empty($user)){
         <script src="../js/349f7cad324a745042c675789bcb9cc245fbebf1/816f940ad8ab9401522a2e5e280dc9ddb5c0ef4a.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php }elseif(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
         <script src="../js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <?php } ?>
+        <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
+        <script src="../js/4236a440a662cc8253d7536e5aa17942/d668aad11dcbabd7f04c3a7aca25f1f7.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php } ?>
         <script src="../js/jquery.app.js"></script>
     </body>

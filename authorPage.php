@@ -137,7 +137,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
-                            <div class="pad">
+                            <div class="pad clearfix">
                                 <?php 
                                     if(isset($qImage) && !empty($qImage)){
                                 ?>

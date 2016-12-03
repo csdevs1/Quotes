@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if(isset($_POST['data']) && !empty($_POST['data']) && sha1($_POST['data'])==$_POST['uID']){
+    if(isset($_POST['data']) && !empty($_POST['data']) && sha1($_SESSION['uID'])==$_POST['uID']){
         require_once('AppController.php');
         $obj = new AppController();
         if(isset($_POST['data']) && !empty($_POST['data']) && $_POST['action'] === 'follow'){

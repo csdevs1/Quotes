@@ -37,8 +37,13 @@
             $json_response = array('response'=>400,$response);
             echo json_encode($json_response);
         }
+    }elseif($_POST['logout']){ //check Token function
+        $user=new User();
+        $json_response = array($user->logout());
+        echo json_encode($json_response);
+        
     }else{
         $json_response = array('response'=>400);
-            echo json_encode($json_response);
+        echo json_encode($json_response);
     }
 ?>

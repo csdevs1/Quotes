@@ -34,6 +34,30 @@ $(document).on('click','#flw-qt',function(){
     }
 });
 
+$('.usrflw-16516').click(function(){
+    var el=this;
+    if($(el).hasClass('nt-follow')){
+        var isFollowing=$(this).attr('data-follow');
+        var token=$('#token56165').val();
+        var follow=toFollow(isFollowing,'follow',token);
+        follow.done(function(response){
+            $(el).removeClass('nt-follow');
+            $(el).removeClass('light-red');
+            $(el).addClass('darkred');
+            $(el).html('<i class="ion-checkmark"></i>');
+        });
+    }else{
+        var unFollowing=$(this).attr('data-follow');
+        var token=$('#token56165').val();
+        var unfollow=toFollow(unFollowing,'unfollow',token);
+        unfollow.done(function(response){
+            $(el).removeClass('darkred');
+            $(el).addClass('light-red nt-follow');
+            $(el).html('<i class="ion-person-add"></i>');
+        });
+    }
+});
+
 $(document).on('click','#unfwd',function(){
     var el=this;
     var unFollowing=$(this).attr('data-unfollow');
