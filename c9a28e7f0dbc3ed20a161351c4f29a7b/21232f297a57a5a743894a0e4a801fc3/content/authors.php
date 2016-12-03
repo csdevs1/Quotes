@@ -3,7 +3,7 @@
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $authors = $obj->all('authors');
-    $professions = $obj->all('professions');
+    $professions = $obj->all('professions ORDER BY professionName ASC');
     $countries = array('Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Puerto Rican', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian/Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean');
 
 ?>
@@ -13,11 +13,16 @@
         Authors
     </h3>
     <div class="clearfix"></div>
-    <?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
-        <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
-    <?php } ?>
+    <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
+    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
+<?php //if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root' || $_SESSION['label'] =='author'){ //Permission to insert ?>
+    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
+<?php //} ?>
+    <?php }} ?>
 </div>
-<?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root'){ //Permission to insert ?>
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
+    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
+<?php //if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root' || $_SESSION['label'] =='author'){ //Permission to insert ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -110,7 +115,8 @@
         </div>
     </div>
 </div>
-<?php } ?>
+<?php //} ?>
+<?php }} ?>
 
 <div class="container">
     <div class="row" id="row">
@@ -119,11 +125,11 @@
             foreach($authors as $key=>$val){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
-            <?php if(isset($_SESSION['permission'][2]) && !empty($_SESSION['permission'][2]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
+		<?php if(isset($_SESSION['permission'][2]) && !empty($_SESSION['permission'][2]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
             <i class="ion-close-circled close" onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'></i>
             <?php } } ?>
             <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
-                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"<?php } } ?>><a><?php echo $authors[$key]['authorName']; ?></a></h3>
+                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"<?php } } ?>><a><?php echo $authors[$key]['authorName']; ?></a></h3>
             </div>
         </div>        
         <?php
@@ -142,7 +148,7 @@
         <div class="form-group col-xs-6">
             <div class="input-group">
                 <input type="text" name="pageN" id="pageN" class="form-control" placeholder="Go to page...">
-                <span class="input-group-addon"><input type="submit" id="goto" class="btn btn-primary" value="Go" onclick="goToPage()"></span>
+                <span class="input-group-addon page-go"><input type="submit" id="goto" class="btn btn-primary" value="Go"></span>
             </div>
         </div>
     </div>
@@ -172,7 +178,7 @@
 <script src="js/pagination.js?<?php echo time(); ?>"></script>
 <script>
     var addProfession=function(){
-        var professions=all('professions');
+        var professions=order_by('professions','professionName','ASC');
         professions.done(function(response){
             var arr=[];
             for(var i in response[0]){
@@ -188,7 +194,6 @@
         load = function() {
             window.tp = new Pagination('#tablePaging', {
                 itemsCount: count,
-                //currentPage:3, Get this variable to 
                 onPageSizeChange: function (ps) {
                     //console.log('changed to ' + ps);
                 },
@@ -207,8 +212,7 @@
         }
         load();
     });
-    
-    var goToPage=function(){
+var goToPage=function(){
         var nPage=$('#pageN').val();
         if(nPage>0){
             window.tp = new Pagination('#tablePaging', {
@@ -231,7 +235,7 @@
             });
         }
     }
-    
+
     /*Pagination*/
 
     $("#image").on("change", function(){
@@ -290,7 +294,7 @@
                                     else
                                         arr[i2]='<option value="'+response3[0][i2].professionID+'">'+response3[0][i2].professionName+'</option>';
                                 }
-                                $('#professions-list').append('<div class="input-group col-xs-3 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
+                                $('#professions-list').append('<div class="input-group col-xs-12 col-sm-4 col-md-3"><span class="input-group-addon"><i class="ion-university"></i></span><select class="form-control" name="professions[]" required><option value="">-- Profession --</option>'+arr.join()+'</select></div>');
                             });
                         });
                     }
@@ -359,6 +363,15 @@
                                             token3.done(function(generatedToken3){
                                                 var authorProfession = insert('authorProfession',arr2,generatedToken3);
                                                 authorProfession.done(function(response2){
+                                                    //NEW STUFF
+                                                    var logArr={};
+                                                    logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
+                                                    var log=insertLog('dashboard_logs',logArr,'logs');
+                                                    log.done(function(res2){
+                                                        console.log(res2);
+                                                    });
+                                                    //NEW STUFF
+                                                    
                                                     $(el).removeAttr('disabled');
                                                     el.innerHTML = "Updated!";
                                                     setTimeout(function() {
@@ -388,6 +401,14 @@
             token.done(function(generatedToken){
                 var update_author = update('authors',arr,'authorID',quotID,generatedToken);
                 update_author.done(function(data){
+                    //NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                    });
+                    //NEW STUFF
                     if(profession.length > 0){
                         arr2['authorID']=quotID;
                         var token2 = generateToken();
@@ -526,6 +547,24 @@
                             last_author.done(function(last){
                                 console.log(last);
                                 arr2['authorID']=last[0][0].authorID;
+                                
+                                //NEW STUFF
+                                var logArr={},relArr={};
+                                 relArr['authorID']=last[0][0].authorID;
+                                var token3 = generateToken();
+                                token3.done(function(generatedToke3){
+                                    var userAuthorRel=insertLog('dashboardUsr_Authors_en',relArr,'relation');
+                                    userAuthorRel.done(function(res){
+                                        console.log(res);
+                                        logArr['log']=' has inserted a new Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+relArr['authorID']+')">'+relArr['authorID']+'</a>';
+                                        var log=insertLog('dashboard_logs',logArr,'logs');
+                                        log.done(function(res2){
+                                            console.log(res2);
+                                        });
+                                    });
+                                });
+                                //NEW STUFF
+                                
                                 for(var i in profession){
                                     arr2['professionID']=profession[i];
                                     var token2 = generateToken();
@@ -536,12 +575,12 @@
                                             el.innerHTML = "Saved!";
                                             console.log(response2);
                                             postToPage(author);
-                                            setTimeout(function() {
-                                                authors('Author Saved correctly',document.getElementById('author-menu'));
-                                            }, 2000);
                                         });
                                     });
                                 }
+                                setTimeout(function() {
+                                    authors('Author Saved correctly',document.getElementById('author-menu'));
+                                }, 2000);
                             });
                         });
                     });
@@ -559,6 +598,24 @@
                     last_author.done(function(last){
                         console.log(last);
                         arr2['authorID']=last[0][0].authorID;
+                        
+                        //NEW STUFF
+                        var logArr={},relArr={};
+                        relArr['authorID']=last[0][0].authorID;
+                        var token3 = generateToken();
+                        token3.done(function(generatedToke3){
+                            var userAuthorRel=insertLog('dashboardUsr_Authors_en',relArr,'relation');
+                            userAuthorRel.done(function(res){
+                                console.log(res);
+                                logArr['log']=' has inserted a new Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+relArr['authorID']+')">'+relArr['authorID']+'</a>';
+                                var log=insertLog('dashboard_logs',logArr,'logs');
+                                log.done(function(res2){
+                                    console.log(res2);
+                                });
+                            });
+                        });
+                        //NEW STUFF
+                        
                         for(var i in profession){
                             arr2['professionID']=profession[i];
                             var token2 = generateToken();
@@ -569,12 +626,12 @@
                                     el.innerHTML = "Saved!";
                                     console.log(response2);
                                     postToPage(author);
-                                    setTimeout(function() {
-                                        authors('Author Saved correctly',document.getElementById('author-menu'));
-                                    }, 2000);
                                 });
                             });
                         }
+                        setTimeout(function() {
+                            authors('Author Saved correctly',document.getElementById('author-menu'));
+                        }, 2000);
                     });
                 });
             });
@@ -584,6 +641,7 @@
     var checkAvailability = function(el){
         var checked=find_by('authors','authorName',el.value);
         checked.done(function(response){
+            console.log(response);
             if(Object.keys(response[0]).length > 0){
                 $('.error').css('display','inline-block');
             } else{

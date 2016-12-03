@@ -128,18 +128,18 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
             <label onclick="closeForm()"><span class="glyphicon glyphicon-remove"></span> Hide</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Insert your quote..." maxlength="255" class="textarea" id="q-en"></textarea>
+            <textarea placeholder="Insert your quote..." maxlength="255" class="textarea" id="q-en" <?php if($_SESSION['label']=='image') echo 'disabled';?>></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="a-en" data-error="Field required" aria-describedby="author" placeholder="Enter Author..." value="<?php if(!empty($author)) echo $author; ?>" oninput="listSearch(this,'authorList','authors','author')">
+                <input type="text" class="form-control" id="a-en" data-error="Field required" aria-describedby="author" placeholder="Enter Author..." value="<?php if(!empty($author)) echo $author; ?>" oninput="listSearch(this,'authorList','authors','author')" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="t-en" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="<?php if(!empty($topics_en[0])) echo join(',', $topics_en);elseif(!empty($arrEN[0])) echo join(',', $arrEN); ?>">
+                <input type="text" class="form-control" id="t-en" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="<?php if(!empty($topics_en[0])) echo join(',', $topics_en);elseif(!empty($arrEN[0])) echo join(',', $arrEN); ?>" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
                 <div class="col-xs-12 search-list" id="topicListEN">
                     <ul class="list-unstyled">
                     </ul>
@@ -168,18 +168,18 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
             <label onclick="closeForm()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Ingresa la frase..." maxlength="255" class="textarea" id="q-es"></textarea>
+            <textarea placeholder="Ingresa la frase..." maxlength="255" class="textarea" id="q-es" <?php if($_SESSION['label']=='image') echo 'disabled'; ?>></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="a-es" data-error="Field required" aria-describedby="author" placeholder="Ingresa el autor..." value="<?php if(!empty($author)) echo $author; ?>"  oninput="listSearch(this,'authorList','authors','author')">
+                <input type="text" class="form-control" id="a-es" data-error="Field required" aria-describedby="author" placeholder="Ingresa el autor..." value="<?php if(!empty($author)) echo $author; ?>"  oninput="listSearch(this,'authorList','authors','author')" <?php if($_SESSION['label']=='image') echo 'disabled'; ?>>
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="t-es" data-error="Field required" aria-describedby="topic" placeholder="Ingresa tema" value="<?php if(!empty($arrES[0])) echo join(',', $arrES); ?>">                
+                <input type="text" class="form-control" id="t-es" data-error="Field required" aria-describedby="topic" placeholder="Ingresa tema" value="<?php if(!empty($arrES[0])) echo join(',', $arrES); ?>" <?php if($_SESSION['label']=='image') echo 'disabled'; ?>>                
             </div>
         </div>
         <div class="form-group col-xs-12">
@@ -203,18 +203,18 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
             <label onclick="closeForm()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Digite sua frase..." maxlength="255" class="textarea" id="q-pt"></textarea>
+            <textarea placeholder="Digite sua frase..." maxlength="255" class="textarea" id="q-pt" <?php if($_SESSION['label']=='image') echo 'disabled'; ?>></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="a-pt" data-error="Field required" aria-describedby="author" placeholder="Digite autor..." value="<?php if(!empty($author)) echo $author; ?>"  oninput="listSearch(this,'authorList','authors','author')">
+                <input type="text" class="form-control" id="a-pt" data-error="Field required" aria-describedby="author" placeholder="Digite autor..." value="<?php if(!empty($author)) echo $author; ?>"  oninput="listSearch(this,'authorList','authors','author')" <?php if($_SESSION['label']=='image') echo 'disabled'; ?>>
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="t-pt" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..." value="<?php if(!empty($arrPT)) echo join(',', $arrPT); ?>">
+                <input type="text" class="form-control" id="t-pt" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..." value="<?php if(!empty($arrPT)) echo join(',', $arrPT); ?>" <?php if($_SESSION['label']=='image') echo 'disabled'; ?>>
             </div>
         </div>
         <div class="form-group col-xs-12">
@@ -286,7 +286,7 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
                         </div>
                         <?php
                             }else{
-                                if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='image'){ //Permission to insert
                                     if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ ?>
                             <div class="col-lg-12 text-dark"><span class="addquote"  onclick="openForm(this,'es')"><span class="glyphicon glyphicon-edit"></span> Agregar traduccion en espa&ntilde;ol</span></div>
                         <?php
@@ -307,14 +307,14 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
                                 <blockquote><?php echo $pt[0]['quote']; ?> <span>- <?php echo $pt[0]['author']; ?></span></blockquote>
                                 <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
 			<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
-                                    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){?>
+                                    if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){?>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $pt[0]['quoteID']; ?>,<?php echo $_POST['id']; ?>,'pt');">Edit</a></p></div>
 			<?php } } ?>
                             </div>
                         </div>
                         <?php
                             }else{
-                                if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){ //Permission to insert
+                                if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='image'){ //Permission to insert
                                     if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){?>
                             <div class="col-lg-12 text-dark"><span class="addquote" onclick="openForm(this,'pt')"><span class="glyphicon glyphicon-edit"></span> Adicionar uma tradução em português</span></div>
                         <?php
@@ -607,3 +607,15 @@ $previous=$obj->custom("SELECT id FROM quotes WHERE id < ".$_POST['id']." ORDER 
         }
     }
 </script>
+
+
+<?php if($_SESSION['label']=='image'){ ?>
+<script>
+    $(document).ready(function(){
+        $('#t-en_tag').attr('disabled','disabled');
+        $('#t-es_tag').attr('disabled','disabled');
+        $('#t-pt_tag').attr('disabled','disabled');
+        $('.tag a').remove();
+    });
+</script>
+<?php } ?>

@@ -33,6 +33,16 @@ var find_by = function(table,row,val){
     });
 }
 
+var order_by = function(table,row,order){
+    return $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        data: {table:table,row:row,order:order,action:'order_by'},
+        url: 'Classes/GlobalController.php',
+        async:false
+    });
+}
+
 function limit(table,column,order,limit){
     return $.ajax({
         type: 'POST',

@@ -82,6 +82,12 @@ function topicsTranslation(id) {
         document.getElementById("quotes-area").innerHTML="";
         $("#quotes-area").load("content/usrDetails.php",{id:id});
     }
+    function userProfile(el,id) {
+        $('.has-submenu').not(el).removeClass('active');
+        $(el).addClass('active');
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/usrDetails.php",{id:id});
+    }
     function addUser(msg,el) {
         $(el).addClass('active');
         document.getElementById("quotes-area").innerHTML="";

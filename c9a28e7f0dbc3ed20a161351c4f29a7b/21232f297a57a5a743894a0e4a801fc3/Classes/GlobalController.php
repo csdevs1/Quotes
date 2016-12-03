@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     require_once('AppController.php');
     require_once('Token.php');
     $token = new Token();
@@ -49,7 +51,36 @@
         $row = $_POST['row'];
         $data = json_decode($_POST['data'],true);
         
+        if($table=='authors'){
+            $author_user=$obj->custom('SELECT COUNT(userID) as "cnt" FROM dashboardUsr_Authors_en WHERE userID='.$_SESSION['id'].' AND authorID='.$id);
+            if($author_user[0]['cnt']<1){ // CHECK IF THERE'S A RELATION BETWEEN THE QUOTE AND THE USER
+                $obj->save('dashboardUsr_Authors_en','userID,authorID',$_SESSION['id'].','.$id);
+            }
+        }
+        
         if(isset($_FILES['image']) && !empty($_FILES['image'])){
+            if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label']=='image'){
+                if($table=='quotes_en'){
+                    // CHECK IF QUOTE ID AND USER ALREADY EXISTS IN dashboardUsr_Quote_en
+                    $image_user=$obj->custom('SELECT COUNT(userID) as "cnt" FROM dashboardUsr_Quote_en WHERE userID='.$_SESSION['id'].' AND quoteID='.$id);
+                    if($image_user[0]['cnt']<1){ // CHECK IF THERE'S A RELATION BETWEEN THE QUOTE AND THE USER
+                        $obj->save('dashboardUsr_Quote_en','userID,quoteID',$_SESSION['id'].','.$id);
+                    }
+                }elseif($table=='quotes_es'){
+                    // CHECK IF QUOTE ID AND USER ALREADY EXISTS IN dashboardUsr_Quote_en
+                    $image_user=$obj->custom('SELECT COUNT(userID) as "cnt" FROM dashboardUsr_Quote_es WHERE userID='.$_SESSION['id'].' AND quoteID='.$id);
+                    if($image_user[0]['cnt']<1){ // CHECK IF THERE'S A RELATION BETWEEN THE QUOTE AND THE USER
+                        $obj->save('dashboardUsr_Quote_es','userID,quoteID',$_SESSION['id'].','.$id);
+                    }
+                }elseif($table=='quotes_pt'){
+                    // CHECK IF QUOTE ID AND USER ALREADY EXISTS IN dashboardUsr_Quote_en
+                    $image_user=$obj->custom('SELECT COUNT(userID) as "cnt" FROM dashboardUsr_Quote_pt WHERE userID='.$_SESSION['id'].' AND quoteID='.$id);
+                    if($image_user[0]['cnt']<1){ // CHECK IF THERE'S A RELATION BETWEEN THE QUOTE AND THE USER
+                        $obj->save('dashboardUsr_Quote_pt','userID,quoteID',$_SESSION['id'].','.$id);
+                    }
+                }
+            }
+            
             $image_name = $_FILES['image']['name'];
             $image_type = $_FILES['image']['type'];
             $image_temp = $_FILES['image']['tmp_name'];
@@ -108,6 +139,15 @@
         $table = $_POST['table'];
         $response = $response=$obj->all($table);
         $json_response = array($response,'response'=>200);
+        echo json_encode($json_response);
+    }elseif(isset($_POST['table']) && $_POST['action']=='order_by'){
+        $table = $_POST['table'];
+        $row = $_POST['row'];
+        $order = $_POST['order'];
+        $val=str_replace("'","\'", $_POST['val']);
+        $q=' ORDER BY '.$row.' '.$order;
+        $table.=$q;
+        $json_response = array('response'=>200,$obj->all($table));
         echo json_encode($json_response);
     } else {
         $json_response = array('response'=>400);

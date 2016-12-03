@@ -1,5 +1,5 @@
 <?php
-    session_start();
+   session_start();
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     $quotes = $obj->all('quotes_pt');
@@ -15,20 +15,20 @@
         <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Adicionar uma nova cotação</span></div>
     <?php } ?>
 </div>
-<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
-    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author'){
+    if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
             <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Digite sua frase..." maxlength="255" class="textarea" id="quote"></textarea>
+            <textarea placeholder="Digite sua frase..." maxlength="500" class="textarea" id="quote" <?php if($_SESSION['label']=='image') echo 'disabled';?>></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Digite autor..."  oninput="listSearch(this,'authorList','authors','author')">
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Digite autor..."  oninput="listSearch(this,'authorList','authors','author')" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
                 
                 <div class="col-xs-12 search-list" id="authorList">
                     <ul class="list-unstyled">
@@ -40,7 +40,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..." value="">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Digite tópico..." value="" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
                 
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
@@ -63,8 +63,7 @@
         </div>
     </div>
 </div>
-<?php }} ?>
-
+<?php } } ?>
 <div id="portlet1" class="panel-collapse collapse in">
     <div class="portlet-body">
         <section role="contentinfo">
@@ -78,7 +77,7 @@
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote data">
                             <div class="pad">
-                                <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
+                                <?php if($_SESSION['label']!='author'){ ?><div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div><?php } ?>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
                                     <img class="img-responsive" src="../../images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
@@ -95,8 +94,8 @@
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
-                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
-                                        if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>
+                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author'){
+                                        if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>,<?php echo $translations[0]['id']; ?>);">Editar</a></p></div>
                                 <?php } } ?>
                             </div>
@@ -104,46 +103,6 @@
                         <?php
                             }
                         ?>
-                        <!--
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/3.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/1.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <img class="img-responsive" src="../../images/2.jpg" alt="image description">
-                                <blockquote>Contrary to popular belief, Lorem Ipsum is not simply random text. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 item quote">
-                            <div class="pad">
-                                <blockquote>It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock. <span>- Albert Einstein</span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="mycustomurl" data-title="THE TITLE"></div>
-                                <div class="col-xs-4 col-md-4"><p><a class="like" onclick="return myFunction(this)">Edit</a></p></div>
-                            </div>
-                        </div>
-                        -->
                     </div>
                 </div>
             </div>
@@ -239,7 +198,7 @@
             });
         }
     }
-    
+
     $(document).ready(function() {
         var container = $('.masonry-container');
         container.masonry({
@@ -247,7 +206,7 @@
             itemSelector: '.item'
         });
     });
-    
+
     $(document).ready(function($) {
         // Tags Input
         $('#topic').tagsInput({width:'auto'});
@@ -307,8 +266,14 @@
                             var val = document.getElementById('topic').value;
                             if(document.getElementById('topic').value!=""){
                                 $('#topic').addTag(response[0][0].topicName);
+                                <?php if($_SESSION['label']=='image'){ ?>
+                                    $('.tag a').remove();
+                                <?php } ?>
                             }else{
                                 $('#topic').addTag(response[0][0].topicName);
+                                <?php if($_SESSION['label']=='image'){ ?>
+                                    $('.tag a').remove();
+                                <?php } ?>
                             }
                         });
                     }
@@ -347,12 +312,11 @@
                 quoteUpdate.done(function(data){
                     //NEW STUFF
                     var logArr={};
-                    logArr['log']=' has edited a Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel+')">'+resRel+'</a>';
+                    logArr['log']=' has edited a Quote in Portuguese. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel+')">'+resRel+'</a>';
                     var log=insertLog('dashboard_logs',logArr,'logs');
                     log.done(function(res2){
                         console.log(res2);
                     });
-                    
                     console.log(data);
                     var token2 = generateToken();
                     token2.done(function(generatedToken2){
@@ -524,3 +488,11 @@
         }
     }
 </script>
+
+<?php if($_SESSION['label']=='image'){ ?>
+<script>
+    $(document).ready(function(){
+        $('#topic_tag').attr('disabled','disabled');
+    });
+</script>
+<?php } ?>

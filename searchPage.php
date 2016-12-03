@@ -177,7 +177,7 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                         <?php
                                 }
                             } else{
-                                $listURL='<a href="/authors/1/a" role="link">AUTHORS</a>, <a href="/topics" role="link">TOPICS</a> and
+                                $listURL='<a href="/authors/1/" role="link">AUTHORS</a>, <a href="/topics" role="link">TOPICS</a> and
                                               <a href="/quotes/keywords" role="link">KEYWORDS</a>';
                         ?>
                         <div class="col-xs-12 not-found">

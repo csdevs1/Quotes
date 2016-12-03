@@ -75,7 +75,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
                         <?php
                         foreach($alphas as $key=>$val){
                         ?>
-                            <li><a href="/authors/1/<?php echo $val; ?>" role="link"><?php echo $val ?></a></li>
+                            <li><a href="/authors/1/<?php echo strtolower($val); ?>" role="link"><?php echo $val ?></a></li>
                         <?php
                         }
                         ?>

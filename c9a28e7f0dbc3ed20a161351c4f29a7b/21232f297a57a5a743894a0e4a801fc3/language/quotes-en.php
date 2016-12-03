@@ -24,12 +24,12 @@ if(empty($_POST['dataARR'])){
         Your quotes
     </h3>
     <div class="clearfix"></div>
-   <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+   <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author' && $_SESSION['label']!='image'){
     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
         <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
     <?php } } ?>
 </div>
-<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author'){
     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
@@ -38,29 +38,31 @@ if(empty($_POST['dataARR'])){
         </div>
         <div class="col-xs-12">
             <span class="label label-info" style="font-size:1.3rem" id="match"></span>
-            <textarea placeholder="Insert your quote..." maxlength="500" class="textarea" id="quote" onkeyup="match(this)"></textarea>
+            <textarea placeholder="Insert your quote..." maxlength="500" class="textarea" id="quote" onkeyup="match(this)" <?php if($_SESSION['label']=='image') echo 'disabled';?>></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="listSearch(this,'authorList','authors','author')">
-                
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Enter Author..."  oninput="listSearch(this,'authorList','authors','author')" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
+                <?php if($_SESSION['label']!='image'){ ?>
                 <div class="col-xs-12 search-list" id="authorList">
                     <ul class="list-unstyled">
                     </ul>
                 </div>
+                <?php } ?>
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="">
-                
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
+                <?php if($_SESSION['label']=='image'){?>
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
                     </ul>
                 </div>
+                <?php }?>
                 
             </div>
         </div>
@@ -93,7 +95,7 @@ if(empty($_POST['dataARR'])){
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote data">
                             <div class="pad">
-                                <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
+                                <?php if($_SESSION['label']!='author'){ ?><div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div><?php } ?>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
                                     <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
@@ -110,7 +112,7 @@ if(empty($_POST['dataARR'])){
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
-                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author'){
                                         if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
                                         <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID']; ?>,<?php echo $translations[0]['id']; ?>);">Edit</a></p></div>
                                 <?php } } ?>
@@ -224,7 +226,6 @@ if(empty($_POST['dataARR'])){
                 $('#topicList').slideUp();
             }
         });
-        
     });
     
     var clearFields=function(){
@@ -268,9 +269,16 @@ if(empty($_POST['dataARR'])){
                         topic.done(function(response){
                             var val = document.getElementById('topic').value;
                             if(document.getElementById('topic').value!=""){
-                                $('#topic').addTag(response[0][0].topicName);
+                                $('#topic').addTag(response[0][0].topicName);                                
+                                <?php if($_SESSION['label']=='image'){ ?>
+                                    $('.tag a').remove();
+                                <?php } ?>
+                                
                             }else{
-                                $('#topic').addTag(response[0][0].topicName);
+                                $('#topic').addTag(response[0][0].topicName);                                
+                                <?php if($_SESSION['label']=='image'){ ?>
+                                    $('.tag a').remove();
+                                <?php } ?>
                             }
                         });
                     }
@@ -528,3 +536,11 @@ if(empty($_POST['dataARR'])){
         }
     }
 </script>
+
+<?php if($_SESSION['label']=='image'){ ?>
+<script>
+    $(document).ready(function(){
+        $('#topic_tag').attr('disabled','disabled');
+    });
+</script>
+<?php } ?>

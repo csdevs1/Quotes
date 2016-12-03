@@ -15,7 +15,7 @@
     <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Agrega una nueva frase</span></div>
     <?php } ?>
 </div>
-<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author'){
     if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
@@ -23,12 +23,12 @@
             <label onclick="closeWindow();clearFields()"><span class="glyphicon glyphicon-remove"></span> Ocultar</label>
         </div>
         <div class="col-xs-12">
-            <textarea placeholder="Ingresar frase..." maxlength="500" class="textarea" id="quote"></textarea>
+            <textarea placeholder="Ingresar frase..." maxlength="500" class="textarea" id="quote" <?php if($_SESSION['label']=='image') echo 'disabled';?>></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-person"></i></span>
-                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Ingresar Author..."  oninput="listSearch(this,'authorList','authors','author')">
+                <input type="text" class="form-control" id="author" data-error="Field required" aria-describedby="author" placeholder="Ingresar Author..."  oninput="listSearch(this,'authorList','authors','author')" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
                 
                 <div class="col-xs-12 search-list" id="authorList">
                     <ul class="list-unstyled">
@@ -40,7 +40,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
-                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Ingresar tema..." value="">
+                <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Ingresar tema..." value="" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
                 
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
@@ -64,7 +64,6 @@
     </div>
 </div>
 <?php }} ?>
-
 <div id="portlet1" class="panel-collapse collapse in">
     <div class="portlet-body">
         <section role="contentinfo">
@@ -78,7 +77,7 @@
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote data">
                             <div class="pad">
-                                <div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div>
+                                <?php if($_SESSION['label']!='author'){ ?><div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div><?php } ?>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
                                     <img class="img-responsive" src="../../images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
                                 <?php } ?>
@@ -95,7 +94,7 @@
                                         <img src="images/es.png" width="25px" height="25px">
                                     <?php } ?>
                                 </div>
-                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+                                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author'){
                                         if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
                                 <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID'] ?>,<?php echo $translations[0]['id']; ?>);">Editar</a></p></div>
                                 <?php } } ?>
@@ -150,7 +149,7 @@
 <!-- Load with Jquery Load function -->
 <script src="assets/tagsinput/jquery.tagsinput.min.js"></script>
 <script type="text/javascript">
-        /*Pagination*/
+    /*Pagination*/
     var count = <?php echo count($quotes); ?>;
     $(function () {
         load = function() {
@@ -199,7 +198,7 @@
             });
         }
     }
-    
+
     $(document).ready(function() {
         var container = $('.masonry-container');
         container.masonry({
@@ -266,8 +265,14 @@ var clearFields=function(){
                             var val = document.getElementById('topic').value;
                             if(document.getElementById('topic').value!=""){
                                 $('#topic').addTag(response[0][0].topicName);
+                                <?php if($_SESSION['label']=='image'){ ?>
+                                    $('.tag a').remove();
+                                <?php } ?>
                             }else{
                                 $('#topic').addTag(response[0][0].topicName);
+                                <?php if($_SESSION['label']=='image'){ ?>
+                                    $('.tag a').remove();
+                                <?php } ?>
                             }
                         });
                     }
@@ -304,7 +309,6 @@ var clearFields=function(){
             token.done(function(generatedToken){
                 var quoteUpdate = update('quotes_es',arr,'quoteID',quotID,generatedToken,image);
                 quoteUpdate.done(function(data){
-                    
                     //NEW STUFF
                     var logArr={};
                     logArr['log']=' has edited a Quote in Spanish. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel+')">'+resRel+'</a>';
@@ -312,7 +316,7 @@ var clearFields=function(){
                     log.done(function(res2){
                         console.log(res2);
                     });
-                    
+
                     console.log(data);
                     var token2 = generateToken();
                     token2.done(function(generatedToken2){
@@ -396,7 +400,7 @@ var clearFields=function(){
                                         console.log(res);
                                         var lastRel=find_by('quotes','es_id',dataID[0][0].quoteID);
                                         lastRel.done(function(resRel){
-                                            logArr['log']=' has inserted a new Quote in Spanish. Quote ID: '+dataID[0][0].quoteID+' and Group ID: '+resRel[0][0].id;
+                                            logArr['log']=' has inserted a new Quote in Spanish. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel[0][0].id+')">'+resRel[0][0].id+'</a>';
                                             var log=insertLog('dashboard_logs',logArr,'logs');
                                             log.done(function(res2){
                                                 console.log(res2);
@@ -484,3 +488,12 @@ var clearFields=function(){
         }
     }
 </script>
+
+
+<?php if($_SESSION['label']=='image'){ ?>
+<script>
+    $(document).ready(function(){
+        $('#topic_tag').attr('disabled','disabled');
+    });
+</script>
+<?php } ?>

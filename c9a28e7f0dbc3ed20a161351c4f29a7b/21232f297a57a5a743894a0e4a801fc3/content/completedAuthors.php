@@ -15,7 +15,7 @@
     </h3>
     <div class="clearfix"></div>
 </div>
-
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
 <div class="container quote-form" id="quote-form">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -94,6 +94,7 @@
         </div>
     </div>
 </div>
+<?php }} ?>
 
 
 <div class="container">
@@ -105,11 +106,11 @@
                 if(!empty($authors[$key]['authorName']) && !empty($authors[$key]['sourceURL']) && !empty($authors[$key]['birth']) && count($professions)>0 && !empty($authors[$key]['nationality']) && !empty($authors[$key]['seo_url'])){
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
-            <?php if(isset($_SESSION['permission'][2]) && !empty($_SESSION['permission'][2]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
-            <i class="ion-close-circled close" onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'></i>
-            <?php } } ?>
+	<?php if(isset($_SESSION['permission'][2]) && !empty($_SESSION['permission'][2]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>
+		<i class="ion-close-circled close" onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'></i>
+	<?php } } ?>
             <div class="inner-box background" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>');">
-                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"<?php } } ?>><a><?php echo $authors[$key]['authorName']; ?></a></h3>
+                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)"<?php } } ?>><a><?php echo $authors[$key]['authorName']; ?></a></h3>
             </div>
         </div>        
         <?php
@@ -298,6 +299,15 @@
                         arr['authorImage'] = url.replace('http','https');
                         var update_author = update('authors',arr,'authorID',quotID,generatedToken);
                         update_author.done(function(data){
+                            //NEW STUFF
+                            var logArr={};
+                            logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
+                            var log=insertLog('dashboard_logs',logArr,'logs');
+                            log.done(function(res2){
+                                console.log(res2);
+                            });
+                            //NEW STUFF
+                            
                             if(profession.legnth > 0){
                                 arr2['authorID']=quotID;
                                 var token2 = generateToken();
@@ -339,6 +349,15 @@
             token.done(function(generatedToken){
                 var update_author = update('authors',arr,'authorID',quotID,generatedToken);
                 update_author.done(function(data){
+                    //NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                    });
+                    //NEW STUFF
+                    
                     if(profession.length > 0){
                         arr2['authorID']=quotID;
                         var token2 = generateToken();

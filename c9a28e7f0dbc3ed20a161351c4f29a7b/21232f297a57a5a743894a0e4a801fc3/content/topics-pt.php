@@ -61,7 +61,7 @@
 </div>
 <?php } ?>
 <!-- Update Form -->
-<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){
+<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='author' && $_SESSION['label'] !='image'){
     if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){ ?>
 <div class="container quote-form" id="update-form">
     <div class="row">
@@ -117,9 +117,9 @@
                 $images = $obj->find_by('topicsImages','tID',$topicID[0]['id']);
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content">
-            <div class="circle-ref" onclick="topicsTranslation(<?php echo $topicID[0]['id']; ?>)"><?php echo $topicID[0]['id']; ?></div>
+            <?php if($_SESSION['label'] !='author' && $_SESSION['label'] !='image'){ ?><div class="circle-ref" onclick="topicsTranslation(<?php echo $topicID[0]['id']; ?>)"><?php echo $topicID[0]['id']; ?></div><?php } ?>
             <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
-                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])){if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>,<?php echo $topicID[0]['id']; ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
+                <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='author' && $_SESSION['label'] !='image'){if($_SESSION['lang']=='pt' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>,<?php echo $topicID[0]['id']; ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
             
             <div class="col-xs-8 col-md-8">

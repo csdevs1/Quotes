@@ -7,7 +7,8 @@
     $log = $obj->limit('*','dashboard_logs WHERE userID='.$_POST['id'],50,'logID');
     $userName=explode('@',$user[0]['email']);
     $lang=$user[0]['lang'];
-    switch($lang){
+    if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] !='author'){
+        switch($lang){
         case "eng":
             $nQuotes=$obj->custom('SELECT COUNT(quoteID) as "cnt" FROM dashboardUsr_Quote_en WHERE userID='.$_POST['id']);
             $payQuote=$obj->custom('SELECT * FROM dashboardUsr_Quote_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(NOW())'); //SELECT QUOTES THAT WERE INSERTED IN THE CURRENT MONTH TO CALCULATE PAYMENT
@@ -15,10 +16,15 @@
             //Number of Topics
             $nTopics=$obj->custom('SELECT COUNT(topicID) as "cnt" FROM dashboardUsr_Topic_en WHERE userID='.$_POST['id']);
             $payTopic=$obj->custom('SELECT * FROM dashboardUsr_Topic_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(NOW())'); //SELECT QUOTES THAT WERE INSERTED IN THE CURRENT MONTH TO CALCULATE PAYMENT
-            $last_payTopic=$obj->custom('SELECT * FROM dashboardUsr_Topic_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO CALCULATE PAYMENT
+            $last_payTopic=$obj->custom('SELECT * FROM dashboardUsr_Topic_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO
+            //Number of Authors
+            $nAuthors=$obj->custom('SELECT COUNT(authorID) as "cnt" FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id']);
+            $payAuthor=$obj->custom('SELECT * FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(NOW())'); //SELECT QUOTES THAT WERE INSERTED IN THE CURRENT MONTH TO CALCULATE PAYMENT
+            $last_payAuthor=$obj->custom('SELECT * FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO
+            
             $language='English';
-            $total=count($payQuote)+count($payTopic);
-            $lm_total=count($last_payQuote)+count($last_payTopic);
+            $total=count($payQuote)+count($payTopic)+count($payAuthor);
+            $lm_total=count($last_payQuote)+count($last_payTopic)+count($last_payAuthor);
             break;
         case "pt":
             $nQuotes=$obj->custom('SELECT COUNT(quoteID) as "cnt" FROM dashboardUsr_Quote_pt WHERE userID='.$_POST['id']);
@@ -69,10 +75,23 @@
             $last_payTopicEN=$obj->custom('SELECT * FROM dashboardUsr_Topic_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO CALCULATE PAYMENT
             $last_payTopicPT=$obj->custom('SELECT * FROM dashboardUsr_Quote_pt WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO CALCULATE PAYMENT
             $last_payTopicES=$obj->custom('SELECT * FROM dashboardUsr_Quote_es WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO CALCULATE PAYMENT
+                
+            //AUTHORS (NOT IN OTHER LANGUAGES)
+            $nAuthors=$obj->custom('SELECT COUNT(authorID) as "cnt" FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id']);
+            $payAuthor=$obj->custom('SELECT * FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(NOW())'); //SELECT QUOTES THAT WERE INSERTED IN THE CURRENT MONTH TO CALCULATE PAYMENT
+            $last_payAuthor=$obj->custom('SELECT * FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO
             
-            $total=count($payQuoteES)+count($payQuoteEN)+count($payQuotePT)+count($payTopicEN)+count($payTopicPT)+count($payTopicEN);
-            $lm_total=count($last_payQuoteEN)+count($last_payQuotePT)+count($last_payQuoteES)+count($last_payTopicEN)+count($last_payTopicPT)+count($last_payTopicES);
+            $total=count($payQuoteES)+count($payQuoteEN)+count($payQuotePT)+count($payTopicEN)+count($payTopicPT)+count($payTopicEN)+count($payAuthor);
+            $lm_total=count($last_payQuoteEN)+count($last_payQuotePT)+count($last_payQuoteES)+count($last_payTopicEN)+count($last_payTopicPT)+count($last_payTopicES)+count($last_payAuthor);
             break;
+    }
+    } else{
+        $nAuthors=$obj->custom('SELECT COUNT(authorID) as "cnt" FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id']);
+        $payAuthor=$obj->custom('SELECT * FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(NOW())'); //SELECT QUOTES THAT WERE INSERTED IN THE CURRENT MONTH TO CALCULATE PAYMENT
+        $last_payAuthor=$obj->custom('SELECT * FROM dashboardUsr_Authors_en WHERE userID='.$_POST['id'].' AND MONTH(created_at) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)'); //SELECT QUOTES THAT WERE INSERTED LAST MONTH TO
+        
+        $total=count($payAuthor);
+        $lm_total=count($last_payAuthor);
     }
     $total=$total*$rate[0]['rate'];
     $lm_total=$lm_total*$rate[0]['rate'];
@@ -84,7 +103,7 @@
 </style>
 
 <!--Widget-2 -->
-<?php if($lang!='all'){ ?>
+<?php if($lang!='all' && isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] !='author'){ ?>
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-sm-6">
@@ -104,7 +123,9 @@
         <div class="col-md-4 col-sm-6">
             <div class="widget-panel widget-style-1 bg-purple">
                 <i class="fa fa-book" aria-hidden="true"></i>
-                <h2 class="m-0 counter">1268</h2>
+                <?php if($language=='English'){ ?><h2 class="m-0 counter"><?php echo $nAuthors[0]['cnt']; ?></h2><?php }else{ // DELETE THIS WHEN PT AND SPA HAS AUTHORS TO TRANSLATE ?>
+                    <h2 class="m-0 counter">0</h2>
+                <?php } ?>
                 <div>Authors translated</div>
             </div>
         </div>
@@ -123,9 +144,8 @@
             </div>
         </div>
     </div>
-    </div><!-- End row -->
 </div><!-- End row -->
-<?php }else{ ?>
+<?php }elseif(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] !='author'){ ?>
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-sm-6">
@@ -190,6 +210,46 @@
         </div>
     </div>
 </div>
+<?php }else{ ?>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-sm-6">
+            <div class="widget-panel widget-style-1 bg-pink">
+                <i class="fa fa-comments-o"></i> 
+                <h2 class="m-0 counter">0</h2>
+                <div>Quotes translated></div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="widget-panel widget-style-1 bg-warning">
+                <i class="fa fa-hand-o-up"></i> 
+                <h2 class="m-0 counter">0</h2>
+                <div>Topics translated</div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="widget-panel widget-style-1 bg-purple">
+                <i class="fa fa-book" aria-hidden="true"></i>
+                <h2 class="m-0 counter"><?php echo $nAuthors[0]['cnt']; ?></h2>
+                <div>Authors inserted</div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="widget-panel widget-style-1 bg-success">
+                <i class="fa fa-usd" aria-hidden="true"></i>
+                <h2 class="m-0 counter"><?php echo $total.'$';  ?></h2>
+                <div>Current Income</div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="widget-panel widget-style-1 bg-success">
+                <i class="fa fa-usd" aria-hidden="true"></i>
+                <h2 class="m-0 counter h2 text-purple"><?php echo $lm_total.'$';  ?></h2> <!-- Needs to add paytQuotePT -->
+                <div class="text-purple">Last Month Income</div>
+            </div>
+        </div>
+    </div>
+</div><!-- End row -->
 <?php } ?>
 
 <!-- SET PAYMENT RATE -->

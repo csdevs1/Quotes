@@ -23,7 +23,7 @@ else
                     <ul class="nav navbar-nav" itemscope itemtype="http://www.schema.org/SiteNavigationElement">
                         <li itemprop="name"><a href="/" role="link" itemprop="url"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li itemprop="name"><a href="/topics" role="link" itemprop="url">Topics</a></li>
-                        <li itemprop="name"><a href="/authors/1/a" role="link" itemprop="url">Authors</a></li>
+                        <li itemprop="name"><a href="/authors/1/" role="link" itemprop="url">Authors</a></li>
                         <li itemprop="name"><a href="/quote-generator" itemprop="url">Quote Generator</a></li>
                         <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                     </ul>

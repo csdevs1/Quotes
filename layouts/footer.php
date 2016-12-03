@@ -13,7 +13,7 @@
                 <h3>Site</h3>
                 <ul class="list-unstyled">
                     <li itemprop="name"><a href="/" role="link" itemprop="url">Home</a></li>
-                    <li itemprop="name"><a href="/authors/1/a" role="link" itemprop="url">Authors</a></li>
+                    <li itemprop="name"><a href="/authors/1/" role="link" itemprop="url">Authors</a></li>
                     <li itemprop="name"><a href="/topics" role="link" itemprop="url">Topics</a></li>
                     <li itemprop="name"><a href="/quote-generator" role="link" itemprop="url">Quotes Generator</a></li>
                 </ul>
