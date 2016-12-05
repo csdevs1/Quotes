@@ -28,6 +28,7 @@ RewriteRule ^6c56037e24fc0902ac2481df5583edcc/1882f952ad7b6f9bdeaa6584bc352f56$ 
 RewriteRule ^panel/quotes/(.*)$ panel/index.php?uname=$1
 RewriteRule ^panel/collection/(.*)$ panel/image-collection.php?uname=$1
 RewriteRule ^panel/followers/(.*)$ panel/user-followers.php?uname=$1
+RewriteRule ^panel/following/(.*)$ panel/user-following.php?uname=$1
 
 RewriteRule ^example/(.*)/(.*)$ pagination.php?limit=$1&page=$2
 ErrorDocument 404 http://localhost/quotes/404.html

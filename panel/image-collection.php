@@ -112,7 +112,7 @@ if(isset($user) && !empty($user)){
                                     Your Followers
                                 <?php } else{ echo $fname."'s Followers"; } ?>                                
                                 </a></li>
-                            <li><a href="portlets.html">Following</a></li>
+                            <li><a href="/panel/following/<?php echo $user[0]['username']; ?>">Following</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu active"><a href="#"><i class="ion-compose"></i> <span class="nav-label"><?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>

@@ -27,7 +27,7 @@ if(isset($user) && !empty($user)){
         $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
         $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC LIMIT 6");
     }
-    $followers=$obj->find_by('followers','userID',$u_id);
+    $followers=$obj->find_by('followers','followerID',$u_id);
 ?>
 
 <!DOCTYPE html>
@@ -160,12 +160,12 @@ if(isset($user) && !empty($user)){
                         </span></a></li>
                     <li class="has-submenu active"><a href="#"><i class="ion-android-contacts"></i> <span class="nav-label">Following</span></a>
                         <ul class="list-unstyled">
-                            <li class="active"><a href="/panel/followers/<?php echo $user[0]['username']; ?>">
+                            <li><a href="/panel/followers/<?php echo $user[0]['username']; ?>">
                                 <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
                                     Your Followers
                                 <?php } else{ echo $fname."'s Followers"; } ?>                                
                                 </a></li>
-                            <li><a href="/panel/following/<?php echo $user[0]['username']; ?>">Following</a></li>
+                            <li class="active"><a href="/panel/following/<?php echo $user[0]['username']; ?>">Following</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu"><a href="#"><i class="ion-compose"></i> <span class="nav-label"><?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
@@ -297,7 +297,9 @@ if(isset($user) && !empty($user)){
                         <div class="portlet"><!-- /primary heading -->
                             <div class="portlet-heading">
                                 <h3 class="portlet-title text-dark text-uppercase">
-                                    Your Followers
+                                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
+                                    You're Following...
+                                    <?php } else{ echo $fname.' is following...'; } ?>
                                 </h3>
                                 <div class="clearfix"></div>
                             </div>
@@ -308,11 +310,11 @@ if(isset($user) && !empty($user)){
                                         <div class="clearfix">
                                             <?php 
                                                 foreach($followers as $key=>$val){
-                                                    $follower=$obj->find_by('users','userID',$followers[0]['followerID']);
-                                                    $followerQuotes=$obj->custom('SELECT COUNT("userID") as cnt FROM userQuotes WHERE userID='.$followers[0]['followerID']);
-                                                    $nFollowers=$obj->custom('SELECT COUNT("userID") as cnt FROM followers WHERE userID='.$followers[0]['followerID']);
-                                                    $nFollowing=$obj->custom('SELECT COUNT("followerID") as cnt FROM followers WHERE followerID='.$followers[0]['followerID']);
-                                                    $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$followers[0]['followerID']." AND followerID=".$_SESSION['uID']);
+                                                    $follower=$obj->find_by('users','userID',$followers[0]['userID']);
+                                                    $followerQuotes=$obj->custom('SELECT COUNT("userID") as cnt FROM userQuotes WHERE userID='.$followers[0]['userID']);
+                                                    $nFollowers=$obj->custom('SELECT COUNT("userID") as cnt FROM followers WHERE userID='.$followers[0]['userID']);
+                                                    $nFollowing=$obj->custom('SELECT COUNT("followerID") as cnt FROM followers WHERE followerID='.$followers[0]['userID']);
+                                                    $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$followers[0]['userID']." AND followerID=".$_SESSION['uID']);
                                                     
                                                     $isFollowing[0]['cnt']==0 ? $class='light-red nt-follow' : $class='darkred';
                                             ?>
