@@ -43,7 +43,7 @@
             }
         }
     }else{
-        $json_response = array('response'=>200,true);
+        $json_response = array('response'=>200,false);
         echo json_encode($json_response);
     }
 ?>

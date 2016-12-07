@@ -23,6 +23,7 @@ function quotesTranslation(id) {
     document.getElementById("quotes-area").innerHTML="";
     $("#quotes-area").load("language/quotes-translation.php",{id:id});
 }
+
 function authors(msg="",el) {
     $('.lang-nav li').not(el).removeClass('active');
     $('.has-submenu').not(el).removeClass('active');
@@ -44,6 +45,11 @@ function authors(msg="",el) {
         $(el).addClass('active');
         document.getElementById("quotes-area").innerHTML="";
         $("#quotes-area").load("content/completedAuthors.php");
+    }
+
+    function authorsTranslation(id) {
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/authorTranslate.php",{id:id});
     }
 /*AUTHORS*/
 function topics(msg="",el) {

@@ -149,7 +149,7 @@
 
 <script>
     var addProfession=function(){
-        var professions=all('professions');
+        var professions=order_by('professions','professionName','ASC');
         professions.done(function(response){
             var arr=[];
             for(var i in response[0]){
@@ -308,12 +308,13 @@
                             });
                             //NEW STUFF
                             
-                            if(profession.legnth > 0){
+                            if(profession.length > 0){
                                 arr2['authorID']=quotID;
                                 var token2 = generateToken();
                                 token2.done(function(generatedToken2){
                                     var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
                                     deleteRel.done(function(deleted){
+                                        console.log(deleted);
                                         for(var i in profession){
                                             arr2['professionID']=profession[i];
                                             var token3 = generateToken();
