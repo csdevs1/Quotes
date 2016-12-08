@@ -37,3 +37,27 @@ $('.qtLikeLink').click(function(){
         });
     }
 });
+
+
+$('.qtLikeUsr').click(function(){
+    var el=this;
+    var quoteID=$(this).attr('data-qtlike');
+    if($(el).hasClass('qtDislikeUsr')){
+        var disliked=likeQuote(quoteID,'dislikeQTUsr');
+        disliked.done(function(response){
+            console.log(response);
+            el.previousElementSibling.innerHTML = response[0][0]['cnt'];
+            $(el).removeClass('qtDislikeLink');
+            $(el).removeClass('liked');
+            el.innerHTML = "Like";
+        });
+    } else{
+        var liked=likeQuote(quoteID,'likeQTUsr');
+        liked.done(function(response){
+            console.log(response);
+            el.previousElementSibling.innerHTML = response[0][0]['cnt'];
+            el.innerHTML = "Liked <span class='glyphicon glyphicon-heart liked'></span>";
+            $(el).addClass('liked qtDislikeUsr');
+        });
+    }
+});

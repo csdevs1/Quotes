@@ -46,7 +46,7 @@
 <script src="<?php echo $folder; ?>javascript/app.js?<?php echo time(); ?>"></script>
 <script src="<?php echo $folder; ?>javascript/bf96ff3caa364a37a099b5080ddcfa8e/958f6f56cd42c904603d226cd36a57b6.js?<?php echo time(); ?>"></script>
 <script src="<?php echo $folder; ?>javascript/12a4f1ee30059d7d2359f3cb0bfd8d9c0e60f3da/4b3387e23095148b0ce0f0f5830b138fe9420759.js?<?php echo time(); ?>"></script>
-<?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
+<?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
     <script src="<?php echo $folder; ?>javascript/b59ac58c7256fd0ee084d8adb9654bc1249d3197/c3d137ad7f14c18ef0d0d2e64cdb62f7c9cb3a39.js?<?php echo time(); ?>"></script>
     <script src="<?php echo $folder; ?>javascript/2a951483e6543f54f6917dc86583cd5f/feb44078d2ab4a1ccd7ea5ba62b21b9c.js?<?php echo time(); ?>"></script>
 <?php } ?>

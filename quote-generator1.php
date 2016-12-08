@@ -23,7 +23,7 @@
         <?php include 'layouts/head.php'; ?>
         <style>
             .collection a{padding: 9px;width: 100%;}
-            <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
+            <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
                 .download a {width: 100%;}
                 .download a {float: left;}
                 @media only screen and (min-width : 768px) {.copy-form .download{margin-left: 15.6%;}}
@@ -259,7 +259,7 @@
                 <div class="col-xs-12 col-sm-4 download copy-container">
                     <a href="" target="_blank" download><i class="glyphicon glyphicon-circle-arrow-down"></i> Download Image</a>
                 </div>
-                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
+                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
                     <div class="col-xs-12 col-sm-4 collection">
                         <a class="btn btn-default" id="clc-usr" role="button"><i class="glyphicon glyphicon-paperclip"></i> Save to my collection</a>
                     </div>

@@ -69,6 +69,6 @@
     </nav>
 </div>
 
-<?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
+<?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
     <script src="/quotes/panel/js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
 <?php } ?>

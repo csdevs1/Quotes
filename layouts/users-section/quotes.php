@@ -2,6 +2,7 @@
     session_start();
     require_once('../../AppClasses/AppController.php');
     require_once('../../AppClasses/Paginator.php');
+    $folder='../../';
     $obj = new AppController();
 
     $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 20;
@@ -21,13 +22,13 @@
         $author=$quotes[$key]['author'];
         $u_id=$quotes[$key]['userID'];
         $user=$obj->find_by('users','userID',$u_id);
-        /* $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
-        $count=0;
+        $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM userQuotes_like WHERE quoteID=$qID");
+        /*$count=0;
         if(!empty($topics)){
-        foreach($topics as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
-        $arrEN[$count]=$topics[$key]['topicName']; // TOPIC'S NAME IN SPANISH
-        $count++;
-        }
+            foreach($topics as $key=>$val){// DELETE THISLOOP AND USE ONLY JOIN LIKE BELOW
+                $arrEN[$count]=$topics[$key]['topicName']; // TOPIC'S NAME IN SPANISH
+                $count++;
+            }
         }
         
         $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($quote)), 0, 10));*/
@@ -41,15 +42,15 @@
             <?php } ?>
             <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <?php echo $author; ?></span></blockquote>
             <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo 'sda'; ?>" data-title="Hey, check out this quote by <?php echo $author; ?> | PortalQuote"></div>
-            <div class="col-xs-4 col-md-4"><p><span><?php //echo $nLikes[0]['cnt']; ?></span><a class="like disable" role="button" data-toggle="popover" data-placement="top" data-title="Want to like this?" data-content="<a href='' data-toggle='modal' data-target='#signup'>Sign up</a> or <a href='' data-toggle='modal' data-target='#login'>Login</a>">Like<?php /*if($nLikes[0]['cnt']>1) echo 's';*/ ?></a></p></div>
+            
             <?php 
-        /*if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
-        $liked=$obj->like('likes_en', "userID=".$_SESSION['uID']." AND quoteID=$qID");
+                if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+                    $liked=$obj->like('userQuotes_like', "userID=".$_SESSION['uID']." AND quoteID=$qID");
             ?>
-            <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like qtLikeLink <?php if(count($liked)>0) echo "liked qtDislikeLink";?>" role="button" data-qtlike="<?php echo $qID; ?>"><?php if(count($liked)>0) echo "Liked <span class='glyphicon glyphicon-heart liked'></span>"; elseif($nLikes[0]['cnt']>1) echo 'Likes'; else echo 'Like'; ?></a></p></div>
+                <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like qtLikeUsr <?php if(count($liked)>0) echo "liked qtDislikeUsr";?>" role="button" data-qtlike="<?php echo $qID; ?>"><?php if(count($liked)>0) echo "Liked <span class='glyphicon glyphicon-heart liked'></span>"; elseif($nLikes[0]['cnt']>1) echo 'Likes'; else echo 'Like'; ?></a></p></div>
             <?php }else{ ?>
-            <div class="col-xs-4 col-md-4"><p><span><?php //echo $nLikes[0]['cnt']; ?></span><a class="like disable" role="button" data-toggle="popover" data-placement="top" data-title="Want to like this?" data-content="<a href='' data-toggle='modal' data-target='#signup'>Sign up</a> or <a href='' data-toggle='modal' data-target='#login'>Login</a>">Like<?php if($nLikes[0]['cnt']>1) echo 's'; ?></a></p></div>
-            <?php }*/ ?>
+                <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable" role="button" data-toggle="popover" data-placement="top" data-title="Want to like this?" data-content="<a href='' data-toggle='modal' data-target='#signup'>Sign up</a> or <a href='' data-toggle='modal' data-target='#login'>Login</a>">Like<?php if($nLikes[0]['cnt']>1 || $nLikes[0]['cnt']==0) echo 's'; ?></a></p></div>
+            <?php } ?>
             <div class="col-xs-12 _user-posted text-muted">
                 Poster by: <a href="/panel/quotes/<?php echo $user[0]['username']; ?>" role="link" class=""><?php echo $user[0]['username']; ?></a>
             </div>
@@ -65,6 +66,10 @@
         <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','/quotes/users-section/quotes'); ?> 
     </nav>
 </div>
+
+<?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
+    <script src="<?php echo $folder; ?>javascript/b59ac58c7256fd0ee084d8adb9654bc1249d3197/c3d137ad7f14c18ef0d0d2e64cdb62f7c9cb3a39.js?<?php echo time(); ?>"></script>
+<?php } ?>
 
 <script>
     $(document).ready(function(){
