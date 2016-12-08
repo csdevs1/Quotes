@@ -15,6 +15,7 @@ RewriteRule ^quote-generator$ quote-generator1.php
 RewriteRule ^65279e1ecf00d0d1177a5b3b458fd187a1d6135e/(.*)$ verification.php?digest=$1
 RewriteRule ^search/(.*)/(.*)/(.*)$ searchPage.php?t=$1&q=$2&page=$3
 RewriteRule ^about/terms-service$ terms-services.php
+RewriteRule ^users-section/(.*)/(.*)$ userSection.php?type=$1&page=$2
 
 #Controller
 RewriteRule ^15c563887e7fe28109af91fda7a3532f/df93a32d352b782e852806917765483c$ AppClasses/SignUp.php

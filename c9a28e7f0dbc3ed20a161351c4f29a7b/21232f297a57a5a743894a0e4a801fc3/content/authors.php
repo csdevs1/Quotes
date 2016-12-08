@@ -260,7 +260,9 @@ var goToPage=function(){
         $('#author').val('');
         $('#bdate').val('');
         $('#pdate').val('');
-        $('#profession').val('');
+        $('#professions-list').html('');
+        $("#image").val('');
+        $(".up-label").text('Upload an image');
         $('#profile').val('');
         $('#url').val('');
         $('#country option[value=""]').prop('selected', true);

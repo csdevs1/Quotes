@@ -49,8 +49,8 @@ else
                             <div class="dropdown drop-lang">
                                 <a href="" id="lang" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> Language</a>
                                 <ul class="dropdown-menu" aria-labelledby="lang">
-                                    <li><img src="images/pt.png"> Portuguese</li>
-                                    <li><img src="images/es.png"> Spanish</li>
+                                    <li><img src="<?php echo $folder; ?>/images/pt.png"> Portuguese</li>
+                                    <li><img src="<?php echo $folder; ?>/images/es.png"> Spanish</li>
                                 </ul>
                             </div>
                         </li>

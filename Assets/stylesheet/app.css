@@ -8,6 +8,7 @@
 @import url('https://fonts.googleapis.com/css?family=Bungee+Inline');
 @import url('https://fonts.googleapis.com/css?family=Bilbo+Swash+Caps');
 @import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa');
 /**/
 
 body {
@@ -580,6 +581,8 @@ video{
     }
 /*KEYWORD PAGE*/
 
+
+
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
     h1{
@@ -592,6 +595,140 @@ video{
     .author-img {width: 50%;}
     .author-quote {margin-top: 8px;}
 }
+
+/*USERS' SECTION*/
+    ._outer-box{margin-bottom:20px;}
+    .mn-box{font-family: 'Comfortaa', cursive;padding:50px;text-align:center;color:#fff;font-size:1.74rem;text-shadow:-1px 0px 2px #000;cursor:pointer;transition:all 0.5s;}
+    .mn-box:hover{text-shadow:-3px 0px 3px #000;transition:all 0.5s;}
+    .mn-box span{display:block;font-size:3rem;margin-bottom:3px;}
+
+    ._box1{
+        background: #cb2d3e;
+        background: -webkit-linear-gradient(to left, #cb2d3e , #ef473a);
+        background: linear-gradient(to left, #cb2d3e , #ef473a);
+    }
+    ._box2{
+        background: #834d9b;
+        background: -webkit-linear-gradient(to left, #834d9b , #d04ed6);
+        background: linear-gradient(to left, #834d9b , #d04ed6);
+    }
+    ._box3{
+        background: #7474BF;
+        background: -webkit-linear-gradient(to left, #7474BF , #348AC7);
+        background: linear-gradient(to left, #7474BF , #348AC7);
+    }
+    ._user-posted{font-size: 1.3rem;}
+
+    /*IMAGES SECTION*/
+    .collection-cont div {
+        display: inline-block;
+        width: 100%;
+    }
+    /* Custom, iPhone Retina */ 
+        @media only screen and (min-width : 320px) {
+            .collection-cont {
+                -moz-column-count: 1;
+                -moz-column-gap: 2px;
+                -webkit-column-count: 1;
+                -webkit-column-gap: 2px;
+                column-count: 1;
+                column-gap: 2px;
+            }
+        }
+        @media only screen and (min-width : 600px) {
+            .collection-cont {
+                -moz-column-count: 2;
+                -moz-column-gap: 2px;
+                -webkit-column-count: 2;
+                -webkit-column-gap: 2px;
+                column-count: 2;
+                column-gap: 2px;
+            }
+        }
+
+        @media only screen and (min-width : 768px) {
+            ._outer-box{box-shadow: 0 2px 5px #000,0 2px 8px #777,0 4px 10px #ccc;}
+        }
+
+    /* Extra Small Devices, Phones */ 
+        @media only screen and (min-width : 992px) {
+            .collection-cont {
+                -moz-column-count: 3;
+                -moz-column-gap: 2px;
+                -webkit-column-count: 3;
+                -webkit-column-gap: 2px;
+                column-count: 3;
+                column-gap: 2px;
+            }
+        }
+
+        
+    /*END IMAGES SECTION*/
+
+    /*USERS SECTION*/
+        .card-profile {
+            background: #fff;
+            border-radius: 10px;
+            z-index: 1;
+            margin-bottom: 10px;
+        }
+        .card-profile_visual{
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+            background: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            background-color: #777;
+            background-repeat: no-repeat;
+            background-position:  center center;
+            background-size:cover;
+            text-align: center;
+            border-right: 1px solid #ccc;
+        }
+        .user-profile_pic{display:inline-block; width: 120px;height: 120px;border-radius: 50%;margin-top:20px;background-repeat: no-repeat;background-position:center center;background-size: cover;box-shadow: 0 36px 64px -34px #222, 0 16px 14px -14px rgba(0, 0, 0, 0.6), 0 22px 18px -18px rgba(0, 0, 0, 0.4), 0 22px 38px -18px #222;z-index: 1000;position: absolute;margin: auto;left: 0;right: 0;top:50px}
+            
+        .card-profile_user-infos{position: absolute;bottom: 0;padding-bottom: 10px;padding-top: 180px; text-align: center;width: 100%;background: rgba(0,0,0,0.5);height: 100%;}
+        .card-profile_user-infos span{display: block;color: #fff;}
+        .card-profile_user-infos .infos_nick{color: #ccc;}
+
+        .card-profile .usrflw-16516 {
+            cursor: pointer;
+            text-align: center;
+            padding: 20px 20px 20px 20px;
+            top: 265px !important;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            background-color: #F96B4C;
+            display: block;
+            clear: both;
+            margin: auto;
+            border-radius: 100%;
+            top: calc(500% + 66px);
+            box-shadow: 0 2px 0 #D42D78, 0 3px 10px rgba(243, 49, 128, 0.15), 0 0px 10px rgba(243, 49, 128, 0.15), 0 0px 4px rgba(0, 0, 0, 0.35), 0 5px 20px rgba(243, 49, 128, 0.25), 0 15px 40px rgba(243, 49, 128, 0.75), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }.card-profile a i{color: #fff;font-size: 2rem;text-shadow: 1px 1px 5px #000;}
+        .light-red{background: #f85032;
+            background: -webkit-linear-gradient(to left, #f85032 , #e73827);
+            background: linear-gradient(to left, #f85032 , #e73827);}.darkred{background-image: -webkit-linear-gradient(#F96B4C, #F23182);
+                background-image: linear-gradient(#F96B4C, #F23182);}
+        .card-profile_user-stats{position: relative;height: 100px; border-right: 1px solid #ddd;box-shadow: 0 36px 64px -34px #ccc, 0 16px 14px -14px rgba(0, 0, 0, 0.6), 0 22px 18px -18px rgba(0, 0, 0, 0.4), 0 22px 38px -18px #ccc;}
+        .stats-holder{text-align: center;padding: 10px;width: 100%;position: absolute;bottom: 0;}
+        .user-stats{width:33%;}
+        .user-stats a span{display: block;color: #555;}
+            
+            /* Extra Small Devices, Phones */ 
+            @media only screen and (max-width : 640px) {
+                .col-cs-12{width: 100%;}
+            }
+    /*END USERS SECTION*/
+/*END OF USERS' SECTION*/
+
 
 /* Extra Small Devices, Phones */
 @media (max-width: 767px) {
