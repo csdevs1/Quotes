@@ -11,7 +11,7 @@
     }
     $obj = new AppController();
     $user = $obj->like('users','username="'.$_GET['uname'].'" AND active=1');
-if(isset($user) && !empty($user)){
+if(isset($user) && !empty($user) && $_SESSION['uID']==$user[0]['userID']){
     $u_id=$user[0]['userID'];
     if($user[0]['picture']=='/images/profile/male.png' || $user[0]['picture']=='/images/profile/female.png')
         $u_picture='../..'.$user[0]['picture'];
@@ -20,14 +20,15 @@ if(isset($user) && !empty($user)){
     $u_banner=$user[0]['banner'];
     $fname=$user[0]['fname'];
     $lname=$user[0]['lname'];
+    $uname=$user[0]['username'];
+    $email=$user[0]['email'];
     
-    if(isset($_SESSION['uID']) && !empty($_SESSION['uID']))
+    if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id)
         $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
     if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
         $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
         $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC LIMIT 6");
     }
-    $followers=$obj->find_by('followers','userID',$u_id);
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +38,7 @@ if(isset($user) && !empty($user)){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-
+        <meta name="robots" content="noindex">
         <link rel="shortcut icon" href="../../images/icon.png">
 
         <title><?php echo $fname.' '.$lname; ?> - Dashboard</title>
@@ -72,68 +73,7 @@ if(isset($user) && !empty($user)){
         <link href="../css/helper.css" rel="stylesheet">
         <link href="../css/style-responsive.css" rel="stylesheet" />
         <link href="../assets/tagsinput/jquery.tagsinput.css" rel="stylesheet" />
-        <style>
-            .card-profile {
-                background: #fff;
-                border-radius: 10px;
-                z-index: 1;
-            }
-            .card-profile_visual{
-                height: 300px;
-                overflow: hidden;
-                position: relative;
-                background: #fff;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                background-color: #777;
-                background-repeat: no-repeat;
-                background-position:  center center/cover;
-                text-align: center;
-                border-right: 1px solid #ccc;
-            }
-            .user-profile_pic{display:inline-block; width: 120px;height: 120px;border-radius: 50%;margin-top:20px;background: url(<?php echo $u_picture; ?>) no-repeat center center/cover;box-shadow: 0 36px 64px -34px #222, 0 16px 14px -14px rgba(0, 0, 0, 0.6), 0 22px 18px -18px rgba(0, 0, 0, 0.4), 0 22px 38px -18px #222;z-index: 1000;position: absolute;margin: auto;left: 0;right: 0;top:50px}
-            
-            .card-profile_user-infos{position: absolute;bottom: 0;padding-bottom: 10px;padding-top: 180px; text-align: center;width: 100%;background: rgba(0,0,0,0.5);height: 100%;}
-            .card-profile_user-infos span{display: block;color: #fff;}
-            .card-profile_user-infos .infos_nick{color: #ccc;}
-            
-            .card-profile a {
-                text-align: center;
-                padding: 20px 20px 20px 20px;
-                top: 265px !important;
-                z-index: 1000;
-                width: 60px;
-                height: 60px;
-                position: absolute;
-                left: 0;
-                right: 0;
-                margin: auto;
-                background-color: #F96B4C;
-                display: block;
-                clear: both;
-                margin: auto;
-                border-radius: 100%;
-                top: calc(500% + 66px);
-                box-shadow: 0 2px 0 #D42D78, 0 3px 10px rgba(243, 49, 128, 0.15), 0 0px 10px rgba(243, 49, 128, 0.15), 0 0px 4px rgba(0, 0, 0, 0.35), 0 5px 20px rgba(243, 49, 128, 0.25), 0 15px 40px rgba(243, 49, 128, 0.75), inset 0 0 15px rgba(255, 255, 255, 0.05);
-                overflow: hidden;
-            }.card-profile a i{color: #fff;font-size: 2rem;text-shadow: 1px 1px 5px #000;}
-            
-            .light-red{background: #f85032;
-                background: -webkit-linear-gradient(to left, #f85032 , #e73827);
-                background: linear-gradient(to left, #f85032 , #e73827);}.darkred{background-image: -webkit-linear-gradient(#F96B4C, #F23182);
-                background-image: linear-gradient(#F96B4C, #F23182);}
-            
-            .card-profile_user-stats{position: relative;height: 100px; border-right: 1px solid #ddd;box-shadow: 0 36px 64px -34px #ccc, 0 16px 14px -14px rgba(0, 0, 0, 0.6), 0 22px 18px -18px rgba(0, 0, 0, 0.4), 0 22px 38px -18px #ccc;}
-            .stats-holder{text-align: center;padding: 10px;width: 100%;position: absolute;bottom: 0;}
-            .user-stats{width:33%;}
-            .user-stats span{display: block;}
-            
-            /* Extra Small Devices, Phones */ 
-            @media only screen and (max-width : 640px) {
-                .col-cs-12{width: 100%;}
-            }
-        </style>
-
+        <style>.alert{padding: 0 !important;background: none !important;display: none;}</style>
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
         <!--[if lt IE 9]>
           <script src="js/html5shiv.js"></script>
@@ -158,9 +98,9 @@ if(isset($user) && !empty($user)){
                         Your Quotes
                         <?php } else{ echo $fname."'s Quotes"; } ?>  
                         </span></a></li>
-                    <li class="has-submenu active"><a href="#"><i class="ion-android-contacts"></i> <span class="nav-label">Following</span></a>
+                    <li class="has-submenu"><a href="#"><i class="ion-android-contacts"></i> <span class="nav-label">Following</span></a>
                         <ul class="list-unstyled">
-                            <li class="active"><a href="/panel/followers/<?php echo $user[0]['username']; ?>">
+                            <li><a href="/panel/followers/<?php echo $user[0]['username']; ?>">
                                 <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
                                     Your Followers
                                 <?php } else{ echo $fname."'s Followers"; } ?>                                
@@ -177,7 +117,7 @@ if(isset($user) && !empty($user)){
                         </ul>
                     </li>
                     <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-                        <li class="has-submenu"><a href="/panel/settings/<?php echo $_SESSION['uname'];  ?>" rel="nofollow"><i class="ion-wrench"></i> <span class="nav-label">Settings</span></a></li>
+                        <li class="has-submenu active"><a href="/panel/settings/<?php echo $_SESSION['uname'];  ?>" rel="nofollow"><i class="ion-wrench"></i> <span class="nav-label">Settings</span></a></li>
                         <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
                     <?php } ?>
                 </ul>
@@ -291,103 +231,57 @@ if(isset($user) && !empty($user)){
                     <!-- user login dropdown end -->       
                 </ul>
                 <!-- End right navbar -->
+
             </header>
             <!-- Header Ends -->
-
-            <div class="wraper container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="portlet"><!-- /primary heading -->
-                            <div class="portlet-heading">
-                                <h3 class="portlet-title text-dark text-uppercase">
-                                    Your Followers
-                                </h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            
-                            <div id="portlet1" class="panel-collapse collapse in">
-                                <div class="portlet-body">
-                                    <section role="main">                                        
-                                        <div class="clearfix">
-                                            <?php 
-                                                foreach($followers as $key=>$val){
-                                                    $follower=$obj->find_by('users','userID',$followers[0]['followerID']);
-                                                    $followerQuotes=$obj->custom('SELECT COUNT("userID") as cnt FROM userQuotes WHERE userID='.$followers[0]['followerID']);
-                                                    $nFollowers=$obj->custom('SELECT COUNT("userID") as cnt FROM followers WHERE userID='.$followers[0]['followerID']);
-                                                    $nFollowing=$obj->custom('SELECT COUNT("followerID") as cnt FROM followers WHERE followerID='.$followers[0]['followerID']);
-                                                    $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$followers[0]['followerID']." AND followerID=".$_SESSION['uID']);
-                                                    
-                                                    $isFollowing[0]['cnt']==0 ? $class='light-red nt-follow' : $class='darkred';
-                                            ?>
-                                                <div class="col-cs-12 col-xs-6 col-md-3 card-profile">
-                                                    <div class="user-profile_pic" style="background-image:url('<?php echo $follower[0]['picture']; ?>')"></div>
-                                                    <div class="card-profile_visual">
-                                                        <div class="card-profile_user-infos">
-                                                            <span class="infos_name"><?php echo $follower[0]['fname'].' '.$follower[0]['lname']; ?></span>
-                                                            <span class="infos_nick"><?php echo $follower[0]['username']; ?></span>
-                                                        </div>
-                                                    </div>
-                                                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$follower[0]['userID']){ ?>
-                                                    <a class="<?php echo $class; ?> usrflw-16516" data-follow='<?php echo $follower[0]['userID'] ?>'>
-                                                        <?php if($isFollowing[0]['cnt']){ ?>
-                                                        <i class="ion-checkmark"></i>
-                                                        <?php }else{?>
-                                                        <i class="ion-person-add"></i>
-                                                        <?php } ?>
-                                                    </a>
-                                                    <?php } ?>
-                                                    <div class="card-profile_user-stats">
-                                                        <div class="stats-holder row">
-                                                            <div class="user-stats col-xs-4">
-                                                                <strong>Quotes</strong>
-                                                                <span><?php echo $followerQuotes[0]['cnt']; ?></span>
-                                                            </div>
-                                                            <div class="user-stats col-xs-4">
-                                                                <strong>Following</strong>
-                                                                <span><?php echo $nFollowing[0]['cnt']; ?></span>
-                                                            </div>
-                                                            <div class="user-stats col-xs-4">
-                                                                <strong>Followers</strong>
-                                                                <span><?php echo $nFollowers[0]['cnt']; ?></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php } ?>
-                                            <input type="hidden" id="token56165" value="<?php echo sha1($_SESSION['uID']); ?>">
+    
+            <!-- Form-validation -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h3 class="panel-title">User's Settings</h3></div>
+                        <div class="panel-body">
+                            <div class=" form">
+                                <div class="cmxform form-horizontal tasi-form" id="settingsUpdate">
+                                    <div class="form-group ">
+                                        <label for="firstname" class="control-label col-lg-2">Firstname *</label>
+                                        <div class="col-lg-10">
+                                            <input class=" form-control" id="fname" name="firstname" type="text" value="<?php echo $fname; ?>">
                                         </div>
-                                    </section>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="lastname" class="control-label col-lg-2">Lastname  *</label>
+                                        <div class="col-lg-10">
+                                            <input class=" form-control" id="lname" name="lastname" type="text" value="<?php echo $lname; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="username" class="control-label col-lg-2">Username *</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " id="uname" name="username" type="text" value="<?php echo $uname; ?>">
+                                            <span class="alert alert-danger uname">Username already taken...</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="email" class="control-label col-lg-2">Email *</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " id="email" name="email" type="email" value="<?php echo $email; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button class="btn btn-success" type="submit" id='_up_496-ixb'>Update</button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <button type="button" class="btn btn-block btn-lg btn-inverse" id="psw-rs_916871">Reset Password</button>
                                 </div>
-                            </div>
-                            
-                            <div class="container">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination">
-                                        <li>
-                                            <a href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">5</a></li>
-                                        <li>
-                                            <a href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            
-                        </div> <!-- /Portlet -->
-                    </div> <!-- end col -->
-                </div> <!-- End row -->
-            </div>
-            <!-- Page Content Ends -->
-            <!-- ================== -->
+                            </div> <!-- .form -->
+                        </div> <!-- panel-body -->
+                    </div> <!-- panel -->
+                </div> <!-- col -->
+            </div> <!-- End row -->
+            
         </section>
         <!-- Main Content Ends -->
     <!-- js placed at the end of the document so the pages load faster -->
@@ -402,11 +296,13 @@ if(isset($user) && !empty($user)){
         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
         <script src="../js/84628a0974ef75ce8cbcfdaf79ce37d619c81cfd/7facc5a9f1b1539c570b57de3134b78dd6f1fdfe.js?<?php echo time(); ?>" type="text/javascript"></script>
         <script src="../js/349f7cad324a745042c675789bcb9cc245fbebf1/816f940ad8ab9401522a2e5e280dc9ddb5c0ef4a.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <script src="../js/ca33aff8ac070ceb8e7b761f45a137e2/dbcb95c03507cf9315446e88744f368e.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php }elseif(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
         <script src="../js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php } ?>
         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
         <script src="../js/4236a440a662cc8253d7536e5aa17942/d668aad11dcbabd7f04c3a7aca25f1f7.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <script src="/quotes/javascript/b59ac58c7256fd0ee084d8adb9654bc1249d3197/c3d137ad7f14c18ef0d0d2e64cdb62f7c9cb3a39.js?<?php echo time(); ?>"></script>
         <?php } ?>
         <script src="../js/jquery.app.js"></script>
     </body>

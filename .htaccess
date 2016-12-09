@@ -16,6 +16,7 @@ RewriteRule ^65279e1ecf00d0d1177a5b3b458fd187a1d6135e/(.*)$ verification.php?dig
 RewriteRule ^search/(.*)/(.*)/(.*)$ searchPage.php?t=$1&q=$2&page=$3
 RewriteRule ^about/terms-service$ terms-services.php
 RewriteRule ^users-section/(.*)/(.*)$ userSection.php?type=$1&page=$2
+RewriteRule ^6cc1fbb6ca92425bb419a1b3e5b9e8da/(.*)$ pswd_reset.php?digest=$1
 
 #Controller
 RewriteRule ^15c563887e7fe28109af91fda7a3532f/df93a32d352b782e852806917765483c$ AppClasses/SignUp.php
@@ -31,6 +32,6 @@ RewriteRule ^panel/quotes/(.*)$ panel/index.php?uname=$1
 RewriteRule ^panel/collection/(.*)$ panel/image-collection.php?uname=$1
 RewriteRule ^panel/followers/(.*)$ panel/user-followers.php?uname=$1
 RewriteRule ^panel/following/(.*)$ panel/user-following.php?uname=$1
+RewriteRule ^panel/settings/(.*)$ panel/user-settings.php?uname=$1
 
-RewriteRule ^example/(.*)/(.*)$ pagination.php?limit=$1&page=$2
 ErrorDocument 404 http://localhost/quotes/404.html

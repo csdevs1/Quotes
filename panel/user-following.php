@@ -176,7 +176,10 @@ if(isset($user) && !empty($user)){
                             <li><a href="/panel/collection/<?php echo $user[0]['username']; ?>">Images</a></li>
                         </ul>
                     </li>
-                    <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
+                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
+                        <li class="has-submenu"><a href="/panel/settings/<?php echo $_SESSION['uname'];  ?>" rel="nofollow"><i class="ion-wrench"></i> <span class="nav-label">Settings</span></a></li>
+                        <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
+                    <?php } ?>
                 </ul>
             </nav>
         </aside>
