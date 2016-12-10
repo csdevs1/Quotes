@@ -24,7 +24,7 @@
                 <ul class="list-unstyled">
                     <li itemprop="name"><a href="/" role="link" rel="help" itemprop="url">Contact Us</a></li>
                     <li itemprop="name"><a href="/about/terms-service" role="link" rel="help" itemprop="url">Terms</a></li>
-                    <li itemprop="name"><a href="/" role="link" rel="help" itemprop="url">Privacy</a></li>
+                    <li itemprop="name"><a href="/about/privacy-policies" role="link" rel="help" itemprop="url">Privacy</a></li>
                 </ul>
             </div>
         </div>
