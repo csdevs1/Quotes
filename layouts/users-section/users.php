@@ -27,8 +27,8 @@
         <div class="user-profile_pic" style="background-image:url('<?php echo $users[$key]['picture']; ?>')"></div>
         <div class="card-profile_visual" style="background-image:url('<?php echo $users[$key]['banner']; ?>');">
             <div class="card-profile_user-infos">
-                <span class="infos_name"><?php echo $users[$key]['fname'].' '.$users[$key]['lname']; ?></span>
-                <span class="infos_nick"><?php echo $users[$key]['username']; ?></span>
+                <a href="/panel/quotes/<?php echo $users[$key]['username']; ?>" target="_blank"><span class="infos_name"><?php echo $users[$key]['fname'].' '.$users[$key]['lname']; ?></span></a>
+                <a href="/panel/quotes/<?php echo $users[$key]['username']; ?>" target="_blank"><span class="infos_nick"><?php echo $users[$key]['username']; ?></span></a>
             </div>
         </div>
         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$users[$key]['userID']){ ?>

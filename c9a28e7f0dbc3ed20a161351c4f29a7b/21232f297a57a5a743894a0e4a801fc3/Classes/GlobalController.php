@@ -48,7 +48,7 @@
         $col = implode(", " , $cols);
         $val= implode(", " , $vals);
         $response=$obj->save($table,$col,$val);
-        if($response){*/
+        if($response){
             $json_response = array('response'=>200,$name);
             echo json_encode($json_response);
         } else{

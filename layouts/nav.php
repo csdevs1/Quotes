@@ -25,6 +25,7 @@ else
                         <li itemprop="name"><a href="/topics" role="link" itemprop="url">Topics</a></li>
                         <li itemprop="name"><a href="/authors/1/" role="link" itemprop="url">Authors</a></li>
                         <li itemprop="name"><a href="/quote-generator" itemprop="url">Quote Generator</a></li>
+                        <li itemprop="name"><a href="/users-section/quotes/1" itemprop="url">User's Section</a></li>
                         <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

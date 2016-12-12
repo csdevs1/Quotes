@@ -38,11 +38,14 @@
                         <div class="icon-u col-md-3">
                             <span class="ion-person"></span>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <h2 class="text-center"> <?php echo $user[0]; ?></h2>
                         </div>
                         <div class="col-md-3 text-center">
                             <a href="#" class="btn btn-primary btn-sm" onclick="usrDetails(<?php echo $users[$key]['id'] ?>)">View more</a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a href="#" class="btn btn-inverse btn-sm" onclick="usrSettings(<?php echo $users[$key]['id'] ?>)">Settings</a>
                         </div>
                     </div>
                 </li>
