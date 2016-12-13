@@ -42,6 +42,21 @@
         </div>
     </div>
 </footer>
+
+<!--JQUERY LIBRARY -->
+<script src="<?php echo $folder; ?>javascript/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <!--JQUERY LIBRARY -->
+<script src="<?php echo $folder; ?>javascript/masonry.js"></script>
+<script src="<?php echo $folder; ?>javascript/smoothScroll.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Boostrap Validator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+
+
+<script src="<?php echo $folder; ?>javascript/html2canvas.js"></script>
 <script src="<?php echo $folder; ?>javascript/fbLog.js?<?php echo time(); ?>"></script>
 <script src="<?php echo $folder; ?>javascript/app.js?<?php echo time(); ?>"></script>
 <script src="<?php echo $folder; ?>javascript/bf96ff3caa364a37a099b5080ddcfa8e/958f6f56cd42c904603d226cd36a57b6.js?<?php echo time(); ?>"></script>

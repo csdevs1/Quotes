@@ -31,9 +31,9 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     $quote=$obj->find_by('quotes_en','quoteID',$getURL[0]);
     $q=str_replace($remove, "", $quote[0]['quote']);
     $uri=$getURL[0].'_'.implode('-', array_slice(explode(' ', $q), 0, 10));
-    
-    if(strtolower($uri)!=$_GET['quoteid'])
-        header('Location:'.strtolower($uri));
+    $urlAddrs=urlencode(strtolower($uri));
+    if($urlAddrs!=$_GET['quoteid'])
+        header('Location:'.$urlAddrs);
     
     $meta_tags = new HeadTags();
     $title = $meta_tags->titlePage('Find The Best Quotes');

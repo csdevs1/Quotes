@@ -26,6 +26,7 @@ RewriteRule ^fc4a695f02a8a53a129dcb9ace91e91ee1e7feb9/c3f5f65ee96aaa8376f9d1647b
 RewriteRule ^a36a5ffa6e0dcfb64fac1b2b3d6fb176de9689de/03158f8543bd7d64c672b2fdfe38668a653487f0$ AppClasses/QuotesController.php
 RewriteRule ^fd30fda6a3d920b6798126d7fb48c3cd/3903aab323863bd2e9b68218a7a65ebd$ AppClasses/Follow.php
 RewriteRule ^6c56037e24fc0902ac2481df5583edcc/1882f952ad7b6f9bdeaa6584bc352f56$ AppClasses/CollectionController.php
+RewriteRule ^00f6b23d0b02d36148b35cc4e65e0c51/ae540687e4c25bcd1546846e96a63790$ AppClasses/NotificationController.php
 
 
 #USER PANEL

@@ -1993,6 +1993,8 @@ ul.p-social-link li a {
 .img-wrapper i{font-size: 1.9rem;z-index: 999;float: right;right: 5px;bottom: 0px;color: #fff;font-weight: 100;}
 
 .at4-share-outer{display: none;}
+
+.pr_usr{width: 64px;height: 64px;background-repeat: no-repeat;background-position: center;background-size: cover;}
 /*QUOTES*/
     .quote {
         margin-bottom: 10px;
