@@ -34,5 +34,6 @@ RewriteRule ^panel/collection/(.*)$ panel/image-collection.php?uname=$1
 RewriteRule ^panel/followers/(.*)$ panel/user-followers.php?uname=$1
 RewriteRule ^panel/following/(.*)$ panel/user-following.php?uname=$1
 RewriteRule ^panel/settings/(.*)$ panel/user-settings.php?uname=$1
+RewriteRule ^panel/quote/(.*)/(.*)$ panel/user-quote.php?uname=$1&quoteid=$2
 
 ErrorDocument 404 http://localhost/quotes/404.html

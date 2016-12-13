@@ -23,10 +23,7 @@ $("#login-btn").click(function(){
     logged.done(function(response){
         console.log(response);
         if(response[0]){
-            swal({title: "Welcome!",   text: "You've logged in correctly!",   type: "success",   showCancelButton: false,showConfirmButton: false });
-            setTimeout(function() {
-                location.reload();
-            }, 2000);
+            location.reload();
         }else{
             swal({title: "Incorrect User",   text: "Check your email or password!",   type: "error",   showCancelButton: false,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Ok!",   closeOnConfirm: true });
         }

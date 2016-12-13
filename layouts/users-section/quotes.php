@@ -32,6 +32,12 @@
         }
         
         $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($quote)), 0, 10));*/
+        $remove[] = "'";
+        $remove[] = '"';
+        $remove[] = '.';
+        $remove[] = ',';
+        $q=str_replace($remove, "", $quote);
+        $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
     ?>
     <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
         <div class="pad clearfix">
@@ -40,9 +46,8 @@
             ?>
             <img class="img-responsive" src="<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="">
             <?php } ?>
-            <blockquote itemprop="citation"><?php echo $quote; ?>. <span itemprop="author">- <?php echo $author; ?></span></blockquote>
-            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo 'sda'; ?>" data-title="Hey, check out this quote by <?php echo $author; ?> | PortalQuote"></div>
-            
+            <blockquote itemprop="citation"><a href="https://portalquote.com/panel/quote/<?php echo $user[0]['username'].'/'.$share_url; ?>" role="link"><?php echo $quote; ?></a> <span itemprop="author">- <?php echo $author; ?></span></blockquote>
+            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/panel/quote/<?php echo $user[0]['username'].'/'.$share_url; ?>" data-title="Hey, check out this quote by <?php echo $user[0]['username']; ?> | PortalQuote"></div>
             <?php 
                 if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
                     $liked=$obj->like('userQuotes_like', "userID=".$_SESSION['uID']." AND quoteID=$qID");

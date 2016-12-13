@@ -16,6 +16,16 @@
         $data = json_decode($_POST['data'],true);
         
         if(isset($_FILES['image']) && !empty($_FILES['image'])){
+            $remove[] = "'";
+            $remove[] = '"';
+            $remove[] = '.';
+            $remove[] = "-"; // just as another example
+            $author_n=str_replace($remove, "", strtolower($data['author']));
+            $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
+            $q_arr=str_replace($remove, "", strtolower($data['quote']));
+            $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
+            $name=$a.'_'.$q;
+            
             $image_name = $_FILES['image']['name'];
             $image_type = $_FILES['image']['type'];
             $image_temp = $_FILES['image']['tmp_name'];
@@ -26,8 +36,8 @@
                 $error = die("Error uploading file! Codigo: $error.");
                 $json_response = array('error'=>$error);
             } else {
-                move_uploaded_file($image_temp, "../../../images/quotes/".$random.".".$img_ext);
-                $data['quoteImage']=$random.".".$img_ext;
+                move_uploaded_file($image_temp, "../../../images/quotes/".$name.".".$img_ext);
+                $data['quoteImage']=$name.".".$img_ext;
             }
         }
         
@@ -38,8 +48,8 @@
         $col = implode(", " , $cols);
         $val= implode(", " , $vals);
         $response=$obj->save($table,$col,$val);
-        if($response){
-            $json_response = array('response'=>200,$response);
+        if($response){*/
+            $json_response = array('response'=>200,$name);
             echo json_encode($json_response);
         } else{
             $json_response = array('response'=>400,$response);
@@ -81,18 +91,28 @@
                 }
             }
             
+            $remove[] = "'";
+            $remove[] = '"';
+            $remove[] = '.';
+            $remove[] = "-"; // just as another example
+            $author_n=str_replace($remove, "", strtolower($data['author']));
+            $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
+            $q_arr=str_replace($remove, "", strtolower($data['quote']));
+            $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
+            $name=$a.'_'.$q;
+            
             $image_name = $_FILES['image']['name'];
             $image_type = $_FILES['image']['type'];
             $image_temp = $_FILES['image']['tmp_name'];
             $img_ext = pathinfo($image_name, PATHINFO_EXTENSION);
             $error = $_FILES['image']['error'];
-            $random = rand(1000, 99000);
             if($error > 0) {
                 $error = die("Error uploading file! Codigo: $error.");
                 $json_response = array('error'=>$error);
             } else {
-                move_uploaded_file($image_temp, "../../../images/quotes/".$random.".".$img_ext);
-                $data['quoteImage']=$random.".".$img_ext;
+                if(file_exists("../../../images/quotes/$name")) unlink("../../../images/quotes/$name");
+                move_uploaded_file($image_temp, "../../../images/quotes/".$name.".".$img_ext);
+                $data['quoteImage']=$name.".".$img_ext;
             }
         }
         

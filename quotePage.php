@@ -25,6 +25,7 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     $remove[] = '"';
     $remove[] = '.';
     $remove[] = ',';
+    $remove2 = '"';
     
     $getURL=explode('_',$_GET['quoteid']);
     $quote=$obj->find_by('quotes_en','quoteID',$getURL[0]);
@@ -36,7 +37,7 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
     
     $meta_tags = new HeadTags();
     $title = $meta_tags->titlePage('Find The Best Quotes');
-    $description = $meta_tags->meta_description('\''.$quote[0]['quote'].'\' - '.$quote[0]['author'].". Share with your friends on Facebook, Twitter, Instagram...");
+    $description = $meta_tags->meta_description(str_replace($remove2, "'", $quote[0]['quote']).' - '.$quote[0]['author'].". Share with your friends on Facebook, Twitter, Instagram...");
     $topicsArr=$obj->custom("SELECT topics_en.topicID, topics_en.topicName FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quotesTopicEN.quoteID=".$quote[0]['quoteID']);
     $count=0;
     $topics=array();
@@ -57,8 +58,11 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
         <?php include 'layouts/head.php'; ?>
         <style>
             @import url('https://fonts.googleapis.com/css?family=Comfortaa');
-
+            @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+            @import url('https://fonts.googleapis.com/css?family=PT+Serif');
+            #renderedCanva{box-shadow: -2px 2px 3px #ccc;}
             #original-content{margin-top: 10px;}
+            #original{overflow: hidden;width:1200px;height: 720px;} /*DELETE STATIC WIDTH AND HEIGHT*/
             .item{
                 margin-left: auto;
                 margin-right: auto;
@@ -69,16 +73,37 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
         
             }
             .item blockquote{
-                font-size: 3rem;padding-top: 20%;color: #fff;
+                color: #fff;
                 font-family: 'Comfortaa', cursive;
             }
             .item blockquote div{margin-top: 45px;}
-            .item blockquote div span{font-size: 3rem;font-family: 'Poiret One', cursive;padding-top: 5px;border-top: 1px solid #999;}
-            .item p{width: 100%;padding:5px;text-align: center;font-size: 3rem;color: #fff;font-family: 'Rouge Script', cursive;margin-top: 15%;background: rgba(0,0,0,0.5);width: 100%}
+            .item blockquote div span{font-family: 'Poiret One', cursive;padding-top: 5px;border-top: 1px solid #999;}
+            .item p{width: 100%;padding:5px;text-align: center;color: #fff;font-family: 'PT Serif', serif;background: rgba(0,0,0,0);width: 100%}
             #quoteImg{text-align: center;margin-top: 20px;}
             #quoteImg img{margin-left: auto;margin-right: auto;}
             #renderedCanva{visibility: hidden;}
             blockquote {border: 0;text-align: center;}
+            
+            .item blockquote{font-size: 3rem;padding-top: 12%;}
+            .item blockquote div span{font-size: 3.8rem;}
+            .item p{font-size: 4.5rem;margin-top: 100px;}
+           /*@media only screen and (min-width : 320px) {
+                .item blockquote{font-size: 2rem;padding-top: 12%;}
+                .item blockquote div span{font-size: 2rem;}
+                .item p{font-size: 3rem;margin: 0 !important;margin-top: 5px;}
+            }
+            @media only screen and (min-width : 480px) {
+                .item blockquote{font-size: 2.1rem;padding-top: 7%;}
+                .item blockquote div span{font-size: 2.1rem;}
+            }
+            @media only screen and (min-width : 768px) {
+                .item blockquote{font-size: 2.4rem;padding-top: 8%;}
+                .item blockquote div span{font-size: 2.4rem;}
+            }
+            @media only screen and (min-width : 992px) {
+                .item blockquote{font-size: 2.5rem;padding-top: 9%;}
+                .item blockquote div span{font-size: 2.5rem;}
+            }*/
         </style>
     </head>
     <body>
@@ -100,7 +125,7 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
             <section id="original-content" role="contentinfo">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-12" id="original">
+                        <div class="col-xs-12">
                             <img src="<?php echo $quote[0]['quoteImage']; ?>" class="img-responsive">
                         </div>
                     </div>
@@ -120,9 +145,9 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
                                 <p>PortalQuote</p>
                             </div>
                         </div>-->
-                        <div class="col-xs-12 item" id="original">
+                        <div class="col-xs-12 col-sm-10 col-md-8 item" id="original">
                             <blockquote><?php echo $quote[0]['quote']; ?> <div><span><?php echo $quote[0]['author']; ?></span></div></blockquote>
-                            <p>PortalQuote</p>
+                            <p>- PortalQuote.com -</p>
                         </div>
                     </div>
                 </div>

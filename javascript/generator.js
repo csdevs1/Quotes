@@ -72,13 +72,22 @@ var generator = {
         $('#text').css('text-align', just);
         //displayEditor();
     },
-    imageEffect:function(){
+    /*imageEffect:function(){
         var img=window.myImage,
             blur=document.getElementById('bgBlur').value,
             greyscale=document.getElementById('bgGrey').value;
         $('#blur-scale').text(blur+'%');
         $('#grey-scale').text(greyscale+'%');
         document.getElementById('quote-img').src=effects(img,blur,greyscale);
+    },*/
+    imageEffect:function(){
+        var img=window.myImage,
+            blur=document.getElementById('bgBlur').value,
+            greyscale=document.getElementById('bgGrey').value;
+        $('#blur-scale').text(blur+'%');
+        $('#grey-scale').text(greyscale+'%');
+        $('#quote-img').css('-webkit-filter','grayscale('+greyscale+'%) blur('+blur+'px)',
+                         'filter','grayscale('+greyscale+'%) blur('+blur+'px)');
     },
     panelSlide: function(id) {
         $('.sub-panel').not($(id)).hide();
@@ -118,8 +127,16 @@ function hideEditor(){
 $(document).ready(function() {
     $('#generated').css('visibility','hidden');
     $('#water-mark').css('display', 'none');
-    //Generate Image
+    //Generate Image    
     $('#generate').click(function(){
+        // APPLY EFFECTS
+        var imageUrl = URL.createObjectURL(document.getElementById('img-file').files[0]);
+        var img=window.myImage,
+            blur=document.getElementById('bgBlur').value,
+            greyscale=document.getElementById('bgGrey').value;
+        document.getElementById('quote-img').src=effects(img,blur,greyscale);
+        // APPLY EFFECTS
+        
         html2canvas($("#quote-container"), {
             allowTaint: true,
             onrendered: function(canvas) {

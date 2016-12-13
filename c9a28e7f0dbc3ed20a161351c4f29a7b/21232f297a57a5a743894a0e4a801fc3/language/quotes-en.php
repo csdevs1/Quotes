@@ -57,7 +57,7 @@ if(empty($_POST['dataARR'])){
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-chatbubble-working"></i></span>
                 <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="" <?php if($_SESSION['label']=='image') echo 'disabled';?>>
-                <?php if($_SESSION['label']=='image'){?>
+                <?php if($_SESSION['label']!='image'){?>
                 <div class="col-xs-12 search-list" id="topicList">
                     <ul class="list-unstyled">
                     </ul>
@@ -386,7 +386,8 @@ if(empty($_POST['dataARR'])){
             token1.done(function(generatedToken1){
                 var newQuote = insert('quotes_en',arr,generatedToken1,image);
                 newQuote.done(function(response){
-                    if(response){
+                    console.log(response);
+                    /*if(response){
                         var lastQuote = limit('quotes_en','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
                             var arr2={},
@@ -434,7 +435,7 @@ if(empty($_POST['dataARR'])){
                                 });
                             }
                         });
-                    }
+                    }*/
                 });
             });
         }
@@ -454,10 +455,11 @@ if(empty($_POST['dataARR'])){
                 var arr = {'authorName':'authorName'};
             var search = like(table,arr,pattern);
             search.done(function(response){
+                console.log(response);
                 if(Object.keys(response[0]).length != 0){
                     $('#'+id+' ul').html('');
                     for(var i in response[0]){
-                        if(row==='topic')
+                        if(row=='topic')
                             $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\',\'csv\')">'+response[0][i].topicName+'</li>');
                         else
                             $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\')">'+response[0][i].authorName+'</li>');

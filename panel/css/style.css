@@ -1,7 +1,7 @@
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
 @import 'https://fonts.googleapis.com/css?family=Raleway|Reem+Kufi';
-@import url(http://fonts.googleapis.com/css?family=Glegoo);
+@import url(https://fonts.googleapis.com/css?family=Glegoo);
 /*
 Template Name: Velonic Dashboard build with Bootstrap v3.3.6
 Template Version: 2.1
@@ -1991,6 +1991,8 @@ ul.p-social-link li a {
 .img-wrapper input{height: 100px;opacity: 1;width: 99%;opacity: 0;}
 .img-wrapper input:hover{cursor: pointer;}
 .img-wrapper i{font-size: 1.9rem;z-index: 999;float: right;right: 5px;bottom: 0px;color: #fff;font-weight: 100;}
+
+.at4-share-outer{display: none;}
 /*QUOTES*/
     .quote {
         margin-bottom: 10px;
@@ -2010,6 +2012,9 @@ ul.p-social-link li a {
         font-weight: 900;
         box-shadow: -3px 2px 4px #222;
     }.circle-ref:hover{cursor: pointer;}
+    
+    .quote .pad blockquote a {color: #777;transition: all 0.5s;}.quote .pad blockquote a:hover {color: #555;}
+
     .quote blockquote {
         margin-top: 5px;
         font-family: 'Glegoo', serif;
