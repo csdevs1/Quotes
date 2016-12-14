@@ -96,6 +96,8 @@ footer div #subscribe{border-top-left-radius: 0;border-bottom-left-radius: 0;fon
 #search-box .container{position: relative;}
 #search-box .container button,#search-box .container button:focus {float: right;color:#fff;z-index: 3000;font-size: 3rem;background: transparent;border: 0;}
 
+.search-btn {margin-top:10px;}.search-btn input,.search-btn input:active,.search-btn input:focus{background:rgba(255,255,255,0.5);color:#fff;border:none;outline: none;}
+
 .input-search {
     height:auto;
     font-size: 7rem;
@@ -434,7 +436,7 @@ video{
     display: block;
     text-align: right;
     font-size: 1.3rem;
-    margin-top: 10px;
+    margin-top: 24px;
     text-transform: uppercase;
 }
 .author-quote blockquote span {
@@ -719,7 +721,8 @@ video{
 
 /* Extra Small Devices, Phones */
 @media (max-width: 767px) {
-    footer ul li{height:40px}    
+    footer ul li{height:40px}
+    
     video{display: none;}
     .nav.navbar-nav li a:hover {
         transform: scale(1);

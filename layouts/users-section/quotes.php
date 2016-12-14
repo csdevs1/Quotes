@@ -46,8 +46,8 @@
             ?>
             <img class="img-responsive" src="<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="">
             <?php } ?>
-            <blockquote itemprop="citation"><a href="https://portalquote.com/panel/quote/<?php echo $user[0]['username'].'/'.$share_url; ?>" role="link"><?php echo $quote; ?></a> <span itemprop="author">- <?php echo $author; ?></span></blockquote>
-            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/panel/quote/<?php echo $user[0]['username'].'/'.$share_url; ?>" data-title="Hey, check out this quote by <?php echo $user[0]['username']; ?> | PortalQuote"></div>
+            <blockquote itemprop="citation"><a href="https://portalquote.com/panel/quote/<?php echo $user[0]['username'].'/1'.$share_url; ?>" role="link"><?php echo $quote; ?></a> <span itemprop="author">- <?php echo $author; ?></span></blockquote>
+            <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/panel/quote/<?php echo $user[0]['username'].'/1'.$share_url; ?>" data-title="Hey, check out this quote by <?php echo $user[0]['username']; ?> | PortalQuote"></div>
             <?php 
                 if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
                     $liked=$obj->like('userQuotes_like', "userID=".$_SESSION['uID']." AND quoteID=$qID");
@@ -57,7 +57,7 @@
                 <div class="col-xs-4 col-md-4"><p><span><?php echo $nLikes[0]['cnt']; ?></span><a class="like disable" role="button" data-toggle="popover" data-placement="top" data-title="Want to like this?" data-content="<a href='' data-toggle='modal' data-target='#signup'>Sign up</a> or <a href='' data-toggle='modal' data-target='#login'>Login</a>">Like<?php if($nLikes[0]['cnt']>1 || $nLikes[0]['cnt']==0) echo 's'; ?></a></p></div>
             <?php } ?>
             <div class="col-xs-12 _user-posted text-muted">
-                Poster by: <a href="/panel/quotes/<?php echo $user[0]['username']; ?>" role="link" class=""><?php echo $user[0]['username']; ?></a>
+                Poster by: <a href="/panel/quotes/<?php echo $user[0]['username']; ?>/1" role="link" class=""><?php echo $user[0]['username']; ?></a>
             </div>
         </div>
     </div>

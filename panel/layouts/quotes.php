@@ -1,17 +1,25 @@
 <?php
     session_start();
     require_once('../../AppClasses/AppController.php');
+    require_once '../../AppClasses/Paginator.php';
     $obj = new AppController();
-    $quotes2=$obj->find_by('userQuotes','userID',$_SESSION['uID']);
+    //$quotes2=$obj->find_by('userQuotes','userID',$_SESSION['uID']);
+
+    $limit2 = (isset( $_GET['limit'])) ? $_GET['limit'] : 2;
+    $page2 = (isset( $_GET['page'])) ? $_GET['page'] : 1;
+    $links2 = (isset( $_GET['links'])) ? $_GET['links'] : 7;
+    $Paginator2  = new Paginator("userQuotes WHERE userID='".$_SESSION['uID']."'");
+    $quotesARR2 = $Paginator2->getData("userQuotes WHERE userID='".$_SESSION['uID']."'","quoteID",$limit2,$page2);
+    $quotes2=$quotesARR2->data;
 ?>
 <div class="masonry-container">
     <?php
     foreach($quotes2 as $key=>$val){
-        $qID=$quotes[$key]['quoteID'];
-        $quote=$quotes[$key]['quote'];
-        $qImage=$quotes[$key]['quoteImage'];
-        $author=$quotes[$key]['author'];
-        $u_id=$quotes[$key]['userID'];
+        $qID=$quotes2[$key]['quoteID'];
+        $quote=$quotes2[$key]['quote'];
+        $qImage=$quotes2[$key]['quoteImage'];
+        $author=$quotes2[$key]['author'];
+        $u_id=$quotes2[$key]['userID'];
         $user=$obj->find_by('users','userID',$u_id);
         $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM userQuotes_like WHERE quoteID=$qID");
         /*$count=0;

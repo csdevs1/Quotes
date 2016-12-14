@@ -45,6 +45,12 @@ document.getElementById("input-search").addEventListener("keyup", function(event
         window.location=url;
     }
 });
+$('#search-btn').click(function(){
+    var t=$('input[name=search]:checked').val(),
+        q=$('#input-search').val();
+    var url='/quotes/search/'+t+'/'+escape(q)+'/1';
+    window.location=url;
+});
 /**/
 
 
@@ -71,14 +77,3 @@ $(document).ready(function(){
         );
     }
 });
-
-/* Remove this function when coding the real upvoting system*/
-var val=true;
-var count = 0;
-function myFunction(el) {
-    val ? count++:count--;
-    val ? el.innerHTML = "Liked <span class='heart'>	&#9829;</span>":el.innerHTML = "Like";
-    val ? el.setAttribute('class', 'liked'):el.setAttribute('class', 'like');
-    el.previousElementSibling.innerHTML = count;
-    val=!val;
-}

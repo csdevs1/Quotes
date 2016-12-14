@@ -128,7 +128,7 @@
 </div>
 <?php } } ?>
 
-<div class="container">
+<div class="">
     <div class="row" id="row">
         <?php
             foreach($topics as $key=>$val){
@@ -314,6 +314,7 @@ var openUpdate=function(topID,resRel){
         var topic = $('#topic-up').val(),
             keywords = $('#keywords-up').val(),
             imagesToUpdate = $("input[name='imagesUpdate[]']").map(function(){return $(this).prop('files')[0];}).get(),
+            imagesToDelete = $("input[name='imagesDelete[]']").map(function(){return $(this).prop('files')[0];}).get(),
             images = $("input[name='images[]']").map(function(){return $(this).prop('files')[0];}).get(), // NEW IMAGES
             arr = {};
         if(topic && topic != ''){
@@ -428,7 +429,7 @@ function imagesToUpdate(src,id){
     
     // I TAG
     i_Tag.setAttribute('class','ion-close-circled close');
-    i_Tag.setAttribute('onclick','deleteField(this;deleteImage('+id+'))');
+    i_Tag.setAttribute('onclick','deleteField(this);deleteImage('+id+')');
     
     // Append elements to Col
     col.appendChild(i_Tag);
@@ -441,7 +442,7 @@ function imagesToUpdate(src,id){
 }
     
     // FB API INIT
-    window.fbAsyncInit = function() {
+  /*  window.fbAsyncInit = function() {
                 FB.init({
                   appId      : '186483935126603',
                   xfbml      : true,
@@ -480,7 +481,7 @@ function imagesToUpdate(src,id){
 			}
 		    i++;
 		}, 3*60000);
-	    }
+	    }*/
             
     var save = function(el) {
         $(el).attr('disabled','disabled');
@@ -558,6 +559,16 @@ function imagesToUpdate(src,id){
         } else {
             console.log('Error');
         }
+    }
+    
+    var deleteImage=function(id){
+        var token = generateToken();
+        token.done(function(generatedToken){
+            var deleteimg=delete_function('topicsImages','id',id,generatedToken);
+            deleteimg.done(function(response){
+                console.log(response);
+            });
+        });
     }
     
     var checkAvailability = function(){

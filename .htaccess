@@ -30,7 +30,7 @@ RewriteRule ^00f6b23d0b02d36148b35cc4e65e0c51/ae540687e4c25bcd1546846e96a63790$ 
 
 
 #USER PANEL
-RewriteRule ^panel/quotes/(.*)$ panel/index.php?uname=$1
+RewriteRule ^panel/quotes/(.*)/(.*)$ panel/index.php?uname=$1&page=$2
 RewriteRule ^panel/collection/(.*)$ panel/image-collection.php?uname=$1
 RewriteRule ^panel/followers/(.*)$ panel/user-followers.php?uname=$1
 RewriteRule ^panel/following/(.*)$ panel/user-following.php?uname=$1
