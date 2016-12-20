@@ -137,7 +137,7 @@
         ?>
         <div class="col-xs-12 col-sm-6 col-md-4 box-content data">
             <?php if($_SESSION['label'] !='author' && $_SESSION['label'] !='image'){ ?><div class="circle-ref" onclick="topicsTranslation(<?php echo $topicID[0]['id']; ?>)"><?php echo $topicID[0]['id']; ?></div><?php } ?>
-            <div class="inner-box background" style="background-image:url('<?php echo $images[0]['img_url'] ?>');">
+            <div class="inner-box background" style="background-image:url('https://portalquote.com/images/topics-images/<?php echo $images[0]['img_url'] ?>');">
                 <h3 data-placement="top" title="Edit Topic" <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang'])  && $_SESSION['label'] !='author'){if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ ?>onclick="openUpdate(<?php echo $topics[$key]['topicID'] ?>,<?php echo $topicID[0]['id']; ?>)"<?php } } ?>><a><?php echo $topics[$key]['topicName'] ?></a></h3>
             </div>
             
@@ -340,54 +340,50 @@ var openUpdate=function(topID,resRel){
                     log.done(function(res2){
                         console.log(res2);
                     });
-                    
-                    console.log(data);
-                    if(Object.keys(imagesToUpdate).length > 0){ // Images to be updated
-                        var imagesToUpdateID = $("input[name='imageID[]']").map(function(){if($(this).prev().val()!='') return $(this).val();}).get();
-                        var arr3={};
-                        var count = 0;
-                        for(var i in imagesToUpdate){
-                            var imageUpload = imgur_upload(imagesToUpdate[i]);
-                            console.log('Uploading Image');
-                            imageUpload.done(function(img){
-                                var url = img.data.link;
-                                arr3['img_url'] = url.replace('http','https');
-                                var token2 = generateToken();
-                                token2.done(function(generatedToken2){
-                                    var update_image = update('topicsImages',arr3,'id',imagesToUpdateID[count],generatedToken2);
-                                    update_image.done(function(updated_img){
-                                        setTimeout(function() {
-                                            topics('Topic Updated correctly',document.getElementById('topic-eng'));
-                                        }, 2000);
-                                    });
-                                });
-                            });
-                            //console.log(imagesToUpdate[i]+" and ID: "+ imagesToUpdateID[i]+"\n");
-                        }
-                    }
-                    if(Object.keys(images).length > 0){ // There's a new image
-                        var topicRel = find_by('topics','tEN_id',topID);
-                        topicRel.done(function(data2){
+                    var count=0;
+                    if(Object.keys(imagesToUpdate).length > 0 || Object.keys(images).length > 0){
+                        if(Object.keys(imagesToUpdate).length > 0){
+                            var imagesToUpdateID = $("input[name='imageID[]']").map(function(){if($(this).prev().val()!='') return $(this).val();}).get();
                             var arr3={};
-                            arr3['tID']=data2[0][0].id;
-                            for(var i in images){
-                                 var image = imgur_upload(images[i]);
-                                image.done(function(img){
-                                    var url = img.data.link;
-                                    arr3['img_url']=url.replace('http','https');
-                                    var token3 = generateToken();
-                                    token3.done(function(generatedToken3){
-                                         var insertImages = insert('topicsImages',arr3,generatedToken3);
-                                        insertImages.done(function(data2){
-                                            setTimeout(function() {
-                                                topics('Topic Updated correctly',document.getElementById('topic-eng'));
-                                            }, 2000);
-                                        });
+                            for(var i in imagesToUpdate){
+                                var token3 = generateToken();
+                                token3.done(function(generatedToken3){
+                                    count++;
+                                    arr3['topicName']=topic+' '+count;
+                                    var update_image = update('topicsImages',arr3,'id',imagesToUpdateID[i],generatedToken3,imagesToUpdate[i]);
+                                    update_image.done(function(data){
+                                        console.log(data);
                                     });
                                 });
                             }
-                        });
-                    }if(Object.keys(imagesToUpdate).length == 0 && Object.keys(images).length == 0){
+                        }
+                        if(Object.keys(images).length > 0){
+                            var topicRel = find_by('topics','tEN_id',topID);
+                            topicRel.done(function(relID){
+                                console.log(relID);
+                                var arr3={};
+                                arr3['tID']=relID[0][0].id;
+                                for(var i in images){
+                                    var token3 = generateToken();
+                                    token3.done(function(generatedToken3){
+                                        count++;
+                                        arr3['topicName']=topic+' '+count;
+                                        var insertImages = insert('topicsImages',arr3,generatedToken3,images[i]);
+                                        insertImages.done(function(data){
+                                            console.log(data);
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                        $(el).removeAttr('disabled');
+                        el.innerHTML = "Saved!";
+                        console.log('Done!');
+                        setTimeout(function() {
+                            topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                        }, 2000);
+                    }
+                    if(Object.keys(imagesToUpdate).length == 0 && Object.keys(images).length == 0){
                         setTimeout(function() {
                             topics('Topic Updated correctly',document.getElementById('topic-eng'));
                         }, 2000);
@@ -396,7 +392,8 @@ var openUpdate=function(topID,resRel){
             });
         }
     }
-function imagesToUpdate(src,id){
+    
+    function imagesToUpdate(src,id){
     var x = document.createElement("INPUT"); //file
     var hidden = document.createElement("INPUT"); //file
     var image = document.createElement("IMG");
@@ -442,7 +439,7 @@ function imagesToUpdate(src,id){
 }
     
     // FB API INIT
-  /*  window.fbAsyncInit = function() {
+    /*window.fbAsyncInit = function() {
                 FB.init({
                   appId      : '186483935126603',
                   xfbml      : true,
@@ -480,16 +477,14 @@ function imagesToUpdate(src,id){
 			console.log('Done!');
 			}
 		    i++;
-		}, 3*60000);
-	    }*/
+        }, 3*60000);
+    }*/
             
     var save = function(el) {
-        $(el).attr('disabled','disabled');
-        el.innerHTML = "Saving";
         var author = $('#topic').val(),
             keywords = $('#keywords').val(),
             images = $("input[name='images[]']").map(function(){return $(this).prop('files')[0];}).get(),
-            arr = {};
+            arr = {};        
         if(author && author != ''){
             arr['topicName'] = author;
             var seo = author.replace(/["']/g, "");
@@ -504,6 +499,8 @@ function imagesToUpdate(src,id){
         if(arr['topicName'] != '' && arr['keywords'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
+		(el).attr('disabled','disabled');
+        	el.innerHTML = "Saving";
                 var insert_topic = insert('topics_en',arr,generatedToken);
                 insert_topic.done(function(data){
                     var lastTopic = limit('topics_en','topicID','topicID',1);
@@ -521,32 +518,31 @@ function imagesToUpdate(src,id){
                                         var arr3={};
                                         console.log(relID[0][0].id);
                                         arr3['tID']=relID[0][0].id;
+                                        var count=0;
                                         for(var i in images){
-                                            var image = imgur_upload(images[i]);
-                                            image.done(function(img){
-                                                var url = img.data.link;
-                                                arr3['img_url']=url.replace('http','https');
-                                                var token3 = generateToken();
-                                                token3.done(function(generatedToken3){
-                                                    var insertImages = insert('topicsImages',arr3,generatedToken3);
-                                                    insertImages.done(function(){
-                                                        $(el).removeAttr('disabled');
-                                                        el.innerHTML = "Saved!";
-                                                        console.log('Done!');
-						postToPage(author);
-                                                        setTimeout(function() {
-                                                            topics('Topic Saved correctly',document.getElementById('topic-eng'));
-                                                        }, 2000);
-                                                    });
+                                            var token3 = generateToken();
+                                            token3.done(function(generatedToken3){
+                                                count++;
+                                                arr3['topicName']=author+' '+count;
+                                                var insertImages = insert('topicsImages',arr3,generatedToken3,images[i]);
+                                                insertImages.done(function(data){
+                                                    console.log(data);
                                                 });
                                             });
                                         }
+                                        $(el).removeAttr('disabled');
+                                        el.innerHTML = "Saved!";
+                                        console.log('Done!');
+                                        postToPage(author);
+                                        setTimeout(function() {
+                                            topics('Topic Saved correctly',document.getElementById('topic-eng'));
+                                        }, 2000);
                                     });
                                 } else{
                                     $(el).removeAttr('disabled');
                                     el.innerHTML = "Saved!";
                                     console.log('Done!');
-					postToPage(author);
+                                    postToPage(author);
                                     setTimeout(function() {
                                         topics('Topic Saved correctly',document.getElementById('topic-eng'));
                                     }, 2000);

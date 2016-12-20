@@ -22,7 +22,6 @@
     }
     .list-item-container .btn {
         width: 100%;
-        margin-top: 30%;
     }
     .icon-u{position: relative;}
     .icon-u .ion-person{font-size: 8rem;position: absolute;top:0;}
@@ -32,20 +31,22 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <ul class="list-group">
-                <?php foreach($users as $key=>$val){ $user=explode('@',$users[$key]['email']); ?>
+                <?php foreach($users as $key=>$val){ $user=$users[$key]['usrName']; ?>
                 <li class="list-group-item filter-user">
                     <div class="list-item-container">
                         <div class="icon-u col-md-3">
                             <span class="ion-person"></span>
                         </div>
                         <div class="col-md-4">
-                            <h2 class="text-center"> <?php echo $user[0]; ?></h2>
+                            <h2 class="text-center"> <?php echo $user; ?></h2>
                         </div>
                         <div class="col-md-3 text-center">
-                            <a href="#" class="btn btn-primary btn-sm" onclick="usrDetails(<?php echo $users[$key]['id'] ?>)">View more</a>
+                            <p><a href="#" class="btn btn-primary btn-sm" onclick="usrDetails(<?php echo $users[$key]['id'] ?>)">View more</a></p>
+                            <p><a href="#" class="btn btn-inverse btn-sm" onclick="usrSettings(<?php echo $users[$key]['id'] ?>)">Settings</a></p>
+                            <p><a href="#" class="btn btn-danger btn-sm" onclick="deleteUsr(this,<?php echo $users[$key]['id'].",'".$user."'"; ?>)">Delete User</a></p>
                         </div>
                         <div class="col-md-3 text-center">
-                            <a href="#" class="btn btn-inverse btn-sm" onclick="usrSettings(<?php echo $users[$key]['id'] ?>)">Settings</a>
+                            
                         </div>
                     </div>
                 </li>
@@ -54,3 +55,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    function deleteUsr(el,id,name){
+        swal({title: "Are you sure?",text: "You're about to delete "+name+"!",type: "warning",showCancelButton: true,confirmButtonColor: "#DD6B55",confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){
+            var token = generateToken();
+            token.done(function(generatedToken){
+                var deleted = delete_function('dashboard_usrs','id',id,generatedToken);
+                deleted.done(function(response){
+                    swal("Deleted!", name+" has been deleted.", "success");
+                    $(el).parent().parent().parent().parent().remove();
+                });
+            });     
+        });
+    }
+</script>

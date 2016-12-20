@@ -5,6 +5,7 @@
     $author=$obj->find_by('authors','authorID',$_POST['id']);
     $professions_en=$obj->all('professions ORDER BY professionName ASC');
     $professions_es=$obj->all('professions_es ORDER BY professionName ASC');
+    $userAuthor=$obj->all('dashboardUsr_Authors_en WHERE userID='.$_SESSION['id'].' AND authorID='.$author[0]['authorID']);
 
     $professionsRel = $obj->find_by('authorProfession','authorID',$_POST['id']); //Profession an Author is
     $count=0;
@@ -14,6 +15,7 @@
         $professionEN[$count]=$obj->find_by('professions','professionID',$professionsRel[$key]['professionID']); // get authors profession in spanish
         $count++;
     }
+
 $count=0;
 //AUTHOR'S PROFESSIONS IN SPANISH
     $professionES=array();
@@ -27,6 +29,7 @@ $count=0;
 
 // SPANISH
 $authorES=$obj->find_by('authors_es','aID',$_POST['id']);
+$userAuthorES=$obj->all('dashboardUsr_Authors_es WHERE userID='.$_SESSION['id'].' AND authorID='.$author[0]['authorID']);
 
 $countries = array('Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Puerto Rican', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian/Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean');
 
@@ -84,9 +87,9 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
 </div>
 
 <!-- TO TRANSLATE IN ENG -->
-<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
-                    if($_SESSION['lang']=='en' || $_SESSION['lang']=='all'){
-            ?>
+<?php if((isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1])) || (isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0])) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
+    if($_SESSION['lang']=='en' || $_SESSION['lang']=='all'){
+?>
 <div class="container quote-form" id="author-en">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -171,6 +174,13 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
+                <span class="input-group-addon"><i class="ion-image"></i></span>                
+                <input type="file" class="form-control image-file" id="image" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
+                <span class="up-label">Upload an image</span>
+            </div>
+        </div>
+        <div class="form-group col-xs-12">
+            <div class="input-group">
                 <button type="button" class="btn btn-primary" onclick="update_author(this,'en',<?php echo $author[0]['authorID']; ?>)" id="save-en">Traducir</button>
             </div>
         </div>
@@ -179,9 +189,9 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
 <?php } } ?>
 
 <!-- TO TRANSLATE IN SPANISH -->
-<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
-                    if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){
-            ?>
+<?php if((isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1])) || (isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0])) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
+    if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){
+?>
 <div class="container quote-form" id="author-es">
     <div class="row">
         <div class="col-xs-12 relative-container">
@@ -277,7 +287,7 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
 <div class="container">
     <div class="row">
         <div class="col-xs-12 addauthor">
-            <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
+            <?php if((isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) || isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1])) && count($userAuthor)>0 || $_SESSION['label']=='root' && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
                     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){
             ?>
                 <button class="button" onclick="openUpdate(this,'en',<?php echo $_POST['id']; ?>)" style="background-image: url('images/eng.png');">Edit</button>
@@ -290,14 +300,14 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
 <div class="container">
     <div class="row">
         <div class="col-xs-12 addauthor">
-            <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
+            <?php if((isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0]) || isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1])) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
                     if($_SESSION['lang']=='es' || $_SESSION['lang']=='all'){
             ?>
             <?php if(empty($authorES)){ ?>
                 <button class="button" onclick="openForm(this,'es')" style="background-image: url('images/es.png');">Traducir al Espanol</button>
-            <?php }else{ ?>
+            <?php }else{if(count($userAuthor)>0){ ?>
                 <button class="button" onclick="openUpdate(this,'es',<?php echo $_POST['id']; ?>)" style="background-image: url('images/es.png');">Editar</button>
-            <?php } } }?>
+            <?php } } } }?>
         </div>
     </div>
 </div>
@@ -367,6 +377,29 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
                 });
             }
         });
+    }
+    
+    // Validates that the input string is a valid date formatted as "yy/mm/dd"
+    function isValidDate(dateString){
+        // First check for the pattern
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(dateString))
+            return false;
+
+        // Parse the date parts to integers
+        var parts = dateString.split("-");
+        var month = parseInt(parts[1], 10);
+        var year = parseInt(parts[0], 10);
+        var day = parseInt(parts[2], 10);
+        // Check the ranges of month and year
+        if(year < 1000 || year > 3000 || month == 0 || month > 12)
+            return false;
+        
+        var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+        // Adjust for leap years
+        if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+            monthLength[1] = 29;
+        // Check the range of the day
+        return day > 0 && day <= monthLength[month - 1];
     }
     
     var save=function(el,lang,aID){
@@ -452,86 +485,42 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
             bio=$('#profile-'+lang).val(),
             url=$('#url-'+lang).val(),
             arr = {},
-            arr2 = {};
-        if($('#bdate-'+lang).val()!='')
-            arr['birth'] = birth;
-        else
-            console.log('Error Birthday');
-        if($('#pdate-'+lang).val()!='')
-            arr['died'] = $('#pdate').val();
-        if($('#country-'+lang).val()!='')
+            arr2 = {},
+            errors=[];
+        if($('#bdate').val()!=''){
+            if(isValidDate(birth))
+                arr['birth'] = birth;
+            else
+                errors.push('Error date format');
+        }
+        if($('#pdate').val()!=''){
+            if(isValidDate(birth))
+                arr['died'] = birth;
+            else
+                errors.push('Error date format');
+        }
+        if($('#country').val()!='')
             arr['nationality'] = country;
         else
-            console.log('Error Country');
-        if($('#profile-'+lang).val()!='')
+            errors.push('Country cannot be blank!');
+        if($('#profile').val()!='')
             arr['bio'] = bio;
         else
-            console.log('Error profile');
-        if($('#url-'+lang).val()!='')
+            errors.push('Author\'s description cannot be blank!');
+        if($('#url').val()!='')
             arr['sourceURL'] = url;
         else
             console.log('Error Source');
-        /*if($('#image').val()!=''){
-            if(arr['authorName'] != '' && arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
-                var token = generateToken();
-                token.done(function(generatedToken){
-                    var image = imgur_upload($('#image').prop('files')[0]);
-                    image.done(function(response){
-                        var url = response.data.link;
-                        arr['authorImage'] = url.replace('http','https');
-                        var update_author = update('authors',arr,'authorID',aID,generatedToken);
-                        update_author.done(function(data){
-                            if(profession.legnth > 0){
-                                arr2['authorID']=aID;
-                                var token2 = generateToken();
-                                token2.done(function(generatedToken2){
-                                    var deleteRel = delete_function('authorProfession','authorID',aID,generatedToken2);
-                                    deleteRel.done(function(deleted){
-                                        for(var i in profession){
-                                            arr2['professionID']=profession[i];
-                                            var token3 = generateToken();
-                                            token3.done(function(generatedToken3){
-                                                var authorProfession = insert('authorProfession',arr2,generatedToken3);
-                                                authorProfession.done(function(response2){
-                                                    //NEW STUFF
-                                                    var logArr={};
-                                                    logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+aID+')">'+aID+'</a>';
-                                                    var log=insertLog('dashboard_logs',logArr,'logs');
-                                                    log.done(function(res2){
-                                                        console.log(res2);
-                                                    });
-                                                    //NEW STUFF
-                                                    
-                                                    $(el).removeAttr('disabled');
-                                                    el.innerHTML = "Updated!";
-                                                    setTimeout(function() {
-                                                        clearFields();
-                                                        closeWindow();
-                                                    }, 200);
-                                                });
-                                            });
-                                        }
-                                    });
-                                });
-                            }else{
-                                console.log(data);
-                                $(el).removeAttr('disabled');
-                                el.innerHTML = "Updated!";
-                                setTimeout(function() {
-                                    clearFields();
-                                    closeWindow();
-                                }, 200);
-                            }
-                        });
-                    });
-                });
-            }
-        }else */if(arr['birth'] != '' && arr['country'] != '' && arr['bio'] != ''){
+        if(errors.length < 1){
             var token = generateToken();
             token.done(function(generatedToken){
                 lang=='en' ? x='':x='_'+lang;
                 lang=='en' ? idROW='authorID':idROW='aID';
-                var update_author = update('authors'+x,arr,idROW,aID,generatedToken);
+                if($('#image').val()!='')
+                    var image=$('#image').prop('files')[0];
+                else
+                    var image='';
+                var update_author = update('authors'+x,arr,idROW,aID,generatedToken,image);
                 update_author.done(function(data){
                     //NEW STUFF
                     switch(lang){

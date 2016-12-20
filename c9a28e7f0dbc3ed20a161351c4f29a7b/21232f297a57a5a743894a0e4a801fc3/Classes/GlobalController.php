@@ -20,24 +20,45 @@
             $remove[] = '"';
             $remove[] = '.';
             $remove[] = "-"; // just as another example
-            $author_n=str_replace($remove, "", strtolower($data['author']));
-            $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
-            $q_arr=str_replace($remove, "", strtolower($data['quote']));
-            $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
-            $name=$a.'_'.$q;
-            
+            if($table=='quotes_en'){
+                $author_n=str_replace($remove, "", strtolower($data['author']));
+                $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
+                $q_arr=str_replace($remove, "", strtolower($data['quote']));
+                $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
+                $name=$a.'_'.$q;
+            }elseif($table=='authors'){
+                $author_n=str_replace($remove, "", strtolower($data['authorName']));
+                $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));  
+                $name=$a.'_portalquote';
+            }elseif($table=='topicsImages'){
+                $topic=str_replace($remove, "", strtolower($data['topicName']));
+                unset($data['topicName']);
+                $t=implode('-', array_slice(explode(' ', strtolower($topic)), 0, 10));  
+                $name=$t.'_portalquote';
+            }
+
             $image_name = $_FILES['image']['name'];
             $image_type = $_FILES['image']['type'];
             $image_temp = $_FILES['image']['tmp_name'];
             $img_ext = pathinfo($image_name, PATHINFO_EXTENSION);
             $error = $_FILES['image']['error'];
-            $random = rand(1000, 99000);
             if($error > 0) {
                 $error = die("Error uploading file! Codigo: $error.");
                 $json_response = array('error'=>$error);
             } else {
-                move_uploaded_file($image_temp, "../../../images/quotes/".$name.".".$img_ext);
-                $data['quoteImage']=$name.".".$img_ext;
+                if($table=='quotes_en'){
+                    if(file_exists("../../../images/quotes/".$name.".".$img_ext)){unlink("../../../images/quotes/".$name.".".$img_ext);clearstatcache();}
+                    move_uploaded_file($image_temp, "../../../images/quotes/".$name.".".$img_ext);
+                    $data['quoteImage']=$name.".".$img_ext;
+                }elseif($table=='authors'){
+                    if(file_exists("../../../images/author-images/".$name.".".$img_ext)){unlink("../../../images/author-images/".$name.".".$img_ext);clearstatcache();}
+                    move_uploaded_file($image_temp, "../../../images/author-images/".$name.".".$img_ext);
+                    $data['authorImage']=$name.".".$img_ext;
+                }elseif($table=='topicsImages'){
+                    if(file_exists("../../../images/topics-images/".$name.".".$img_ext)){unlink("../../../images/topics-images/".$name.".".$img_ext);clearstatcache();}
+                    move_uploaded_file($image_temp, "../../../images/topics-images/".$name.".".$img_ext);
+                    $data['img_url']=$name.".".$img_ext;
+                }
             }
         }
         
@@ -49,7 +70,7 @@
         $val= implode(", " , $vals);
         $response=$obj->save($table,$col,$val);
         if($response){
-            $json_response = array('response'=>200,$name);
+            $json_response = array('response'=>200,$response);
             echo json_encode($json_response);
         } else{
             $json_response = array('response'=>400,$response);
@@ -60,13 +81,6 @@
         $table = $_POST['table'];
         $row = $_POST['row'];
         $data = json_decode($_POST['data'],true);
-        
-        if($table=='authors'){
-            $author_user=$obj->custom('SELECT COUNT(userID) as "cnt" FROM dashboardUsr_Authors_en WHERE userID='.$_SESSION['id'].' AND authorID='.$id);
-            if($author_user[0]['cnt']<1){ // CHECK IF THERE'S A RELATION BETWEEN THE QUOTE AND THE USER
-                $obj->save('dashboardUsr_Authors_en','userID,authorID',$_SESSION['id'].','.$id);
-            }
-        }
         
         if(isset($_FILES['image']) && !empty($_FILES['image'])){
             if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label']=='image'){
@@ -90,16 +104,26 @@
                     }
                 }
             }
-            
             $remove[] = "'";
             $remove[] = '"';
             $remove[] = '.';
             $remove[] = "-"; // just as another example
-            $author_n=str_replace($remove, "", strtolower($data['author']));
-            $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
-            $q_arr=str_replace($remove, "", strtolower($data['quote']));
-            $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
-            $name=$a.'_'.$q;
+            if($table=='quotes_en'){
+                $author_n=str_replace($remove, "", strtolower($data['author']));
+                $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
+                $q_arr=str_replace($remove, "", strtolower($data['quote']));
+                $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
+                $name=$a.'_'.$q;
+            }elseif($table=='authors'){
+                $author_n=str_replace($remove, "", strtolower($data['authorName']));
+                $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));  
+                $name=$a.'_portalquote';
+            }elseif($table=='topicsImages'){
+                $topic=str_replace($remove, "", strtolower($data['topicName']));
+                unset($data['topicName']);
+                $t=implode('-', array_slice(explode(' ', strtolower($topic)), 0, 10));  
+                $name=$t.'_portalquote';
+            }
             
             $image_name = $_FILES['image']['name'];
             $image_type = $_FILES['image']['type'];
@@ -110,9 +134,19 @@
                 $error = die("Error uploading file! Codigo: $error.");
                 $json_response = array('error'=>$error);
             } else {
-                if(file_exists("../../../images/quotes/$name")) unlink("../../../images/quotes/$name");
-                move_uploaded_file($image_temp, "../../../images/quotes/".$name.".".$img_ext);
-                $data['quoteImage']=$name.".".$img_ext;
+                if($table=='quotes_en'){
+                    if(file_exists("../../../images/quotes/".$name.".".$img_ext)){unlink("../../../images/quotes/".$name.".".$img_ext);clearstatcache();}
+                    move_uploaded_file($image_temp, "../../../images/quotes/".$name.".".$img_ext);
+                    $data['quoteImage']=$name.".".$img_ext;
+                }elseif($table=='authors'){
+                    if(file_exists("../../../images/author-images/".$name.".".$img_ext)){unlink("../../../images/author-images/".$name.".".$img_ext);clearstatcache();}
+                    move_uploaded_file($image_temp, "../../../images/author-images/".$name.".".$img_ext);
+                    $data['authorImage']=$name.".".$img_ext;
+                }elseif($table=='topicsImages'){
+                    if(file_exists("../../../images/topics-images/".$name.".".$img_ext)){unlink("../../../images/topics-images/".$name.".".$img_ext);clearstatcache();}
+                    move_uploaded_file($image_temp, "../../../images/topics-images/".$name.".".$img_ext);
+                    $data['img_url']=$name.".".$img_ext;
+                }
             }
         }
         
@@ -122,7 +156,7 @@
         $values = implode(',',$vals);
         $response =$obj->update($table,$values,$row,$id);
         if($response){
-            $json_response = array('response'=>200,$response);
+            $json_response = array('response'=>200,$name.".".$img_ext);
             echo json_encode($json_response);
         } else{
             $json_response = array('response'=>400,$response);

@@ -100,7 +100,7 @@ if(isset($user) && !empty($user)){
             <!-- / brand -->
             <nav class="navigation">
                 <ul class="list-unstyled">
-                    <li class="has-submenu"><a href="/panel/quotes/<?php echo $user[0]['username']; ?>"><i class="ion-home"></i> <span class="nav-label">
+                    <li class="has-submenu"><a href="/panel/quotes/<?php echo $user[0]['username']; ?>/1"><i class="ion-home"></i> <span class="nav-label">
                         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
                         Your Quotes
                         <?php } else{ echo $fname."'s Quotes"; } ?>  
@@ -123,6 +123,10 @@ if(isset($user) && !empty($user)){
                             <li class="active"><a href="/panel/collection/<?php echo $user[0]['username']; ?>">Images</a></li>
                         </ul>
                     </li>
+                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
+                        <li class="has-submenu"><a href="/panel/settings/<?php echo $_SESSION['uname'];  ?>" rel="nofollow"><i class="ion-wrench"></i> <span class="nav-label">Settings</span></a></li>
+                        <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
+                    <?php } ?>
                     <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
                 </ul>
             </nav>
@@ -256,7 +260,7 @@ if(isset($user) && !empty($user)){
                     <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
                     <li class="dropdown text-center">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="<?php echo $u_picture; ?>" class="img-circle profile-img thumb-sm">
+                            <img alt="" src="<?php echo $_SESSION['profile']; ?>" class="img-circle profile-img thumb-sm">
                             <span class="username"><?php echo $_SESSION['uname']; ?> </span> <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu extended pro-menu fadeInUp animated" tabindex="5003" style="overflow: hidden; outline: none;">

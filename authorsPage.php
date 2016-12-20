@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_GET['page']) && !empty($_GET['page'])){
     require_once('AppClasses/AppController.php');
     require_once 'AppClasses/Paginator.php';
@@ -25,7 +26,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
     $meta_tags = new HeadTags();
     if(isset($_GET['l']) && !empty($_GET['l'])){
         $title = $meta_tags->titlePage('Find Quotes From Authors By Letter \''.$_GET['l'].'\'');
-        $description = $meta_tags->meta_description("Find the best quotes from authors whose name starts with '".$_GET['l']."'. Share with your friends on Facebook, Twitter, Instagram...");
+        $description = $meta_tags->meta_description("Find the best quotes from authors whose name starts with '".$_GET['l']."'. Share with your friends on Facebook, Twitter, Instagram...");        
         // Pagination
             $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 14;
             $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
@@ -45,8 +46,8 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
             $authorsArr = $Paginator->getData("authors","authorName",$limit,$page);
         //End of Pagination
     }
-    $authors = $authorsArr->data;
-    $image = "https://portalquote.com/images/thumbnail.png";
+	$image = "https://portalquote.com/images/thumbnail.png";
+	$authors = $authorsArr->data;
 	$folder='../../';
 ?>
 
@@ -64,7 +65,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>
         <!-- -->
-        <!-- LOGIN FORM -->
+	<!-- LOGIN FORM -->
         <?php include 'layouts/login.php'; ?>
         <!-- -->
 
@@ -85,7 +86,7 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
             </div>
         </section>
         
-        <section role="contentinfo">
+        <section role="main">
             <div class="container">
                 <div class="row" itemtype="https://schema.org/Person">
                     <?php
@@ -93,9 +94,13 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
                         foreach($authors as $key=>$val){
                             $split=explode(" ",strtolower($authors[$key]['authorName']));
                             $seoURL = join("-",$split);
+                            if(!preg_match('/https:/',$authors[$key]['authorImage']))
+                                $imageAuthor='/images/author-images/'.$authors[$key]['authorImage'];
+                            else
+                                $imageAuthor=$authors[$key]['authorImage'];
                     ?>
                     <div class="col-xs-12 col-sm-6 author-list">
-                        <div class="img-circle img-media" style="background-image:url('<?php echo $authors[$key]['authorImage']; ?>')"></div>
+                        <div class="img-circle img-media" style="background-image:url('<?php echo $imageAuthor; ?>')"></div>
                         <!--<img itemprop="image" src="<?php echo $authors[$key]['authorImage']; ?>" class="img-circle img-media" alt="<?php echo $authors[$key]['authorName']; ?>" title="<?php echo $authors[$key]['authorName']; ?>">-->
                         <h4 itemprop="author"><a href="/author/quotes/<?php echo $authors[$key]['seo_url']; ?>/1" itemprop="url"><?php echo $authors[$key]['authorName']; ?></a></h4>
                     </div>

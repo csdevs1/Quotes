@@ -269,6 +269,8 @@
         
         <!-- FOOTER -->        
         <?php include 'layouts/footer.php'; ?>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
+        <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
         <script src="javascript/generator.js?<?php echo time(); ?>"></script>
     </body>
 </html>

@@ -291,20 +291,24 @@ if(empty($_POST['dataARR'])){
         el.innerHTML = "Updating...";
         var quote = $('#quote').val(),
             author = $('#author').val(),
-            topics = $('#topic').val();
+            topics = $('#topic').val(),
+            errors=[];
         if(!quote || quote==''){
-            console.log('Error quote');
-            $(el).removeAttr('disabled');
-            el.innerHTML = "Update";
-        }else if(!author || author==''){
-            console.log('Error author');
-            $(el).removeAttr('disabled');
-            el.innerHTML = "Update";
-        }else if(!topics || topics==''){
-            console.log('Error topic');
-            $(el).removeAttr('disabled');
-            el.innerHTML = "Update";
+            errors.push('Quotes cannot be blank!');
+        }
+        if(!author || author==''){
+            errors.push('Author field cannot be blank!');
         }else{
+            var authorExist=find_by('authors','authorName',author);
+            authorExist.done(function(authorResponse){
+                if(authorResponse[0].length<1)
+                    errors.push('Author is not in our database!');
+            });
+        }
+        if(!topics || topics==''){
+            errors.push('Topics field cannot be blank!');
+        }
+        if(errors.length<1){            
             var arr = {};
             arr['quote']=quote;
             arr['author']=author;
@@ -313,6 +317,7 @@ if(empty($_POST['dataARR'])){
             }
             var token = generateToken();
             token.done(function(generatedToken){
+                $(el).attr('disabled','disabled');
                 var quoteUpdate = update('quotes_en',arr,'quoteID',quotID,generatedToken,image);
                 quoteUpdate.done(function(data){
 		//NEW STUFF
@@ -354,28 +359,35 @@ if(empty($_POST['dataARR'])){
                     });
                 });
             });
+        }else{
+            var error='';
+            for(var e in errors)
+                error+='-'+errors[e]+'\n';
+            alert(error);
         }
     }
     
     var save = function(el){
-        $(el).attr('disabled','disabled');
-        el.innerHTML = "Saving...";
         var quote = $('#quote').val(),
             author = $('#author').val(),
-            topics = $('#topic').val();
+            topics = $('#topic').val(),
+            errors=[];
         if(!quote || quote==''){
-            console.log('Error quote');
-            $(el).removeAttr('disabled');
-            el.innerHTML = "Save";
-        }else if(!author || author==''){
-            console.log('Error author');
-            $(el).removeAttr('disabled');
-            el.innerHTML = "Save";
-        }else if(!topics || topics==''){
-            console.log('Error topic');
-            $(el).removeAttr('disabled');
-            el.innerHTML = "Save";
+            errors.push('Quotes cannot be blank!');
+        }
+        if(!author || author==''){
+            errors.push('Author field cannot be blank!');
         }else{
+            var authorExist=find_by('authors','authorName',author);
+            authorExist.done(function(authorResponse){
+                if(authorResponse[0].length<1)
+                    errors.push('Author is not in our database!');
+            });
+        }
+        if(!topics || topics==''){
+            errors.push('Topics field cannot be blank!');
+        }
+        if(errors.length<1){
             var arr = {};
             arr['quote']=quote;
             arr['author']=author;
@@ -384,10 +396,10 @@ if(empty($_POST['dataARR'])){
             }
             var token1 = generateToken();
             token1.done(function(generatedToken1){
+                $(el).attr('disabled','disabled');
                 var newQuote = insert('quotes_en',arr,generatedToken1,image);
                 newQuote.done(function(response){
-                    console.log(response);
-                    /*if(response){
+                    if(response){
                         var lastQuote = limit('quotes_en','quoteID','quoteID',1);
                         lastQuote.done(function(dataID){
                             var arr2={},
@@ -435,9 +447,14 @@ if(empty($_POST['dataARR'])){
                                 });
                             }
                         });
-                    }*/
+                    }
                 });
             });
+        }else{
+            var error='';
+            for(var e in errors)
+                error+='-'+errors[e]+'\n';
+            alert(error);
         }
     }
     
@@ -455,11 +472,10 @@ if(empty($_POST['dataARR'])){
                 var arr = {'authorName':'authorName'};
             var search = like(table,arr,pattern);
             search.done(function(response){
-                console.log(response);
                 if(Object.keys(response[0]).length != 0){
                     $('#'+id+' ul').html('');
                     for(var i in response[0]){
-                        if(row=='topic')
+                        if(row==='topic')
                             $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\',\'csv\')">'+response[0][i].topicName+'</li>');
                         else
                             $('#'+id+' ul').append('<li  onclick="selectTag(this,\''+row+'\')">'+response[0][i].authorName+'</li>');
@@ -518,8 +534,9 @@ if(empty($_POST['dataARR'])){
         });
     }*/
     
-    document.onkeydown = function(e){
-        if(e.keyCode == 13){
+    document.getElementById("search").addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if(event.keyCode == 13){
             var text=document.getElementById('search').value;
             if(text!=''){
                 $('#quotes-area').css('visibility','hidden');
@@ -536,7 +553,7 @@ if(empty($_POST['dataARR'])){
                 english('#eng');
             }
         }
-    }
+    });
 </script>
 
 <?php if($_SESSION['label']=='image'){ ?>

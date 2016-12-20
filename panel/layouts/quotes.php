@@ -5,7 +5,7 @@
     $obj = new AppController();
     //$quotes2=$obj->find_by('userQuotes','userID',$_SESSION['uID']);
 
-    $limit2 = (isset( $_GET['limit'])) ? $_GET['limit'] : 2;
+    $limit2 = (isset( $_GET['limit'])) ? $_GET['limit'] : 20;
     $page2 = (isset( $_GET['page'])) ? $_GET['page'] : 1;
     $links2 = (isset( $_GET['links'])) ? $_GET['links'] : 7;
     $Paginator2  = new Paginator("userQuotes WHERE userID='".$_SESSION['uID']."'");

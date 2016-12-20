@@ -24,12 +24,12 @@ function quotesTranslation(id) {
     $("#quotes-area").load("language/quotes-translation.php",{id:id});
 }
 
-function authors(msg="",el) {
+function authors(msg="",el,dataARR="") {
     $('.lang-nav li').not(el).removeClass('active');
     $('.has-submenu').not(el).removeClass('active');
     $(el).addClass('active');
     document.getElementById("quotes-area").innerHTML="";
-    $("#quotes-area").load("content/authors.php",{msg:msg});
+    $("#quotes-area").load("content/authors.php",{msg:msg,dataARR:dataARR});
 }
 /*AUTHORS*/
     function uncompletedAuthors(el) {
@@ -46,10 +46,24 @@ function authors(msg="",el) {
         document.getElementById("quotes-area").innerHTML="";
         $("#quotes-area").load("content/completedAuthors.php");
     }
+    function myAuthors(el) {
+        $('.lang-nav li').not(el).removeClass('active');
+        $('.has-submenu').not(el).removeClass('active');
+        $(el).addClass('active');
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/authorsUser.php");
+    }
 
     function authorsTranslation(id) {
         document.getElementById("quotes-area").innerHTML="";
         $("#quotes-area").load("content/authorTranslate.php",{id:id});
+    }
+    function professionsLoad(el,dataARR="") {
+        $('.lang-nav li').not(el).removeClass('active');
+        $('.has-submenu').not(el).removeClass('active');
+        $(el).addClass('active');
+        document.getElementById("quotes-area").innerHTML="";
+        $("#quotes-area").load("content/professions.php",{dataARR:dataARR});
     }
 /*AUTHORS*/
 function topics(msg="",el) {

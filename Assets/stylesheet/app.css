@@ -217,7 +217,7 @@ video{
     border-radius: 50%;
     background-color: black;
     background-size: cover;
-    background-position: top;
+    background-position: cover;
     box-shadow: -2px 1px 6px #000;
 }
 .banner-topic h1 p{

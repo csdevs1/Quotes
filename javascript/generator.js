@@ -130,9 +130,14 @@ $(document).ready(function() {
     //Generate Image    
     $('#generate').click(function(){
         // APPLY EFFECTS
-        var imageUrl = URL.createObjectURL(document.getElementById('img-file').files[0]);
-        var img=window.myImage,
-            blur=document.getElementById('bgBlur').value,
+        if(window.myImage){
+            var img=window.myImage;
+        }else{
+            window.myImage = new Image();
+            window.myImage.src = document.getElementById('quote-img').src;
+            var img=window.myImage;
+        }
+        var blur=document.getElementById('bgBlur').value,
             greyscale=document.getElementById('bgGrey').value;
         document.getElementById('quote-img').src=effects(img,blur,greyscale);
         // APPLY EFFECTS
@@ -149,7 +154,7 @@ $(document).ready(function() {
                 //hideEditor();
             }
         });
-    });  
+    });
     
     //Draggable element
     $("#text").draggable({scroll: false});

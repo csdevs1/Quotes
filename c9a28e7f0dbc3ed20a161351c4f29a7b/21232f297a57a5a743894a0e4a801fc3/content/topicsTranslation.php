@@ -262,15 +262,15 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
             }
         });
     }
-    
+
     String.prototype.allReplace = function(obj) {
         var retStr = this;
         for (var x in obj) {
             retStr = retStr.replace(new RegExp(x, 'g'), obj[x]);
         }
         return retStr;
-    }
-    
+    }    
+
     var updateTopic = function(el,lang,language,topID,resRel){
         var topic = $('#tp-'+lang).val(),
             keywords = $('#keywords-'+lang).val(),
@@ -304,7 +304,7 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
             });
         }
     }
-
+    
     var save = function(el,lang,relationID,language){
         $(el).attr('disabled','disabled');
         var topic = $('#tp-'+lang).val(),
@@ -314,6 +314,7 @@ $previous=$obj->custom("SELECT id FROM topics WHERE id < ".$_POST['id']." ORDER 
             arr['topicName'] = topic;
             var seo = topic.allReplace({'á': 'a','ã':'a','à':'a','â':'a','ç':'c', 'é': 'e','ê':'e','í':'i','ó':'o','õ':'o','ô':'o','ü':'u','ú':'u','ñ':'n',"'":'','"':""});
             arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+            console.log(arr['seo_url']);
         }
         if(keywords && keywords != '')
             arr['keywords'] = keywords;

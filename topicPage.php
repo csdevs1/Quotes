@@ -1,4 +1,6 @@
 <?php
+if (substr_count($_SERVER[‘HTTP_ACCEPT_ENCODING’], ‘gzip’)) ob_start(“ob_gzhandler”); else ob_start();
+
 session_start();
 if(isset($_GET['topic']) && !empty($_GET['topic'])){
     require_once('AppClasses/AppController.php');
@@ -40,11 +42,19 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         $meta_tags = new HeadTags();
         $title = $meta_tags->titlePage('Find The Best '.$topic.' Quotes');
         $description = $meta_tags->meta_description("Find the best quotes about ".strtolower($topic).", ".$topicDescription[0]['keywords']." and more by the best authors and famous people. Share with your friends on Facebook, Twitter, Instagram...");
+        
         $images = $obj->find_by('topicsImages','tID',$topicDescription[0]['topicID']);
         $num = rand(0,count($images)-1); // TO SELECT A RANDOM IMAGE
+        $image=$images[$num]['img_url'];
+        if(!preg_match('/https:/',$image))
+            $image='https://portalquote.com/images/topics-images/'.$image;
+        else{
+            $image = $image;
+        }
+        
         // Pagination
         //$quotes = $obj->find_by('quotes_en','author',$author);        
-        $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
+        $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 20;
         $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
         $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
         $Paginator  = new Paginator("quotesTopicEN WHERE topicID='".$topicDescription[0]['topicID']."'");
@@ -53,7 +63,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         $num2 = rand(0,count($quoteData)-1); // TO SELECT A RANDOM QUOTE
         $randomQuote = $obj->find_by('quotes_en','quoteID',$quoteData[$num2]['quoteID']);
         //End of Pagination
-        $folder='../../../';
+	$folder='../../../';
 ?>
 
 <!doctype html>
@@ -62,7 +72,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         <?php include 'layouts/head.php'; ?>
         <style>
             .background{
-                background-image: url('<?php echo $images[$num]['img_url']; ?>');
+                background-image: url('<?php echo $image; ?>');
                 background-position: top;
             }
         </style>
@@ -73,7 +83,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
             <!-- -->
             
             <h1 class="topic-info" itemtype="https://schema.org/CreativeWork">
-                <meta itemprop="image" content="<?php echo $images[$num]['img_url']; ?>"></meta>
+                <meta itemprop="image" content="<?php echo $image; ?>"></meta>
                 <meta itemprop="keywords" content="<?php echo $topicDescription[0]['keywords']; ?>"></meta>
                 <span><?php echo $topic; ?></span>
                 <p class="col-xs-12 col-md-6 biography random-quote" itemprop="citation"><span class="quote"><?php echo $randomQuote[0]['quote']; ?></span></p>
@@ -84,10 +94,11 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>     
         <!-- -->
-        <!-- LOGIN FORM -->
+	<!-- LOGIN FORM -->
         <?php include 'layouts/login.php'; ?>
         <!-- -->
-    <section id="quotes-day" role="contentinfo">
+
+        <section id="quotes-day" role="main">
             <div class="container">
                 <div class="row">
                     <div class="masonry-container">
@@ -98,7 +109,7 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                 $quote=$quotes[0]['quote'];
                                 $qImage=$quotes[0]['quoteImage'];
                                 $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName,topics_en.seo_url FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quoteID='.$qID); // USE join() FUNCTION
-                                $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
+				$nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                 $count=0;
                                 $arrEN=array();
                                 if(!empty($topicsArr)){
@@ -108,12 +119,12 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                                         $count++;
                                     }
                                 }
-                                $remove[] = "'";
+				$remove[] = "'";
                                 $remove[] = '"';
                                 $remove[] = '.';
                                 $remove[] = ',';
                                 $q=str_replace($remove, "", $quote);
-                                $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
+				$share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
                                 $authorURL=$obj->find_by('authors','authorName',$quotes[0]['author']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
@@ -152,17 +163,18 @@ if(isset($_GET['topic']) && !empty($_GET['topic'])){
                     </div>
                 </div>
             </div>
-    </section>
-    <div class="container">
+        </section>
+        
+        <div class="container">
             <nav aria-label="Page navigation">
                 <?php echo $Paginator->createLinks($links, 'pagination pagination-sm',dirname($_SERVER[REQUEST_URI])); ?> 
             </nav>
-    </div>
+        </div>
         
         <!-- FOOTER -->
         <?php include 'layouts/footer.php'; ?>
         <script>
-            $(document).ready(function(){
+	    $(document).ready(function(){
                 $('[data-toggle="popover"]').popover({html: true});
             });
             $(window).scroll(function(){

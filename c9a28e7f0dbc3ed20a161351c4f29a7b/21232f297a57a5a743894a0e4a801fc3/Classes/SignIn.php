@@ -7,7 +7,7 @@
     if($_POST['login'] && $tokenObj->check($_POST['token'])){
         $username = $_POST['usr'];
         $passwd = $_POST['pass'];
-        $check="usrName='".sha1($username)."' AND usrPswd='".sha1($passwd)."'";
+        $check="usrName='".$username."' AND usrPswd='".sha1($passwd)."'";
         $response = $obj->like('dashboard_usrs', $check);
         if(!empty($response)){
             session_start();

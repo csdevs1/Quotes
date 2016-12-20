@@ -31,39 +31,48 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         else
             $author .= ucwords($val);
     }*/
-    $authorDescription = $obj->find_by('authors','seo_url',$_GET['name']);
-    $author=$authorDescription[0][authorName];
+    $authorDescription = $obj->all('authors WHERE seo_url="'.$_GET['name'].'" OR authorID="'.$_GET['name'].'"');
+    $author=$authorDescription[0]['authorName'];
+    $authorName=str_replace("'","\'", $authorDescription[0]['authorName']);
     if(isset($authorDescription) && !empty($authorDescription)){
         $professionArr = $obj->find_by('authorProfession','authorID',$authorDescription[0]['authorID']); // GET PROFESSIONS ID
         $profession=array();
         foreach($professionArr as $key=>$val){
-            $professions = $obj->find_by('professions','professionID',$professionArr[$key]['professionID']); // GET PROFESSIONS
+            $professions = $obj->find_by('professions','professionID',$professionArr[$key]['professionID']); // GET PROFESSIONS ID
             foreach($professions as $key2=>$val2){
-                $profession[]= $professions[$key2]['professionName'];
+               $profession[]= $professions[$key2]['professionName'];
             }
         }
-        //GET BIRTHDAY AND DEAD
-        $birthdate=date_create($authorDescription[0]['birth']);
-        $born=date_format($birthdate, 'F j, Y');
-         if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){
-             $dDate=date_create($authorDescription[0]['died']);
-             $dDate=date_format($dDate, 'F j, Y');
-         }
-        
+	//GET BIRTHDAY AND DEAD
+        $birthSPLIT=explode('-',$authorDescription[0]['birth']);
+        if($birthSPLIT[0]!='000'){
+            $birthdate=date_create($authorDescription[0]['birth']);
+            $born=date_format($birthdate, 'F j, Y');
+            $str=", born in ".$born;
+            if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){
+                $dDate=date_create($authorDescription[0]['died']);
+                $dDate=date_format($dDate, 'F j, Y');
+            }
+        }
+
         // META TAGS
         $meta_tags = new HeadTags();
         $title = $meta_tags->titlePage('Find The Best Quotes From '.$author);
-        $description = $meta_tags->meta_description("Find the best quotes by $author, ".join(', ',$profession).", born in ".$born.". Share with your friends on Facebook, Twitter, Instagram...");
-        $image = $authorDescription[0]['authorImage'];
+        $description = $meta_tags->meta_description("Find the best quotes by $author, ".join(', ',$profession)." ".$str.". Share with your friends on Facebook, Twitter, Instagram...");
+        if(!preg_match('/https:/',$authorDescription[0]['authorImage']))
+            $image='https://portalquote.com/images/author-images/'.$authorDescription[0]['authorImage'];
+        else
+            $image=$authorDescription[0]['authorImage'];
+        
         // Pagination
         //$quotes = $obj->find_by('quotes_en','author',$author);        
-        $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
+        $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 20;
         $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
         $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
-        $Paginator  = new Paginator("quotes_en WHERE author='$author'");
-        $quotesARR = $Paginator->getData("quotes_en WHERE author='$author'","quoteID",$limit,$page);
+        $Paginator  = new Paginator("quotes_en WHERE author='$authorName'");
+        $quotesARR = $Paginator->getData("quotes_en WHERE author='$authorName'","quoteID",$limit,$page);
         //End of Pagination
-        
+
 	$folder='../../../';
 ?>
 
@@ -96,19 +105,19 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                 <meta itemprop="image" content="<?php echo $image; ?>"></meta>
                 <div class="profile"></div>
                 <span itemprop="author"><?php echo $author; ?></span>
-                <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?><a href="<?php echo $authorDescription[0]['sourceURL']; ?>" target="_blank">Read more</a></p>
-                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo join(', ',$profession); ?></p><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $born; ?></span><?php if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $dDate; ?></span></p><?php } ?>
+                <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?> <a href="<?php echo $authorDescription[0]['sourceURL']; ?>" target="_blank">Read more</a></p>
+                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo join(', ',$profession); ?></p><?php if($birthSPLIT[0]!='000'){ ?><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $born; ?></span><?php } if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $dDate; ?></span></p><?php } ?>
             </h1>
         </section>
         
         <!-- SIGN UP FORM -->
         <?php include 'layouts/signup.php'; ?>     
         <!-- -->
-        <!-- LOGIN FORM -->
+	<!-- LOGIN FORM -->
         <?php include 'layouts/login.php'; ?>
         <!-- -->
         
-        <section id="quotes-day" role="contentinfo">
+        <section id="quotes-day" role="main">
             <div class="container">
                 <div class="row">
                     <div class="masonry-container">
@@ -134,7 +143,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 $remove[] = '.';
                                 $remove[] = ',';
                                 $q=str_replace($remove, "", $quote);
-                                $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
+				$share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad clearfix">
@@ -183,22 +192,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         <!-- FOOTER -->
         <?php include 'layouts/footer.php'; ?>
         <script>
-            $(window).scroll(function(){
-                var scrollTop = $(window).scrollTop();
-                var height = $(window).height();
-                $('.banner-topic h1').css({
-                    'opacity': ((height - scrollTop) / height)
-                });
-            });
-            $(document).ready(function(){
-                $('[data-toggle="popover"]').popover({html: true}); 
-                function randomWallpaper(){
-                    // 1 -> 5
-                    var num = Math.floor(Math.random() * 5) + 1;
-                    $('.banner-topic').css({'background-image':'url(../../../images/author-gallery/'+num+'.jpg)'});
-                }
-                randomWallpaper();
-            });
+            $(window).scroll(function(){var a=$(window).scrollTop(),b=$(window).height();$(".banner-topic h1").css({opacity:(b-a)/b})}),$(document).ready(function(){function a(){var a=Math.floor(9*Math.random())+1;$(".banner-topic").css({"background-image":"url(../../../images/author-gallery/"+a+".jpg)"})}$('[data-toggle="popover"]').popover({html:!0}),a()});
         </script>
     </body>
 </html>

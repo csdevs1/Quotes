@@ -27,7 +27,7 @@ if(isset($user) && !empty($user)){
         $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
         $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC LIMIT 6");
     }
-    $followers=$obj->find_by('followers','followerID',$u_id);
+    $following=$obj->find_by('followers','followerID',$u_id);
 ?>
 
 <!DOCTYPE html>
@@ -72,68 +72,6 @@ if(isset($user) && !empty($user)){
         <link href="../css/helper.css" rel="stylesheet">
         <link href="../css/style-responsive.css" rel="stylesheet" />
         <link href="../assets/tagsinput/jquery.tagsinput.css" rel="stylesheet" />
-        <style>
-            .card-profile {
-                background: #fff;
-                border-radius: 10px;
-                z-index: 1;
-            }
-            .card-profile_visual{
-                height: 300px;
-                overflow: hidden;
-                position: relative;
-                background: #fff;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                background-color: #777;
-                background-repeat: no-repeat;
-                background-position:  center center/cover;
-                text-align: center;
-                border-right: 1px solid #ccc;
-            }
-            .user-profile_pic{display:inline-block; width: 120px;height: 120px;border-radius: 50%;margin-top:20px;background: url(<?php echo $u_picture; ?>) no-repeat center center/cover;box-shadow: 0 36px 64px -34px #222, 0 16px 14px -14px rgba(0, 0, 0, 0.6), 0 22px 18px -18px rgba(0, 0, 0, 0.4), 0 22px 38px -18px #222;z-index: 1000;position: absolute;margin: auto;left: 0;right: 0;top:50px}
-            
-            .card-profile_user-infos{position: absolute;bottom: 0;padding-bottom: 10px;padding-top: 180px; text-align: center;width: 100%;background: rgba(0,0,0,0.5);height: 100%;}
-            .card-profile_user-infos span{display: block;color: #fff;}
-            .card-profile_user-infos .infos_nick{color: #ccc;}
-            
-            .card-profile a {
-                text-align: center;
-                padding: 20px 20px 20px 20px;
-                top: 265px !important;
-                z-index: 1000;
-                width: 60px;
-                height: 60px;
-                position: absolute;
-                left: 0;
-                right: 0;
-                margin: auto;
-                background-color: #F96B4C;
-                display: block;
-                clear: both;
-                margin: auto;
-                border-radius: 100%;
-                top: calc(500% + 66px);
-                box-shadow: 0 2px 0 #D42D78, 0 3px 10px rgba(243, 49, 128, 0.15), 0 0px 10px rgba(243, 49, 128, 0.15), 0 0px 4px rgba(0, 0, 0, 0.35), 0 5px 20px rgba(243, 49, 128, 0.25), 0 15px 40px rgba(243, 49, 128, 0.75), inset 0 0 15px rgba(255, 255, 255, 0.05);
-                overflow: hidden;
-            }.card-profile a i{color: #fff;font-size: 2rem;text-shadow: 1px 1px 5px #000;}
-            
-            .light-red{background: #f85032;
-                background: -webkit-linear-gradient(to left, #f85032 , #e73827);
-                background: linear-gradient(to left, #f85032 , #e73827);}.darkred{background-image: -webkit-linear-gradient(#F96B4C, #F23182);
-                background-image: linear-gradient(#F96B4C, #F23182);}
-            
-            .card-profile_user-stats{position: relative;height: 100px; border-right: 1px solid #ddd;box-shadow: 0 36px 64px -34px #ccc, 0 16px 14px -14px rgba(0, 0, 0, 0.6), 0 22px 18px -18px rgba(0, 0, 0, 0.4), 0 22px 38px -18px #ccc;}
-            .stats-holder{text-align: center;padding: 10px;width: 100%;position: absolute;bottom: 0;}
-            .user-stats{width:33%;}
-            .user-stats span{display: block;}
-            
-            /* Extra Small Devices, Phones */ 
-            @media only screen and (max-width : 640px) {
-                .col-cs-12{width: 100%;}
-            }
-        </style>
-
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
         <!--[if lt IE 9]>
           <script src="js/html5shiv.js"></script>
@@ -153,7 +91,7 @@ if(isset($user) && !empty($user)){
             <!-- / brand -->
             <nav class="navigation">
                 <ul class="list-unstyled">
-                    <li class="has-submenu"><a href="/panel/quotes/<?php echo $user[0]['username']; ?>"><i class="ion-home"></i> <span class="nav-label">
+                    <li class="has-submenu"><a href="/panel/quotes/<?php echo $user[0]['username']; ?>/1"><i class="ion-home"></i> <span class="nav-label">
                         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
                         Your Quotes
                         <?php } else{ echo $fname."'s Quotes"; } ?>  
@@ -201,20 +139,6 @@ if(isset($user) && !empty($user)){
                 <form role="search" class="navbar-left app-search pull-left hidden-xs">
                   <input type="text" placeholder="Search..." class="form-control">
                 </form>
-                <!-- Left navbar 
-                <nav class=" navbar-default hidden-xs" role="navigation">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                          <a data-toggle="dropdown" class="dropdown-toggle" href="#">English <span class="caret"></span></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li class="active"><a href="#">English</a></li>
-                                <li><a href="#">Portuguese</a></li>
-                                <li><a href="#">Spanish</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                -->
                 <!-- Right navbar -->
                 <ul class="list-inline navbar-right top-menu top-right-menu">  
                     <!-- Notification -->
@@ -312,29 +236,29 @@ if(isset($user) && !empty($user)){
                                     <section role="main">                                        
                                         <div class="clearfix">
                                             <?php 
-                                                foreach($followers as $key=>$val){
-                                                    $follower=$obj->find_by('users','userID',$followers[0]['userID']);
-                                                    $followerQuotes=$obj->custom('SELECT COUNT("userID") as cnt FROM userQuotes WHERE userID='.$followers[0]['userID']);
-                                                    $nFollowers=$obj->custom('SELECT COUNT("userID") as cnt FROM followers WHERE userID='.$followers[0]['userID']);
-                                                    $nFollowing=$obj->custom('SELECT COUNT("followerID") as cnt FROM followers WHERE followerID='.$followers[0]['userID']);
-                                                    $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$followers[0]['userID']." AND followerID=".$_SESSION['uID']);
+                                                foreach($following as $key=>$val){
+                                                    $follower=$obj->find_by('users','userID',$following[$key]['userID']);
+                                                    $followerQuotes=$obj->custom('SELECT COUNT("userID") as cnt FROM userQuotes WHERE userID='.$following[$key]['userID']);
+                                                    $nFollowers=$obj->custom('SELECT COUNT("userID") as cnt FROM followers WHERE userID='.$following[$key]['userID']);
+                                                    $nFollowing=$obj->custom('SELECT COUNT("followerID") as cnt FROM followers WHERE followerID='.$following[$key]['userID']);
+                                                    $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$following[$key]['userID']." AND followerID=".$_SESSION['uID']);
                                                     
                                                     $isFollowing[0]['cnt']==0 ? $class='light-red nt-follow' : $class='darkred';
                                             ?>
                                                 <div class="col-cs-12 col-xs-6 col-md-3 card-profile">
                                                     <div class="user-profile_pic" style="background-image:url('<?php echo $follower[0]['picture']; ?>')"></div>
-                                                    <div class="card-profile_visual">
+                                                    <div class="card-profile_visual" style="background-image:url('<?php echo $follower[0]['banner']; ?>')">
                                                         <div class="card-profile_user-infos">
-                                                            <span class="infos_name"><?php echo $follower[0]['fname'].' '.$follower[0]['lname']; ?></span>
-                                                            <span class="infos_nick"><?php echo $follower[0]['username']; ?></span>
+                                                            <a href="/panel/quotes/<?php echo $follower[0]['username']; ?>/1" target="_blank"><span class="infos_name"><?php echo $follower[0]['fname'].' '.$follower[0]['lname']; ?></span></a>
+                                                            <a href="/panel/quotes/<?php echo $follower[0]['username']; ?>/1" target="_blank"><span class="infos_nick"><?php echo $follower[0]['username']; ?></span></a>
                                                         </div>
                                                     </div>
                                                     <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$follower[0]['userID']){ ?>
                                                     <a class="<?php echo $class; ?> usrflw-16516" data-follow='<?php echo $follower[0]['userID'] ?>'>
                                                         <?php if($isFollowing[0]['cnt']){ ?>
-                                                        <i class="ion-checkmark"></i>
+                                                            <i class="ion-checkmark"></i>
                                                         <?php }else{?>
-                                                        <i class="ion-person-add"></i>
+                                                            <i class="ion-person-add"></i>
                                                         <?php } ?>
                                                     </a>
                                                     <?php } ?>
@@ -342,15 +266,15 @@ if(isset($user) && !empty($user)){
                                                         <div class="stats-holder row">
                                                             <div class="user-stats col-xs-4">
                                                                 <strong>Quotes</strong>
-                                                                <span><?php echo $followerQuotes[0]['cnt']; ?></span>
+                                                                <a href="/panel/quotes/<?php echo $follower[0]['username']; ?>/1" target="_blank"><span><?php echo $followerQuotes[0]['cnt']; ?></span></a>
                                                             </div>
                                                             <div class="user-stats col-xs-4">
                                                                 <strong>Following</strong>
-                                                                <span><?php echo $nFollowing[0]['cnt']; ?></span>
+                                                                <a href="/panel/following/<?php echo $follower[0]['username']; ?>"><span><?php echo $nFollowing[0]['cnt']; ?></span></a>
                                                             </div>
                                                             <div class="user-stats col-xs-4">
                                                                 <strong>Followers</strong>
-                                                                <span><?php echo $nFollowers[0]['cnt']; ?></span>
+                                                                <a href="/panel/followers/<?php echo $follower[0]['username']; ?>" target="_blank"><span><?php echo $nFollowers[0]['cnt']; ?></span></a>
                                                             </div>
                                                         </div>
                                                     </div>

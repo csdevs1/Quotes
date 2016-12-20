@@ -1,4 +1,3 @@
-
 @import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
 @import 'https://fonts.googleapis.com/css?family=Raleway|Reem+Kufi';
 @import url(http://fonts.googleapis.com/css?family=Glegoo);
@@ -2054,6 +2053,7 @@ ul.p-social-link li a {
         padding: 1px;
         display: none;
     }
+    .quote-form select{max-width: 350px;}
     #add-quote,.addquote{cursor: pointer;}
 
     .relative-container label{color:#999;font-size:1.5rem;}
@@ -2123,10 +2123,23 @@ ul.p-social-link li a {
 }
 
 /* AUTHORS */
+
+    .profile{
+        width:100px;
+        height:100px;
+        border-radius: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .author-container{padding-top: 10px;}
+    .author-container p,.author-container span{text-align: center;}
+    .author-container p a{color:#4c4cff;}
+    .author-container span{display: block;font-weight: 600;}
+    .author-container ul li{display: inline;cursor: pointer;text-decoration: none;}
     .background{
-        background-color: #eee;
+        background-color: #000;
         background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-size: cover;
         background-position: center;
     }
     .box-content{padding:1px;}   
@@ -2152,6 +2165,26 @@ ul.p-social-link li a {
         color: #fff;
         font-family: 'Raleway', sans-serif;
     }
+    /* AUTHOR'S PROFESSION */
+        .profession-list ul {
+            -webkit-column-count: 2;
+            -moz-column-count: 2;
+            column-count: 2;
+            overflow: hidden;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }.profession-list ul li{
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }.profession-list ul li span{
+            cursor: pointer;
+        }.profession-list ul li span.glyphicon{
+            margin-right: 5px;
+            font-size: 1.8rem;
+            color: #990000;
+        }
 
 .page-go{background: #fff;border: 0;padding: 0;}
 

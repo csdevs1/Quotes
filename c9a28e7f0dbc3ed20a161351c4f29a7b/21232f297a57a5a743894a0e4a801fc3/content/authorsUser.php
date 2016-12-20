@@ -3,7 +3,7 @@
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     if(empty($_POST['dataARR'])){
-        $authors = $obj->all('authors');
+        $authors = $obj->custom('SELECT * FROM dashboardUsr_Authors_en INNER JOIN authors ON dashboardUsr_Authors_en.authorID=authors.authorID WHERE userID='.$_SESSION['id']);
     }else{
         $authors=$_POST['dataARR'];
     }
@@ -14,17 +14,11 @@
 
 <div class="portlet-heading">
     <h3 class="portlet-title text-dark text-uppercase">
-        Authors
+        Your Authors
     </h3>
     <div class="clearfix"></div>
-    <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
-    if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
-<?php //if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root' || $_SESSION['label'] =='author'){ //Permission to insert ?>
-    <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new author</span></div>
-<?php //} ?>
-    <?php }} ?>
 </div>
-<?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
+<?php if(isset($_SESSION['permission'][0]) && !empty($_SESSION['permission'][0])||(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1])) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label'] !='image'){
     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
 <?php //if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label'] =='root' || $_SESSION['label'] =='author'){ //Permission to insert ?>
 <div class="container quote-form" id="quote-form">
@@ -50,7 +44,7 @@
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-sad"></i></span>
-                <input type="text" class="form-control" id="pdate" data-error="Field required" aria-describedby="died" placeholder="Died (Format: YYYY-MM-DD)">
+                <input type="text" class="form-control" id="pdate" data-error="Field required" aria-describedby="died" placeholder="Died (Format: YYY-MMM-DDD)">
                 
             </div>
         </div>
@@ -127,14 +121,14 @@
         
         <?php
             foreach($authors as $key=>$val){
-                $userAuthor=$obj->all('dashboardUsr_Authors_en WHERE userID='.$_SESSION['id'].' AND authorID='.$authors[$key]['authorID']);
         ?>
-        <div class="col-xs-6 col-sm-4 col-lg-3 author-container data">
+        
+        <div class="col-xs-6 col-sm-4 col-lg-3 author-container">
             <div class="profile background" style="background-image:url('https://portalquote.com/images/author-images/<?php echo $authors[$key]['authorImage']; ?>');"></div>
             <span><?php echo $authors[$key]['authorName']; ?></span>
             <ul style="overflow:hidden;text-align: center;margin-left:auto;margin-right: auto;">
-                <?php if(count($userAuthor)>0 || isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label']=='root'){ ?><li onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)">Edit | </li><?php } ?>
-                <?php if(isset($_SESSION['label']) && !empty($_SESSION['label']) && $_SESSION['label']=='root'){ ?><li onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'>Delete | </li><?php } ?>
+                <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && ($_SESSION['lang']=='eng' || $_SESSION['lang']=='all') || $_SESSION['label']=='root'){ ?><li onclick="openUpdate(<?php echo $authors[$key]['authorID']; ?>)">Edit | </li><?php } ?>
+                <?php if(isset($_SESSION['permission'][2]) && !empty($_SESSION['permission'][2]) || $_SESSION['label']=='root'){ ?><li onclick='deleteThis(this,"<?php echo $authors[$key]['authorID']; ?>","<?php $remove[] = "'";$remove[] = '"'; echo str_replace($remove, "", $authors[$key]['authorName']); ?>")'>Delete | </li><?php } ?>
                 <?php if($_SESSION['label'] !='image'){ ?><li onclick="authorsTranslation(<?php echo $authors[$key]['authorID']; ?>)">Translate</li><?php } ?>
             </ul>
             <p><a href="https://portalquote.com/author/quotes/<?php echo $authors[$key]['seo_url']; ?>/1" target="_blank">View Page</a></p>
@@ -227,19 +221,16 @@ var goToPage=function(){
     /*Pagination*/
 
     $("#image").on("change", function(){
-        var imgType = $(this).prop('files')[0].type,
-            imgSize = $(this).prop('files')[0].size;
+        var imgType = $(this).prop('files')[0].type;
         if(imgType.split('/')[0] == 'image'){
-            if(imgSize<=100000){
-                // Name of file and placeholder
-                var file = this.files[0].name;
-                var dflt = $(this).attr("placeholder");
-                if($(this).val()!=""){
-                    $(this).next().text(file);
-                } else {
-                    $(this).next().text(dflt);
-                }
-            } else {$(this).next().text("Oops! Image should be 100KB or less!");}
+            // Name of file and placeholder
+            var file = this.files[0].name;
+            var dflt = $(this).attr("placeholder");
+            if($(this).val()!=""){
+                $(this).next().text(file);
+            } else {
+                $(this).next().text(dflt);
+            }
         } else {
             document.getElementById("image").value = "";
             $(this).next().text("Oops! that's not an image!");
@@ -324,9 +315,10 @@ var goToPage=function(){
     }
     
    var updateAuthor = function(el, quotID){
+        $(el).attr('disabled','disabled');
+        el.innerHTML = "Updating";
         var author = $('#author').val(),
             birth=$('#bdate').val(),
-            pdate=$('#pdate').val(),
             country=$('#country').val(),
             profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
@@ -353,8 +345,8 @@ var goToPage=function(){
                 errors.push('Error date format');
         }
         if($('#pdate').val()!=''){
-            if(isValidDate(pdate))
-                arr['died'] = pdate;
+            if(isValidDate(birth))
+                arr['died'] = birth;
             else
                 errors.push('Error date format');
         }
@@ -370,89 +362,70 @@ var goToPage=function(){
             arr['sourceURL'] = url;
         else
             console.log('Error Source');
-       if($('#image').val()!=''){
-           var imageSize=$('#image').prop('files')[0].size;
-           if(imageSize<=100000)
-               var image=$('#image').prop('files')[0];
-           else
-               errors.push('Image should be 100KB or less!');
-       }else
-           var image='';
-       if(profession.length<1)
-           errors.push("Author's profession not selected!");
        if(errors.length < 1){
-           var token = generateToken();
-           token.done(function(generatedToken){
-		el.innerHTML = "Updating";
-               $(el).attr('disabled','disabled');
-               var update_author = update('authors',arr,'authorID',quotID,generatedToken,image);
-               update_author.done(function(data){
-                   //NEW STUFF
-			console.log(data);
-                   var logArr={};
-                   logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
-                   var log=insertLog('dashboard_logs',logArr,'logs');
-                   log.done(function(res2){
-                       //console.log(res2);
-                   });
-                   //NEW STUFF
-                   if(profession.length > 0){
-                       arr2['authorID']=quotID;
-                       var token2 = generateToken();
-                       token2.done(function(generatedToken2){
-                           var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
-                           deleteRel.done(function(deleted){
-                               for(var i in profession){
-                                   arr2['professionID']=profession[i];
-                                   var token3 = generateToken();
-                                   token3.done(function(generatedToken3){
-                                       var authorProfession = insert('authorProfession',arr2,generatedToken3);
-                                       authorProfession.done(function(response2){
-                                           $(el).removeAttr('disabled');
-                                           el.innerHTML = "Update";
-                                           setTimeout(function() {
-                                               clearFields();
-                                               closeWindow();
-                                           }, 200);
-                                       });
-                                   });
-                               }
-                           });
-                       });
-                   }else{
-                       $(el).removeAttr('disabled');
-                       el.innerHTML = "Update!";
-                       setTimeout(function() {
-                           clearFields();
-                           closeWindow();
-                       }, 200);
-                   }
-               });
-           });
-       }else{
-           var error='';
-           for(var e in errors)
-               error+='-'+errors[e]+'\n';
-           alert(error);
-       }
+            if(profession.length>=1){
+                var token = generateToken();
+                token.done(function(generatedToken){
+                    if($('#image').val()!='')
+                        var image=$('#image').prop('files')[0];
+                    else
+                        var image='';
+                    var update_author = update('authors',arr,'authorID',quotID,generatedToken,image);
+                    update_author.done(function(data){
+                        //NEW STUFF
+                        var logArr={};
+                        logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
+                        var log=insertLog('dashboard_logs',logArr,'logs');
+                        log.done(function(res2){
+                            console.log(res2);
+                        });
+                        //NEW STUFF
+                        if(profession.length > 0){
+                            arr2['authorID']=quotID;
+                            var token2 = generateToken();
+                            token2.done(function(generatedToken2){
+                                var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
+                                deleteRel.done(function(deleted){
+                                    for(var i in profession){
+                                        arr2['professionID']=profession[i];
+                                        var token3 = generateToken();
+                                        token3.done(function(generatedToken3){
+                                            var authorProfession = insert('authorProfession',arr2,generatedToken3);
+                                            authorProfession.done(function(response2){
+                                                $(el).removeAttr('disabled');
+                                                el.innerHTML = "Updated!";
+                                                setTimeout(function() {
+                                                    clearFields();
+                                                    closeWindow();
+                                                }, 200);
+                                            });
+                                        });
+                                    }
+                                });
+                            });
+                        }else{
+                            $(el).removeAttr('disabled');
+                            el.innerHTML = "Updated!";
+                            setTimeout(function() {
+                                clearFields();
+                                closeWindow();
+                            }, 200);
+                        }
+                    });
+                });
+            }else{
+                errors.push("Author's profession not selected!");
+            }
+        }else{
+            var error='';
+            for(var e in errors)
+                error+='-'+errors[e]+'\n';
+            alert(error);
+        }
    }
 
-// FB API INIT   
-   function shuffle(array) {
-       var currentIndex = array.length, temporaryValue, randomIndex;
-       // While there remain elements to shuffle...
-       while (0 !== currentIndex) {
-           // Pick a remaining element...
-           randomIndex = Math.floor(Math.random() * currentIndex);
-           currentIndex -= 1;
-           // And swap it with the current element.
-           temporaryValue = array[currentIndex];
-           array[currentIndex] = array[randomIndex];
-           array[randomIndex] = temporaryValue;
-       }
-       return array;
-   }
-    window.fbAsyncInit = function() {
+// FB API INIT
+/*	window.fbAsyncInit = function() {
                 FB.init({
                   appId      : '186483935126603',
                   xfbml      : true,
@@ -466,21 +439,13 @@ var goToPage=function(){
                 js.src = "//connect.facebook.net/en_US/sdk.js";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
-    
-    function postToPage(param) {
-        var hastags_array=['#love','#family','#leadership','#motivational','#inspirational','#life','#friendship', '#family'];
-        var random_hastags=shuffle(hastags_array);
-        var strHashtags='';
-        for(var i=0;i<=2;i++){
-            strHashtags+=" "+random_hastags[i];
-        }
-        var page_id = '864112963723491';
-		var hashtag_name=param.split(' ').join('');
+            function postToPage(param) {
+                var page_id = '864112963723491';
 		var path = '/'+param.split(' ').join('-');
                 FB.api('/' + page_id, {fields: 'access_token'}, function(resp) {
                     FB.api('/' + page_id + '/feed',
                            'post',
-                           { message:'Find the best #quotes from '+param+' at PortalQuote'+strHashtags,link:'https://portalquote.com/author/quotes'+path+'/1',access_token:
+                           { message:'Find the best quotes from '+param+' at PortalQuote...',link:'https://portalquote.com/author/quotes'+path+'/1',access_token:
                             'EAACpmyy1pEsBAOwhT8zJq5nT24Aet6joultEPRc4J6XvYqZCOleZCEU27jegDP8wyMBQCh8Y64s4TlnSvZABESiUFG2ilU9gVVKolNygNX3ebqDqrPw6nuJ3JBEmzns5EjToYEcCZBQqeWBrZBZCrGItZCppdZA8AN8PTp8ZCAr1ibwTOZChtBLVo7' }
                            ,function(response) {
                         console.log(response);
@@ -499,12 +464,11 @@ var goToPage=function(){
 			}
 		    i++;
 		}, 3*60000);
-    }
+    }*/
     
     var save = function(el){
         var author = $('#author').val(),
             birth=$('#bdate').val(),
-            pdate=$('#pdate').val(),
             country=$('#country').val(),
             profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
@@ -531,8 +495,8 @@ var goToPage=function(){
                 errors.push('Error date format');
         }
         if($('#pdate').val()!=''){
-            if(isValidDate(pdate))
-                arr['died'] = pdate;
+            if(isValidDate(birth))
+                arr['died'] = birth;
             else
                 errors.push('Error date format');
         }
@@ -548,60 +512,58 @@ var goToPage=function(){
             arr['sourceURL'] = url;
         else
             console.log('Error Source');
-        if($('#image').val()!=''){
-           var imageSize=$('#image').prop('files')[0].size;
-           if(imageSize<=100000)
-               var image=$('#image').prop('files')[0];
-           else
-               errors.push('Image should be 100KB or less!');
-       }else
-           var image='';
-        if(profession.length<1)
-            errors.push("Author's profession not selected!");
         if(errors.length < 1){
-            var token = generateToken();
-            token.done(function(generatedToken){
-                $(el).attr('disabled','disabled');
-                el.innerHTML = "Saving";
-                var insert_author = insert('authors',arr,generatedToken,image);
-                insert_author.done(function(data){
-                    console.log(data);
-                    var last_author = limit('authors','authorID','authorID',1);
-                    last_author.done(function(last){
-                        arr2['authorID']=last[0][0].authorID;
-                        //NEW STUFF
-                        var logArr={},relArr={};
-                        relArr['authorID']=last[0][0].authorID;
-                        var token3 = generateToken();
-                        token3.done(function(generatedToke3){
-                            var userAuthorRel=insertLog('dashboardUsr_Authors_en',relArr,'relation');
-                            userAuthorRel.done(function(res){
-                                logArr['log']=' has inserted a new Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+relArr['authorID']+')">'+relArr['authorID']+'</a>';
-                                var log=insertLog('dashboard_logs',logArr,'logs');
-                                log.done(function(res2){
-                                    console.log(res2);
+            if(profession.length>=1){
+                var token = generateToken();
+                token.done(function(generatedToken){
+                    if($('#image').val()!='')
+                        var image=$('#image').prop('files')[0];
+                    else
+                        var image='';
+                    $(el).attr('disabled','disabled');
+                    el.innerHTML = "Saving";
+                    var insert_author = insert('authors',arr,generatedToken,image);
+                    insert_author.done(function(data){
+                        console.log(data);
+                        var last_author = limit('authors','authorID','authorID',1);
+                        last_author.done(function(last){
+                            arr2['authorID']=last[0][0].authorID;
+                            //NEW STUFF
+                            var logArr={},relArr={};
+                            relArr['authorID']=last[0][0].authorID;
+                            var token3 = generateToken();
+                            token3.done(function(generatedToke3){
+                                var userAuthorRel=insertLog('dashboardUsr_Authors_en',relArr,'relation');
+                                userAuthorRel.done(function(res){
+                                    logArr['log']=' has inserted a new Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+relArr['authorID']+')">'+relArr['authorID']+'</a>';
+                                    var log=insertLog('dashboard_logs',logArr,'logs');
+                                    log.done(function(res2){
+                                        console.log(res2);
+                                    });
                                 });
                             });
+                            //NEW STUFF
+                            for(var i in profession){
+                                arr2['professionID']=profession[i];
+                                var token2 = generateToken();
+                                token2.done(function(generatedToken2){
+                                    var authorProfession = insert('authorProfession',arr2,generatedToken2);
+                                    authorProfession.done(function(response2){
+                                        $(el).removeAttr('disabled');
+                                        el.innerHTML = "Saved!";
+                                        postToPage(author);
+                                    });
+                                });
+                            }
+                            setTimeout(function() {
+                                authors('Author Saved correctly',document.getElementById('author-menu'));
+                            }, 2000);
                         });
-                        //NEW STUFF
-                        for(var i in profession){
-                            arr2['professionID']=profession[i];
-                            var token2 = generateToken();
-                            token2.done(function(generatedToken2){
-                                var authorProfession = insert('authorProfession',arr2,generatedToken2);
-                                authorProfession.done(function(response2){
-                                    $(el).removeAttr('disabled');
-                                    el.innerHTML = "Saved!";                                    
-                                });
-                            });
-                        }
-                        setTimeout(function() {
-                            postToPage(author);
-                            authors('Author Saved correctly',document.getElementById('author-menu'));
-                        }, 2000);
                     });
                 });
-            });
+            }else{
+                errors.push("Author's profession not selected!");
+            }
         }else{
             var error='';
             for(var e in errors)
@@ -635,9 +597,8 @@ var goToPage=function(){
         });
     }
     
-    document.getElementById("search").addEventListener("keyup", function(event) {
-        event.preventDefault();
-        if(event.keyCode == 13){
+    document.onkeydown = function(e){
+        if(e.keyCode == 13){
             var text=document.getElementById('search').value;
             if(text!=''){
                 $('#quotes-area').css('visibility','hidden');
@@ -654,5 +615,5 @@ var goToPage=function(){
                 authors('','#eng');
             }
         }
-    });
+    }
 </script>
