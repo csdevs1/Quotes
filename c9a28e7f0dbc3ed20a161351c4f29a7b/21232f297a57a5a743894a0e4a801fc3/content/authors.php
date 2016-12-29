@@ -265,13 +265,18 @@ var goToPage=function(){
         author.done(function(data){
             if(Object.keys(data[0][0]).length > 1){
                 $('#quote-form').show(500);
+                $('html, body').animate({ scrollTop: 0 }, 'fast');
                 $('#author').val(data[0][0].authorName);
-                
-                if(data[0][0].birth!='')
+                if(data[0][0].birth!=''){
                     var birth=data[0][0].birth.split('-');
-                if(birth[0]!='0000' && birth[1]!='00' &&  birth[2]!='00')
-                    $('#bdate').val(data[0][0].birth);
-                $('#pdate').val(data[0][0].died);
+                    if(birth[0]!='0000' && birth[1]!='00' &&  birth[2]!='00')
+                        $('#bdate').val(data[0][0].birth);   
+                }
+                if(data[0][0].died!='' && data[0][0].died!=null){
+                    var death=data[0][0].died.split('-');
+                    if(death[0]!='0000' && death[1]!='00' &&  death[2]!='00')
+                        $('#pdate').val(data[0][0].died);
+                }
                 $('#profile').val(data[0][0].bio);
                 $('#url').val(data[0][0].sourceURL);
                 $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
@@ -357,6 +362,8 @@ var goToPage=function(){
                 arr['died'] = pdate;
             else
                 errors.push('Error date format');
+        }else{
+            arr['died'] = '0000-00-00';
         }
         if($('#country').val()!='')
             arr['nationality'] = country;

@@ -117,13 +117,13 @@
         
         public function update($table,$values,$row,$id){
             $sql = "UPDATE $table SET $values WHERE $row=$id";
-            return $sql;
-            /*$res = $this->save_record($sql);
+            //return $sql;
+            $res = $this->save_record($sql);
             if($res){
                 return true;
             } else {
                 return false;
-            }*/
+            }
         }
         
         public function delete($table,$row,$val){

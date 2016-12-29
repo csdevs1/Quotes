@@ -14,7 +14,7 @@
 <!-- End of Bootstrap -->
 <!--FONTS-->
 <link href="https://fonts.googleapis.com/css?family=Abel|Amatic+SC|Anton|Bilbo+Swash+Caps|Bungee+Inline|Comfortaa|Cormorant+Garamond|Dancing+Script|Dosis|Glegoo|Josefin+Sans|Lobster|Lobster+Two|Modak|Muli|Open+Sans+Condensed:300|Oswald|Poiret+One|Quicksand|Raleway|Rouge+Script|Rubik|Tangerine" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo $folder; ?>Assets/ionicon/css/ionicon.css?<?php echo time(); ?>">
+<link rel="stylesheet" href="<?php echo $folder; ?>Assets/ionicon/css/ionicons.css?<?php echo time(); ?>">
 <!-- Custom CSS -->
 <link rel="stylesheet" href="<?php echo $folder; ?>Assets/stylesheet/app.css?<?php echo time(); ?>">
 <!-- SWEET ALERT -->

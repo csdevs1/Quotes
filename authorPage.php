@@ -45,20 +45,20 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
         }
 	//GET BIRTHDAY AND DEAD
         $birthSPLIT=explode('-',$authorDescription[0]['birth']);
-        if($birthSPLIT[0]!='000'){
+        $deathSPLIT=explode('-',$authorDescription[0]['died']);
+        if($birthSPLIT[0]!='0000'){
             $birthdate=date_create($authorDescription[0]['birth']);
             $born=date_format($birthdate, 'F j, Y');
             $str=", born in ".$born;
-            if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){
-                $dDate=date_create($authorDescription[0]['died']);
-                $dDate=date_format($dDate, 'F j, Y');
-            }
+        }if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died']) && $deathSPLIT[0]!='0000'){
+            $dDate=date_create($authorDescription[0]['died']);
+            $dDate=date_format($dDate, 'F j, Y');
+            $str.=" and died in ".$dDate;
         }
-
         // META TAGS
         $meta_tags = new HeadTags();
         $title = $meta_tags->titlePage('Find The Best Quotes From '.$author);
-        $description = $meta_tags->meta_description("Find the best quotes by $author, ".join(', ',$profession)." ".$str.". Share with your friends on Facebook, Twitter, Instagram...");
+        $description = $meta_tags->meta_description("Find the best quotes by $author, ".join(', ',$profession)."".$str.". Share with your friends on Facebook, Twitter, Instagram...");
         if(!preg_match('/https:/',$authorDescription[0]['authorImage']))
             $image='https://portalquote.com/images/author-images/'.$authorDescription[0]['authorImage'];
         else
@@ -106,7 +106,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                 <div class="profile"></div>
                 <span itemprop="author"><?php echo $author; ?></span>
                 <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?> <a href="<?php echo $authorDescription[0]['sourceURL']; ?>" target="_blank">Read more</a></p>
-                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo join(', ',$profession); ?></p><?php if($birthSPLIT[0]!='000'){ ?><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $born; ?></span><?php } if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died'])){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $dDate; ?></span></p><?php } ?>
+                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo join(', ',$profession); ?></p><?php if($birthSPLIT[0]!='0000'){ ?><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $born; ?></span><?php } if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died']) && $deathSPLIT[0]!='0000'){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $dDate; ?></span></p><?php } ?>
             </h1>
         </section>
         
