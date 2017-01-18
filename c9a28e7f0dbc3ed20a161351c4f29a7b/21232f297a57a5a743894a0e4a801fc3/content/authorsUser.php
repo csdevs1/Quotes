@@ -3,7 +3,14 @@
     require_once('../Classes/AppController.php');
     $obj = new AppController();
     if(empty($_POST['dataARR'])){
-        $authors = $obj->custom('SELECT * FROM dashboardUsr_Authors_en INNER JOIN authors ON dashboardUsr_Authors_en.authorID=authors.authorID WHERE userID='.$_SESSION['id']);
+        //$authors = $obj->custom('SELECT * FROM dashboardUsr_Authors_en INNER JOIN authors ON dashboardUsr_Authors_en.authorID=authors.authorID WHERE userID='.$_SESSION['id']);
+        require_once('../Classes/Paginator.php');
+        $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 12;
+        $page = (isset( $_POST['page'])) ? $_POST['page'] : 1;
+        $links = (isset( $_POST['links'])) ? $_POST['links'] : 7;    
+        $Paginator  = new Paginator('dashboardUsr_Authors_en INNER JOIN authors ON dashboardUsr_Authors_en.authorID=authors.authorID WHERE userID='.$_SESSION['id']);
+        $authorARR = $Paginator->getData('dashboardUsr_Authors_en INNER JOIN authors ON dashboardUsr_Authors_en.authorID=authors.authorID WHERE userID='.$_SESSION['id'],'authors.authorID',$limit,$page);
+        $authors=$authorARR->data;
     }else{
         $authors=$_POST['dataARR'];
     }
@@ -108,7 +115,7 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
-                <button type="button" class="btn btn-primary" onclick="save(this)" id="save">Save</button>
+                <button type="button" class="btn btn-primary" id="save">Save</button>
             </div>
         </div>
     </div>
@@ -117,8 +124,7 @@
 <?php }} ?>
 
 <div class="container">
-    <div class="row" id="row" style="display:inline;">
-        
+    <div class="row" id="row" style="display:inline;">        
         <?php
             foreach($authors as $key=>$val){
         ?>
@@ -139,9 +145,14 @@
     </div>
 </div>
 
+<?php if(empty($_POST['dataARR'])){ ?>
 <div class="container">
-    <div class="paging-container col-xs-12" id="tablePaging">
-    </div>
+    <nav aria-label="Page navigation">
+        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','myAuthors'); ?> 
+    </nav>
+</div>
+
+<div class="container">
     <div class="col-xs-12 ">
         <div class="col-xs-12">
             <label for="pageN">Go to page:</label>
@@ -149,16 +160,18 @@
         <div class="form-group col-xs-6">
             <div class="input-group">
                 <input type="text" name="pageN" id="pageN" class="form-control" placeholder="Go to page...">
-                <span class="input-group-addon page-go"><input type="submit" id="goto" class="btn btn-primary" value="Go"></span>
+                <span class="input-group-addon page-go"><input type="submit" id="goto" class="btn btn-primary" value="Go" onclick="goToPage()"></span>
             </div>
         </div>
     </div>
 </div>
+<?php } ?>
 
 <!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button> -->
 <script src="js/pagination.js?<?php echo time(); ?>"></script>
 <script>
-    var count = <?php echo count($authors); ?>;
+    if($('#search').length)
+        $('#search').attr('id','search1');
     var addProfession=function(){
         var professions=order_by('professions','professionName','ASC');
         professions.done(function(response){
@@ -171,51 +184,9 @@
     }
 
     /*Pagination*/
-    
-    $(function () {
-        load = function() {
-            window.tp = new Pagination('#tablePaging', {
-                itemsCount: count,
-                onPageSizeChange: function (ps) {
-                    //console.log('changed to ' + ps);
-                },
-                onPageChange: function (paging) {
-                    //custom paging logic here
-                    //console.log(paging);
-                    var start = paging.pageSize * (paging.currentPage - 1),
-                        end = start + paging.pageSize,
-                        $rows = $('#row').find('.data');
-                    $rows.hide();
-                    for (var i = start; i < end; i++) {
-                        $rows.eq(i).show();
-                    }
-                }
-            });
-        }
-        load();
-    });
-var goToPage=function(){
+    var goToPage=function(){
         var nPage=$('#pageN').val();
-        if(nPage>0){
-            window.tp = new Pagination('#tablePaging', {
-                itemsCount: count,
-                currentPage:nPage,
-                onPageSizeChange: function (ps) {
-                    //console.log('changed to ' + ps);
-                },
-                onPageChange: function (paging) {
-                    //custom paging logic here
-                    //console.log(paging);
-                    var start = paging.pageSize * (paging.currentPage - 1),
-                        end = start + paging.pageSize,
-                        $rows = $('#row').find('.data');
-                    $rows.hide();
-                    for (var i = start; i < end; i++) {
-                        $rows.eq(i).show();
-                    }
-                }
-            });
-        }
+        myAuthors(document.getElementById('my-author'),nPage);
     }
 
     /*Pagination*/
@@ -256,13 +227,18 @@ var goToPage=function(){
         author.done(function(data){
             if(Object.keys(data[0][0]).length > 1){
                 $('#quote-form').show(500);
+                $('html, body').animate({ scrollTop: 0 }, 'fast');
                 $('#author').val(data[0][0].authorName);
-                
-                if(data[0][0].birth!='')
+                if(data[0][0].birth!=''){
                     var birth=data[0][0].birth.split('-');
-                if(birth[0]!='0000' && birth[1]!='00' &&  birth[2]!='00')
-                    $('#bdate').val(data[0][0].birth);
-                $('#pdate').val(data[0][0].died);
+                    if(birth[0]!='0000' && birth[1]!='00' &&  birth[2]!='00')
+                        $('#bdate').val(data[0][0].birth);   
+                }
+                if(data[0][0].died!='' && data[0][0].died!=null){
+                    var death=data[0][0].died.split('-');
+                    if(death[0]!='0000' && death[1]!='00' &&  death[2]!='00')
+                        $('#pdate').val(data[0][0].died);
+                }
                 $('#profile').val(data[0][0].bio);
                 $('#url').val(data[0][0].sourceURL);
                 $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
@@ -315,10 +291,9 @@ var goToPage=function(){
     }
     
    var updateAuthor = function(el, quotID){
-        $(el).attr('disabled','disabled');
-        el.innerHTML = "Updating";
         var author = $('#author').val(),
             birth=$('#bdate').val(),
+            pdate=$('#pdate').val(),
             country=$('#country').val(),
             profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
@@ -328,11 +303,15 @@ var goToPage=function(){
             errors=[];
        if(author && author != ''){
             if($('.error').css('display')=='inline-block'){
-                alert('Author Exist');
+                errors.push('Author already exists!');
             }else{
                 arr['authorName'] = author;
                 var seo = author.replace(/["']/g, "");
                 seo = seo.replace(/["-]/g, "");
+                seo = seo.replace(/[",]/g, "");
+                seo = seo.replace(/["!]/g, "");
+                seo = seo.replace(/[".]/g, "");
+                seo = seo.replace(/\s/g,' ');
                 arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
             }
         }
@@ -345,10 +324,12 @@ var goToPage=function(){
                 errors.push('Error date format');
         }
         if($('#pdate').val()!=''){
-            if(isValidDate(birth))
-                arr['died'] = birth;
+            if(isValidDate(pdate))
+                arr['died'] = pdate;
             else
                 errors.push('Error date format');
+        }else{
+            arr['died'] = '0000-00-00';
         }
         if($('#country').val()!='')
             arr['nationality'] = country;
@@ -361,67 +342,72 @@ var goToPage=function(){
         if($('#url').val()!='')
             arr['sourceURL'] = url;
         else
-            console.log('Error Source');
+            errors.push('Source cannot be blank!');
+       if($('#image').val()!=''){
+           var imageSize=$('#image').prop('files')[0].size;
+           if(imageSize<=100000)
+               var image=$('#image').prop('files')[0];
+           else
+               errors.push('Image should be 100KB or less!');
+       }else
+           var image='';
+       if(profession.length<1)
+           errors.push("Author's profession not selected!");
        if(errors.length < 1){
-            if(profession.length>=1){
-                var token = generateToken();
-                token.done(function(generatedToken){
-                    if($('#image').val()!='')
-                        var image=$('#image').prop('files')[0];
-                    else
-                        var image='';
-                    var update_author = update('authors',arr,'authorID',quotID,generatedToken,image);
-                    update_author.done(function(data){
-                        //NEW STUFF
-                        var logArr={};
-                        logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
-                        var log=insertLog('dashboard_logs',logArr,'logs');
-                        log.done(function(res2){
-                            console.log(res2);
-                        });
-                        //NEW STUFF
-                        if(profession.length > 0){
-                            arr2['authorID']=quotID;
-                            var token2 = generateToken();
-                            token2.done(function(generatedToken2){
-                                var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
-                                deleteRel.done(function(deleted){
-                                    for(var i in profession){
-                                        arr2['professionID']=profession[i];
-                                        var token3 = generateToken();
-                                        token3.done(function(generatedToken3){
-                                            var authorProfession = insert('authorProfession',arr2,generatedToken3);
-                                            authorProfession.done(function(response2){
-                                                $(el).removeAttr('disabled');
-                                                el.innerHTML = "Updated!";
-                                                setTimeout(function() {
-                                                    clearFields();
-                                                    closeWindow();
-                                                }, 200);
-                                            });
-                                        });
-                                    }
-                                });
-                            });
-                        }else{
-                            $(el).removeAttr('disabled');
-                            el.innerHTML = "Updated!";
-                            setTimeout(function() {
-                                clearFields();
-                                closeWindow();
-                            }, 200);
-                        }
-                    });
-                });
-            }else{
-                errors.push("Author's profession not selected!");
-            }
-        }else{
-            var error='';
-            for(var e in errors)
-                error+='-'+errors[e]+'\n';
-            alert(error);
-        }
+           var token = generateToken();
+           token.done(function(generatedToken){
+		el.innerHTML = "Updating";
+               $(el).attr('disabled','disabled');
+               var update_author = update('authors',arr,'authorID',quotID,generatedToken,image);
+               update_author.done(function(data){
+                   //NEW STUFF
+			console.log(data);
+                   var logArr={};
+                   logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
+                   var log=insertLog('dashboard_logs',logArr,'logs');
+                   log.done(function(res2){
+                       //console.log(res2);
+                   });
+                   //NEW STUFF
+                   if(profession.length > 0){
+                       arr2['authorID']=quotID;
+                       var token2 = generateToken();
+                       token2.done(function(generatedToken2){
+                           var deleteRel = delete_function('authorProfession','authorID',quotID,generatedToken2);
+                           deleteRel.done(function(deleted){
+                               for(var i in profession){
+                                   arr2['professionID']=profession[i];
+                                   var token3 = generateToken();
+                                   token3.done(function(generatedToken3){
+                                       var authorProfession = insert('authorProfession',arr2,generatedToken3);
+                                       authorProfession.done(function(response2){
+                                           $(el).removeAttr('disabled');
+                                           el.innerHTML = "Update";
+                                           setTimeout(function() {
+                                               clearFields();
+                                               closeWindow();
+                                           }, 200);
+                                       });
+                                   });
+                               }
+                           });
+                       });
+                   }else{
+                       $(el).removeAttr('disabled');
+                       el.innerHTML = "Update!";
+                       setTimeout(function() {
+                           clearFields();
+                           closeWindow();
+                       }, 200);
+                   }
+               });
+           });
+       }else{
+           var error='';
+           for(var e in errors)
+               error+='-'+errors[e]+'\n';
+           alert(error);
+       }
    }
 
 // FB API INIT
@@ -478,11 +464,14 @@ var goToPage=function(){
             errors=[];
        if(author && author != ''){
             if($('.error').css('display')=='inline-block'){
-                alert('Author Exist');
+                errors.push('Author already exists!');
             }else{
-                arr['authorName'] = author;
                 var seo = author.replace(/["']/g, "");
                 seo = seo.replace(/["-]/g, "");
+                seo = seo.replace(/[",]/g, "");
+                seo = seo.replace(/["!]/g, "");
+                seo = seo.replace(/[".]/g, "");
+                seo = seo.replace(/\s/g,' ');
                 arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
             }
         }
@@ -511,7 +500,7 @@ var goToPage=function(){
         if($('#url').val()!='')
             arr['sourceURL'] = url;
         else
-            console.log('Error Source');
+            errors.push('Source cannot be blank!');
         if(errors.length < 1){
             if(profession.length>=1){
                 var token = generateToken();
@@ -556,7 +545,7 @@ var goToPage=function(){
                                 });
                             }
                             setTimeout(function() {
-                                authors('Author Saved correctly',document.getElementById('author-menu'));
+                                myAuthors(document.getElementById('my-author'));
                             }, 2000);
                         });
                     });
@@ -597,23 +586,27 @@ var goToPage=function(){
         });
     }
     
-    document.onkeydown = function(e){
-        if(e.keyCode == 13){
-            var text=document.getElementById('search').value;
-            if(text!=''){
-                $('#quotes-area').css('visibility','hidden');
-                $('.portlet .loader').css('display','block');
-                var searching=search('authors','authorName',text,'authorID','search');
-                searching.done(function(data){
-                    setTimeout(function() {
-                        $('.portlet .loader').css('display','none');
-                        $('#quotes-area').css('visibility','visible');
-                        authors('','#eng',data);
-                    }, 2000);
-                });
-            }else{
-                authors('','#eng');
-            }
+    var searchFunction=function(){
+        var text=document.getElementById('search1').value;
+        if(text!=''){
+            $('#quotes-area').css('visibility','hidden');
+            $('.portlet .loader').css('display','block');
+            var searching=search('authors','authorName',text,'authorID','search');
+            searching.done(function(data){
+                setTimeout(function() {
+                    $('.portlet .loader').css('display','none');
+                    $('#quotes-area').css('visibility','visible');
+                    authors('','#authors-eng',data);
+                }, 2000);
+            });
+        }else{
+            authors('','#authors-eng');
         }
     }
+    document.getElementById("search1").addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if(event.keyCode == 13){
+            searchFunction();
+        }
+    });
 </script>

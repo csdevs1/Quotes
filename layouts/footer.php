@@ -55,7 +55,7 @@
 <!-- Boostrap Validator -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
 
-
+<script src="/quotes/panel/js/4236a440a662cc8253d7536e5aa17942/d668aad11dcbabd7f04c3a7aca25f1f7.js"></script>
 <script src="<?php echo $folder; ?>javascript/html2canvas.js"></script>
 <script src="<?php echo $folder; ?>javascript/fbLog.js?<?php echo time(); ?>"></script>
 <script src="<?php echo $folder; ?>javascript/app.js?<?php echo time(); ?>"></script>

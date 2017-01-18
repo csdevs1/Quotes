@@ -5,7 +5,8 @@
     $author=$obj->find_by('authors','authorID',$_POST['id']);
     $professions_en=$obj->all('professions ORDER BY professionName ASC');
     $professions_es=$obj->all('professions_es ORDER BY professionName ASC');
-    $userAuthor=$obj->all('dashboardUsr_Authors_en WHERE userID='.$_SESSION['id'].' AND authorID='.$author[0]['authorID']);
+    if($_SESSION['label']!='root'  && !empty($author))
+        $userAuthor=$obj->all('dashboardUsr_Authors_en WHERE userID='.$_SESSION['id'].' AND authorID='.$author[0]['authorID']);
 
     $professionsRel = $obj->find_by('authorProfession','authorID',$_POST['id']); //Profession an Author is
     $count=0;
@@ -16,7 +17,7 @@
         $count++;
     }
 
-$count=0;
+    $count=0;
 //AUTHOR'S PROFESSIONS IN SPANISH
     $professionES=array();
     foreach($professionsRel as $key=>$val){
@@ -28,9 +29,10 @@ $count=0;
     $previous=$obj->custom("SELECT authorID FROM authors WHERE authorID < ".$_POST['id']." ORDER BY authorID DESC LIMIT 1"); //TO SELECT PREVIOUS SET OF QUOTES
 
 // SPANISH
-$authorES=$obj->find_by('authors_es','aID',$_POST['id']);
-$userAuthorES=$obj->all('dashboardUsr_Authors_es WHERE userID='.$_SESSION['id'].' AND authorID='.$author[0]['authorID']);
-
+    $authorES=$obj->find_by('authors_es','aID',$_POST['id']);
+    if($_SESSION['label']!='root' && !empty($authorES))
+        $userAuthorES=$obj->all('dashboardUsr_Authors_es WHERE userID='.$_SESSION['id'].' AND authorID='.$authorES[0]['authorID']);
+//echo count($userAuthorES);
 $countries = array('Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Puerto Rican', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian/Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean');
 
 $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra", "Angola", "Anguila", "Antártida", "Antigua y Barbuda", "Antillas Neerlandesas", "Arabia Saudí", "Arctic Ocean", "Argelia", "Argentina", "Armenia", "Aruba", "Ashmore andCartier Islands", "Atlantic Ocean", "Australia", "Austria", "Azerbaiyán", "Bahamas", "Bahráin", "Bangladesh", "Barbados", "Bélgica", "Belice", "Benín", "Bermudas", "Bielorrusia", "Birmania Myanmar", "Bolivia", "Bosnia y Hercegovina", "Botsuana", "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", "Bután", "Cabo Verde", "Camboya", "Camerún", "Canadá", "Chad", "Chile", "China", "Chipre", "Clipperton Island", "Colombia", "Comoras", "Congo", "Coral Sea Islands", "Corea del Norte", "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba", "Dhekelia", "Dinamarca", "Dominica", "Ecuador", "Egipto", "El Salvador", "El Vaticano", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos", "Estonia", "Etiopía", "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Gaza Strip", "Georgia", "Ghana", "Gibraltar", "Granada", "Grecia", "Groenlandia", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Ecuatorial", "Guinea-Bissau", "Guyana", "Haití", "Honduras", "Hong Kong", "Hungría", "India", "Indian Ocean", "Indonesia", "Irán", "Iraq", "Irlanda", "Isla Bouvet", "Isla Christmas", "Isla Norfolk", "Islandia", "Islas Caimán", "Islas Cocos", "Islas Cook", "Islas Feroe", "Islas Georgia del Sur y Sandwich del Sur", "Islas Heard y McDonald", "Islas Malvinas", "Islas Marianas del Norte", "IslasMarshall", "Islas Pitcairn", "Islas Salomón", "Islas Turcas y Caicos", "Islas Vírgenes Americanas", "Islas Vírgenes Británicas", "Israel", "Italia", "Jamaica", "Jan Mayen", "Japón", "Jersey", "Jordania", "Kazajistán", "Kenia", "Kirguizistán", "Kiribati", "Kuwait", "Laos", "Lesoto", "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo", "Macao", "Macedonia", "Madagascar", "Malasia", "Malaui", "Maldivas", "Malí", "Malta", "Man, Isle of", "Marruecos", "Mauricio", "Mauritania", "Mayotte", "México", "Micronesia", "Moldavia", "Mónaco", "Mongolia", "Montserrat", "Mozambique", "Namibia", "Nauru", "Navassa Island", "Nepal", "Nicaragua", "Níger", "Nigeria", "Niue", "Noruega", "Nueva Caledonia", "Nueva Zelanda", "Omán", "Pacific Ocean", "Países Bajos", "Pakistán", "Palaos", "Panamá", "Papúa-Nueva Guinea", "Paracel Islands", "Paraguay", "Perú", "Polinesia Francesa", "Polonia", "Portugal", "Puerto Rico", "Qatar", "Reino Unido", "República Centroafricana", "República Checa", "República Democrática del Congo", "República Dominicana", "Ruanda", "Rumania", "Rusia", "Sáhara Occidental", "Samoa", "Samoa Americana", "San Cristóbal y Nieves", "San Marino", "San Pedro y Miquelón", "San Vicente y las Granadinas", "Santa Helena", "Santa Lucía", "Santo Tomé y Príncipe", "Senegal", "Seychelles", "Sierra Leona", "Singapur", "Siria", "Somalia", "Southern Ocean", "Spratly Islands", "Sri Lanka", "Suazilandia", "Sudáfrica", "Sudán", "Suecia", "Suiza", "Surinam", "Svalbard y Jan Mayen", "Tailandia", "Taiwán", "Tanzania", "Tayikistán", "TerritorioBritánicodel Océano Indico", "Territorios Australes Franceses", "Timor Oriental", "Togo", "Tokelau", "Tonga", "Trinidad y Tobago", "Túnez", "Turkmenistán", "Turquía", "Tuvalu", "Ucrania", "Uganda", "Unión Europea", "Uruguay", "Uzbekistán", "Vanuatu", "Venezuela", "Vietnam", "Wake Island", "Wallis y Futuna", "West Bank", "World", "Yemen", "Yibuti", "Zambia", "Zimbabue");
@@ -38,7 +40,8 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
 
 ?>
 
-<style>    .profile{
+<style>    
+    .profile{
         width: 150px;
         height: 150px;
         box-shadow: 0 36px 64px -34px #222, 0 16px 14px -14px rgba(0, 0, 0, 0.6), 0 22px 18px -18px rgba(0, 0, 0, 0.4), 0 22px 38px -18px #222;
@@ -46,7 +49,7 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
         border-radius: 100%;
         margin-left: auto;
         margin-right: auto;
-        background-image: url('<?php echo $author[0]['authorImage']; ?>');
+        background-image: url('https://portalquote.com/images/author-images/<?php echo $author[0]['authorImage']; ?>');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -82,6 +85,7 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
             <div class="profile"></div>
             <h1><?php echo $author[0]['authorName']; ?></h1>
             <p class="text-muted"><?php echo $author[0]['bio']; ?></p>
+            <p class="text-muted"><strong>Nationality: </strong><?php echo $author[0]['nationality']; ?></p>
         </div>
     </div>
 </div>
@@ -106,14 +110,14 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-happy"></i></span>
-                <input type="text" class="form-control" id="bdate-en" data-error="Field required" aria-describedby="birthday" placeholder="Birth" value="<?php echo $author[0]['birth']; ?>">
+                <input type="text" class="form-control" id="bdate-en" data-error="Field required" aria-describedby="birthday" placeholder="Birth" value="">
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-sad"></i></span>
-                <input type="text" class="form-control" id="pdate-en" data-error="Field required" aria-describedby="died" placeholder="Died" value="<?php echo $author[0]['died']; ?>">
+                <input type="text" class="form-control" id="pdate-en" data-error="Field required" aria-describedby="died" placeholder="Died" value="">
                 
             </div>
         </div>
@@ -208,14 +212,14 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-happy"></i></span>
-                <input type="text" class="form-control" id="bdate-es" data-error="Field required" aria-describedby="birthday" placeholder="Birth" value="<?php echo $author[0]['birth']; ?>" disabled>
+                <input type="text" class="form-control" id="bdate-es" data-error="Field required" aria-describedby="birthday" placeholder="Birth" value="" disabled>
                 
             </div>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
                 <span class="input-group-addon"><i class="ion-sad"></i></span>
-                <input type="text" class="form-control" id="pdate-es" data-error="Field required" aria-describedby="died" placeholder="Died" value="<?php echo $author[0]['died']; ?>" disabled>
+                <input type="text" class="form-control" id="pdate-es" data-error="Field required" aria-describedby="died" placeholder="Died" value="" disabled>
                 
             </div>
         </div>
@@ -305,7 +309,7 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
             ?>
             <?php if(empty($authorES)){ ?>
                 <button class="button" onclick="openForm(this,'es')" style="background-image: url('images/es.png');">Traducir al Espanol</button>
-            <?php }else{if(count($userAuthor)>0){ ?>
+            <?php }else{if(count($userAuthorES)>0 || $_SESSION['label']=='root'){ ?>
                 <button class="button" onclick="openUpdate(this,'es',<?php echo $_POST['id']; ?>)" style="background-image: url('images/es.png');">Editar</button>
             <?php } } } }?>
         </div>
@@ -349,7 +353,16 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
                 $('.addauthor').hide(100);
                 $('.quote-form').not('#author-'+lang).hide();
                 $('#save-'+lang).attr('onclick','update_author(this,"'+lang+'",'+aID+','+data[0][0].authorID+')');
-                
+                if(data[0][0].birth!='' && lang=='en'){
+                    var birth=data[0][0].birth.split('-');
+                    if(birth[0]!='0000' && birth[1]!='00' &&  birth[2]!='00')
+                        $('#bdate-'+lang).val(data[0][0].birth);
+                }
+                if(data[0][0].died!='' && data[0][0].died!=null && lang=='en'){
+                    var death=data[0][0].died.split('-');
+                    if(death[0]!='0000' && death[1]!='00' &&  death[2]!='00')
+                        $('#pdate-'+lang).val(data[0][0].died);
+                }
                 $('#profile-'+lang).val(data[0][0].bio);
                 $('#url-'+lang).val(data[0][0].sourceURL);
                 $('#country-'+lang+" option[value='"+data[0][0].nationality+"']").prop('selected', true);
@@ -477,9 +490,8 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
     }
     
     var update_author = function(el,lang,aID,thisID){
-        $(el).attr('disabled','disabled');
-        el.innerHTML = "Updating";
         var birth=$('#bdate-'+lang).val(),
+            pdate=$('#pdate-'+lang).val(),
             country=$('#country-'+lang).val(),
             profession = $("select[name='professions-"+lang+"[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile-'+lang).val(),
@@ -487,33 +499,43 @@ $countries_es=array("Afganistán", "Akrotiri", "Albania", "Alemania", "Andorra",
             arr = {},
             arr2 = {},
             errors=[];
-        if($('#bdate').val()!=''){
-            if(isValidDate(birth))
-                arr['birth'] = birth;
-            else
+        if($('#bdate-'+lang).val()!=''){
+            if(isValidDate(birth)){
+                if(lang=='en')
+                    arr['birth'] = birth;
+            }else
                 errors.push('Error date format');
+        }else{
+            if(lang=='en')
+                arr['birth'] = '0000-00-00';
         }
-        if($('#pdate').val()!=''){
-            if(isValidDate(birth))
-                arr['died'] = birth;
-            else
+        if($('#pdate-'+lang).val()!=''){
+            if(isValidDate(birth)){
+                if(lang=='en')
+                    arr['died'] = pdate;
+            }else
                 errors.push('Error date format');
+        }else{
+            if(lang=='en')
+                arr['died'] = '0000-00-00';
         }
-        if($('#country').val()!='')
+        if($('#country-'+lang).val()!='')
             arr['nationality'] = country;
         else
             errors.push('Country cannot be blank!');
-        if($('#profile').val()!='')
+        if($('#profile-'+lang).val()!='')
             arr['bio'] = bio;
         else
             errors.push('Author\'s description cannot be blank!');
-        if($('#url').val()!='')
+        if($('#url-'+lang).val()!='')
             arr['sourceURL'] = url;
         else
             console.log('Error Source');
         if(errors.length < 1){
             var token = generateToken();
             token.done(function(generatedToken){
+               // $(el).attr('disabled','disabled');
+                //el.innerHTML = "Updating";
                 lang=='en' ? x='':x='_'+lang;
                 lang=='en' ? idROW='authorID':idROW='aID';
                 if($('#image').val()!='')

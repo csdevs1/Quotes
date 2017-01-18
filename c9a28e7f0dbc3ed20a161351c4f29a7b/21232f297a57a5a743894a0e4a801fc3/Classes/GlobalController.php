@@ -19,12 +19,20 @@
             $remove[] = "'";
             $remove[] = '"';
             $remove[] = '.';
-            $remove[] = "-"; // just as another example
+            $remove[] = ',';
+            $remove[] = '&';
+            $remove[] = '!';
+            $remove[] = ';';
+            $remove[] = ':';
+            $remove[] = '/';
+            $remove[] = '?';
+            $remove[] = '`';
             if($table=='quotes_en'){
                 $author_n=str_replace($remove, "", strtolower($data['author']));
                 $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
                 $q_arr=str_replace($remove, "", strtolower($data['quote']));
-                $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
+                $blankStripped=preg_replace('/\s+/', ' ', $q_arr);
+                $q=implode('-', array_slice(explode(' ', strtolower($blankStripped)), 0, 10));
                 $name=$a.'_'.$q;
             }elseif($table=='authors'){
                 $author_n=str_replace($remove, "", strtolower($data['authorName']));
@@ -70,7 +78,7 @@
         $val= implode(", " , $vals);
         $response=$obj->save($table,$col,$val);
         if($response){
-            $json_response = array('response'=>200,$response);
+            $json_response = array('response'=>200,$data['quoteImage']);
             echo json_encode($json_response);
         } else{
             $json_response = array('response'=>400,$response);
@@ -107,12 +115,20 @@
             $remove[] = "'";
             $remove[] = '"';
             $remove[] = '.';
-            $remove[] = "-"; // just as another example
+            $remove[] = ',';
+            $remove[] = '&';
+            $remove[] = '!';
+            $remove[] = ';';
+            $remove[] = ':';
+            $remove[] = '/';
+            $remove[] = '?';
+            $remove[] = '`';
             if($table=='quotes_en'){
                 $author_n=str_replace($remove, "", strtolower($data['author']));
                 $a=implode('-', array_slice(explode(' ', strtolower($author_n)), 0, 10));            
                 $q_arr=str_replace($remove, "", strtolower($data['quote']));
-                $q=implode('-', array_slice(explode(' ', strtolower($q_arr)), 0, 10));            
+                $blankStripped=preg_replace('/\s+/', ' ', $q_arr);
+                $q=implode('-', array_slice(explode(' ', strtolower($blankStripped)), 0, 10));
                 $name=$a.'_'.$q;
             }elseif($table=='authors'){
                 $author_n=str_replace($remove, "", strtolower($data['authorName']));
@@ -151,12 +167,15 @@
         }
         
         foreach($data as $key => $val){
+            if($key=='usrPswd'){
+                $val=sha1($val);
+            }
             $vals[] = $key.'="'.str_replace('"','\"',$val).'"';
         }
         $values = implode(',',$vals);
         $response =$obj->update($table,$values,$row,$id);
         if($response){
-            $json_response = array('response'=>200,$name.".".$img_ext);
+            $json_response = array('response'=>200,$data['quoteImage']);
             echo json_encode($json_response);
         } else{
             $json_response = array('response'=>400,$response);

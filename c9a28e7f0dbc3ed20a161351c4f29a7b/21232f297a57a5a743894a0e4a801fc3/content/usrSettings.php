@@ -6,7 +6,7 @@ $tokenObj = new Token();
 $token=$tokenObj->generate();
 $obj = new AppController();
 $user = $obj->find_by('dashboard_usrs','id',$_POST['id']);
-$usrname=explode('@',$user[0]['email']);
+$usrname=$user[0]['usrName'];
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -18,22 +18,22 @@ $usrname=explode('@',$user[0]['email']);
                         <div class="form-group ">
                             <label for="email" class="control-label col-lg-2">E-Mail (*)</label>
                             <div class="col-lg-10">
-                                <input class="form-control " id="email" type="email" name="email" required="" oninput='generateUsrname(this)' onchange="checkIfPristine(this)" aria-required="true" value="<?php echo $user[0]['email']; ?>">
+                                <input class="form-control " id="email" type="email" name="email" required="" oninput='generateUsrname(this)' onkeyup="checkIfPristine(this)" aria-required="true" value="<?php echo $user[0]['email']; ?>">
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="usrName" class="control-label col-lg-2">Username (*)</label>
                             <div class="col-lg-10">
-                                <input class=" form-control" id="usrName" name="usrName" type="text" required="" aria-required="true" disabled value="<?php echo $usrname[0]; ?>">
+                                <input class=" form-control" id="usrName" name="usrName" type="text" required="" aria-required="true" disabled value="<?php echo $usrname; ?>">
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="usrPswd" class="control-label col-lg-2">Password (*)</label>
                             <div class="col-lg-6">
-                                <input class="form-control " id="usrPswd" type="text" name="usrPswd" min="7" max="15" onchange="checkIfPristine(this)">
+                                <input class="form-control " id="usrPswd" type="text" name="usrPswd" min="7" max="15" onkeyup="checkIfPristine(this)">
                             </div>
                             <div class="col-lg-2">
-                                <input class="btn btn-primary " id="generatePass" type="submit" name="generatePass" value="Generate Password" onclick="generate()">
+                                <input class="btn btn-primary " id="generatePass" type="submit" name="generatePass" value="Generate Password" onclick="generate();checkIfPristine(this)">
                             </div>
                         </div>
                         <hr>
@@ -120,10 +120,11 @@ $usrname=explode('@',$user[0]['email']);
             arr['del']=0
         }
         if(Object.keys(arr).length>=1){
-            arr['lang']=lang;
+           arr['lang']=lang;
             var token=$('#token').val();
             var update_usr = update('dashboard_usrs',arr,'id',id,token);
             update_usr.done(function(data){
+		console.log(data);
                 usrSettings(id);
             });
         }

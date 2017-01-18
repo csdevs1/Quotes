@@ -137,12 +137,20 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                                             $count++;
                                         }
                                     }
-                                    $remove[] = "'";
-                                    $remove[] = '"';
-                                    $remove[] = '.';
-                                    $remove[] = ',';
-                                    $q=str_replace($remove, "", $quote);
-                                    $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
+                                $remove[] = "'";
+                                $remove[] = '"';
+                                $remove[] = '.';
+                                $remove[] = ',';
+                                $remove[] = '&';
+                                $remove[] = '!';
+                                $remove[] = ';';
+                                $remove[] = ':';
+                                $remove[] = '/';
+                                $remove[] = '?';
+                                $remove[] = '`';
+                                $q=str_replace($remove, "", $quote);
+                                $blankStripped=preg_replace('/\s+/', ' ', $q);
+                                $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($blankStripped)), 0, 10));
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad clearfix">
@@ -224,6 +232,6 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
 <?php
     }else{
         include('404.html');
-        exit();
+	exit();
     }
 ?>

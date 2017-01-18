@@ -13,7 +13,7 @@
     $quotes = $quotesARR->data;
 ?>
 
-<div class="masonry-container">
+<div class="masonry-container container">
     <?php
     foreach($quotes as $key=>$val){
         $qID=$quotes[$key]['quoteID'];
@@ -78,11 +78,15 @@
 
 <script>
     $(document).ready(function(){
+        
+    });
+    $(window).load(function() {
         var $container = $('.masonry-container');
         $container.masonry({
             columnWidth: '.item',
             itemSelector: '.item'
         });
         $('[data-toggle="popover"]').popover({html: true});
+        $(this).resize();
     });
 </script>

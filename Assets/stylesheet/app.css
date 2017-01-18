@@ -448,6 +448,8 @@ video{
     margin-top: 10px;
     text-transform: uppercase;
 }
+
+.ion-flag{font-size: 2rem;float: right;color:#f41;transition:all 0.5s;}.ion-flag:hover{cursor: pointer;text-shadow: -2px 1px 3px #bbb;}
 /* Upvote system */
 .quote p {
     text-align: right;

@@ -1,13 +1,13 @@
 //logout
 
 var signout=function(){
-    var signOut=logout();
+    var signOut=logout_function();
     signOut.done(function(response){
         if(response)
             window.location='/';
     });
 }
-function logout(){
+function logout_function(){
     return $.ajax({
         type: 'POST',
         dataType: 'json',

@@ -24,12 +24,20 @@ function quotesTranslation(id) {
     $("#quotes-area").load("language/quotes-translation.php",{id:id});
 }
 
-function authors(msg="",el,dataARR="") {
+function myQuotes(el,nPage) {
+    $('.lang-nav li').not(el).removeClass('active');
+    $('.has-submenu').not('#quote-menu').removeClass('active');
+    $(el).addClass('active');
+    document.getElementById("quotes-area").innerHTML="";
+    $("#quotes-area").load("language/quotesUser.php",{page:nPage});
+}
+
+function authors(el,nPage,dataARR="") {
     $('.lang-nav li').not(el).removeClass('active');
     $('.has-submenu').not(el).removeClass('active');
     $(el).addClass('active');
     document.getElementById("quotes-area").innerHTML="";
-    $("#quotes-area").load("content/authors.php",{msg:msg,dataARR:dataARR});
+    $("#quotes-area").load("content/authors.php",{page:nPage,dataARR:dataARR});
 }
 /*AUTHORS*/
     function uncompletedAuthors(el) {
@@ -46,12 +54,12 @@ function authors(msg="",el,dataARR="") {
         document.getElementById("quotes-area").innerHTML="";
         $("#quotes-area").load("content/completedAuthors.php");
     }
-    function myAuthors(el) {
+    function myAuthors(el,nPage) {
         $('.lang-nav li').not(el).removeClass('active');
         $('.has-submenu').not(el).removeClass('active');
         $(el).addClass('active');
         document.getElementById("quotes-area").innerHTML="";
-        $("#quotes-area").load("content/authorsUser.php");
+        $("#quotes-area").load("content/authorsUser.php",{page:nPage});
     }
 
     function authorsTranslation(id) {

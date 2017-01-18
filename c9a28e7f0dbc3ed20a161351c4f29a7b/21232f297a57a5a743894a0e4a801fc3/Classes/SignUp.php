@@ -16,7 +16,7 @@
         public function signup($token){
             if($this->token->check($token)){
                 foreach($this->data as $key => $val){
-                    if($key=='usrPswd' || $key=='usrName'){
+                    if($key=='usrPswd'){
                         $val=sha1($val);
                     }
                     $cols[]=$key;

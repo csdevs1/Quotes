@@ -106,7 +106,7 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                 <div class="profile"></div>
                 <span itemprop="author"><?php echo $author; ?></span>
                 <p class="col-xs-12 col-md-6 biography" itemprop="description"><?php echo add3dots($authorDescription[0]['bio'], '...', 250); ?> <a href="<?php echo $authorDescription[0]['sourceURL']; ?>" target="_blank">Read more</a></p>
-                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo join(', ',$profession); ?></p><?php if($birthSPLIT[0]!='0000'){ ?><p class="col-xs-12 col-md-6"><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $born; ?></span><?php } if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died']) && $deathSPLIT[0]!='0000'){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $dDate; ?></span></p><?php } ?>
+                <p class="col-xs-12 col-md-6"><span class="strong">Profession: </span><?php echo join(', ',$profession); ?></p><p class="col-xs-12 col-md-6"><?php if($birthSPLIT[0]!='0000'){ ?><span class="strong">Born: </span><span itemprop="birthDate"><?php echo $born; ?></span><?php } if(isset($authorDescription[0]['died']) && !empty($authorDescription[0]['died']) && $deathSPLIT[0]!='0000'){ ?> - <span class="strong">Died: </span><span itemprop="deathDate"><?php echo $dDate; ?></span></p><?php } ?>
             </h1>
         </section>
         
@@ -142,8 +142,16 @@ if(isset($_GET['name']) && !empty($_GET['name'])){
                                 $remove[] = '"';
                                 $remove[] = '.';
                                 $remove[] = ',';
+                                $remove[] = '&';
+                                $remove[] = '!';
+                                $remove[] = ';';
+                                $remove[] = ':';
+                                $remove[] = '/';
+                                $remove[] = '?';
+                                $remove[] = '`';
                                 $q=str_replace($remove, "", $quote);
-				$share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($q)), 0, 10));
+                                $blankStripped=preg_replace('/\s+/', ' ', $q);
+                                $share_url=$qID.'_'.implode('-', array_slice(explode(' ', strtolower($blankStripped)), 0, 10));
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad clearfix">

@@ -41,7 +41,7 @@ else
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="my-profile">
                                     <li><a href="<?php echo '/panel/quotes/'.$_SESSION['uname'];?>" role="link"> My Profile</a></li>
-                                    <li><a href="<?php echo '/panel/quotes/'.$_SESSION['uname'];?>" role="link"> Logout</a></li>
+                                    <li onclick="signout()"><a role="link"> Logout</a></li>
                                 </ul>
                             </div>
                         </li>

@@ -11,8 +11,8 @@ if(empty($_POST['dataARR'])){
     $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 10;
     $page = (isset( $_POST['page'])) ? $_POST['page'] : 1;
     $links = (isset( $_POST['links'])) ? $_POST['links'] : 7;
-    $Paginator  = new Paginator('quotes_en');
-    $quotesARR = $Paginator->getData("quotes_en",'quoteID',$limit,$page);
+    $Paginator  = new Paginator('dashboardUsr_Quote_en INNER JOIN quotes_en ON dashboardUsr_Quote_en.quoteID=quotes_en.quoteID WHERE dashboardUsr_Quote_en.userID='.$_SESSION['id']);
+    $quotesARR = $Paginator->getData('dashboardUsr_Quote_en INNER JOIN quotes_en ON dashboardUsr_Quote_en.quoteID=quotes_en.quoteID WHERE dashboardUsr_Quote_en.userID='.$_SESSION['id'],'quotes_en.QuoteID',$limit,$page);
     $quotes=$quotesARR->data;
 }else{
     $quotes=$_POST['dataARR'];
@@ -96,7 +96,7 @@ if(empty($_POST['dataARR'])){
                                 $translations = $obj->find_by('quotes','en_id',$quotes[$key]['quoteID']);
                         ?>
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote data">
-                            <div class="pad clearfix">
+                            <div class="pad">
                                 <?php if($_SESSION['label']!='author'){ ?><div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div><?php } ?>
                                 <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
                                     <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
@@ -132,7 +132,7 @@ if(empty($_POST['dataARR'])){
 <?php if(empty($_POST['dataARR'])){ ?>
 <div class="container">
     <nav aria-label="Page navigation">
-        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','quotes'); ?> 
+        <?php echo $Paginator->createLinks($links,'pagination pagination-sm'); ?> 
     </nav>
 </div>
 
@@ -157,7 +157,7 @@ if(empty($_POST['dataARR'])){
     if($('#search1').length)
         $('#search1').attr('id','search');
     /*Pagination*/
-    /*
+    var count = <?php echo count($quotes); ?>;
     $(function () {
         load = function() {
             window.tp = new Pagination('#tablePaging', {
@@ -180,7 +180,7 @@ if(empty($_POST['dataARR'])){
             });
         }
         load();
-    });*/
+    });
     
     var goToPage=function(){
         var nPage=$('#pageN').val();
@@ -208,18 +208,12 @@ if(empty($_POST['dataARR'])){
         }*/
     }
     $(document).ready(function() {        
-        /*var container = $('.masonry-container');
+        var container = $('.masonry-container');
         container.masonry({
             columnWidth: '.item',
             itemSelector: '.item'
-        });*/
-        var $container = $('.masonry-container');
-    $container.imagesLoaded( function() {
-        $container.masonry({
-            columnWidth: '.item',
-            itemSelector: '.item'
         });
-    }); 
+        
         var text_max = 380;
         $('#textarea_feedback').html('('+text_max + ' characters remaining)');
         $('#quote').keyup(function() {
@@ -364,16 +358,15 @@ if(empty($_POST['dataARR'])){
                                         var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
                                         topicQuote.done(function(data2){
                                             console.log(data2);
-                                            /*setTimeout(function() {
-                                                english(document.getElementById('eng'),1);
-                                            }, 1000);*/
+                                            $(el).removeAttr('disabled');
+                                            el.innerHTML = "Update!";
+                                            setTimeout(function() {
+                                                english(document.getElementById('eng'));
+                                            }, 1000);
                                         });
                                     });
                                 });
                             }
-                            setTimeout(function() {
-                                english(document.getElementById('eng'),1);
-                            }, 1000);
                         });
                     });
                 });
@@ -456,17 +449,15 @@ if(empty($_POST['dataARR'])){
                                         arr2['topicID']=topicId[0][0].topicID;
                                         var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
                                         topicQuote.done(function(data){
+                                            $(el).removeAttr('disabled');
                                             el.innerHTML = "Saved!";
-                                            /*setTimeout(function() {
-                                                english(document.getElementById('eng'),1);
-                                            }, 2000);*/
+                                            setTimeout(function() {
+                                                english(document.getElementById('eng'));
+                                            }, 2000);
                                         });
                                     });
                                 });
                             }
-                            setTimeout(function() {
-                                english(document.getElementById('eng'),1);
-                            }, 2000);
                         });
                     }
                 });
@@ -570,20 +561,19 @@ if(empty($_POST['dataARR'])){
                 setTimeout(function() {
                     $('.portlet .loader').css('display','none');
                     $('#quotes-area').css('visibility','visible');
-                    english(document.getElementById('eng'),1,data);
+                    english('#eng',1,data);
                 }, 2000);
             });
         }else{
-            english(document.getElementById('eng'),1);
+            english('#eng');
         }
     }
-    /*document.getElementById("search").addEventListener("keyup", function(event) {
+    document.getElementById("search").addEventListener("keyup", function(event) {
         event.preventDefault();
         if(event.keyCode == 13){
             searchFunction();
         }
-    });*/
-    
+    });
 </script>
 
 <?php if($_SESSION['label']=='image'){ ?>

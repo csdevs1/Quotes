@@ -4,6 +4,14 @@
     $obj = new AppController();
     if(empty($_POST['dataARR'])){
         $authors = $obj->all('authors');
+        require_once('../Classes/Paginator.php');
+        $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 12;
+        $page = (isset( $_POST['page'])) ? $_POST['page'] : 1;
+        $links = (isset( $_POST['links'])) ? $_POST['links'] : 7;
+        $Paginator  = new Paginator('authors');
+        $authorARR = $Paginator->getData("authors",'authorID',$limit,$page);
+        $authors=$authorARR->data;
+        
     }else{
         $authors=$_POST['dataARR'];
     }
@@ -145,7 +153,7 @@
     </div>
 </div>
 
-<div class="container">
+<!--<div class="container">
     <div class="paging-container col-xs-12" id="tablePaging">
     </div>
     <div class="col-xs-12 ">
@@ -159,12 +167,38 @@
             </div>
         </div>
     </div>
+</div> -->
+<?php if(empty($_POST['dataARR'])){ ?>
+<div class="container">
+    <nav aria-label="Page navigation">
+        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','authors'); ?> 
+    </nav>
 </div>
 
-<!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button> -->
+<div class="container">
+    <div class="col-xs-12 ">
+        <div class="col-xs-12">
+            <label for="pageN">Go to page:</label>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="input-group">
+                <input type="text" name="pageN" id="pageN" class="form-control" placeholder="Go to page...">
+                <span class="input-group-addon page-go"><input type="submit" id="goto" class="btn btn-primary" value="Go" onclick="goToPage()"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<?php if($_SESSION['label']=='root'){ ?>
+<!--<button class="btn btn-primary" onclick="publish()">Submit all Authors to Facebook</button>-->
+<?php } ?>
+
 <script src="js/pagination.js?<?php echo time(); ?>"></script>
 <script>
-    var count = <?php echo count($authors); ?>;
+    if($('#search').length)
+        $('#search').attr('id','search1');
+    
     var addProfession=function(){
         var professions=order_by('professions','professionName','ASC');
         professions.done(function(response){
@@ -178,30 +212,10 @@
 
     /*Pagination*/
     
-    $(function () {
-        load = function() {
-            window.tp = new Pagination('#tablePaging', {
-                itemsCount: count,
-                onPageSizeChange: function (ps) {
-                    //console.log('changed to ' + ps);
-                },
-                onPageChange: function (paging) {
-                    //custom paging logic here
-                    //console.log(paging);
-                    var start = paging.pageSize * (paging.currentPage - 1),
-                        end = start + paging.pageSize,
-                        $rows = $('#row').find('.data');
-                    $rows.hide();
-                    for (var i = start; i < end; i++) {
-                        $rows.eq(i).show();
-                    }
-                }
-            });
-        }
-        load();
-    });
-var goToPage=function(){
+    var goToPage=function(){
         var nPage=$('#pageN').val();
+        authors(document.getElementById('author-menu'),nPage);
+       /* var nPage=$('#pageN').val();
         if(nPage>0){
             window.tp = new Pagination('#tablePaging', {
                 itemsCount: count,
@@ -221,7 +235,7 @@ var goToPage=function(){
                     }
                 }
             });
-        }
+        }*/
     }
 
     /*Pagination*/
@@ -341,11 +355,15 @@ var goToPage=function(){
             errors=[];
        if(author && author != ''){
             if($('.error').css('display')=='inline-block'){
-                alert('Author Exist');
+                errors.push('Author already exists!');
             }else{
                 arr['authorName'] = author;
                 var seo = author.replace(/["']/g, "");
                 seo = seo.replace(/["-]/g, "");
+                seo = seo.replace(/[",]/g, "");
+                seo = seo.replace(/["!]/g, "");
+                seo = seo.replace(/[".]/g, "");
+                seo = seo.replace(/\s/g,' ');
                 arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
             }
         }
@@ -376,7 +394,7 @@ var goToPage=function(){
         if($('#url').val()!='')
             arr['sourceURL'] = url;
         else
-            console.log('Error Source');
+            errors.push('Source cannot be blank!');
        if($('#image').val()!=''){
            var imageSize=$('#image').prop('files')[0].size;
            if(imageSize<=100000)
@@ -390,12 +408,12 @@ var goToPage=function(){
        if(errors.length < 1){
            var token = generateToken();
            token.done(function(generatedToken){
-		el.innerHTML = "Updating";
+               el.innerHTML = "Updating";
                $(el).attr('disabled','disabled');
                var update_author = update('authors',arr,'authorID',quotID,generatedToken,image);
                update_author.done(function(data){
                    //NEW STUFF
-			console.log(data);
+                   console.log(data);
                    var logArr={};
                    logArr['log']=' has edited an Author in English. Author ID: <a class="idREL" onclick="authorsTranslation('+quotID+')">'+quotID+'</a>';
                    var log=insertLog('dashboard_logs',logArr,'logs');
@@ -445,7 +463,7 @@ var goToPage=function(){
    }
 
 // FB API INIT   
-   function shuffle(array) {
+   /*function shuffle(array) {
        var currentIndex = array.length, temporaryValue, randomIndex;
        // While there remain elements to shuffle...
        while (0 !== currentIndex) {
@@ -466,7 +484,7 @@ var goToPage=function(){
                   version    : 'v2.8'
                 });
               };
-            (function(d, s, id){
+    (function(d, s, id){
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) {return;}
                 js = d.createElement(s); js.id = id;
@@ -474,7 +492,7 @@ var goToPage=function(){
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
     
-    function postToPage(param) {
+    function postToPage(param,name) {
         var hastags_array=['#love','#family','#leadership','#motivational','#inspirational','#life','#friendship', '#family'];
         var random_hastags=shuffle(hastags_array);
         var strHashtags='';
@@ -482,13 +500,13 @@ var goToPage=function(){
             strHashtags+=" "+random_hastags[i];
         }
         var page_id = '864112963723491';
-		var hashtag_name=param.split(' ').join('');
-		var path = '/'+param.split(' ').join('-');
+		var hashtag_name=name.split(' ').join('');
+		var path = '/'+param.split(' ').join('-').toLowerCase();
                 FB.api('/' + page_id, {fields: 'access_token'}, function(resp) {
                     FB.api('/' + page_id + '/feed',
                            'post',
-                           { message:'Find the best #quotes from '+param+' at PortalQuote'+strHashtags,link:'https://portalquote.com/author/quotes'+path+'/1',access_token:
-                            'EAACpmyy1pEsBAOwhT8zJq5nT24Aet6joultEPRc4J6XvYqZCOleZCEU27jegDP8wyMBQCh8Y64s4TlnSvZABESiUFG2ilU9gVVKolNygNX3ebqDqrPw6nuJ3JBEmzns5EjToYEcCZBQqeWBrZBZCrGItZCppdZA8AN8PTp8ZCAr1ibwTOZChtBLVo7' }
+                           { message:'Find the best #quotes from '+param+' at PortalQuote #quoteoftheday'+strHashtags,link:'https://portalquote.com/author/quotes'+path+'/1',access_token:
+                            'EAACpmyy1pEsBALH9duQZBWEIogPZCZBNdMWPGPQFXFWS864QOJC4S2r8Wtw3Eo5t5tdWgZAKqzeVB4bNnZAnEaYbsIfpwbstZBxXDOKP8elIHj5NNja9rFJwipDf3hItHiEB0jmcbZAGmaZBpjFSUpVtWJcPLQjPlYlIe18uFSfqGwZDZD' }
                            ,function(response) {
                         console.log(response);
                     });
@@ -506,7 +524,7 @@ var goToPage=function(){
 			}
 		    i++;
 		}, 3*60000);
-    }
+    }*/
     
     var save = function(el){
         var author = $('#author').val(),
@@ -520,15 +538,19 @@ var goToPage=function(){
             arr2 = {},
             errors=[];
        if(author && author != ''){
-            if($('.error').css('display')=='inline-block'){
-                alert('Author Exist');
-            }else{
-                arr['authorName'] = author;
-                var seo = author.replace(/["']/g, "");
-                seo = seo.replace(/["-]/g, "");
-                arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
-            }
-        }
+           if($('.error').css('display')=='inline-block'){
+               errors.push('Author already exists!');
+           }else{
+               arr['authorName'] = author;
+               var seo = author.replace(/["']/g, "");
+               seo = seo.replace(/["-]/g, "");
+               seo = seo.replace(/[",]/g, "");
+               seo = seo.replace(/["!]/g, "");
+               seo = seo.replace(/[".]/g, "");
+               seo = seo.replace(/\s/g,' ');
+               arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
+           }
+       }
         else
             errors.push('Author\'s name cannot be blank!');
         if($('#bdate').val()!=''){
@@ -554,7 +576,7 @@ var goToPage=function(){
         if($('#url').val()!='')
             arr['sourceURL'] = url;
         else
-            console.log('Error Source');
+            errors.push('Source cannot be blank!');
         if($('#image').val()!=''){
            var imageSize=$('#image').prop('files')[0].size;
            if(imageSize<=100000)
@@ -565,6 +587,7 @@ var goToPage=function(){
            var image='';
         if(profession.length<1)
             errors.push("Author's profession not selected!");
+        console.log(arr['seo_url']);
         if(errors.length < 1){
             var token = generateToken();
             token.done(function(generatedToken){
@@ -603,8 +626,8 @@ var goToPage=function(){
                             });
                         }
                         setTimeout(function() {
-                            postToPage(author);
-                            authors('Author Saved correctly',document.getElementById('author-menu'));
+                            //postToPage(seo,author);
+                            authors(document.getElementById('author-menu'),1);
                         }, 2000);
                     });
                 });
@@ -642,24 +665,27 @@ var goToPage=function(){
         });
     }
     
-    document.getElementById("search").addEventListener("keyup", function(event) {
+    var searchFunction=function(){
+        var text=document.getElementById('search1').value;
+        if(text!=''){
+            $('#quotes-area').css('visibility','hidden');
+            $('.portlet .loader').css('display','block');
+            var searching=search('authors','authorName',text,'authorID','search');
+            searching.done(function(data){
+                setTimeout(function() {
+                    $('.portlet .loader').css('display','none');
+                    $('#quotes-area').css('visibility','visible');
+                    authors('#authors-eng',1,data);
+                }, 2000);
+            });
+        }else{
+            authors('#authors-eng',1);
+        }
+    }
+    /*document.getElementById("search1").addEventListener("keyup", function(event) {
         event.preventDefault();
         if(event.keyCode == 13){
-            var text=document.getElementById('search').value;
-            if(text!=''){
-                $('#quotes-area').css('visibility','hidden');
-                $('.portlet .loader').css('display','block');
-                var searching=search('authors','authorName',text,'authorID','search');
-                searching.done(function(data){
-                    setTimeout(function() {
-                        $('.portlet .loader').css('display','none');
-                        $('#quotes-area').css('visibility','visible');
-                        authors('','#eng',data);
-                    }, 2000);
-                });
-            }else{
-                authors('','#eng');
-            }
+            searchFunction1();
         }
-    });
+    });*/
 </script>
