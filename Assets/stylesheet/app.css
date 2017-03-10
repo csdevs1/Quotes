@@ -450,6 +450,7 @@ video{
 }
 
 .ion-flag{font-size: 2rem;float: right;color:#f41;transition:all 0.5s;}.ion-flag:hover{cursor: pointer;text-shadow: -2px 1px 3px #bbb;}
+.report-text{width: 100%;border-radius: 30px;overflow-y: auto;min-height: 150px;resize: none;padding-left: 10px;padding-right: 10px;}.report-text:focus{outline: none;}
 /* Upvote system */
 .quote p {
     text-align: right;

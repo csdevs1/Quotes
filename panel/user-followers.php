@@ -17,9 +17,8 @@ if(isset($user) && !empty($user)){
     $fname=$user[0]['fname'];
     $lname=$user[0]['lname'];
     
-    if(isset($_SESSION['uID']) && !empty($_SESSION['uID']))
-        $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
     if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+        $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
         $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
         $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC LIMIT 6");
     }
@@ -249,8 +248,10 @@ if(isset($user) && !empty($user)){
                                                     $followerQuotes=$obj->custom('SELECT COUNT("userID") as cnt FROM userQuotes WHERE userID='.$followers[$key]['followerID']);
                                                     $nFollowers=$obj->custom('SELECT COUNT("userID") as cnt FROM followers WHERE userID='.$followers[$key]['followerID']);
                                                     $nFollowing=$obj->custom('SELECT COUNT("followerID") as cnt FROM followers WHERE followerID='.$followers[$key]['followerID']);
-                                                    $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$followers[$key]['followerID']." AND followerID=".$_SESSION['uID']);
-                                                    $isFollowing[0]['cnt']==0 ? $class='light-red nt-follow' : $class='darkred';
+                                                    if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+                                                        $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$followers[$key]['followerID']." AND followerID=".$_SESSION['uID']);
+                                                        $isFollowing[0]['cnt']==0 ? $class='light-red nt-follow' : $class='darkred';
+                                                    }
                                             ?>
                                                 <div class="col-cs-12 col-xs-6 col-md-3 card-profile">
                                                     <div class="user-profile_pic" style="background-image:url('<?php echo $follower[0]['picture']; ?>')"></div>
