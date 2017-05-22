@@ -26,7 +26,7 @@ if(empty($_POST['dataARR'])){
     <div class="clearfix"></div>
    <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author' && $_SESSION['label']!='image'){
     if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert ?>
-        <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
+        <div class="col-lg-12 text-dark"><span id="add-quote" onclick="openWindow(this);clearFields();setAuthor()"><span class="glyphicon glyphicon-edit"></span> Add a new quote</span></div>
     <?php } } ?>
 </div>
 <?php if(isset($_SESSION['permission'][1]) && !empty($_SESSION['permission'][1]) && isset($_SESSION['lang']) && !empty($_SESSION['lang']) && $_SESSION['label']!='author'){
@@ -40,7 +40,7 @@ if(empty($_POST['dataARR'])){
             <span class="label label-info" style="font-size:1.3rem" id="match"></span>
             <span class="label label-warning" style="font-size:1.3rem" id="char-length"></span>
             <div id="textarea_feedback"></div>
-            <textarea placeholder="Insert your quote..." maxlength="380" class="textarea" id="quote" onkeyup="match(this)" <?php if($_SESSION['label']=='image') echo 'disabled';?>></textarea>
+            <textarea placeholder="Insert your quote..." maxlength="380" class="textarea" id="quote" oninput="match(this)" <?php if($_SESSION['label']=='image') echo 'disabled';?>></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
@@ -98,8 +98,8 @@ if(empty($_POST['dataARR'])){
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote data">
                             <div class="pad clearfix">
                                 <?php if($_SESSION['label']!='author'){ ?><div class="circle-ref" onclick="quotesTranslation(<?php echo $translations[0]['id']; ?>)"><?php echo $translations[0]['id']; ?></div><?php } ?>
-                                <?php if(isset($quotes[$key]['quoteImage']) && !empty($quotes[$key]['quoteImage'])){ ?>
-                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $quotes[$key]['quoteImage']; ?>" alt="image description">
+                                <?php if(isset($quotes[$key]['tinyImg']) && !empty($quotes[$key]['tinyImg'])){ ?>
+                                    <img class="img-responsive" src="https://portalquote.com/images/quotes/<?php echo $quotes[$key]['tinyImg']; ?>" alt="image description">
                                 <?php } ?>
                                 <blockquote><?php echo $quotes[$key]['quote']; ?> <span>- <?php echo $quotes[$key]['author']; ?></span></blockquote>
                                 <div class="col-xs-8 col-md-8">
@@ -118,6 +118,13 @@ if(empty($_POST['dataARR'])){
                                         if($_SESSION['lang']=='eng' || $_SESSION['lang']=='all'){ //Permission to insert    ?>
                                         <div class="col-xs-4 col-md-4"><p><a class="like" onclick="openUpdate(<?php echo $quotes[$key]['quoteID']; ?>,<?php echo $translations[0]['id']; ?>);">Edit</a></p></div>
                                 <?php } } ?>
+                                <?php if(isset($quotes[$key]['tinyImg']) && !empty($quotes[$key]['tinyImg']) && $_SESSION['label']=='root'){ ?>
+                                       
+                                <div class="col-xs-12">
+                                    <?php if($quotes[$key]['active_img']==0){ ?><a class="btn btn-success activate-img shuffle-img" data-qtid="<?php echo $quotes[$key]['quoteID']; ?>">Activate Image</a><?php } ?>
+                                    <?php if($quotes[$key]['active_img']!=0){ ?><a class="text-muted btn btn-warning deactivate-img shuffle-img" data-qtid="<?php echo $quotes[$key]['quoteID']; ?>">Deactivate Image</a><?php } ?>
+                                </div>
+                                <?php } ?>
                             </div>
                         </div>
                         <?php
@@ -156,6 +163,42 @@ if(empty($_POST['dataARR'])){
 <script>
     if($('#search1').length)
         $('#search1').attr('id','search');
+    
+    //Activate or deactivate image_type_to_extension
+    $('.shuffle-img').click(function(){
+        var el=this;
+        var quoteID=$(this).attr('data-qtid');
+        arr = {};
+        if($(el).hasClass('activate-img')){
+            var token = generateToken();
+            token.done(function(generatedToken){
+                arr['active_img'] = 1;
+                var activate = update('quotes_en',arr,'quoteID',quoteID,generatedToken);
+                activate.done(function(data){
+                    console.log(data);
+                    $(el).removeClass('activate-img');
+                    $(el).addClass('dectivate-img');
+                    $(el).removeClass('btn-success');
+                    $(el).addClass('btn-warning');
+                    $(el).text('Deactivate Image');
+                });
+            });
+        } else{
+            var token = generateToken();
+            token.done(function(generatedToken){
+                arr['active_img'] = 0;
+                var deactivate = update('quotes_en',arr,'quoteID',quoteID,generatedToken);
+                deactivate.done(function(data){
+                    console.log(data);
+                    $(el).removeClass('deactivate-img');
+                    $(el).addClass('activate-img');
+                    $(el).removeClass('btn-warning');
+                    $(el).addClass('btn-success');
+                    $(el).text('Activate Image');
+                });
+            });
+        }
+    });
     /*Pagination*/
     /*
     $(function () {
@@ -214,7 +257,7 @@ if(empty($_POST['dataARR'])){
             itemSelector: '.item'
         });*/
         var $container = $('.masonry-container');
-    $container.imagesLoaded( function() {
+        $container.imagesLoaded( function() {
         $container.masonry({
             columnWidth: '.item',
             itemSelector: '.item'
@@ -228,8 +271,10 @@ if(empty($_POST['dataARR'])){
             $('#textarea_feedback').html('('+text_remaining + ' characters remaining)');
         });
     });
-
-    $(document).ready(function($) {
+    
+    var idleTime = 0;
+    
+    $(document).ready(function($) {        
         // Tags Input
         $('#topic').tagsInput({width:'auto'});
         $('.search-list').hide();
@@ -245,6 +290,12 @@ if(empty($_POST['dataARR'])){
             }
         });
     });
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+        if (idleTime > 10) { // 10 minutes
+            signout();
+        }
+    }
     
     var clearFields=function(){
         $('#author').val('');
@@ -252,14 +303,36 @@ if(empty($_POST['dataARR'])){
         $('.tag').remove();
     }
     
+    var setAuthor=function(){
+        if(localStorage.getItem("authorName")!=null)
+            $('#author').val(localStorage.getItem("authorName"));
+        else
+            $('#author').val('');
+    }
+    
+    function resizeImage(imgObj){
+        var canvas = document.createElement('canvas');
+        var canvasContext = canvas.getContext('2d');
+        canvas.width = 700;
+        canvas.height = 400;
+        canvasContext.drawImage(imgObj, 0, 0,700,400);
+        return canvas.toDataURL('image/jpeg');
+    }
+    var $imgToUpload;
     $("#image").on("change", function(){
-        var imgType = $(this).prop('files')[0].type;
+        var imgType = $(this).prop('files')[0].type,
+            imageUrl = URL.createObjectURL($(this).prop('files')[0]),
+            myImage = new Image();;
         if(imgType.split('/')[0] == 'image'){
             // Name of file and placeholder
             var file = this.files[0].name;
             var dflt = $(this).attr("placeholder");
             if($(this).val()!=""){
                 $(this).next().text(file);
+                myImage.src = imageUrl;
+                myImage.onload = function () {
+                    $imgToUpload=resizeImage(myImage);
+                }                
             } else {
                 $(this).next().text(dflt);
             }
@@ -285,24 +358,36 @@ if(empty($_POST['dataARR'])){
                     for(var i in rel[0]){
                         var topic = find_by('topics_en','topicID',rel[0][i].topicID);
                         topic.done(function(response){
-                            var val = document.getElementById('topic').value;
-                            if(document.getElementById('topic').value!=""){
-                                $('#topic').addTag(response[0][0].topicName);                                
-                                <?php if($_SESSION['label']=='image'){ ?>
-                                    $('.tag a').remove();
-                                <?php } ?>
-                                
-                            }else{
-                                $('#topic').addTag(response[0][0].topicName);                                
-                                <?php if($_SESSION['label']=='image'){ ?>
-                                    $('.tag a').remove();
-                                <?php } ?>
+                            console.log(response);
+                            if(response){
+                                var val = document.getElementById('topic').value;
+                                if(document.getElementById('topic').value!=""){
+                                    $('#topic').addTag(response[0][0].topicName);                                
+                                    <?php if($_SESSION['label']=='image'){ ?>
+                                        $('.tag a').remove();
+                                    <?php } ?>
+
+                                }else{
+                                    $('#topic').addTag(response[0][0].topicName);                                
+                                    <?php if($_SESSION['label']=='image'){ ?>
+                                        $('.tag a').remove();
+                                    <?php } ?>
+                                }
                             }
                         });
                     }
                 });
             }
         });
+    }
+    
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, {type:mime});
     }
     
     var updateQuote = function(el, quotID,resRel){
@@ -331,13 +416,19 @@ if(empty($_POST['dataARR'])){
             arr['quote']=quote;
             arr['author']=author;
             if($('#image').val() && $('#image').val() !=''){
-                var image=$('#image').prop('files')[0];
+                var originalImg=$('#image').prop('files')[0];
+                var image = dataURLtoFile($imgToUpload,'file.jpg');
             }
             var token = generateToken();
             token.done(function(generatedToken){
                 $(el).attr('disabled','disabled');
-                var quoteUpdate = update('quotes_en',arr,'quoteID',quotID,generatedToken,image);
-                quoteUpdate.done(function(data){
+                if($('#image').val() && $('#image').val() !=''){
+                    var upimg=imgur_upload(originalImg);
+                    upimg.done(function(rImg){
+                        var url=rImg.data.link.replace('http','https');
+                        arr['quoteImage']=url;
+                        var quoteUpdate = update('quotes_en',arr,'quoteID',quotID,generatedToken,image);
+                        quoteUpdate.done(function(data){
 		//NEW STUFF
                     var logArr={};
                     logArr['log']=' has edited a Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel+')">'+resRel+'</a>';
@@ -377,6 +468,50 @@ if(empty($_POST['dataARR'])){
                         });
                     });
                 });
+                    });
+                }else{
+                    var quoteUpdate = update('quotes_en',arr,'quoteID',quotID,generatedToken,image);
+                        quoteUpdate.done(function(data){
+		//NEW STUFF
+                    var logArr={};
+                    logArr['log']=' has edited a Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel+')">'+resRel+'</a>';
+                    var log=insertLog('dashboard_logs',logArr,'logs');
+                    log.done(function(res2){
+                        console.log(res2);
+                    });
+
+                    console.log(data);
+                    var token2 = generateToken();
+                    token2.done(function(generatedToken2){
+                        var deleteRel = delete_function('quotesTopicEN','quoteID',quotID,generatedToken2);
+                        deleteRel.done(function(delResponse){
+                            console.log(delResponse);
+                            var arr2={};
+                            arr2['quoteID']=quotID;
+                            var topic = topics.split(',');
+                            for(var i in topic){
+                                var topicSearch = find_by('topics_en','topicName',topic[i]);
+                                topicSearch.done(function(topicId){
+                                    var token3 = generateToken();
+                                    token3.done(function(generatedToken3){
+                                        arr2['topicID']=topicId[0][0].topicID;
+                                        var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
+                                        topicQuote.done(function(data2){
+                                            console.log(data2);
+                                            /*setTimeout(function() {
+                                                english(document.getElementById('eng'),1);
+                                            }, 1000);*/
+                                        });
+                                    });
+                                });
+                            }
+                            setTimeout(function() {
+                                english(document.getElementById('eng'),1);
+                            }, 1000);
+                        });
+                    });
+                });
+                }
             });
         }else{
             var error='';
@@ -391,6 +526,7 @@ if(empty($_POST['dataARR'])){
             author = $('#author').val(),
             topics = $('#topic').val(),
             errors=[];
+        localStorage.setItem("authorName", author);
         if(!quote || quote==''){
             errors.push('Quotes cannot be blank!');
         }
@@ -403,73 +539,141 @@ if(empty($_POST['dataARR'])){
                     errors.push('Author is not in our database!');
             });
         }
-        if(!topics || topics==''){
-            errors.push('Topics field cannot be blank!');
-        }
         if(errors.length<1){
             var arr = {};
             arr['quote']=quote;
             arr['author']=author;
             if($('#image').val() && $('#image').val() !=''){
-                var image=$('#image').prop('files')[0];
+                var originalImg=$('#image').prop('files')[0];
+                var image = dataURLtoFile($imgToUpload,'file.jpg');
             }
             var token1 = generateToken();
             token1.done(function(generatedToken1){
                 $(el).attr('disabled','disabled');
-                var newQuote = insert('quotes_en',arr,generatedToken1,image);
-                newQuote.done(function(response){
-                    if(response){
-                        var lastQuote = limit('quotes_en','quoteID','quoteID',1);
-                        lastQuote.done(function(dataID){
-                            var arr2={},
-                                arr3={},
-                                logArr={},relArr={};
-                            arr2['quoteID']=dataID[0][0].quoteID;
-                            arr3['en_id']=dataID[0][0].quoteID;
-                            relArr['quoteID']=dataID[0][0].quoteID;
-                            var token2 = generateToken();
-                            token2.done(function(generatedToken2){
-                                var quoteRelation = insert('quotes',arr3,generatedToken2);
-                                quoteRelation.done(function(re){
-                                    console.log('Rel: '+ re);
-                                    //NEW STUFF
-                                    var userQuoteRel=insertLog('dashboardUsr_Quote_en',relArr,'relation');
-                                    userQuoteRel.done(function(res){
-                                        console.log(res);
-                                        var lastRel=find_by('quotes','en_id',dataID[0][0].quoteID);
-                                        lastRel.done(function(resRel){
-                                            logArr['log']=' has inserted a new Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel[0][0].id+')">'+resRel[0][0].id+'</a>';
-                                            var log=insertLog('dashboard_logs',logArr,'logs');
-                                            log.done(function(res2){
-                                                console.log(res2);
+                if($('#image').val() && $('#image').val() !=''){
+                    var upimg=imgur_upload(originalImg);
+                    upimg.done(function(rImg){
+                        var url=rImg.data.link.replace('http','https');
+                        arr['quoteImage']=url;
+                        var newQuote = insert('quotes_en',arr,generatedToken1,image);
+                        newQuote.done(function(response){
+                        if(response){
+                            var lastQuote = limit('quotes_en','quoteID','quoteID',1);
+                            lastQuote.done(function(dataID){
+                                var arr2={},
+                                    arr3={},
+                                    logArr={},relArr={};
+                                arr2['quoteID']=dataID[0][0].quoteID;
+                                arr3['en_id']=dataID[0][0].quoteID;
+                                relArr['quoteID']=dataID[0][0].quoteID;
+                                var token2 = generateToken();
+                                token2.done(function(generatedToken2){
+                                    var quoteRelation = insert('quotes',arr3,generatedToken2);
+                                    quoteRelation.done(function(re){
+                                        console.log('Rel: '+ re);
+                                        //NEW STUFF
+                                        var userQuoteRel=insertLog('dashboardUsr_Quote_en',relArr,'relation');
+                                        userQuoteRel.done(function(res){
+                                            console.log(res);
+                                            var lastRel=find_by('quotes','en_id',dataID[0][0].quoteID);
+                                            lastRel.done(function(resRel){
+                                                logArr['log']=' has inserted a new Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel[0][0].id+')">'+resRel[0][0].id+'</a>';
+                                                var log=insertLog('dashboard_logs',logArr,'logs');
+                                                log.done(function(res2){
+                                                    console.log(res2);
+                                                });
                                             });
                                         });
                                     });
                                 });
+                                if(topics!=''){
+                                    var topic = topics.split(',');
+                                    for(var i in topic){
+                                        var topicSearch = find_by('topics_en','topicName',topic[i]);
+                                        topicSearch.done(function(topicId){
+                                            var token3 = generateToken();
+                                            token3.done(function(generatedToken3){
+                                                arr2['topicID']=topicId[0][0].topicID;
+                                                var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
+                                                topicQuote.done(function(data){
+                                                    el.innerHTML = "Saved!";
+                                                   /* 
+                                                    setTimeout(function() {
+                                                        english(document.getElementById('eng'),1);
+                                                    }, 2000);*/
+
+                                                });
+                                            });
+                                        });
+                                    }
+                                }
+                                setTimeout(function() {
+                                    english(document.getElementById('eng'),1);
+                                }, 2000);
                             });
-                            var topic = topics.split(',');
-                            for(var i in topic){
-                                var topicSearch = find_by('topics_en','topicName',topic[i]);
-                                topicSearch.done(function(topicId){
-                                    var token3 = generateToken();
-                                    token3.done(function(generatedToken3){
-                                        arr2['topicID']=topicId[0][0].topicID;
-                                        var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
-                                        topicQuote.done(function(data){
-                                            el.innerHTML = "Saved!";
-                                            /*setTimeout(function() {
-                                                english(document.getElementById('eng'),1);
-                                            }, 2000);*/
+                        }
+                        });
+                    });
+                } else{
+                    var newQuote = insert('quotes_en',arr,generatedToken1,image);
+                    newQuote.done(function(response){
+                        if(response){
+                            var lastQuote = limit('quotes_en','quoteID','quoteID',1);
+                            lastQuote.done(function(dataID){
+                                var arr2={},
+                                    arr3={},
+                                    logArr={},relArr={};
+                                arr2['quoteID']=dataID[0][0].quoteID;
+                                arr3['en_id']=dataID[0][0].quoteID;
+                                relArr['quoteID']=dataID[0][0].quoteID;
+                                var token2 = generateToken();
+                                token2.done(function(generatedToken2){
+                                    var quoteRelation = insert('quotes',arr3,generatedToken2);
+                                    quoteRelation.done(function(re){
+                                        console.log('Rel: '+ re);
+                                        //NEW STUFF
+                                        var userQuoteRel=insertLog('dashboardUsr_Quote_en',relArr,'relation');
+                                        userQuoteRel.done(function(res){
+                                            console.log(res);
+                                            var lastRel=find_by('quotes','en_id',dataID[0][0].quoteID);
+                                            lastRel.done(function(resRel){
+                                                logArr['log']=' has inserted a new Quote in English. Quote ID: <a class="idREL" onclick="quotesTranslation('+resRel[0][0].id+')">'+resRel[0][0].id+'</a>';
+                                                var log=insertLog('dashboard_logs',logArr,'logs');
+                                                log.done(function(res2){
+                                                    console.log(res2);
+                                                });
+                                            });
                                         });
                                     });
                                 });
-                            }
-                            setTimeout(function() {
-                                english(document.getElementById('eng'),1);
-                            }, 2000);
-                        });
-                    }
-                });
+                                if(topics!=''){
+                                    var topic = topics.split(',');
+                                    for(var i in topic){
+                                        var topicSearch = find_by('topics_en','topicName',topic[i]);
+                                        topicSearch.done(function(topicId){
+                                            var token3 = generateToken();
+                                            token3.done(function(generatedToken3){
+                                                arr2['topicID']=topicId[0][0].topicID;
+                                                var topicQuote = insert('quotesTopicEN',arr2,generatedToken3);
+                                                topicQuote.done(function(data){
+                                                    el.innerHTML = "Saved!";
+                                                   /* 
+                                                    setTimeout(function() {
+                                                        english(document.getElementById('eng'),1);
+                                                    }, 2000);*/
+
+                                                });
+                                            });
+                                        });
+                                    }
+                                }
+                                setTimeout(function() {
+                                    english(document.getElementById('eng'),1);
+                                }, 2000);
+                            });
+                        }
+                    });
+                }
             });
         }else{
             var error='';
@@ -561,11 +765,12 @@ if(empty($_POST['dataARR'])){
     }*/
     
     var searchFunction=function(){
-        var text=document.getElementById('search').value;
+        var op=$('input[name=optradio]:checked').val(),
+            text=document.getElementById('search').value;
         if(text!=''){
             $('#quotes-area').css('visibility','hidden');
             $('.portlet .loader').css('display','block');
-            var searching=search('quotes_en','quote',text,'quoteID','search');
+            var searching=search('quotes_en','quote',text,'quoteID','search',op);
             searching.done(function(data){
                 setTimeout(function() {
                     $('.portlet .loader').css('display','none');

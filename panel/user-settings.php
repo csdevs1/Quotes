@@ -22,6 +22,11 @@ if(isset($user) && !empty($user) && $_SESSION['uID']==$user[0]['userID']){
     $lname=$user[0]['lname'];
     $uname=$user[0]['username'];
     $email=$user[0]['email'];
+    $website=$user[0]['website'];
+    $facebook=$user[0]['facebook'];
+    $instagram=$user[0]['instagram'];
+    $twitter=$user[0]['twitter'];
+    $about=$user[0]['about'];
     
     if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id)
         $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
@@ -48,7 +53,7 @@ if(isset($user) && !empty($user) && $_SESSION['uID']==$user[0]['userID']){
         <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
 
         <!-- Google-Fonts -->
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
 
 
         <!-- Bootstrap core CSS -->
@@ -81,159 +86,7 @@ if(isset($user) && !empty($user) && $_SESSION['uID']==$user[0]['userID']){
         <![endif]-->
     </head>
     <body>
-        <!-- Aside Start-->
-        <aside class="left-panel">
-            <!-- brand -->
-            <div class="logo">
-                <a href="index.html" class="logo-expanded">
-                    <img src="img/single-logo.png" alt="logo">
-                    <span class="nav-label">quotesite</span>
-                </a>
-            </div>
-            <!-- / brand -->
-            <nav class="navigation">
-                <ul class="list-unstyled">
-                    <li class="has-submenu"><a href="/panel/quotes/<?php echo $user[0]['username']; ?>"><i class="ion-home"></i> <span class="nav-label">
-                        <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
-                        Your Quotes
-                        <?php } else{ echo $fname."'s Quotes"; } ?>  
-                        </span></a></li>
-                    <li class="has-submenu"><a href="#"><i class="ion-android-contacts"></i> <span class="nav-label">Following</span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="/panel/followers/<?php echo $user[0]['username']; ?>">
-                                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
-                                    Your Followers
-                                <?php } else{ echo $fname."'s Followers"; } ?>                                
-                                </a></li>
-                            <li><a href="/panel/following/<?php echo $user[0]['username']; ?>">Following</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-submenu"><a href="#"><i class="ion-compose"></i> <span class="nav-label"><?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
-                                        Your Collection
-                                    <?php } else{ echo $fname."'s Collection"; } ?></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="form-elements.html">Quotes</a></li>
-                            <li><a href="/panel/collection/<?php echo $user[0]['username']; ?>">Images</a></li>
-                        </ul>
-                    </li>
-                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-                        <li class="has-submenu active"><a href="/panel/settings/<?php echo $_SESSION['uname'];  ?>" rel="nofollow"><i class="ion-wrench"></i> <span class="nav-label">Settings</span></a></li>
-                        <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
-                    <?php } ?>
-                </ul>
-            </nav>
-        </aside>
-        <!-- Aside Ends-->
-
-        <!--Main Content Start -->
-        <section class="content">
-            
-            <!-- Header -->
-            <header class="top-head container-fluid">
-                <button type="button" class="navbar-toggle pull-left">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                
-                <!-- Search -->
-                <form role="search" class="navbar-left app-search pull-left hidden-xs">
-                  <input type="text" placeholder="Search..." class="form-control">
-                </form>
-                <!-- Left navbar 
-                <nav class=" navbar-default hidden-xs" role="navigation">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                          <a data-toggle="dropdown" class="dropdown-toggle" href="#">English <span class="caret"></span></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li class="active"><a href="#">English</a></li>
-                                <li><a href="#">Portuguese</a></li>
-                                <li><a href="#">Spanish</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                -->
-                <!-- Right navbar -->
-                <ul class="list-inline navbar-right top-menu top-right-menu">  
-                    <!-- Notification -->
-                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="fa fa-bell-o"></i>
-                            <?php if($nNotifications[0]['cnt']>0){ ?>
-                                <span class="badge badge-sm up bg-pink count"><?php echo $nNotifications[0]['cnt']; ?></span>
-                            <?php } ?>
-                        </a>
-                        <?php if($nNotifications[0]['cnt']>0){ ?>
-                            <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5002">
-                                <li class="noti-header">
-                                    <p>Notifications</p>
-                                </li>
-                                <?php foreach($notifications as $key=>$val){
-                                        $date = strtotime($notifications[$key]['created_at']);
-                                        $date = date('M j, Y', $date);
-                                        $diff = date_diff(date_create($date),date_create(date("M j, Y"))); //GET DAY
-                                        $diff=$diff->format('%a');
-                                        if($diff==1)
-                                            $diff.=' day ago';
-                                        elseif($diff>1)
-                                            $diff.=' days ago';
-                                        elseif($diff==0){
-                                            $to_time = strtotime(date("Y-m-d H:i:s"));
-                                            $from_time = strtotime($notifications[$key]['created_at']);
-                                            $diff=floor(abs($to_time - $from_time) / 60); // GET MINUTES
-                                            if($diff==1)
-                                                $diff.=' minute ago';
-                                            elseif($diff>=60){
-                                                $diff=floor(abs($to_time - $from_time) / 3600); // GET HOURS
-                                                if($diff>1)
-                                                    $diff.=' hours ago';
-                                                else
-                                                    $diff.=' hour ago';
-                                            }else
-                                                $diff.=' minutes ago';
-                                        }
-                                ?>
-                                    <li>
-                                        <div>
-                                            <?php echo $notifications[$key]['notification']; ?><br><small class="text-muted"><?php echo $diff; ?></small></span>
-                                        </div>
-                                    </li>
-                                <?php } ?>
-                                <li>
-                                    <p><a href="#" class="text-right">See all notifications</a></p>
-                                </li>
-                            </ul>
-                        <?php } ?>
-                    </li>
-                    <?php } ?>
-                    <!-- /Notification -->
-
-                    <!-- user login dropdown start-->
-                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-                    <li class="dropdown text-center">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="<?php echo $_SESSION['profile']; ?>" class="img-circle profile-img thumb-sm">
-                            <span class="username"><?php echo $_SESSION['uname']; ?> </span> <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu extended pro-menu fadeInUp animated" tabindex="5003" style="overflow: hidden; outline: none;">
-                            <li><a href="profile.html"><i class="fa fa-briefcase"></i>Profile</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                            <li><a href="#"><i class="fa fa-bell"></i> Friends <span class="label label-info pull-right mail-info">5</span></a></li>
-                            <li onclick="signout()"><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
-                        </ul>
-                    </li>
-                    <?php } else{ ?>
-                        <li class="text-center"><a href="/">Home</a></li>
-                    <?php } ?>
-                    <!-- user login dropdown end -->       
-                </ul>
-                <!-- End right navbar -->
-
-            </header>
-            <!-- Header Ends -->
+        <?php include('layouts/header.php'); ?>
     
             <!-- Form-validation -->
             <div class="row">
@@ -244,21 +97,22 @@ if(isset($user) && !empty($user) && $_SESSION['uID']==$user[0]['userID']){
                             <div class=" form">
                                 <div class="cmxform form-horizontal tasi-form" id="settingsUpdate">
                                     <div class="form-group ">
-                                        <label for="firstname" class="control-label col-lg-2">Firstname *</label>
+                                        <label for="firstname" class="control-label col-lg-2">First name *</label>
                                         <div class="col-lg-10">
                                             <input class=" form-control" id="fname" name="firstname" type="text" value="<?php echo $fname; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="lastname" class="control-label col-lg-2">Lastname  *</label>
+                                        <label for="lastname" class="control-label col-lg-2">Last name  *</label>
                                         <div class="col-lg-10">
                                             <input class=" form-control" id="lname" name="lastname" type="text" value="<?php echo $lname; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label for="username" class="control-label col-lg-2">Username *</label>
+                                        <label for="username" class="control-label col-lg-2">Page Name *</label>
                                         <div class="col-lg-10">
                                             <input class="form-control " id="uname" name="username" type="text" value="<?php echo $uname; ?>">
+                                            <small>How it looks: https://portalquote.com/page/<span id="yourpage" class="text-danger"><?php echo $_SESSION['uname']; ?></span></small>
                                             <span class="alert alert-danger uname">Username already taken...</span>
                                         </div>
                                     </div>
@@ -266,6 +120,36 @@ if(isset($user) && !empty($user) && $_SESSION['uID']==$user[0]['userID']){
                                         <label for="email" class="control-label col-lg-2">Email *</label>
                                         <div class="col-lg-10">
                                             <input class="form-control " id="email" name="email" type="email" value="<?php echo $email; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="email" class="control-label col-lg-2">Your Website</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " id="website" name="website" type="text" value="<?php echo $website; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="email" class="control-label col-lg-2">Facebook Page</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " id="facebook" name="facebook" type="text" value="<?php echo $facebook; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="email" class="control-label col-lg-2">Twitter</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " id="twitter" name="twitter" type="text" value="<?php echo $twitter; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="email" class="control-label col-lg-2">Instagram</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " id="instagram" name="instagram" type="text" value="<?php echo $instagram; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="email" class="control-label col-lg-2">About You</label>
+                                        <div class="col-lg-10">
+                                            <textarea maxlength="255" id="about" name="about" class="textarea"><?php echo $about; ?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -302,7 +186,7 @@ if(isset($user) && !empty($user) && $_SESSION['uID']==$user[0]['userID']){
         <?php } ?>
         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
         <script src="../js/4236a440a662cc8253d7536e5aa17942/d668aad11dcbabd7f04c3a7aca25f1f7.js?<?php echo time(); ?>" type="text/javascript"></script>
-        <script src="/quotes/javascript/b59ac58c7256fd0ee084d8adb9654bc1249d3197/c3d137ad7f14c18ef0d0d2e64cdb62f7c9cb3a39.js?<?php echo time(); ?>"></script>
+        <script src="/javascript/b59ac58c7256fd0ee084d8adb9654bc1249d3197/c3d137ad7f14c18ef0d0d2e64cdb62f7c9cb3a39.js?<?php echo time(); ?>"></script>
         <?php } ?>
         <script src="../js/jquery.app.js"></script>
     </body>

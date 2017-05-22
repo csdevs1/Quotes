@@ -16,16 +16,17 @@
                         <input type="password" class="form-control" id="passwd-login">
                     </div>
                 </form>
-            </div>
-            <hr>
-            <h4>Or Log in with</h4>
-            <div class="form-group social-network">
-                <a  href="<?php echo $authUrl; ?>" class="col-xs-12">
-                    <i class="ion-social-googleplus"></i> Gmail
-                </a>
-                <a onclick="fbLogin('<?php echo $token;  ?>');" style="cursor:pointer;" class="col-xs-12">
-                    <i class="ion-social-facebook"></i> Facebook
-                </a>
+                <a href="#" id="recover">Forgot password?</a>
+                <hr>
+                <h4>Or Log in with</h4>
+                <div class="form-group social-network">
+                    <a  href="<?php echo $authUrl; ?>" class="col-xs-12">
+                        <i class="ion-social-googleplus"></i> Gmail
+                    </a>
+                    <a onclick="fbLogin('<?php echo $token;  ?>');" style="cursor:pointer;" class="col-xs-12">
+                        <i class="ion-social-facebook"></i> Facebook
+                    </a>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

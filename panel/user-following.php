@@ -21,9 +21,8 @@ if(isset($user) && !empty($user)){
     $fname=$user[0]['fname'];
     $lname=$user[0]['lname'];
     
-    if(isset($_SESSION['uID']) && !empty($_SESSION['uID']))
-        $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
     if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+        $isFollowing=$obj->custom("SELECT * FROM followers WHERE userID=$u_id AND followerID=".$_SESSION['uID']);
         $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
         $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen DESC LIMIT 6");
     }
@@ -79,144 +78,7 @@ if(isset($user) && !empty($user)){
         <![endif]-->
     </head>
     <body>
-        <!-- Aside Start-->
-        <aside class="left-panel">
-            <!-- brand -->
-            <div class="logo">
-                <a href="index.html" class="logo-expanded">
-                    <img src="img/single-logo.png" alt="logo">
-                    <span class="nav-label">quotesite</span>
-                </a>
-            </div>
-            <!-- / brand -->
-            <nav class="navigation">
-                <ul class="list-unstyled">
-                    <li class="has-submenu"><a href="/panel/quotes/<?php echo $user[0]['username']; ?>/1"><i class="ion-home"></i> <span class="nav-label">
-                        <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
-                        Your Quotes
-                        <?php } else{ echo $fname."'s Quotes"; } ?>  
-                        </span></a></li>
-                    <li class="has-submenu active"><a href="#"><i class="ion-android-contacts"></i> <span class="nav-label">Following</span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="/panel/followers/<?php echo $user[0]['username']; ?>">
-                                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
-                                    Your Followers
-                                <?php } else{ echo $fname."'s Followers"; } ?>                                
-                                </a></li>
-                            <li class="active"><a href="/panel/following/<?php echo $user[0]['username']; ?>">Following</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-submenu"><a href="#"><i class="ion-compose"></i> <span class="nav-label"><?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
-                                        Your Collection
-                                    <?php } else{ echo $fname."'s Collection"; } ?></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="form-elements.html">Quotes</a></li>
-                            <li><a href="/panel/collection/<?php echo $user[0]['username']; ?>">Images</a></li>
-                        </ul>
-                    </li>
-                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-                        <li class="has-submenu"><a href="/panel/settings/<?php echo $_SESSION['uname'];  ?>" rel="nofollow"><i class="ion-wrench"></i> <span class="nav-label">Settings</span></a></li>
-                        <li class="has-submenu" onclick="signout()"><a href="#"><i class="ion-grid"></i> <span class="nav-label">Logout</span></a></li>
-                    <?php } ?>
-                </ul>
-            </nav>
-        </aside>
-        <!-- Aside Ends-->
-
-        <!--Main Content Start -->
-        <section class="content">
-            
-            <!-- Header -->
-            <header class="top-head container-fluid">
-                <button type="button" class="navbar-toggle pull-left">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                
-                <!-- Search -->
-                <form role="search" class="navbar-left app-search pull-left hidden-xs">
-                  <input type="text" placeholder="Search..." class="form-control">
-                </form>
-                <!-- Right navbar -->
-                <ul class="list-inline navbar-right top-menu top-right-menu">  
-                    <!-- Notification -->
-                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="fa fa-bell-o"></i>
-                            <?php if($nNotifications[0]['cnt']>0){ ?>
-                                <span class="badge badge-sm up bg-pink count"><?php echo $nNotifications[0]['cnt']; ?></span>
-                            <?php } ?>
-                        </a>
-                        <?php if($nNotifications[0]['cnt']>0){ ?>
-                            <ul class="dropdown-menu extended fadeInUp animated nicescroll" tabindex="5002">
-                                <li class="noti-header">
-                                    <p>Notifications</p>
-                                </li>
-                                <?php foreach($notifications as $key=>$val){
-                                        $date = strtotime($notifications[$key]['created_at']);
-                                        $date = date('M j, Y', $date);
-                                        $diff = date_diff(date_create($date),date_create(date("M j, Y"))); //GET DAY
-                                        $diff=$diff->format('%a');
-                                        if($diff==1)
-                                            $diff.=' day ago';
-                                        elseif($diff>1)
-                                            $diff.=' days ago';
-                                        elseif($diff==0){
-                                            $to_time = strtotime(date("Y-m-d H:i:s"));
-                                            $from_time = strtotime($notifications[$key]['created_at']);
-                                            $diff=floor(abs($to_time - $from_time) / 60); // GET MINUTES
-                                            if($diff==1)
-                                                $diff.=' minute ago';
-                                            elseif($diff>=60){
-                                                $diff=floor(abs($to_time - $from_time) / 3600); // GET HOURS
-                                                if($diff>1)
-                                                    $diff.=' hours ago';
-                                                else
-                                                    $diff.=' hour ago';
-                                            }else
-                                                $diff.=' minutes ago';
-                                        }
-                                ?>
-                                    <li>
-                                        <div>
-                                            <?php echo $notifications[$key]['notification']; ?><br><small class="text-muted"><?php echo $diff; ?></small></span>
-                                        </div>
-                                    </li>
-                                <?php } ?>
-                                <li>
-                                    <p><a href="#" class="text-right">See all notifications</a></p>
-                                </li>
-                            </ul>
-                        <?php } ?>
-                    </li>
-                    <?php } ?>
-                    <!-- /Notification -->
-
-                    <!-- user login dropdown start-->
-                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-                    <li class="dropdown text-center">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <img alt="" src="<?php echo $_SESSION['profile']; ?>" class="img-circle profile-img thumb-sm">
-                            <span class="username"><?php echo $_SESSION['uname']; ?> </span> <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu extended pro-menu fadeInUp animated" tabindex="5003" style="overflow: hidden; outline: none;">
-                            <li><a href="profile.html"><i class="fa fa-briefcase"></i>Profile</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                            <li><a href="#"><i class="fa fa-bell"></i> Friends <span class="label label-info pull-right mail-info">5</span></a></li>
-                            <li onclick="signout()"><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
-                        </ul>
-                    </li>
-                    <?php } else{ ?>
-                        <li class="text-center"><a href="/">Home</a></li>
-                    <?php } ?>
-                    <!-- user login dropdown end -->       
-                </ul>
-                <!-- End right navbar -->
-            </header>
-            <!-- Header Ends -->
+        <?php include('layouts/header.php'); ?>
 
             <div class="wraper container-fluid">
                 <div class="row">
@@ -241,11 +103,12 @@ if(isset($user) && !empty($user)){
                                                     $followerQuotes=$obj->custom('SELECT COUNT("userID") as cnt FROM userQuotes WHERE userID='.$following[$key]['userID']);
                                                     $nFollowers=$obj->custom('SELECT COUNT("userID") as cnt FROM followers WHERE userID='.$following[$key]['userID']);
                                                     $nFollowing=$obj->custom('SELECT COUNT("followerID") as cnt FROM followers WHERE followerID='.$following[$key]['userID']);
-                                                    $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$following[$key]['userID']." AND followerID=".$_SESSION['uID']);
-                                                    
-                                                    $isFollowing[0]['cnt']==0 ? $class='light-red nt-follow' : $class='darkred';
+                                                    if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){
+                                                        $isFollowing=$obj->custom("SELECT COUNT('followerID') as cnt FROM followers WHERE userID=".$following[$key]['userID']." AND followerID=".$_SESSION['uID']);
+                                                        $isFollowing[0]['cnt']==0 ? $class='light-red nt-follow' : $class='darkred';
+                                                    }
                                             ?>
-                                                <div class="col-cs-12 col-xs-6 col-md-3 card-profile">
+                                                <div class="col-cs-12 col-xs-6 col-md-4 card-profile">
                                                     <div class="user-profile_pic" style="background-image:url('<?php echo $follower[0]['picture']; ?>')"></div>
                                                     <div class="card-profile_visual" style="background-image:url('<?php echo $follower[0]['banner']; ?>')">
                                                         <div class="card-profile_user-infos">
@@ -256,9 +119,9 @@ if(isset($user) && !empty($user)){
                                                     <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$follower[0]['userID']){ ?>
                                                     <a class="<?php echo $class; ?> usrflw-16516" data-follow='<?php echo $follower[0]['userID'] ?>'>
                                                         <?php if($isFollowing[0]['cnt']){ ?>
-                                                            <i class="ion-checkmark"></i>
+                                                        <i class="ion-checkmark"></i>
                                                         <?php }else{?>
-                                                            <i class="ion-person-add"></i>
+                                                        <i class="ion-person-add"></i>
                                                         <?php } ?>
                                                     </a>
                                                     <?php } ?>

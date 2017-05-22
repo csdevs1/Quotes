@@ -19,6 +19,7 @@ RewriteRule ^about/privacy-policies$ privacy-policy.php
 RewriteRule ^users-section/(.*)/(.*)$ userSection.php?type=$1&page=$2
 RewriteRule ^6cc1fbb6ca92425bb419a1b3e5b9e8da/(.*)$ pswd_reset.php?digest=$1
 
+
 #Controller
 RewriteRule ^15c563887e7fe28109af91fda7a3532f/df93a32d352b782e852806917765483c$ AppClasses/SignUp.php
 RewriteRule ^c9dcc9a0e463aca2d9575c58a5e23fb9b12d9fa2/4a72dc8ceda3f3885da0aba3a857aa19abcef5bc$ AppClasses/SignIn.php
@@ -27,14 +28,18 @@ RewriteRule ^a36a5ffa6e0dcfb64fac1b2b3d6fb176de9689de/03158f8543bd7d64c672b2fdfe
 RewriteRule ^fd30fda6a3d920b6798126d7fb48c3cd/3903aab323863bd2e9b68218a7a65ebd$ AppClasses/Follow.php
 RewriteRule ^6c56037e24fc0902ac2481df5583edcc/1882f952ad7b6f9bdeaa6584bc352f56$ AppClasses/CollectionController.php
 RewriteRule ^00f6b23d0b02d36148b35cc4e65e0c51/ae540687e4c25bcd1546846e96a63790$ AppClasses/NotificationController.php
+RewriteRule ^9ec32af426fcca6983f23e74d69a93df/06488b7665cdb7f944afb98298a2a276$ AppClasses/ReportController.php
 
 
 #USER PANEL
 RewriteRule ^panel/quotes/(.*)/(.*)$ panel/index.php?uname=$1&page=$2
 RewriteRule ^panel/collection/(.*)$ panel/image-collection.php?uname=$1
+RewriteRule ^panel/quotes-liked/(.*)$ panel/quotes-collection.php?uname=$1
 RewriteRule ^panel/followers/(.*)$ panel/user-followers.php?uname=$1
 RewriteRule ^panel/following/(.*)$ panel/user-following.php?uname=$1
 RewriteRule ^panel/settings/(.*)$ panel/user-settings.php?uname=$1
-RewriteRule ^panel/quote/(.*)/(.*)$ panel/user-quote.php?uname=$1&quoteid=$2
+RewriteRule ^panel/quote/(.*)/(.*)/(.*)$ panel/user-quote.php?uname=$1&author=$2&quoteid=$3
+RewriteRule ^panel/image/(.*)/(.*)$ panel/user-image.php?uname=$1&imageid=$2
+RewriteRule ^page/(.*)$ userNameRedirect.php?uname=$1
 
 ErrorDocument 404 http://localhost/quotes/404.html

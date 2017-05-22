@@ -31,6 +31,8 @@
         $user=new User();
         $response=$user->changePicture($col,$val,$_SESSION['uID']);
         if($response){
+            if($col=='picture')
+                $_SESSION['profile']=$val;
             $json_response = array('response'=>200,$response);
             echo json_encode($json_response);
         } else{
@@ -57,8 +59,12 @@
         $table ='users';
         $row = 'userID';
         $data = json_decode($_POST['data'],true);
-foreach($data as $key => $val){
+        foreach($data as $key => $val){
             $vals[] = $key.'="'.str_replace('"','\"',$val).'"';
+            if($key=='username')
+                $_SESSION['uname']=$val;
+            elseif($key=='fname')
+                $_SESSION['fname']=$val;
         }
         $values = implode(',',$vals);
         $response =$obj->update($table,$values,$row,$id);

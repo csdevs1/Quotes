@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="form-group col-xs-12">
-            <textarea placeholder="Brief Description About the author..." maxlength="500" class="textarea" id="profile"></textarea>
+            <textarea placeholder="Brief Description About the author..." maxlength="500" oninput="checkBrackets(this)" class="textarea" id="profile"></textarea>
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
@@ -115,9 +115,16 @@
         </div>
         <div class="form-group col-xs-12">
             <div class="input-group">
+                <span class="input-group-addon"><i class="ion-university"></i></span>
+                <input type="text" class="form-control" id="img_source" data-error="Field required" aria-describedby="image source" placeholder="Image Source (Wikipedia, Flickr)..." >
+                
+            </div>
+        </div>
+        <div class="form-group col-xs-12">
+            <div class="input-group">
                 <span class="input-group-addon"><i class="ion-image"></i></span>                
                 <input type="file" class="form-control image-file" id="image" aria-describedby="image" placeholder="Upload Image" accept="image/*">          
-                <span class="up-label">Upload an image</span>
+                <span class="up-label" id="up-label">Upload an image</span>
             </div>
         </div>
         <div class="form-group col-xs-12">
@@ -211,6 +218,11 @@
     }
 
     /*Pagination*/
+    function checkBrackets(str){
+        
+        //return /\[([^\]]+)]/.test(str.value);
+        str.value=str.value.replace(/\[([^\]]+)]/g, "");
+    }
     
     var goToPage=function(){
         var nPage=$('#pageN').val();
@@ -242,21 +254,44 @@
 
     $("#image").on("change", function(){
         var imgType = $(this).prop('files')[0].type,
-            imgSize = $(this).prop('files')[0].size;
-        if(imgType.split('/')[0] == 'image'){
-            if(imgSize<=100000){
+            imgSize = $(this).prop('files')[0].size,
+            imageName=$(this).prop('files')[0].name,
+            thisVal=$(this).val(),
+            placeholder=$(this).attr("placeholder"),
+            img = new Image(),
+            imageUrl = URL.createObjectURL(document.getElementById('image').files[0]),
+            errors=[];
+        img.src = imageUrl;
+        img.onload = function () {
+            if(imgType.split('/')[0]!= 'image'){
+                errors.push("Oops! Image should be 100KB or less!");
+            }
+            if(imgSize>100000){
+                errors.push("Oops! Image should be 100KB or less!");
+            }
+            if(this.width<=200 || this.height<=200){
+                errors.push("Oops! Image resolution should be greater than 200x200!");
+            }
+            if(errors.length < 1){
+                $('.up-label').removeClass('text-danger');
                 // Name of file and placeholder
-                var file = this.files[0].name;
-                var dflt = $(this).attr("placeholder");
-                if($(this).val()!=""){
-                    $(this).next().text(file);
+                var file = imageName;
+                var dflt = placeholder;
+                if(thisVal!=""){
+                    document.getElementById('up-label').innerHTML=file;
+                    //$('.up-label').html(file);
                 } else {
-                    $(this).next().text(dflt);
+                    document.getElementById('up-label').innerHTML=dflt;
+                    //$('.up-label').html(dflt);
                 }
-            } else {$(this).next().text("Oops! Image should be 100KB or less!");}
-        } else {
-            document.getElementById("image").value = "";
-            $(this).next().text("Oops! that's not an image!");
+            } else {
+                var error='<ul>';
+                for(var e in errors)
+                    error+='<li>'+errors[e]+'</li>';
+                error+='</ul';
+                $('.up-label').addClass('text-danger');
+                $('.up-label').html(error);
+            }
         }
     });
     
@@ -293,6 +328,7 @@
                 }
                 $('#profile').val(data[0][0].bio);
                 $('#url').val(data[0][0].sourceURL);
+                $('#img_source').val(data[0][0].img_source);
                 $('#country option[value='+data[0][0].nationality+']').prop('selected', true);
                 $('#author').focus();
                 var professionAuthor=find_by('authorProfession','authorID',authID);
@@ -342,6 +378,15 @@
         return day > 0 && day <= monthLength[month - 1];
     }
     
+    String.prototype.allReplace = function(obj) {
+        var retStr = this;
+        for (var x in obj) {
+            retStr = retStr.replace(new RegExp(x, 'g'), obj[x]);
+        }
+        return retStr;
+    }
+
+    
    var updateAuthor = function(el, quotID){
         var author = $('#author').val(),
             birth=$('#bdate').val(),
@@ -350,6 +395,7 @@
             profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
             url=$('#url').val(),
+            url2=$('#img_source').val(),
             arr = {},
             arr2 = {},
             errors=[];
@@ -359,11 +405,14 @@
             }else{
                 arr['authorName'] = author;
                 var seo = author.replace(/["']/g, "");
-                seo = seo.replace(/["-]/g, "");
-                seo = seo.replace(/[",]/g, "");
-                seo = seo.replace(/["!]/g, "");
-                seo = seo.replace(/[".]/g, "");
-                seo = seo.replace(/\s/g,' ');
+                var seo = author.replace(/["']/g, "");
+               seo = seo.replace(/["-]/g, "");
+               seo = seo.replace(/[",]/g, "");
+               seo = seo.replace(/["!]/g, "");
+               seo = seo.replace(/[".]/g, "");
+               seo = seo.replace(/[";]/g, "");
+               seo = seo.replace(/\s/g,' ');
+               seo = seo.allReplace({'á': 'a','ã':'a','à':'a','â':'a','ç':'c', 'é': 'e','ê':'e','í':'i','ó':'o','õ':'o','ô':'o','ü':'u','ú':'u','ñ':'n',"'":'','"':""});
                 arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
             }
         }
@@ -395,6 +444,8 @@
             arr['sourceURL'] = url;
         else
             errors.push('Source cannot be blank!');
+       if($('#img_source').val()!='')
+            arr['img_source'] = url2;
        if($('#image').val()!=''){
            var imageSize=$('#image').prop('files')[0].size;
            if(imageSize<=100000)
@@ -462,7 +513,7 @@
        }
    }
 
-// FB API INIT   
+// FB API INIT
    /*function shuffle(array) {
        var currentIndex = array.length, temporaryValue, randomIndex;
        // While there remain elements to shuffle...
@@ -534,6 +585,7 @@
             profession = $("select[name='professions[]']").map(function(){if($(this).val()!='') return $(this).val();}).get(),
             bio=$('#profile').val(),
             url=$('#url').val(),
+            url2=$('#img_source').val(),
             arr = {},
             arr2 = {},
             errors=[];
@@ -547,7 +599,9 @@
                seo = seo.replace(/[",]/g, "");
                seo = seo.replace(/["!]/g, "");
                seo = seo.replace(/[".]/g, "");
+               seo = seo.replace(/[";]/g, "");
                seo = seo.replace(/\s/g,' ');
+               seo = seo.allReplace({'á': 'a','ã':'a','à':'a','â':'a','ç':'c', 'é': 'e','ê':'e','í':'i','ó':'o','õ':'o','ô':'o','ü':'u','ú':'u','ñ':'n',"'":'','"':""});
                arr['seo_url'] = seo.split(' ').join('-').toLowerCase();
            }
        }
@@ -569,22 +623,25 @@
             arr['nationality'] = country;
         else
             errors.push('Country cannot be blank!');
-        if($('#profile').val()!='')
+        if($('#profile').val()!='' && bio.length>170)
             arr['bio'] = bio;
         else
-            errors.push('Author\'s description cannot be blank!');
+            errors.push('Author\'s description cannot be blank and must be longer than 170 characters!');
         if($('#url').val()!='')
             arr['sourceURL'] = url;
         else
             errors.push('Source cannot be blank!');
+        if($('#img_source').val()!='')
+            arr['img_source'] = url2;
         if($('#image').val()!=''){
            var imageSize=$('#image').prop('files')[0].size;
            if(imageSize<=100000)
                var image=$('#image').prop('files')[0];
            else
                errors.push('Image should be 100KB or less!');
-       }else
-           var image='';
+            if($('#img_source').val()=='')
+                errors.push('Source cannot be blank!');
+       }
         if(profession.length<1)
             errors.push("Author's profession not selected!");
         console.log(arr['seo_url']);
@@ -666,11 +723,12 @@
     }
     
     var searchFunction=function(){
-        var text=document.getElementById('search1').value;
+        var op=$('input[name=optradio]:checked').val(),
+            text=document.getElementById('search1').value;
         if(text!=''){
             $('#quotes-area').css('visibility','hidden');
             $('.portlet .loader').css('display','block');
-            var searching=search('authors','authorName',text,'authorID','search');
+            var searching=search('authors','authorName',text,'authorID','search',op);
             searching.done(function(data){
                 setTimeout(function() {
                     $('.portlet .loader').css('display','none');

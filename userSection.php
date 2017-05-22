@@ -16,6 +16,8 @@
     $image = $authorDescription[0]['authorImage'];
 
 	$folder='../../';
+    if($_GET['type']=='quotes')
+        $_SESSION['go_back']="https://portalquote.com/users-section/quotes/".$_GET['page'];
 ?>
 
 <!doctype html>
@@ -51,7 +53,7 @@
                     </span>
                 </a>
                 <a href="/users-section/users/1" role="link">
-                    <span class="col-xs-6 col-sm-4 mn-box _box3">
+                    <span class="col-xs-12 col-sm-4 mn-box _box3">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         Discover Users
                     </span>
@@ -69,36 +71,15 @@
         <?php include 'layouts/footer.php'; ?>
         <?php if($_GET['type']=='quotes'){ ?>
             <script>
-                $(document).ready(function(){
-                    users_quotes();
-                });
-                function users_quotes() {
-                    var p=$('#page').val();
-                    document.getElementById("_load").innerHTML="";
-                    $("#_load").load("/quotes/layouts/users-section/quotes.php",{page:p});
-                }
+                function users_quotes(){var a=$("#page").val();document.getElementById("_load").innerHTML="",$("#_load").load("/layouts/users-section/quotes.php",{page:a})}$(document).ready(function(){users_quotes()});
             </script>
         <?php }elseif($_GET['type']=='images'){ ?>
             <script>
-                $(document).ready(function(){
-                    users_images();
-                });
-                function users_images() {
-                    var p=$('#page').val();
-                    document.getElementById("_load").innerHTML="";
-                    $("#_load").load("/quotes/layouts/users-section/images.php",{page:p});
-                }
+                function users_images(){var a=$("#page").val();document.getElementById("_load").innerHTML="",$("#_load").load("/layouts/users-section/images.php",{page:a})}$(document).ready(function(){users_images()});
             </script>
         <?php }elseif($_GET['type']=='users'){ ?>
             <script>
-                $(document).ready(function(){
-                    users_list();
-                });
-                function users_list() {
-                    var p=$('#page').val();
-                    document.getElementById("_load").innerHTML="";
-                    $("#_load").load("/quotes/layouts/users-section/users.php",{page:p});
-                }
+                function users_list(){var a=$("#page").val();document.getElementById("_load").innerHTML="",$("#_load").load("/layouts/users-section/users.php",{page:a})}$(document).ready(function(){users_list()});
             </script>
         <?php }?>
     </body>

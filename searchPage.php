@@ -124,9 +124,10 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                                     $quotes = $obj->find_by('quotes_en','quoteID',$quoteData[$key]['quoteID']);
                                     $qID=$quotes[0]['quoteID'];
                                     $quote=$quotes[0]['quote'];
-                                    $qImage=$quotes[0]['quoteImage'];
+                                    $qImage=$quotes[0]['tinyImg'];
+                                    $acive=$quotes[$key]['active_img'];
                                     $topicsArr = $obj->custom('SELECT topics_en.topicID,topics_en.topicName,topics_en.seo_url FROM topics_en INNER JOIN quotesTopicEN ON topics_en.topicID=quotesTopicEN.topicID WHERE quotesTopicEN.quoteID='.$qID); // USE join() FUNCTION
-                                    $authorURL=$obj->find_by('authors','authorName',$quotes[0]['author']);
+                                    $authorURL=$obj->find_by('authors','authorName',str_replace("'","\'", $quotes[0]['author']));
                                     $nLikes=$obj->custom("SELECT COUNT(quoteID) AS 'cnt' FROM likes_en WHERE quoteID=$qID");
                                     $count=0;
                                     $arrEN=array();
@@ -155,12 +156,12 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                         <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
                             <div class="pad clearfix">
                                 <?php 
-                                    if(isset($qImage) && !empty($qImage)){
+                                    if(isset($qImage) && !empty($qImage) && $acive!=0){
                                 ?>
                                     <img class="img-responsive" src="/images/quotes/<?php echo $qImage; ?>" alt="<?php echo $quotes[0]['author']; ?> Quote" title="<?php echo join(',', $arrEN); ?>">
                                 <?php } ?>
-                                <blockquote itemprop="citation"><a href="https://portalquote.com/quote/<?php echo $share_url; ?>"><?php echo $quote; ?></a> <span itemprop="author">- <a href="/author/quotes/<?php echo $authorURL[0]['seo_url'].'/1'; ?>" rel="author" itemprop="url"><?php echo $quotes[0]['author']; ?></a></span></blockquote>
-                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo $share_url; ?>" data-title="Hey, check out this quote by <?php echo $quotes[0]['author']; ?> | PortalQuote <?php foreach($arrEN as $key=>$val) echo '#'.$arrEN[$key].' '; ?>" data-description="<?php echo '\''.$quote.'\' - '.$quotes[0]['author'].". Share with your friends on Facebook, Twitter, Instagram..." ?>"></div>
+                                <blockquote itemprop="citation"><a href="https://portalquote.com/quote/<?php echo $authorURL[0]['seo_url'].'/'.$share_url; ?>" class="quote-txt"><?php echo $quote; ?></a> <span itemprop="author">- <a href="/author/quotes/<?php echo $authorURL[0]['seo_url'].'/1'; ?>" rel="author" itemprop="url"><?php echo $quotes[0]['author']; ?></a></span></blockquote>
+                                <div class="addthis_sharing_toolbox col-xs-8 col-md-8" data-url="https://portalquote.com/quote/<?php echo $authorURL[0]['seo_url'].'/'.$share_url; ?>" data-title="Hey, check out this quote by <?php echo $quotes[0]['author']; ?> | PortalQuote <?php foreach($arrEN as $key=>$val) echo '#'.$arrEN[$key].' '; ?>" data-description="<?php echo '\''.$quote.'\' - '.$quotes[0]['author'].". Share with your friends on Facebook, Twitter, Instagram..." ?>"></div>
                                 <?php 
                                         if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
                                             $liked=$obj->like('likes_en', "userID=".$_SESSION['uID']." AND quoteID=$qID");
@@ -180,6 +181,11 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                                         echo join(', ', $tagsLinksArray);
                                     ?>
                                 </div>
+                                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
+                                <div class="col-xs-12">
+                                    <i class="ion-flag _rp" title="Report" data-toggle="modal" data-target=".report-qt" data-qt="<?php echo $qID; ?>"></i>
+                                </div>
+                                <?php } ?>
                             </div>
                         </div>
                         <?php
@@ -196,6 +202,47 @@ if(isset($_GET['t']) && !empty($_GET['t']) && isset($_GET['q']) && !empty($_GET[
                             }
                         ?>
                     </div>
+                    <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
+                    <div class="modal fade report-qt" tabindex="-1" role="dialog" aria-labelledby="reportQuote">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Help us improve</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 class="text-muted">Tell us what's wrong with this quote</h5>
+                                    
+                                    <div class="modal-body" role="form">
+                                        <div class="radio">
+                                            <label><input type="radio" name="optradio" value="0" checked="checked" >There's a misspelling.</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" name="optradio" value="1">There's something wrong with the picture.</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" name="optradio" value="2">This quote is offensive.</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" name="optradio" value="3">Other</label>
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="email" class="control-label small text-muted">Tell us more about it:</label>
+                                            <div class="input-group col-xs-12">
+                                                <textarea class="report-text"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="_report-it">Send Report</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </section>

@@ -2,7 +2,7 @@
 $obj = new AppController();
 $user = $obj->like('users','userID="'.$_SESSION['uID'].'" AND active=1');
 if($user[0]['picture']=='/images/profile/male.png' || $user[0]['picture']=='/images/profile/female.png')
-        $u_picture='../..'.$user[0]['picture'];
+        $u_picture=$user[0]['picture'];
 else
     $u_picture=$user[0]['picture'];
 ?>
@@ -21,40 +21,36 @@ else
                 
                 <div class="collapse navbar-collapse" id="menu-items">
                     <ul class="nav navbar-nav" itemscope itemtype="http://www.schema.org/SiteNavigationElement">
-                        <li itemprop="name"><a href="/" role="link" itemprop="url"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li itemprop="name" class="hidden-sm hidden-xs"><a href="/" role="link" itemprop="url"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li itemprop="name"><a href="/topics" role="link" itemprop="url">Topics</a></li>
                         <li itemprop="name"><a href="/authors/1/" role="link" itemprop="url">Authors</a></li>
-                        <li itemprop="name"><a href="/quote-generator" itemprop="url">Quote Generator</a></li>
-                        <li itemprop="name"><a href="/users-section/quotes/1" itemprop="url">User's Section</a></li>
+                        <li itemprop="name"><a href="/quote-generator" itemprop="url">Generator</a></li>
+                        <li itemprop="name"><a href="/users-section/quotes/1" itemprop="url">Users Section</a></li>
                         <li><a onclick="showSearch(this)" role="button"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <?php if(!isset($_SESSION['fname']) && empty($_SESSION['fname'])){ ?>
-                            <li><a href="" role="buttom"  data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
-                            <li><a href="" role="buttom" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
-                        <?php } else{ ?>
-                        <li>
-                            <div class="dropdown drop-lang">
-                                <a href="" id="my-profile" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="<?php echo $u_picture; ?>" class="profile-small"> 
-                                    <?php echo $_SESSION['fname']; ?>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="my-profile">
-                                    <li><a href="<?php echo '/panel/quotes/'.$_SESSION['uname'];?>" role="link"> My Profile</a></li>
-                                    <li onclick="signout()"><a role="link"> Logout</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <?php }?>
-                        <li>
+                        <li <?php if(isset($_SESSION['fname']) && !empty($_SESSION['fname'])){ ?>style="margin-right: 29px;"<?php } ?> >
                             <div class="dropdown drop-lang">
                                 <a href="" id="lang" role="link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> Language</a>
                                 <ul class="dropdown-menu" aria-labelledby="lang">
-                                    <li><img src="<?php echo $folder; ?>/images/pt.png"> Portuguese</li>
-                                    <li><img src="<?php echo $folder; ?>/images/es.png"> Spanish</li>
+                                    <li><img src="<?php echo $folder; ?>/images/pt.png" alt="portuguese"> Portuguese</li>
+                                    <li><img src="<?php echo $folder; ?>/images/es.png" alt="spanish"> Spanish</li>
                                 </ul>
                             </div>
                         </li>
+                        <?php if(!isset($_SESSION['fname']) && empty($_SESSION['fname'])){ ?>
+                            <li><a href="" role="buttom"  data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
+                            <li><a href="" role="buttom" data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-pencil"></span> Sign up</a></li>
+                         <?php } else{ ?>
+                        <li>
+                            <div class="dropdown drop-lang">
+                                <a href="<?php echo '/panel/quotes/'.$_SESSION['uname'];?>/1" id="my-profile" role="link">
+                                    <div style="background-image:url('<?php echo $u_picture; ?>');background-position:center" class="profile-small background"></div>
+                                    <?php echo $_SESSION['fname']; ?>
+                                </a>
+                            </div>
+                        </li>
+                        <?php }?>
                     </ul>
                 </div>
                 

@@ -69,7 +69,17 @@ $('#_up_496-ixb').click(function(){
         lname=$('#lname').val(),
         email=$('#email').val(),
         uname=$('#uname').val(),
+        website=$('#website').val(),
+        facebook=$('#facebook').val(),
+        twitter=$('#twitter').val(),
+        instagram=$('#instagram').val(),
+        about=$('#about').val(),
         arr={};
+    arr['website']=website;
+    arr['facebook']=facebook;
+    arr['twitter']=twitter;
+    arr['instagram']=instagram;
+    arr['about']=about;
     if(fname!='')
         arr['fname']=fname;
     if(lname!='')
@@ -85,7 +95,7 @@ $('#_up_496-ixb').click(function(){
         var up_usr=update(arr);
         up_usr.done(function(data){
             setTimeout(function() {
-                swal({title: "Check your email!",text: "An email has been sent to you...",type:"success",confirmButtonText: "OK",closeOnConfirm: false},function(isConfirm){if(isConfirm){location.reload();}});
+                swal({title: "Nice!",text: "Your profile has been updated correctly.",type:"success",confirmButtonText: "OK",closeOnConfirm: false},function(isConfirm){if(isConfirm){window.location.href = 'https://portalquote.com/panel/settings/'+uname;}});
             }, 2000);
         });
     }
@@ -93,6 +103,10 @@ $('#_up_496-ixb').click(function(){
 
 document.getElementById('uname').oninput=function(){
     this.value = this.value.replace(/\s/g, "");
+    if(this.value!='')
+        document.getElementById('yourpage').innerHTML=this.value;
+    else
+        document.getElementById('yourpage').innerHTML="<Can't be blank>";
     var u_name=check_uname('username',this.value);
     u_name.done(function(response){
         console.log(response['response']);

@@ -735,6 +735,8 @@ video{
         border-radius: 50%;
         width: 25px;
         height: 25px;
+        display: inline-flex;
+        vertical-align: middle;
     }
     
     .reorder-xs {
@@ -1160,3 +1162,6 @@ video{
     width: 80% !important;
 }
 /*END OF QUOTE GENERATOR*/
+.quote-txt{font-size: 1.8rem;font-weight: 600;}
+
+@media only screen and (max-width : 992px) {.banner.background .nav-container{background-color: rgba(0,0,0,0.9);}}

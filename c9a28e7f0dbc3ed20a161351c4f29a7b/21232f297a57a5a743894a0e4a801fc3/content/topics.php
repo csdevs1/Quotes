@@ -439,7 +439,7 @@ var openUpdate=function(topID,resRel){
 }
     
     // FB API INIT
-    /*window.fbAsyncInit = function() {
+    window.fbAsyncInit = function() {
                 FB.init({
                   appId      : '186483935126603',
                   xfbml      : true,
@@ -460,7 +460,7 @@ var openUpdate=function(topID,resRel){
                     FB.api('/' + page_id + '/feed',
                            'post',
                            { message:'Check out these quotes about '+param+' at PortalQuote...',link:'https://portalquote.com/topic/quotes'+path+'/1',access_token:
-                            'EAACpmyy1pEsBAOwhT8zJq5nT24Aet6joultEPRc4J6XvYqZCOleZCEU27jegDP8wyMBQCh8Y64s4TlnSvZABESiUFG2ilU9gVVKolNygNX3ebqDqrPw6nuJ3JBEmzns5EjToYEcCZBQqeWBrZBZCrGItZCppdZA8AN8PTp8ZCAr1ibwTOZChtBLVo7' }
+                            'EAACpmyy1pEsBALH9duQZBWEIogPZCZBNdMWPGPQFXFWS864QOJC4S2r8Wtw3Eo5t5tdWgZAKqzeVB4bNnZAnEaYbsIfpwbstZBxXDOKP8elIHj5NNja9rFJwipDf3hItHiEB0jmcbZAGmaZBpjFSUpVtWJcPLQjPlYlIe18uFSfqGwZDZD' }
                            ,function(response) {
                         console.log(response);
                     });
@@ -478,7 +478,7 @@ var openUpdate=function(topID,resRel){
 			}
 		    i++;
         }, 3*60000);
-    }*/
+    }
             
     var save = function(el) {
         var author = $('#topic').val(),
@@ -499,7 +499,7 @@ var openUpdate=function(topID,resRel){
         if(arr['topicName'] != '' && arr['keywords'] != ''){
             var token = generateToken();
             token.done(function(generatedToken){
-		(el).attr('disabled','disabled');
+		$(el).attr('disabled','disabled');
         	el.innerHTML = "Saving";
                 var insert_topic = insert('topics_en',arr,generatedToken);
                 insert_topic.done(function(data){

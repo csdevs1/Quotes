@@ -102,7 +102,8 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
                     <div class="col-xs-12 col-sm-6 author-list">
                         <div class="img-circle img-media" style="background-image:url('<?php echo $imageAuthor; ?>')"></div>
                         <!--<img itemprop="image" src="<?php echo $authors[$key]['authorImage']; ?>" class="img-circle img-media" alt="<?php echo $authors[$key]['authorName']; ?>" title="<?php echo $authors[$key]['authorName']; ?>">-->
-                        <h4 itemprop="author"><a href="/author/quotes/<?php echo $authors[$key]['seo_url']; ?>/1" itemprop="url"><?php echo $authors[$key]['authorName']; ?></a></h4>
+                        <h4 itemprop="author" class="hidden-sm hidden-xs"><a href="/author/quotes/<?php echo $authors[$key]['seo_url']; ?>/1" itemprop="url"><?php echo $authors[$key]['authorName']; ?></a></h4>
+                        <h4 itemprop="author" class="hidden-md hidden-lg hidden-xl"><a href="/author/quotes/<?php echo $authors[$key]['seo_url']; ?>/1" itemprop="url" ><?php echo add3dots($authors[$key]['authorName'],'...',25); ?></a></h4>
                     </div>
                     <?php
                         }

@@ -20,8 +20,9 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
             return $string;
         }
     }
-    
+
     $remove[] = "'";
+    $remove[] = "’";
     $remove[] = '"';
     $remove[] = '.';
     $remove[] = ',';
@@ -54,11 +55,11 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
         $count++;
     }
     $topic=join(",",$topics);
-    if(isset($quote[0]['quoteImage']) && !empty($quote[0]['quoteImage']))
-        $image = "https://portalquote.com/images/quotes/".$quote[0]['quoteImage'];
+    if(isset($quote[0]['tinyImg']) && !empty($quote[0]['tinyImg']))
+        $image = "https://portalquote.com/images/quotes/".$quote[0]['tinyImg'];
     else
         $image = "https://portalquote.com/images/thumbnail.png";
-    $folder='../';
+    $folder='../../';
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -88,7 +89,7 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12">
-                            <img src="<?php echo $image; ?>" class="img-responsive">
+                            <img src="<?php echo $image; ?>" class="img-responsive" alt="<?php echo $topic;  ?>" title="<?php echo $quote[0]['author']; ?>">
                         </div>
                     </div>
                 </div>
@@ -129,6 +130,11 @@ if(isset($_GET['quoteid']) && !empty($_GET['quoteid'])){
                 window.onload=function(){html2canvas($("#original"),{allowTaint:!0,onrendered:function(a){var b=a.toDataURL();document.getElementById("renderedCanva").src=b,a.id="image-canva",$("#original-content").hide(),$("#renderedCanva").css("visibility","visible")}})};
             </script>
         <?php } ?>
+        <script type="text/javascript">
+            var addthis_share = {
+                title: "Hey, check out this #quote by <?php echo $quote[0]['author']; ?> | PortalQuote #quoteoftheday <?php foreach($topics as $key=>$val) echo '#'.$topics[$key].' '; ?>",
+            }
+        </script>
     </body>
 </html>
 <?php

@@ -160,11 +160,11 @@ var delete_function = function(table,row,val,token){
     });
 }
 
-function search(table,column,text,id,action){
+function search(table,column,text,id,action,option=''){
     return $.ajax({
         type: 'POST',
         dataType: 'json',
-        data: {table:table,col:column,text:text,id:id,action:action},
+        data: {table:table,col:column,text:text,id:id,action:action,option:option},
         url: 'Classes/SearchController.php'
     });
 }

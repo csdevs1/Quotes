@@ -21,7 +21,7 @@ function get_client_ip_server() {
  
     return $ipaddress;
 }
-/*
+
 
 function get_visitors_country($ip){
     $visitors_data = json_decode(file_get_contents("https://freegeoip.net/json/$ip"),true);
@@ -32,13 +32,14 @@ function get_visitors_language($c_code){
     return $visitors_data;
 }
 
-$visitors_country = get_visitors_country('190.72.53.235');
+$visitors_country = get_visitors_country('191.112.174.125');
 $visitors_language= get_visitors_language($visitors_country['country_code']);
 echo 'Country: '.$visitors_country['country_name'].'<br>';
-echo  'Language: '.$visitors_language['languages'][0];*/
+echo 'Region: '.$visitors_country['region_name'].'<br>';
+echo  'Language: '.$visitors_language['languages'][0];
     
 // This Function is to be uploaded to the server
-
+/*
 function get_visitors_country($ip){
     $ch = curl_init();
     $url = "https://freegeoip.net/json/$ip";
@@ -57,7 +58,7 @@ function get_visitors_language($c_code){
     $data = curl_exec($ch);
     curl_close($ch);    
     return json_decode($data,true);
-}
+}*/
 
 $ip = get_client_ip_server();
 $visitors_country=get_visitors_country($ip);
