@@ -41,5 +41,6 @@ RewriteRule ^panel/settings/(.*)$ panel/user-settings.php?uname=$1
 RewriteRule ^panel/quote/(.*)/(.*)/(.*)$ panel/user-quote.php?uname=$1&author=$2&quoteid=$3
 RewriteRule ^panel/image/(.*)/(.*)$ panel/user-image.php?uname=$1&imageid=$2
 RewriteRule ^page/(.*)$ userNameRedirect.php?uname=$1
+RewriteRule ^panel/posts/(.*)$ panel/timeline.php?uname=$1
 
 ErrorDocument 404 http://localhost/quotes/404.html

@@ -20,6 +20,12 @@
                 $json_response = array($response);
                 echo json_encode($json_response);
             }
+        }elseif($_POST['action']=='delete' && isset($_POST['val']) && isset($_POST['row'])){
+            $val = $_POST['val'];
+            $row = $_POST['row'];
+            $response =$obj->delete('userImagesCollection',$row,$val);
+            $json_response = array('response'=>200,$response);
+            echo json_encode($json_response);
         }
     }
 ?>

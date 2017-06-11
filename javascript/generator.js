@@ -225,13 +225,14 @@ var uploadImage = function(el){
     //console.log(ext);
     var response = toImgur(file);
     response.done(function(response){
+        var url=response.data.link.replace('http','https');
         $('.copy-form').css('display','inline-block');
         $('.download a').css('display','inline-block');
         $('#update').removeAttr('disabled');
         $('.processing').css('display','none');
         console.log(response.data.link);
-        $('#copyURL').val(response.data.link);
-        $('.download a').attr('href',response.data.link);
+        $('#copyURL').val(url);
+        $('.download a').attr('href',url);
          $("#copyURL").focus();
     });
 }

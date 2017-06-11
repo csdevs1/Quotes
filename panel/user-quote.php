@@ -100,7 +100,7 @@ if(isset($user) && !empty($user)){
         <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
 
         <!-- Google-Fonts -->
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
 
 
         <!-- Bootstrap core CSS -->
@@ -225,11 +225,11 @@ if(isset($user) && !empty($user)){
                                 </div>
                             </div>-->
                             <div class="quote-box">
-                                <img src="/quotes/panel/img/backgrounds/<?php echo $img; ?>" class="img-responsive thumbnail">
+                                <img src="/panel/img/backgrounds/<?php echo $img; ?>" class="img-responsive thumbnail">
                                 <blockquote>
                                     <p><?php echo $quote; ?></p>
                                     <span>
-                                        <img src="/quotes/panel/img/frame.png" class="frame img-responsive">
+                                        <img src="/panel/img/frame.png" class="frame img-responsive">
                                         <?php echo $author; ?>
                                     </span>
                                 </blockquote>                                
@@ -259,7 +259,7 @@ if(isset($user) && !empty($user)){
         </section>
         <!-- Main Content Ends -->
         <!-- js placed at the end of the document so the pages load faster -->
-        <script src="/quotes/javascript/html2canvas.js"></script>
+        <script src="/javascript/html2canvas.js"></script>
         <script src="../../../js/app.js?<?php echo date(); ?>"></script>
         <script src="../../../assets/tagsinput/jquery.tagsinput.min.js"></script>
         <script src="../../../js/bootstrap.min.js"></script>
@@ -271,6 +271,7 @@ if(isset($user) && !empty($user)){
         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
         <script src="../../../js/84628a0974ef75ce8cbcfdaf79ce37d619c81cfd/7facc5a9f1b1539c570b57de3134b78dd6f1fdfe.js?<?php echo time(); ?>" type="text/javascript"></script>
         <script src="../../../js/349f7cad324a745042c675789bcb9cc245fbebf1/816f940ad8ab9401522a2e5e280dc9ddb5c0ef4a.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <script src="../js/0cfd653d5d3e1e9fdbb644523d77971d/2fd613c5d3017793d99ee18721e0924a.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php }elseif(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
         <script src="../../../js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php } ?>

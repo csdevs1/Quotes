@@ -1,6 +1,7 @@
 <?php
     session_start();
     require_once('../AppClasses/AppController.php');
+    require_once '../AppClasses/Paginator.php';
 
     $obj = new AppController();
     $user = $obj->like('users','username="'.$_GET['uname'].'" AND active=1');
@@ -14,7 +15,13 @@ if(isset($user) && !empty($user)){
     $fname=$user[0]['fname'];
     $lname=$user[0]['lname'];
     
-    $images=$obj->find_by('userImagesCollection','userID',$u_id);
+    
+    $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 20;
+    $page = (isset( $_GET['page'])) ? $_GET['page'] : 1;
+    $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
+    $Paginator  = new Paginator("userImagesCollection WHERE userID='$u_id'");
+    $imagesARR = $Paginator->getData("userImagesCollection WHERE userID='$u_id'","id ASC",$limit,$page);
+    $images=$imagesARR->data;
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +41,7 @@ if(isset($user) && !empty($user)){
         <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
 
         <!-- Google-Fonts -->
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
 
 
         <!-- Bootstrap core CSS -->
@@ -94,8 +101,12 @@ if(isset($user) && !empty($user)){
                                         
                                         <div class="row collection-cont">
                                             <?php foreach($images as $key=>$val){?>
-                                            <div class="col-xs-4 col-md-3 col-lg-4">
-                                                <a href="<?php echo '/panel/image/'.$_GET['uname'].'/'.$images[$key]['id']; ?>"><img class="img-responsive img-thumbnail" src="<?php echo $images[$key]['url']; ?>"></a>
+                                            <div class="col-xs-4 col-md-3 col-lg-4 collection-img">
+                                                <img class="img-responsive img-thumbnail" src="<?php echo $images[$key]['url']; ?>">
+                                                <div class="col-md-2 label label-primary open-img"><a href="<?php echo '/panel/image/'.$_GET['uname'].'/'.$images[$key]['id']; ?>">Open</a></div>
+                                                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
+                                                    <div class="col-md-2 label label-danger delete-img" data-img="<?php echo $images[$key]['id']; ?>">Delete</div>
+                                                <?php } ?>
                                             </div>
                                             <?php } ?>
                                         </div>
@@ -106,23 +117,10 @@ if(isset($user) && !empty($user)){
                             
                             <div class="container">
                                 <nav aria-label="Page navigation">
-                                    <ul class="pagination">
-                                        <li>
-                                            <a href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">5</a></li>
-                                        <li>
-                                            <a href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <?php
+                                        if($nQuotes[0]['cnt']>20)
+                                            echo $Paginator->createLinks($links, 'pagination pagination-sm',dirname($_SERVER[REQUEST_URI])); 
+                                    ?> 
                                 </nav>
                             </div>
                             
@@ -146,6 +144,8 @@ if(isset($user) && !empty($user)){
         <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
         <script src="../js/84628a0974ef75ce8cbcfdaf79ce37d619c81cfd/7facc5a9f1b1539c570b57de3134b78dd6f1fdfe.js?<?php echo time(); ?>" type="text/javascript"></script>
         <script src="../js/349f7cad324a745042c675789bcb9cc245fbebf1/816f940ad8ab9401522a2e5e280dc9ddb5c0ef4a.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <script src="../js/da39a3ee5e6b4b0d3255bfef95601890afd80709/99bdc61c92dfe98451983c4ea8f1a3597c65fe25.js?<?php echo time(); ?>" type="text/javascript"></script>
+        <script src="../js/0cfd653d5d3e1e9fdbb644523d77971d/2fd613c5d3017793d99ee18721e0924a.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php }elseif(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID']!=$u_id){ ?>
         <script src="../js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
         <?php } ?>

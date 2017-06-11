@@ -16,7 +16,6 @@
 	$image = "https://portalquote.com/images/thumbnail.png";
 // Conection
 ?>
-
 <!doctype html>
 <html class="no-js" lang="en" ng-app="quotesApp">
     <head>
@@ -256,6 +255,14 @@
                         <span class="input-group-addon" onclick="clickToCopy(this);"><button id="copy" class="btn btn-primary"><i class="glyphicon glyphicon-link"></i></button></span>
                     </div>
                 </div>
+                <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
+                    <div class="col-xs-12 col-sm-6 copy-container form-group">
+                        <div class="input-group">
+                            <input id="title" class="form-control" placeholder="Give it a title!" maxlength="255" required>
+                            <span class="input-group-addon"><button class="btn btn-primary"><i class="glyphicon glyphicon-star"></i></button></span>
+                        </div>
+                    </div>
+                <?php } ?>
                 <div class="col-xs-12 col-sm-4 download copy-container">
                     <a href="" target="_blank" download><i class="glyphicon glyphicon-circle-arrow-down"></i> Download Image</a>
                 </div>
@@ -271,6 +278,6 @@
         <?php include 'layouts/footer.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
         <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
-        <script src="javascript/generator.js?<?php echo time(); ?>"></script>
+        <script src="/quotes/javascript/generator.js?<?php echo time(); ?>"></script>
     </body>
 </html>

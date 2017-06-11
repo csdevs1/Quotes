@@ -3,6 +3,10 @@ $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri_segments = explode('/', $uri_path);
 
 $section=$uri_segments[2];
+    if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
+        $nNotifications=$obj->custom("SELECT COUNT(userID) AS 'cnt' FROM notifications WHERE userID=".$_SESSION['uID']." AND seen=0");
+        $notifications=$obj->custom("SELECT * FROM notifications WHERE userID=".$_SESSION['uID']." ORDER BY seen ASC LIMIT 6");
+    }
 ?>
 
 <!-- Aside Start-->
@@ -29,6 +33,13 @@ $section=$uri_segments[2];
                                 <?php } else{ echo $fname."'s Followers"; } ?>                                
                                 </a></li>
                             <li <?php if($section=='following') echo 'class="active"'; ?>><a href="/panel/following/<?php echo $user[0]['username']; ?>">Following</a></li>
+                            <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
+                                <li <?php if($section=='posts') echo 'class="active"'; ?>>
+                                    <a href="/panel/posts/">
+                                        News Quotes
+                                    </a>
+                                </li>
+                            <?php } ?>
                         </ul>
                     </li>
                     <li class="has-submenu <?php  if($section=='collection' || $section=='quotes-collection') echo 'active'; ?>"><a href="#"><i class="ion-compose"></i> <span class="nav-label"><?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){ ?>
