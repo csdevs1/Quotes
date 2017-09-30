@@ -2512,3 +2512,16 @@ ul.p-social-link li a {
     left: 0;
   }
 }
+
+.btn-round{
+    margin: 10px;
+    width: 30px;
+    position: relative;
+    height: 30px;
+    text-align: center;
+    padding: 0px 0;
+    font-size: 12px;
+    line-height: 1.42;
+    border-radius: 15px;
+    font-size: 2.3rem;
+}

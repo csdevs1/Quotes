@@ -74,12 +74,14 @@ $('#_up_496-ixb').click(function(){
         twitter=$('#twitter').val(),
         instagram=$('#instagram').val(),
         about=$('#about').val(),
+        country=$('#country').val(),
         arr={};
     arr['website']=website;
     arr['facebook']=facebook;
     arr['twitter']=twitter;
     arr['instagram']=instagram;
     arr['about']=about;
+    arr['country']=country;
     if(fname!='')
         arr['fname']=fname;
     if(lname!='')

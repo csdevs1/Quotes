@@ -8,7 +8,8 @@
         
         public function __construct($table){
             $this->obj = new AppController();
-            $this->_total = count($this->obj->all($table));
+            //$this->_total = count($this->obj->all($table));
+            $this->_total = $this->obj->custom("SELECT COUNT(*) as c FROM $table");
         }
         
         public function getData($table,$order_by,$limit = 10, $page = 1){
@@ -34,10 +35,10 @@
         public function createLinks($links,$list_class,$type=''){
             if($this->_limit=='all')
                 return '';
-            $last = ceil($this->_total / $this->_limit);
+            $last = ceil($this->_total[0]['c'] / $this->_limit);
             $start = (($this->_page - $links)>0) ? $this->_page - $links : 1;
             $end = (($this->_page + $links) < $last) ? $this->_page + $links : $last;
-            
+
             $html = '<ul class="'.$list_class.'">';
             if($type=='quotes'){
                 $class = ($this->_page==1) ? "disabled" : "";

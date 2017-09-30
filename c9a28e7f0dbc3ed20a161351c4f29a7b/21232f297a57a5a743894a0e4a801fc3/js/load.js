@@ -126,6 +126,13 @@ function topicsTranslation(id) {
     }
 /*USERS*/
 
+function reports(el) {
+    $('.has-submenu').not(el).removeClass('active');
+    $(el).addClass('active');
+    document.getElementById("quotes-area").innerHTML="";
+    $("#quotes-area").load("content/reports-area.php");
+}
+
 $(document).ready(function(){
     english('#eng');
 });

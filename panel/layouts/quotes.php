@@ -23,7 +23,6 @@
 
 
 $_SESSION['go_back']=$_SERVER['REQUEST_URI'];
-echo $_SESSION['go_back'];
 ?>
 
 <div class="masonry-container container">
@@ -68,8 +67,15 @@ echo $_SESSION['go_back'];
     <div class="col-xs-12 col-sm-6 col-md-4 item quote" itemtype="https://schema.org/CreativeWork">
         <div class="pad clearfix">
             <?php
-                if(isset($qImage) && !empty($qImage)){
+        if(isset($qImage) && !empty($qImage)){
+            if(isset($_SESSION['uID']) && !empty($_SESSION['uID']) && $_SESSION['uID'] === $u_id){
             ?>
+            <a href="#" class="btn btn-primary btn-round dropdown-toggle" data-toggle="dropdown"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+            <ul class="dropdown-menu" style="position: absolute;top: 49px;left: 30px;">
+                <li><a tabindex="-1" style="cursor:pointer;">Edit</a></li>
+                <li><a tabindex="-1" onclick="del_quote(this,<?php echo $qID; ?>,)" style="cursor:pointer;">Delete</a></li>
+            </ul>
+            <?php   } ?>
             <img class="img-responsive" src="<?php echo $qImage; ?>" alt="<?php echo $author; ?> Quote" title="">
             <?php } ?>
             <blockquote itemprop="citation"><a href="https://portalquote.com/panel/quote/<?php echo $user[0]['username'].'/'.$author_seo.'/'.$share_url; ?>" role="link" class="quote-txt"><?php echo $quote; ?></a> <span itemprop="author">- <?php echo $author; ?></span></blockquote>

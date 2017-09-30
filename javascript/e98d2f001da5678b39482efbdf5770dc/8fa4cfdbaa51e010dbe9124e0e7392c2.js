@@ -15,7 +15,7 @@ var reportQuote = function(id,msg,t){
     });
 }
 
-var $qID;
+var $qID
 $('._rp').click(function(){
     $qID=this.getAttribute("data-qt");
 });

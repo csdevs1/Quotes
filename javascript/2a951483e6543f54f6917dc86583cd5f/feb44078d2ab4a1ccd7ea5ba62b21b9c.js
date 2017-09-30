@@ -20,6 +20,7 @@ $("#clc-usr").click(function(){
         var arr={};
         arr['url']=$('#copyURL').val();
         arr['title']=$('#title').val();
+        arr['tags']= $('#topic').val();
         var saveImage=saveToCollection(arr);
         saveImage.done(function(response){
             if(response[0]){

@@ -20,6 +20,11 @@
                 $json_response = array('response'=>400,$response);
                 echo json_encode($json_response);
             }
+        }elseif(isset($_POST['arr']) && $_POST['action']=='delete'){
+            $data = json_decode($_POST['arr'],true);
+            $response=$obj->delete('userQuotes','userID',$_SESSION['uID'].' AND quoteID='.$data['id']);
+            $json_response=array($response);
+            echo json_encode($json_response);
         }
     }
 ?>

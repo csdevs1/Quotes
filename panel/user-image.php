@@ -31,6 +31,7 @@ if(isset($user) && !empty($user)){
     $image=$obj->find_by('userImagesCollection','id',$_GET['imageid']);
         
     $current_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $tags=explode(',',$image[0]['tags']);
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +96,7 @@ if(isset($user) && !empty($user)){
             <div class="wraper container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="addthis_sharing_toolbox col-xs-12" data-url="https://portalquote.com/panel/image/<?php echo $user[0]['username'].'/'.$_GET['imageid']; ?>" data-title="Hey, check out this image created by <?php echo $user[0]['username']; ?> | PortalQuote"></div>
+                        <div class="addthis_sharing_toolbox col-xs-12" data-url="https://portalquote.com/panel/image/<?php echo $user[0]['username'].'/'.$_GET['imageid']; ?>" data-title="Hey, check out this image created by <?php echo $user[0]['username'].' '; ?><?php foreach($tags as $key=>$val) if(!empty($tags[$key])) echo '#'.$tags[$key].' ' ?> | PortalQuote"></div>
                     </div>
                     <div class="col-lg-12 img-container">
                         <img src="<?php echo $image[0]['url']; ?>" title="<?php echo $_GET['uname']; ?>" alt="<?php echo $_GET['uname'].' - image quote at PortalQuote' ?>">

@@ -1,7 +1,7 @@
 <script type="text/javascript">
-	var host = "portalquote.com";
+	/*var host = "portalquote.com";
 	if ((host == window.location.host) && (window.location.protocol != "https:"))
-		window.location.protocol = "https";
+		window.location.protocol = "https";*/
 </script>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge">

@@ -3,7 +3,6 @@
     require_once('../../AppClasses/AppController.php');
     require_once('../../AppClasses/Paginator.php');
     $obj = new AppController();
-
     $limit = (isset( $_GET['limit'])) ? $_GET['limit'] : 15;
     $page = (isset( $_POST['page'])) ? $_POST['page'] : 1;
     $links = (isset( $_GET['links'])) ? $_GET['links'] : 7;
@@ -11,7 +10,17 @@
     $usersARR = $Paginator->getData("users","created_at",$limit,$page);
     $users = $usersARR->data;
 ?>
-
+<div class="container" style="margin-bottom:10px;">
+    <div class="row">
+        <div class="col-xs-11" style="display:flex;">
+            <div class="input-group">
+                <span class="input-group-addon glyphicon glyphicon-search" id="search-icon"></span>
+                <input type="search" class="form-control" id="search_user" name="search_user" placeholder="Search User..." aria-describedby="search-user">
+            </div>
+            <a class="btn btn-primary user-btn-search" href="#">Search</a>
+        </div>
+    </div>
+</div>
 <div class="clearfix">
     <?php 
         foreach($users as $key=>$val){
@@ -65,10 +74,30 @@
 
 <div class="container">
     <nav aria-label="Page navigation">
-        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','/quotes/users-section/images'); ?> 
+        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','/users-section/users'); ?>
     </nav>
 </div>
 
+<script>
+    var find_user=function(username){
+        return $.ajax({
+            type: 'POST',
+            dataType: 'json',
+           // processData: false,
+            //contentType:  false,
+            data: {username:username},
+            url: '/userSection.php'
+        });
+    }
+    $('.user-btn-search').on('click',function(){
+        var username=$('#search_user').val();
+        var request=find_user(username);
+        request.done(function(user){
+            console.log(user);
+        });
+    });
+</script>
+
 <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
-    <script src="/quotes/panel/js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
+    <script src="/panel/js/46b13e139205831924e33e8c10faa847/93ba5d9426226e11930384103fa8ba44.js?<?php echo time(); ?>" type="text/javascript"></script>
 <?php } ?>

@@ -9,6 +9,7 @@
             return $el;
         }
     }
+    $obj = new AppController();
     // META TAGS
     $meta_tags = new HeadTags();
     $title = $meta_tags->titlePage('Find other users\' quotes and more');

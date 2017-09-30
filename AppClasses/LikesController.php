@@ -16,7 +16,8 @@ if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
     }elseif(isset($_POST['quoteID']) && !empty($_POST['quoteID']) && $_POST['action'] === 'dislikeQT'){
         $quoteID=$_POST['quoteID'];
         $userID=$_SESSION['uID'];
-        $response=$obj->custom("DELETE FROM likes_en WHERE userID=$userID AND quoteID=$quoteID");
+        //$response=$obj->custom("DELETE FROM likes_en WHERE userID=$userID AND quoteID=$quoteID");
+	$obj->delete('likes_en','userID',$uID.' AND quoteID='.$quoteID);
         $response2=$obj->custom("SELECT COUNT(quoteID)  AS 'cnt' FROM likes_en WHERE quoteID=$quoteID");
         $json_response=array($response2);
         echo json_encode($json_response);
@@ -31,8 +32,8 @@ if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){
         }
     }elseif(isset($_POST['quoteID']) && !empty($_POST['quoteID']) && $_POST['action'] === 'dislikeQTUsr'){//FOR USER'S QUOTES
         $quoteID=$_POST['quoteID'];
-        $userID=$_SESSION['uID'];
-        $response=$obj->custom("DELETE FROM userQuotes_like WHERE userID=$userID AND quoteID=$quoteID");
+        //$response=$obj->custom("DELETE FROM userQuotes_like WHERE userID=$userID AND quoteID=$quoteID");
+        $response=$obj->delete('userQuotes_like','userID',$_SESSION['uID'].' AND quoteID='.$quoteID);
         $response2=$obj->custom("SELECT COUNT(quoteID)  AS 'cnt' FROM userQuotes_like WHERE quoteID=$quoteID");
         $json_response=array($response2);
         echo json_encode($json_response);

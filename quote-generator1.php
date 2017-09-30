@@ -20,6 +20,7 @@
 <html class="no-js" lang="en" ng-app="quotesApp">
     <head>
         <?php include 'layouts/head.php'; ?>
+        <link href="/panel/assets/tagsinput/jquery.tagsinput.css" rel="stylesheet" />
         <style>
             .collection a{padding: 9px;width: 100%;}
             <?php if(isset($_SESSION['uID']) && !empty($_SESSION['uID'])){ ?>
@@ -262,6 +263,11 @@
                             <span class="input-group-addon"><button class="btn btn-primary"><i class="glyphicon glyphicon-star"></i></button></span>
                         </div>
                     </div>
+                    <div class="col-xs-12 col-sm-6 copy-container form-group">
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control" id="topic" data-error="Field required" aria-describedby="topic" placeholder="Enter Topic" value="">
+                        </div>
+                    </div>
                 <?php } ?>
                 <div class="col-xs-12 col-sm-4 download copy-container">
                     <a href="" target="_blank" download><i class="glyphicon glyphicon-circle-arrow-down"></i> Download Image</a>
@@ -278,6 +284,13 @@
         <?php include 'layouts/footer.php'; ?>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
         <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
-        <script src="/quotes/javascript/generator.js?<?php echo time(); ?>"></script>
+        <script src="/javascript/generator.js?<?php echo time(); ?>"></script>
+        <script src="/panel/assets/tagsinput/jquery.tagsinput.min.js"></script>
+        <script>
+            $(document).ready(function($) {
+                // Tags Input
+                $('#topic').tagsInput({width:'auto'});
+            });
+        </script>
     </body>
 </html>

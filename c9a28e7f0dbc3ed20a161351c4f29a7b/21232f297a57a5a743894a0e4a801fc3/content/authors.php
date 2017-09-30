@@ -178,7 +178,7 @@
 <?php if(empty($_POST['dataARR'])){ ?>
 <div class="container">
     <nav aria-label="Page navigation">
-        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','authors'); ?> 
+        <?php echo $Paginator->createLinks($links, 'pagination pagination-sm','authors'); ?>
     </nav>
 </div>
 
